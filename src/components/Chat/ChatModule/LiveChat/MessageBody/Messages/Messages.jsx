@@ -42,7 +42,7 @@ const Messages = (props) => {
     }, [forcedAgentTyping, sayAgentIsTyping])
 
     return (
-        <div>
+        <div className="d-content">
             {messages?.map((message, i) => (
                 <Message
                     key={i}

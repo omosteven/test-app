@@ -9,7 +9,7 @@ const SeoWrapper = ({ title }) => {
     return (
         <Helmet>
             <title>
-                {`${teamName} - ${title}`}
+                {`${teamName}  ${title ? title : ""}`}
             </title>
             <link rel='icon' href={companyLogo} sizes="16x16" />
         </Helmet>

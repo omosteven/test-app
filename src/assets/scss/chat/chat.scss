@@ -124,8 +124,8 @@
   .message-body {
     padding: 24px;
     padding-top: 32px;
-    padding-bottom: 5%;
-    height: 80%;
+    // padding-bottom: 5%;
+    height: 70vh;
     // display: flex;
     // flex-direction: column ;
     // overflow: scroll !important;
@@ -133,6 +133,9 @@
     @include media("<=small-screen") {
       padding-left: 16px;
       padding-right: 16px;
+      height: 80%;
+      padding-bottom: 5%;
+
       // padding-bottom: 4rem;
       // height: 50%;
     }

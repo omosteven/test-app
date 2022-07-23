@@ -11,18 +11,22 @@ const MessageBody = ({ messages, ticketId, agent, forcedAgentTyping, handleMessa
     const _autoScroll = () => {
         try {
             console.log('please auto scroll here')
-            // $(`#${ID}`).mCustomScrollbar("scrollTo", 'bottom', {     scrollEasing:"easeOut"        });
-            $('#dummy')[0].scrollIntoView({
-                behavior: "smooth", // or "auto" or "instant"
-                // block: "en" // or "end"
-            });
+            // // $(`#${ID}`).mCustomScrollbar("scrollTo", 'bottom', {     scrollEasing:"easeOut"        });
+            // $(`#${ID}`)[0].scrollIntoView({
+            //     behavior: "smooth", // or "auto" or "instant"
+            //     // block: "en" // or "end"
+            // });
+            $(`#${ID}`).scrollTop($(`#${ID}`)[0].scrollHeight);
+
+            // var objDiv = document.getElementById("your_div");
+            // objDiv.scrollTop = objDiv.scrollHeight;
             
             // console.log($('#dummy'));
         } catch (err) {
             console.log('error scrolling')
         }
     }
-    
+
     const smoothScrollEffect = () => {
         $(`#${ID}`).mCustomScrollbar({
             theme: "minimal-dark",
