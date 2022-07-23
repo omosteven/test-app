@@ -1,0 +1,50 @@
+@import "../mixins/mixins.scss";
+
+@include keyframes(fade-side-overlay) {
+    0% {
+        background-color: transparent;
+    }
+    100% {
+        background-color: rgba(50, 59, 75, 0.7);
+    }
+}
+
+@include keyframes(fade-in) {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@include keyframes(slide-side-menu) {
+    0% {
+        transform: translateX(535px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@include keyframes(shine-animation) {
+    0% {
+        background-color: rgba(165, 165, 165, 0.1);
+    }
+    50% {
+        background-color: rgba(165, 165, 165, 0.18);
+    }
+    100% {
+        background-color: rgba(165, 165, 165, 0.1);
+    }
+}
+
+@include keyframes(shine-lines) {
+    0% {
+        background-position: -100px;
+    }
+    40%,
+    100% {
+        background-position: 140px;
+    }
+}

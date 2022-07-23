@@ -1,0 +1,44 @@
+$xs: 320px;
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1400px;
+$base-color: #a5a5a51a;
+$shine-color: #e8e8e8;
+$animation-duration: 1.6s;
+
+@mixin responsiveMobile($size) {
+  @media screen and (max-width: $size) {
+    @content;
+  }
+}
+
+@mixin transition($time: 0.5s) {
+  transition: cubic-bezier(0.9, 0.05, 1, 0.74) all $time;
+}
+
+@mixin keyframes($name) {
+  @-webkit-keyframes #{$name} {
+    @content;
+  }
+  @-moz-keyframes #{$name} {
+    @content;
+  }
+  @-ms-keyframes #{$name} {
+    @content;
+  }
+  @keyframes #{$name} {
+    @content;
+  }
+}
+
+@mixin background-gradient {
+  background-image: linear-gradient(
+    90deg,
+    $base-color 0px,
+    $shine-color 40px,
+    $base-color 80px
+  );
+  background-size: 600px;
+}

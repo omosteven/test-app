@@ -1,0 +1,143 @@
+// Chat Bubble Animation Mixin
+@mixin animation--fadedown {
+    animation: appear 1s ease-in-out;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    // animation-delay: #{$delay}s;
+}
+
+
+.suggested__convos {
+    padding-left: 16px;
+    margin-bottom: 20px;
+    @include animation--fadedown;
+  
+    p {
+      color: #696d8c;
+      font-size: 14px;
+    }
+    .suggestion__list {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+  
+      .suggested__convo {
+        height: 40px;
+        width: fit-content;
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+  
+        border: 1px solid $primary__theme_color;
+        border-radius: 20px;
+        span {
+          color: #060213;
+          font-size: 14px;
+        }
+        &:hover {
+          opacity: 0.6;
+        }
+      }
+    }
+  }
+  
+
+.message__group {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 20px;
+    .options{
+        .branch__option {
+            margin-right: 8px;
+        }
+
+        // margin-top: ;
+    }
+}
+
+// Chat Bubble Animation Application
+// .chat-thread {
+//     > *,
+//     > * > .message__group {
+//         @for $i from 1 through 10 {
+//             &:nth-child(#{$i}) {
+//                 // Quanti Messages [after user reply]
+//                 &.send {
+//                     // @include animation--fadedown(0);
+//                     align-items: flex-start;
+//                 }
+
+//                 // User Messages
+//                 &:not(.send) {
+//                     opacity: 0;
+//                     @include animation--fadedown(0);
+//                 }
+//             }
+//         }
+//     }
+// }
+
+.message__group {
+    // animation: ;
+    @include animation--fadedown;
+
+}
+
+// ANIMATIONS START
+@keyframes appear {
+    0% {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    99% {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+
+    100% {
+        opacity: 1;
+        width: auto;
+        height: auto;
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes disappear {
+    0% {
+        opacity: 1;
+    }
+
+    99% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        width: 0;
+        height: 0;
+        overflow: hidden;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

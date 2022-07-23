@@ -1,0 +1,321 @@
+@import "../_include-media-lib/include-media";
+
+#header {
+  background-color: $light__theme_color;
+  position: sticky;
+  width: 100%;
+  display: block;
+  min-height: 78px;
+  top: 0;
+  z-index: 3;
+  border-bottom: 1px solid $border__theme_color;
+
+  @include media("<=small-screen") {
+    min-height: 56px;
+  }
+
+  #ticketsHeader {
+    .agent-ticket--status {
+      .ticket__status {
+        display: none;
+        @include media("<=small-screen") {
+          display: flex;
+        }
+      }
+    }
+    .tickets__action--list {
+      .info__box {
+        @include media("<=small-screen") {
+          display: none !important;
+        }
+      }
+    }
+  }
+
+  // justify-content: flex-end;
+  .chat__header {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 2rem;
+    #authTickets {
+      display: contents;
+      @include media("<=small-screen"){
+          display: none;
+      }
+    }
+    .chat__toggler {
+      display: none;
+
+      span {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 22px;
+        color: $muted__theme_color_2;
+      }
+
+      @include media("<=small-screen") {
+        display: flex;
+        align-items: self-end;
+        cursor: pointer;
+        gap: 0.25rem;
+      }
+    }
+
+    @include media("<=small-screen") {
+      padding: 0 16px;
+      .logo {
+        margin: auto;
+      }
+    }
+  }
+}
+
+.chat__container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ecebf5;
+  border-width: 0px 1px 0px 1px;
+  overflow: hidden;
+  // 1px solid #;
+  .empty__chat--interface,
+  .chat__interface {
+    flex: 1 0 auto;
+    position: relative;
+  }
+  #chatInput {
+    flex-shrink: 0;
+    margin-bottom: 0;
+  }
+}
+
+.ticket-header {
+  padding: 25px 32px;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  border-bottom: 1px solid #ecebf5;
+  @include media("<=small-screen") {
+    padding: 10px 16px;
+  }
+  .agents__name {
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 160%;
+    color: $text__default_color;
+    margin: 0;
+    text-transform: capitalize;
+    font-family: $primary_font_family--medium;
+  }
+
+  .subtitle-text {
+    font-size: 14px;
+    line-height: 22px;
+    color: $muted__theme_color_2;
+  }
+}
+
+.otp__group {
+  padding: 0 1rem;
+}
+
+.chat__interface {
+  .message-body {
+    padding: 24px;
+    padding-top: 32px;
+    padding-bottom: 5%;
+    height: 70vh;
+    // display: flex;
+    // flex-direction: column ;
+    // overflow: scroll !important;
+    // overflow: scroll;
+    @include media("<=small-screen") {
+      padding-left: 16px;
+      padding-right: 16px;
+      // padding-bottom: 4rem;
+      // height: 50%;
+    }
+    #dummy{
+      height: 4rem;
+      display: block;
+      width: 100%;
+    }
+    // #mCSB_2 {
+    //   display: none;
+    // }
+    // .messages {
+    //   .receive {
+    //     display: grid;
+    //     grid-template-columns: 0.2fr 7fr;
+    //     .receive-border {
+    //       border-radius: 16px 16px 16px 0px;
+    //     }
+    //   }
+
+    //   .send {
+    //     display: grid;
+    //     grid-template-columns: 7fr 0.2fr;
+    //     .send-border {
+    //       border-radius: 16px 16px 0px 16px;
+    //     }
+    //   }
+
+    //   .message-text {
+    //     @media (max-width: 720px) {
+    //       width: 80% !important;
+    //     }
+    //   }
+
+    //   .options {
+    //     @include media("<=medium-screen") {
+    //       width: 80% !important;
+    //     }
+    //   }
+    // }
+  }
+
+  .chat-field {
+    textarea.form-control {
+      height: 53px !important;
+      border: none !important;
+
+      &::-webkit-scrollbar {
+        width: 0px;
+      }
+    }
+  }
+}
+
+.branch__option {
+  margin-top: 10px;
+  border-radius: 14px;
+  background-color: $light__theme_color;
+  border: 1px solid $border_highlight_color;
+  cursor: pointer;
+  color: $text__default_color;
+  outline: none;
+  font-size: 14.5px;
+  letter-spacing: 0.05px;
+  padding: 7px 12px;
+  transition: all 0.3s;
+  &:hover {
+    opacity: 0.5;
+  }
+
+  &:disabled {
+    color: $text__default_color;
+  }
+
+  &.__fade_out {
+    color: $option__fade_out;
+    pointer-events: none;
+  }
+  &.active {
+    border-color: $primary__theme_color;
+  }
+}
+
+.message__content {
+  width: fit-content;
+  padding: 10px 16px;
+  padding-bottom: 8px;
+  max-width: 50%;
+  font-size: 15px;
+  letter-spacing: 0.05px;
+
+  @include media("<=small-screen") {
+    font-size: 14px;
+    max-width: 80%;
+  }
+
+  &.received {
+    color: #fff;
+    background: $primary__theme_color;
+    border-radius: 12px 12px 12px 0px;
+  }
+  &.sent {
+    color: #696d8c;
+    background: #fafafc;
+    border-radius: 12px 12px 0px 12px;
+  }
+}
+
+.chat__input--group {
+  // margin: 1rem;
+  padding: 1rem;
+  margin-right: 6px;
+  border-top: 1px solid #ecebf5;
+  border-bottom: 1px solid #ecebf5;
+  // border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  textarea,
+  input {
+    border: 0 !important;
+    border-radius: 0 !important;
+    resize: none;
+  }
+  .send__button {
+    font-size: 14px;
+    color: #a3a3c2;
+    background: #f5f5f7;
+    border-radius: 8px;
+    padding: 17px 24px !important;
+    height: 58px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin-left: auto;
+    svg {
+      margin-right: 1rem;
+      path {
+        fill: #92929d;
+      }
+    }
+    &.active {
+      background: $primary__theme_color;
+      color: #ffffff;
+      svg path {
+        fill: #ffffff;
+      }
+    }
+  }
+}
+
+.typing-indicator {
+  $ti-color-bg: #e6e7ed;
+  animation: 1s bulge infinite ease-out;
+  // padding: 10px;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  span {
+    height: 5px;
+    width: 5px;
+    float: left;
+    margin: 0 5px;
+    background-color: #fff;
+    display: block;
+    border-radius: 50%;
+    opacity: 0.4;
+    @for $i from 1 through 3 {
+      &:nth-of-type(#{$i}) {
+        animation: 1s blink infinite ($i * 0.3333s);
+      }
+    }
+  }
+}
+
+@keyframes blink {
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes bulge {
+  50% {
+    transform: scale(1.05);
+  }
+}

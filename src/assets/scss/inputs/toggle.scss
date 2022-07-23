@@ -1,0 +1,31 @@
+@import "../mixins/mixins.scss";
+@import "../_master.scss";
+
+.toggle-container {
+	width: 26px;
+	cursor: pointer;
+	user-select: none;
+	border-radius: 10px;
+	height: 16px;
+	position: relative;
+
+	.dialog-button {
+		content: "";
+		cursor: pointer;
+		border-radius: 100%;
+		width: 13px;
+		height: 12.8px;
+		position: absolute;
+		left: 11.38px;
+		top: 1.3px;
+		right: 1.6px;
+		transition: all 0.3s ease;
+		&.disabled {
+			left: 1.6px;
+		}
+	}
+}
+
+.toggle-muted {
+	color: #a3a3c2;
+}

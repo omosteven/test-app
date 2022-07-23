@@ -1,0 +1,36 @@
+:root{
+    --default-primary-color: #6837ef;
+}
+
+// Fonts
+$primary_font_family: "Gelion";
+$primary_font_family--lighter: "Gelion Light";
+$primary_font_family--medium: "Gelion-Medium";
+$primary_font_family--semi-bold: "Gelion Semi";
+$primary_font_family--bold: "Gelion Bold";
+
+/* make the customizations */
+$primary__theme_color: var(--default-primary-color);
+$secondary__theme_color: #1d1d1d;
+$danger__theme_color: #ff3364;
+$info__theme_color: #557aff;
+$dark__theme_color: #000000;
+$black__theme_color: #060213;
+$muted__theme_color: #b0b7c3;
+$light__theme_color: #ffffff;
+$success__theme_color: #1b9646;
+$gray__theme_color: #2e2e2e;
+$grey__theme_color: #171725;
+$border__theme_color: #ecebf5;
+$muted__theme_color_2: #696d8c;
+$capsule_highlight_color: #0878e9;
+
+$muted__border__theme_color: #ecebf566;
+$pending__theme_color: #ff991f;
+$pending__background__theme_color: #ff991f33;
+$success__background__theme_color: #00875a33;
+$danger__background__theme_color: #ff33641a;
+$pimary__background__theme_color: #6837ef1a;
+$border_highlight_color: #e1e1eb;
+$text__default_color: #060213;
+$option__fade_out: #a3a3c2

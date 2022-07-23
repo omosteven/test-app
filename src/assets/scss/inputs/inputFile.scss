@@ -1,0 +1,32 @@
+@import "../mixins/mixins.scss";
+@import "../_master.scss";
+
+.file-label-container {
+	.file-name {
+		border-radius: 5px;
+		width: 100%;
+		height: 55px;
+		background: #ffffff;
+		border: 1px solid #dee1e5;
+		padding: 17px 48px 17px 20px;
+		p {
+			text-overflow: ellipsis;
+			overflow: hidden;
+			white-space: nowrap;
+			font-size: 16px;
+			margin: 0;
+			width: 60%;
+		}
+	}
+	.file-label {
+		top: 1px;
+		right: 1px;
+	}
+}
+.uploaded-file {
+	height: 320px;
+	border-radius: 10px;
+	&--video {
+		height: unset;
+	}
+}
