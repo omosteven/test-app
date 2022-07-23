@@ -1,15 +1,11 @@
 import React from "react";
-import { useRenderCounter } from "../../../utils/hooks";
 import ClientSideOnlyRenderer from "../../common/ClientSideOnlyRenderer/ClientSideOnlyRenderer";
 import LiveChat from "./LiveChat/LiveChat";
 
 const ChatModule = ({ ticket, getCustomerTickets, isServer }) => {
-    const renderCount = useRenderCounter('ChatModule');
-
     const renderDone = () => {
         return (
             <>
-            <span>{renderCount}</span>
                 <LiveChat
                     {
                     ...{

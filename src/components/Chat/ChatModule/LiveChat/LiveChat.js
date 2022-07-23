@@ -12,7 +12,6 @@ import MessageBody from "./MessageBody/MessageBody";
 import { appMessageUserTypes, branchOptionsTypes, formInputTypes, messageOptionActions, messageTypes } from "./MessageBody/Messages/Message/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
 import { ISSUE_DISCOVERY } from "../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
-import { useRenderCounter } from "../../../../utils/hooks";
 import { setActiveTicket,  deleteTicketsMessages, saveTicketsMessages, clearTicketMessages } from "../../../../store/tickets/actions";
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
@@ -364,12 +363,9 @@ const LiveChat = ({ ticket, getCustomerTickets }) => {
         processIssueDiscovery();
     }, [messages])
 
-    // var last_element = my_array[my_array.length - 1];
-    const renderCount = useRenderCounter('Live chat');
 
     return (
         <>
-            <span>{renderCount}</span>
             <TicketsHeader
                 {
                 ...{

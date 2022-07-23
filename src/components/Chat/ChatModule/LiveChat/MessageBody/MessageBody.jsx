@@ -7,17 +7,32 @@ import 'malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css';
 require('jquery-mousewheel');
 
 const MessageBody = ({ messages, ticketId, agent, forcedAgentTyping, handleMessageOptionSelect,handleOptConversation }) => {
-    const ID = 'messageBody'
+    const ID = 'messageBody';
+    const _autoScroll = () => {
+        try {
+            console.log('please auto scroll here')
+            // $(`#${ID}`).mCustomScrollbar("scrollTo", 'bottom', {     scrollEasing:"easeOut"        });
+            $('#dummy')[0].scrollIntoView({
+                behavior: "smooth", // or "auto" or "instant"
+                // block: "en" // or "end"
+            });
+            
+            // console.log($('#dummy'));
+        } catch (err) {
+            console.log('error scrolling')
+        }
+    }
+    
     const smoothScrollEffect = () => {
         $(`#${ID}`).mCustomScrollbar({
             theme: "minimal-dark",
-            // callbacks: {//
-            //     onInit: function () {
-            //         setTimeout(function () {
-            //             _autoScroll()
-            //         }, 1000);
-            //     }
-            // }
+            callbacks: {//
+                onInit: function () {
+                    setTimeout(function () {
+                        _autoScroll()
+                    }, 1000);
+                }
+            }
         });
     }
 

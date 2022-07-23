@@ -1,6 +1,3 @@
-// import { AgentImage } from "../../../ui";
-// import MessageHeaderDropdown from "./MessageHeaderDropdown/MessageHeaderDropdown";
-
 import TicketStatus from "../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/TicketStatus";
 import { Info } from "../../../ui";
 import ChangeOption from "./ChangeOption/ChangeOption";
@@ -35,10 +32,6 @@ const TicketsHeader = ({ ticket, showUndoChoice, setStatus, setErrorMssg, reques
                     }
                     }
                 />
-                {/* <Info text='Change choice' /> */}
-                {/* <Info>
-                    <MessageHeaderDropdown />
-                </Info> */}
             </div>
         </div>
     );
