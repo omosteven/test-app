@@ -21,14 +21,15 @@ const Chat = () => {
     const [errorMssg, setErrorMssg] = useState("");
     const dispatch = useDispatch();
     const { activeTicket } = useSelector(state => state.tickets)
-
+    const selectedTicket = activeTicket;
     const [customerTickets, setCustomerTickets] = useState([]);
-    const [selectedTicket, setSelectedTicket] = useState();
+    // const [selectedTicket, setSelectedTicket] = useState();
 
     
     const getCustomerTickets = async (ticketId) => {
         try {
-            setSelectedTicket();
+            dispatch(setActiveTicket())
+
             setStatus(LOADING);
             setErrorMssg();
 
@@ -39,9 +40,7 @@ const Chat = () => {
                     setCustomerTickets(tickets);
                     const {ticketId:prevSelectedId} = activeTicket || {};
                     const newTicket = ticketId ? tickets?.find((x) => x.ticketId === ticketId) :  prevSelectedId ? tickets?.find((x) => x.ticketId === prevSelectedId): tickets[0];
-                    console.log(newTicket)
-                    setSelectedTicket(newTicket);
-                    dispatch(setActiveTicket(newTicket))
+                    dispatch(setActiveTicket({...newTicket, activeConvoSuggestion: false}))
                     setStatus(DATAMODE);
                 } else {
                     setStatus(NULLMODE);
@@ -59,7 +58,6 @@ const Chat = () => {
     }
 
     const handleTicketCloseSuccess = () => {
-        setSelectedTicket();
         dispatch(setActiveTicket());
         getCustomerTickets();
         toggleTicketActionModal(false)
@@ -85,7 +83,6 @@ const Chat = () => {
     }
 
     const handleTicketSelect = (ticket) => {
-        setSelectedTicket(ticket);
         dispatch(setActiveTicket(ticket))
     };
 
@@ -113,7 +110,7 @@ const Chat = () => {
                                 }
                                 }
                             />
-                            {selectedTicket ?
+                            {selectedTicket.ticketId ?
                                 <ChatModule
                                     key={selectedTicket?.ticketId}
                                     ticket={selectedTicket}

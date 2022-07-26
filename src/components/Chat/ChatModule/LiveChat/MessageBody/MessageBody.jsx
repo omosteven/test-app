@@ -1,14 +1,20 @@
-import React, { useEffect } from "react";
-import SmothScrollContent from "../../../../ui/SmothScrollContent/SmothScrollContent";
+import React, { useCallback, useEffect } from "react";
 import Messages from "./Messages/Messages";
 import $ from 'jquery';
 import 'malihu-custom-scrollbar-plugin';
 import 'malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css';
+import MessageDemo from "../MessageDemo/MessageDemo";
+import { useSelector } from "react-redux";
+// import MessageDemo from "../MessageDemo/MessageDemo";
 require('jquery-mousewheel');
 
-const MessageBody = ({ messages, ticketId, agent, forcedAgentTyping, handleMessageOptionSelect,handleOptConversation }) => {
+const MessageBody = ({ forcedAgentTyping, handleMessageOptionSelect, handleOptConversation }) => {
+
+    const { activeTicket: ticket, ticketsMessages: messages } = useSelector(state => state.tickets)
+    const { ticketId, agent } = ticket;
+
     const ID = 'messageBody';
-    const _autoScroll = () => {
+    const _autoScroll = useCallback(() => {
         try {
             console.log('please auto scroll here')
             // // $(`#${ID}`).mCustomScrollbar("scrollTo", 'bottom', {     scrollEasing:"easeOut"        });
@@ -16,16 +22,16 @@ const MessageBody = ({ messages, ticketId, agent, forcedAgentTyping, handleMessa
             //     behavior: "smooth", // or "auto" or "instant"
             //     // block: "en" // or "end"
             // });
-            $(`#${ID}`).scrollTop($(`#${ID}`)[0].scrollHeight);
-
+            // $(`#${ID}`).scrollTop($(`#${ID}`)[0].scrollHeight);
+            document.getElementById('dummy').scrollIntoView({ behavior: 'smooth', block: 'end' });
             // var objDiv = document.getElementById("your_div");
             // objDiv.scrollTop = objDiv.scrollHeight;
-            
+
             // console.log($('#dummy'));
         } catch (err) {
             console.log('error scrolling')
         }
-    }
+    }, [])
 
     const smoothScrollEffect = () => {
         $(`#${ID}`).mCustomScrollbar({
@@ -40,10 +46,13 @@ const MessageBody = ({ messages, ticketId, agent, forcedAgentTyping, handleMessa
         });
     }
 
-    useEffect(() => (smoothScrollEffect()))
+    // useEffect(() => (smoothScrollEffect()))
+    useEffect(() => {
+        _autoScroll()
+    }, [messages])
 
     return (
-        <div className='message-body' id={ID}>
+        <div className='message-body scroll' id={ID}>
             <Messages
                 messages={messages}
                 agent={agent}

@@ -24,6 +24,7 @@ const requestHandler = (request) => {
 const responseHandler = (response) => {
     if (response.status === 401) {
         deleteAccessToken();
+        window.reload()
     }
 
     return response;

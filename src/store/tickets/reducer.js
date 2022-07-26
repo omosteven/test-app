@@ -1,3 +1,4 @@
+import { getUniqueListBy } from "../../utils/helper";
 import * as types from "./types";
 
 const initialState = {
@@ -8,14 +9,25 @@ const initialState = {
 };
 
 const TicketsReducer = (state = initialState, { type, payload }) => {
-
+    const { ticketId, messageContentId, ...otherPayload } = payload || {}
+    // console.log(ticketId, messageContentId, otherPayload )
     switch (type) {
+        case types.SET_TICKET_MESSAGES:
+            let stmProposedVal = getUniqueListBy(payload, "messageContentId")
+            return { ...state, ticketsMessages: stmProposedVal }
+
         case types.UPDATE_TICKET_MESSAGES:
-            return { ...state, ticketsMessages: [...state?.ticketsMessages, payload] }
+            let utmProposedVal = getUniqueListBy([...state?.ticketsMessages, payload], "messageContentId")
+            return { ...state, ticketsMessages: utmProposedVal  }
 
         case types.DELETE_TICKET_MESSAGE:
-            const { ticketId, messageId } = payload
-            return { ...state, ticketsMessages: state?.ticketsMessages?.filter(x => x.ticketId !== ticketId && x.messageId !== messageId) }
+            return { ...state, ticketsMessages: state?.ticketsMessages?.filter(x => x.ticketId !== ticketId && x.messageContentId !== messageContentId) }
+        
+        case types.UPDATE_TICKET_MESSAGE:
+            return { ...state, ticketsMessages: state?.ticketsMessages?.map((x) => {
+                 return x.messageContentId === messageContentId ? {...x, ...otherPayload} : x 
+                }) 
+            }
 
         case types.CLEAR_TICKET_MESSAGES:
             return { ...state, ticketsMessages: state?.ticketsMessages?.filter(x => x.ticketId !== payload) }

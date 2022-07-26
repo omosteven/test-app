@@ -8,20 +8,20 @@ import { Button, Input, Textarea } from "../../../../ui";
 import SelectUI from "../../../../ui/InputTypes/SelectUI/SelectUI";
 import { formInputTypes } from "../MessageBody/Messages/Message/enums";
 import { useIsTyping } from 'use-is-typing';
-import apiRoutes from "../../../../../lib/api/apiRoutes";
-import API from "../../../../../lib/api";
-import SuggestedConvos from "../SuggestedConvos/SuggestedConvos";
-import { useSelector } from "react-redux";
-import { ISSUE_DISCOVERY } from "../../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
+// import apiRoutes from "../../../../../lib/api/apiRoutes";
+// import API from "../../../../../lib/api";
+// import SuggestedConvos from "../SuggestedConvos/SuggestedConvos";
+// import { useSelector } from "react-redux";
+// import { ISSUE_DISCOVERY } from "../../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import PoweredBy from "../../../../common/PoweredBy/PoweredBy";
 
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes
 const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchingInputStatus, allowUserInput, inputType, currentFormElement }) => {
-    const { activeTicket } = useSelector(state => state.tickets)
+    // const { activeTicket } = useSelector(state => state.tickets)
 
     const [fetchingConvos, setFetchingConvos] = useState(false)
-    const [showConvos, toggleConvosView] = useState(false);
-    const [suggestedList, setSuggestedList] = useState([]);
+    // const [showConvos, toggleConvosView] = useState(false);
+    // const [suggestedList, setSuggestedList] = useState([]);
 
     const [isTyping, inputRef] = useIsTyping();
 
@@ -36,30 +36,30 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
         setMessage("")
     }
 
-    const handleConvoClick = async (conversationId) => {
-        triggerAgentTyping(true)
-        toggleConvosView(false)
-        setFetchingConvos(false)
+    // const handleConvoClick = async (conversationId) => {
+    //     triggerAgentTyping(true)
+    //     toggleConvosView(false)
+    //     setFetchingConvos(false)
 
-        await setTimeout(function () {
-            socket.timeout(1000).emit(SEND_CUSTOMER_CONVERSATION_REPLY, { ticketId, conversationId }, (err) => {
-                if (err) {
-                    console.log('An erro occured')
-                    toggleConvosView(false)
-                    setFetchingConvos(false)
-                    triggerAgentTyping(false)
-                    setMessage("")
-                } else {
-                    toggleConvosView(false)
-                    setFetchingConvos(false)
-                    triggerAgentTyping(false)
-                    setMessage("")
-                }
+    //     await setTimeout(function () {
+    //         socket.timeout(1000).emit(SEND_CUSTOMER_CONVERSATION_REPLY, { ticketId, conversationId }, (err) => {
+    //             if (err) {
+    //                 console.log('An erro occured')
+    //                 toggleConvosView(false)
+    //                 setFetchingConvos(false)
+    //                 triggerAgentTyping(false)
+    //                 setMessage("")
+    //             } else {
+    //                 toggleConvosView(false)
+    //                 setFetchingConvos(false)
+    //                 triggerAgentTyping(false)
+    //                 setMessage("")
+    //             }
 
-            });
-        }, 5000);
+    //         });
+    //     }, 5000);
 
-    }
+    // }
 
     // const fetchConvoSuggestions = async () => {
     //     try {
@@ -105,7 +105,7 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
     // }
 
     const handleTyping = (e) => {
-        const { value } = e.target;
+        let { value } = e.target;
         if (inputType === NUMERIC) {
             console.log(value.replace(/\D/g, ""));
             value = value.replace(/\D/g, "");
@@ -128,11 +128,12 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
     }, []);
 
     const renderBasedOnInputType = () => {
-        const { formElementPlaceholder, formElementOptions } = currentFormElement || {}
+        const { formElementPlaceholder, formElementOptions, options } = currentFormElement || {}
         switch (inputType) {
             case TEXT:
             case NUMERIC:
             case DATE:
+            case LONG_TEXT:
                 return (
                     <Input
                         placeholder={formElementPlaceholder ? formElementPlaceholder : "Type message here"}
@@ -147,19 +148,19 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
                         disabled={isDisabled}
                     />
                 )
-            case LONG_TEXT:
-                <Textarea
-                    placeholder={formElementPlaceholder ? formElementPlaceholder : "Type message here"}
-                    inputClass="w-100 border-0"
-                    value={message}
-                    onChange={handleTyping}
-                    grpClass="w-100"
-                    label="Chat"
-                    hideLabel={true}
-                    ref={inputRef}
-                    isLoading={fetchingConvos}
-                    disabled={isDisabled}
-                />
+            // case :
+            //     <Textarea
+            //         placeholder={formElementPlaceholder ? formElementPlaceholder : "Type message here"}
+            //         inputClass="w-100 border-0"
+            //         value={message}
+            //         onChange={handleTyping}
+            //         grpClass="w-100"
+            //         label="Chat"
+            //         hideLabel={true}
+            //         ref={inputRef}
+            //         isLoading={fetchingConvos}
+            //         disabled={isDisabled}
+            //     />
 
             // case DATE:
             //     return (
@@ -167,7 +168,8 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
             //     )
 
             case MULTISELECT:
-                const selectOptions = formElementOptions?.map((item) => ({ label: item, value: item }))
+                const usedArr = options ? options : formElementOptions
+                const selectOptions = usedArr?.map((item) => ({ label: item, value: item }))
                 return <SelectUI options={selectOptions} handleChange={(value) => setMessage(value)} />
 
             default:
@@ -191,10 +193,11 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
         sendNewMessage()
     }
 
+    const btnDisabled = isDisabled || message === "";
 
     return (
         <div id="inputGroup" className="col-md-10 col-12">
-        {showConvos && <SuggestedConvos data={suggestedList} handleConvoClick={handleConvoClick} />}
+        {/* {showConvos && <SuggestedConvos data={suggestedList} handleConvoClick={handleConvoClick} />} */}
         <form onSubmit={handleSubmit} id="chatInput" className="chat__input--group">
             {renderBasedOnInputType()}
             <Button
@@ -202,7 +205,7 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
                 text={"Send"}
                 icon={<ReactSVG src={imageLinks?.svg?.send} />}
                 classType="default"
-                otherClass={`send__button ${!isDisabled ? 'active' : ''}`}
+                otherClass={`send__button ${!btnDisabled ? 'active' : ''}`}
                 disabled={message === "" || fetchingInputStatus}
             />
         </form>

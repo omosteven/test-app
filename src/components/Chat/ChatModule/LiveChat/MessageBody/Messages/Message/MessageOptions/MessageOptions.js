@@ -1,8 +1,10 @@
+import { messageTypes } from "../enums";
 import MessageBranchOption from "./MessageBranchOption/MessageBranchOption";
+const { CONVERSATION } = messageTypes;
 
-const MessageOptions = ({ options, handleMessageOptionSelect, selectedOption, messageIndex, messagesDepth}) => {
+const MessageOptions = ({ messageType, options, handleMessageOptionSelect, handleOptConversation, selectedOption, messageIndex, messagesDepth}) => {
     return (
-        <div className='d-flex w-50 flex-wrap options'>
+        <div className='d-flex col-lg-5 col-md-7 col-12 flex-wrap options'>
             {options.map((option, index) => (
                 <MessageBranchOption
                     key={index}
@@ -12,7 +14,9 @@ const MessageOptions = ({ options, handleMessageOptionSelect, selectedOption, me
                     branchOptionId={option?.branchOptionId}
                     selectedOption={selectedOption}
                     handleMessageOptionSelect={() =>
-                        handleMessageOptionSelect(option)
+                        messageType === CONVERSATION ?
+                        handleOptConversation(option)
+                        : handleMessageOptionSelect(option)
                     }
                 />
             ))}

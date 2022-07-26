@@ -2,6 +2,7 @@ export const messageTypes = Object.freeze({
   DEFAULT: "DEFAULT",
   BRANCH: "BRANCH",
   FORM_REQUEST: "FORM_REQUEST",
+  FORM_RESPONSE: "FORM_RESPONSE",
   CONVERSATION: "CONVERSATION",
   BRANCH_OPTION: "BRANCH_OPTION"
 });
@@ -10,6 +11,10 @@ export const branchOptionsTypes = Object.freeze({
     LINK: "LINK"
 })
 
+export const messageStatues = Object.freeze({
+    SENDING: "SENDING",
+    DELIVERED: "DELIVERED"
+})
 
 export const appMessageUserTypes = Object.freeze({
   WORKSPACE_AGENT: "WORKSPACE_AGENT",

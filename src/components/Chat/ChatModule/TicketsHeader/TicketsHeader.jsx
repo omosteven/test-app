@@ -2,9 +2,9 @@ import TicketStatus from "../../CustomerTicketsContainer/CustomerTickets/common/
 import { Info } from "../../../ui";
 import ChangeOption from "./ChangeOption/ChangeOption";
 
-const TicketsHeader = ({ ticket, showUndoChoice, setStatus, setErrorMssg, requestAllMessages }) => {
+const TicketsHeader = ({ ticket, showUndoChoice, setActiveConvo, setStatus, setErrorMssg, requestAllMessages }) => {
     const { agent, ticketPhase, ticketId } = ticket;
-    const { firstName, lastName } = agent;
+    const { firstName, lastName } = agent || {};
 
     return (
         <div
@@ -28,7 +28,8 @@ const TicketsHeader = ({ ticket, showUndoChoice, setStatus, setErrorMssg, reques
                         ticketId,
                         setStatus,
                         setErrorMssg,
-                        requestAllMessages
+                        requestAllMessages,
+                        setActiveConvo
                     }
                     }
                 />

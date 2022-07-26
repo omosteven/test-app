@@ -57,6 +57,16 @@
     }
 }
 
+ol.message-thread {
+    padding: 0;
+    width: 100%;
+    margin: 0;
+    li {
+        list-style: none;
+    }
+
+}
+
 // Chat Bubble Animation Application
 // .chat-thread {
 //     > *,
@@ -79,11 +89,6 @@
 //     }
 // }
 
-.message__group {
-    // animation: ;
-    @include animation--fadedown;
-
-}
 
 // ANIMATIONS START
 @keyframes appear {

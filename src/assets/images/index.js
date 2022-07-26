@@ -4,7 +4,7 @@ const imageLinks = {
         verticalGrey: "https://res.cloudinary.com/metacare/image/upload/v1658278459/Shape_dfwuev.svg",
         crossIconGrey: "https://res.cloudinary.com/metacare/image/upload/v1645569938/cross_1_f1infl.svg",
 		sendIcon: `https://res.cloudinary.com/metacare/image/upload/v1655970938/icons/Send_nputha.svg`,
-        logo: "https://res.cloudinary.com/metacare/image/upload/v1641817962/Group_1000001435_vszy5l.svg",
+        logo: "https://res.cloudinary.com/metacare/image/upload/v1658797121/Logo_Metacare_relayx.svg",
         cancel: "https://res.cloudinary.com/metacare/image/upload/v1645569938/cross_1_f1infl.svg",
         chat_icon: "https://res.cloudinary.com/metacare/image/upload/v1655681382/icons/Vector_1_qclow2.svg",
         info: "https://res.cloudinary.com/metacare/image/upload/v1655459906/icons/Combined_Shape_px9mhr.svg",

@@ -53,3 +53,7 @@ export const generateID = (length = 10) => {
   }
   return result;
 };
+
+export const getUniqueListBy = (arr, key) => {
+  return [...new Map(arr.map(item => [item[key], item])).values()]
+}
