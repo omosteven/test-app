@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Button, ErrorDialog } from "../../ui";
 import PinInput from "react-pin-input";
@@ -14,7 +14,6 @@ const OTPForm = ({ initialStepRequest }) => {
     const history = useHistory();
     const { email, sessionId } = initialStepRequest
 
-    const dispatch = useDispatch();
 
     const [errorMsg, setErrorMsg] = useState();
     const [loading, setLoading] = useState(false);

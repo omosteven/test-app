@@ -7,6 +7,7 @@ const SeoWrapper = ({ title }) => {
     const { chatSettings: { companyLogo, teamName } } = useSelector(state => state.chat)
     useEffect(() => {
         document.getElementById("favicon").href = companyLogo;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     return (
         <Helmet>

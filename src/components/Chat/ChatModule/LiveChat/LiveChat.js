@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import API from "../../../../lib/api";
 import apiRoutes from "../../../../lib/api/apiRoutes";
 import { SocketContext } from "../../../../lib/socket/context/socket";
-import { FILL_FORM_RECORD, NEW_TEST_TICKET, SEND_BRANCH_OPTION, SEND_CUSTOMER_CONVERSATION_REPLY, SEND_CUSTOMER_MESSAGE } from "../../../../lib/socket/events";
+import { FILL_FORM_RECORD, SEND_BRANCH_OPTION, SEND_CUSTOMER_CONVERSATION_REPLY, SEND_CUSTOMER_MESSAGE } from "../../../../lib/socket/events";
 import { dataQueryStatus } from "../../../../utils/formatHandlers";
 import { generateID, getErrorMessage } from "../../../../utils/helper";
 import LiveChatInput from "./LiveChatInput/LiveChatInput";
@@ -12,7 +12,7 @@ import MessageBody from "./MessageBody/MessageBody";
 import { appMessageUserTypes, branchOptionsTypes, formInputTypes, messageOptionActions, messageStatues, messageTypes } from "./MessageBody/Messages/Message/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
 import { ISSUE_DISCOVERY } from "../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
-import { setActiveTicket, deleteTicketsMessages, saveTicketsMessages, clearTicketMessages, setTicketMessages, updateTicketMessageStatus } from "../../../../store/tickets/actions";
+import { setActiveTicket, saveTicketsMessages, clearTicketMessages, setTicketMessages, updateTicketMessageStatus } from "../../../../store/tickets/actions";
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
@@ -293,6 +293,7 @@ const LiveChat = ({ getCustomerTickets }) => {
 
     const fetchConvoSuggestions = async (message) => {
         try {
+            console.log("Got called here to")
             const { messageContent, messageContentId } = message;
 
             const newMessageList = await (messages).map((x) => {
@@ -302,6 +303,8 @@ const LiveChat = ({ getCustomerTickets }) => {
 
 
             dispatch(setTicketMessages(newMessageList))
+            console.log("Blurxxxr")
+            console.log(message)
 
 
             const url = apiRoutes?.investigateMesage;
@@ -362,13 +365,14 @@ const LiveChat = ({ getCustomerTickets }) => {
             const lastItemIndex = allMessagesCopy.length - 1;
             const lastMessage = messages[lastItemIndex];
             let lastCustomerMssg = [...allMessagesCopy].reverse()?.find(message => message.senderType === THIRD_USER);
-
             if (lastCustomerMssg?.messageType === DEFAULT && lastMessage.messageType !== CONVERSATION && ticketPhase === ISSUE_DISCOVERY && lastCustomerMssg?.suggestionRetryAttempt === 0) {
+                console.log('i can')
                 fetchConvoSuggestions(lastCustomerMssg);
             }
 
         }
-    }, [messages, activeConvo])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [messages, activeConvo, ticketPhase])
 
     const handleReceive = (message) => {
         console.log("recieved")
@@ -384,7 +388,17 @@ const LiveChat = ({ getCustomerTickets }) => {
 
     useEffect(() => {
         requestAllMessages();
+
         socket.emit("subscribe-to-ticket", { ticketId });
+        // socket.on('connection', function (socket) {
+            console.log('just connected')
+            console.log(socket)
+            // const ip = socket.gethostbyname('www.google.com')
+            // console.log(ip)
+            // console.log(socket.ge)
+            // var address = socket?.handshake?.address;
+            // console.log('New connection from ' + address?.address + ':' + address?.port);
+        // });
         socket.on("receive-message", handleReceive);
         socket.on("connect_error", handleSocketError);
         return () => {
@@ -393,12 +407,14 @@ const LiveChat = ({ getCustomerTickets }) => {
             triggerAgentTyping(false);
             setActiveConvo(false)
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         figureChoiceAction();
         figureInputAction()
         processIssueDiscovery();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages])
 
 

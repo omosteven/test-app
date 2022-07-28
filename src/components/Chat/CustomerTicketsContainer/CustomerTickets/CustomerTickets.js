@@ -1,5 +1,5 @@
 import React from "react";
-import SmothScrollContent, { SmothScrollContentHorizontal } from "../../../ui/SmothScrollContent/SmothScrollContent";
+import { SmothScrollContentHorizontal } from "../../../ui/SmothScrollContent/SmothScrollContent";
 import Ticket from "./Ticket/Ticket";
 
 const CustomerTickets = ({ tickets, selectedTicket, handleTicketSelect, closeTicket, showChatMenu }) => {

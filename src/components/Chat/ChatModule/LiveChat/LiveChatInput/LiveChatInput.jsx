@@ -2,27 +2,15 @@ import { useState, useEffect, useContext } from "react";
 import { ReactSVG } from "react-svg";
 import imageLinks from "../../../../../assets/images";
 import { SocketContext } from "../../../../../lib/socket/context/socket";
-import { IS_NOT_TYPING, IS_TYPING, SEND_CUSTOMER_CONVERSATION_REPLY } from "../../../../../lib/socket/events";
-import { Button, Input, Textarea } from "../../../../ui";
-// import DatePicker from "../../../../ui/InputTypes/DatePicker/DatePicker";
+import { IS_NOT_TYPING, IS_TYPING } from "../../../../../lib/socket/events";
+import { Button, Input } from "../../../../ui";
 import SelectUI from "../../../../ui/InputTypes/SelectUI/SelectUI";
 import { formInputTypes } from "../MessageBody/Messages/Message/enums";
 import { useIsTyping } from 'use-is-typing';
-// import apiRoutes from "../../../../../lib/api/apiRoutes";
-// import API from "../../../../../lib/api";
-// import SuggestedConvos from "../SuggestedConvos/SuggestedConvos";
-// import { useSelector } from "react-redux";
-// import { ISSUE_DISCOVERY } from "../../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import PoweredBy from "../../../../common/PoweredBy/PoweredBy";
 
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes
-const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchingInputStatus, allowUserInput, inputType, currentFormElement }) => {
-    // const { activeTicket } = useSelector(state => state.tickets)
-
-    const [fetchingConvos, setFetchingConvos] = useState(false)
-    // const [showConvos, toggleConvosView] = useState(false);
-    // const [suggestedList, setSuggestedList] = useState([]);
-
+const LiveChatInput = ({ handleNewMessage, ticketId, fetchingInputStatus, allowUserInput, inputType, currentFormElement }) => {
     const [isTyping, inputRef] = useIsTyping();
 
     const [message, setMessage] = useState("");
@@ -36,74 +24,7 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
         setMessage("")
     }
 
-    // const handleConvoClick = async (conversationId) => {
-    //     triggerAgentTyping(true)
-    //     toggleConvosView(false)
-    //     setFetchingConvos(false)
-
-    //     await setTimeout(function () {
-    //         socket.timeout(1000).emit(SEND_CUSTOMER_CONVERSATION_REPLY, { ticketId, conversationId }, (err) => {
-    //             if (err) {
-    //                 console.log('An erro occured')
-    //                 toggleConvosView(false)
-    //                 setFetchingConvos(false)
-    //                 triggerAgentTyping(false)
-    //                 setMessage("")
-    //             } else {
-    //                 toggleConvosView(false)
-    //                 setFetchingConvos(false)
-    //                 triggerAgentTyping(false)
-    //                 setMessage("")
-    //             }
-
-    //         });
-    //     }, 5000);
-
-    // }
-
-    // const fetchConvoSuggestions = async () => {
-    //     try {
-    //         const { ticketPhase } = activeTicket;
-
-    //         if (ticketPhase === ISSUE_DISCOVERY) {
-    //             toggleConvosView(false)
-    //             setFetchingConvos(true)
-    //             // setStatus(LOADING);
-    //             // setErrorMssg();
-    //             if (message !== "" && message.length > 4) {
-
-    //                 const url = apiRoutes?.investigateMesage;
-    //                 const res = await API.get(url, {
-    //                     params: {
-    //                         search: message
-    //                     }
-    //                 });
-    //                 if (res.status === 200) {
-    //                     const {data} = res.data;
-    //                     setFetchingConvos(false)
-
-    //                     if (data.length > 0){
-    //                         setSuggestedList(data)
-    //                         toggleConvosView(true)
-    //                     }else {
-    //                         toggleConvosView(false)
-    //                         setSuggestedList(data)
-    //                     }
-                        
-    //                 }
-    //             }
-    //         } else {
-    //             toggleConvosView(false)
-
-    //         }
-
-
-    //     } catch (err) {
-    //         toggleConvosView(false)
-    //         setFetchingConvos(false)
-    //     }
-    // }
-
+   
     const handleTyping = (e) => {
         let { value } = e.target;
         if (inputType === NUMERIC) {
@@ -115,16 +36,15 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
 
     useEffect(() => {
         const decidedEvent = isTyping ? IS_TYPING : IS_NOT_TYPING
-        // if (isTyping == false) {
-        //     fetchConvoSuggestions()
-        // }
         socket.emit(decidedEvent, { ticketId })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isTyping]);
 
     useEffect(() => {
         return () => {
             socket.emit(IS_NOT_TYPING, { ticketId })
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const renderBasedOnInputType = () => {
@@ -144,7 +64,6 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
                         label="Chat"
                         hideLabel={true}
                         ref={inputRef}
-                        isLoading={fetchingConvos}
                         disabled={isDisabled}
                     />
                 )
@@ -182,7 +101,6 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
                     label="Chat"
                     ref={inputRef}
                     hideLabel={true}
-                    isLoading={fetchingConvos}
                     disabled={isDisabled}
                 />
         }

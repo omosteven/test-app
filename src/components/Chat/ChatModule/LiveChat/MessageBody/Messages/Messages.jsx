@@ -24,14 +24,14 @@ const Messages = (props) => {
     }
 
     useEffect(() => {
-        console.log('re rendered')
         socket.on(IS_TYPING, handleTypingTrigger)
         socket.on(IS_NOT_TYPING, handleTypingTrigger)
-        //e
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
         sayAgentIsTyping(forcedAgentTyping)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [forcedAgentTyping, sayAgentIsTyping])
 
     return (
