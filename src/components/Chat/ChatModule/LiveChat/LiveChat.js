@@ -303,9 +303,6 @@ const LiveChat = ({ getCustomerTickets }) => {
 
 
             dispatch(setTicketMessages(newMessageList))
-            console.log("Blurxxxr")
-            console.log(message)
-
 
             const url = apiRoutes?.investigateMesage;
             const res = await API.get(url, {
@@ -366,7 +363,6 @@ const LiveChat = ({ getCustomerTickets }) => {
             const lastMessage = messages[lastItemIndex];
             let lastCustomerMssg = [...allMessagesCopy].reverse()?.find(message => message.senderType === THIRD_USER);
             if (lastCustomerMssg?.messageType === DEFAULT && lastMessage.messageType !== CONVERSATION && ticketPhase === ISSUE_DISCOVERY && lastCustomerMssg?.suggestionRetryAttempt === 0) {
-                console.log('i can')
                 fetchConvoSuggestions(lastCustomerMssg);
             }
 
@@ -375,8 +371,6 @@ const LiveChat = ({ getCustomerTickets }) => {
     }, [messages, activeConvo, ticketPhase])
 
     const handleReceive = (message) => {
-        console.log("recieved")
-        console.log(message)
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
             dispatch(saveTicketsMessages({
@@ -390,15 +384,6 @@ const LiveChat = ({ getCustomerTickets }) => {
         requestAllMessages();
 
         socket.emit("subscribe-to-ticket", { ticketId });
-        // socket.on('connection', function (socket) {
-            console.log('just connected')
-            console.log(socket)
-            // const ip = socket.gethostbyname('www.google.com')
-            // console.log(ip)
-            // console.log(socket.ge)
-            // var address = socket?.handshake?.address;
-            // console.log('New connection from ' + address?.address + ':' + address?.port);
-        // });
         socket.on("receive-message", handleReceive);
         socket.on("connect_error", handleSocketError);
         return () => {

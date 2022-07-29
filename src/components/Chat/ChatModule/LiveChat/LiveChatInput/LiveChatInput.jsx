@@ -8,6 +8,7 @@ import SelectUI from "../../../../ui/InputTypes/SelectUI/SelectUI";
 import { formInputTypes } from "../MessageBody/Messages/Message/enums";
 import { useIsTyping } from 'use-is-typing';
 import PoweredBy from "../../../../common/PoweredBy/PoweredBy";
+import CustomDatePicker from "../../../../ui/InputTypes/DatePicker/DatePicker";
 
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes
 const LiveChatInput = ({ handleNewMessage, ticketId, fetchingInputStatus, allowUserInput, inputType, currentFormElement }) => {
@@ -23,6 +24,10 @@ const LiveChatInput = ({ handleNewMessage, ticketId, fetchingInputStatus, allowU
         handleNewMessage(message);
         setMessage("")
     }
+
+    // const handleInputFocus = () => {
+    //     document.getElementById('inputGroup').scrollIntoView({ behavior: 'smooth', block: 'end' });
+    // }
 
    
     const handleTyping = (e) => {
@@ -52,7 +57,6 @@ const LiveChatInput = ({ handleNewMessage, ticketId, fetchingInputStatus, allowU
         switch (inputType) {
             case TEXT:
             case NUMERIC:
-            case DATE:
             case LONG_TEXT:
                 return (
                     <Input
@@ -62,6 +66,7 @@ const LiveChatInput = ({ handleNewMessage, ticketId, fetchingInputStatus, allowU
                         onChange={handleTyping}
                         grpClass="w-100"
                         label="Chat"
+                        // onFocus={handleInputFocus}
                         hideLabel={true}
                         ref={inputRef}
                         disabled={isDisabled}
@@ -81,10 +86,10 @@ const LiveChatInput = ({ handleNewMessage, ticketId, fetchingInputStatus, allowU
             //         disabled={isDisabled}
             //     />
 
-            // case DATE:
-            //     return (
-            //         <DatePicker onChange={(date, dateString) => setMessage(dateString)} />
-            //     )
+            case DATE:
+                return (
+                    <CustomDatePicker onChange={(date) => setMessage(date)} />
+                )
 
             case MULTISELECT:
                 const usedArr = options ? options : formElementOptions
