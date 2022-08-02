@@ -1,0 +1,28 @@
+.upload__preview {
+    position: relative;
+
+    &--icon {
+        position: absolute;
+        right: -0.375rem;
+        cursor: pointer;
+        z-index: 2;
+    }
+
+    &--media__container {
+        position: relative;
+
+        .play {
+            position: absolute;
+            z-index: 2;
+            top: 1.138rem;
+            left: 1.188rem;
+        }
+    }
+    
+    &--media {
+        width: 3.75rem;
+        height: 3.125rem;
+        margin-top: 0.625rem;
+        object-fit: contain;
+    }
+}

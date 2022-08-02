@@ -2,39 +2,71 @@ import { useState, useEffect, useContext } from "react";
 import { ReactSVG } from "react-svg";
 import imageLinks from "../../../../../assets/images";
 import { SocketContext } from "../../../../../lib/socket/context/socket";
-import { IS_NOT_TYPING, IS_TYPING, SEND_CUSTOMER_CONVERSATION_REPLY } from "../../../../../lib/socket/events";
+import {
+    IS_NOT_TYPING,
+    IS_TYPING,
+    SEND_CUSTOMER_CONVERSATION_REPLY,
+} from "../../../../../lib/socket/events";
 import { Button, Input, Textarea } from "../../../../ui";
 // import DatePicker from "../../../../ui/InputTypes/DatePicker/DatePicker";
 import SelectUI from "../../../../ui/InputTypes/SelectUI/SelectUI";
 import { formInputTypes } from "../MessageBody/Messages/Message/enums";
-import { useIsTyping } from 'use-is-typing';
+import { useIsTyping } from "use-is-typing";
 // import apiRoutes from "../../../../../lib/api/apiRoutes";
 // import API from "../../../../../lib/api";
 // import SuggestedConvos from "../SuggestedConvos/SuggestedConvos";
 // import { useSelector } from "react-redux";
 // import { ISSUE_DISCOVERY } from "../../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import PoweredBy from "../../../../common/PoweredBy/PoweredBy";
+import UploadIcons from "./UploadIcons/UploadIcons";
 
-const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes
-const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchingInputStatus, allowUserInput, inputType, currentFormElement }) => {
+const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
+const LiveChatInput = ({
+    handleNewMessage,
+    ticketId,
+    triggerAgentTyping,
+    fetchingInputStatus,
+    allowUserInput,
+    inputType,
+    currentFormElement,
+}) => {
     // const { activeTicket } = useSelector(state => state.tickets)
 
-    const [fetchingConvos, setFetchingConvos] = useState(false)
+    const [fetchingConvos, setFetchingConvos] = useState(false);
     // const [showConvos, toggleConvosView] = useState(false);
     // const [suggestedList, setSuggestedList] = useState([]);
 
     const [isTyping, inputRef] = useIsTyping();
 
-    const [message, setMessage] = useState("");
+    const [request, updateRequest] = useState({
+        message: "",
+        fileAttachment: {
+            fileAttachmentUrl: "",
+            fileAttachmentType: "",
+        },
+    });
+    const [upload, updateUpload] = useState({
+        preview: "",
+        file: {},
+        isLoading: false,
+    });
 
     const isDisabled = fetchingInputStatus || !allowUserInput;
 
     const socket = useContext(SocketContext);
 
     const sendNewMessage = () => {
-        handleNewMessage(message);
-        setMessage("")
-    }
+        handleNewMessage(request);
+        updateRequest({
+            message: "",
+            fileAttachment: { fileAttachmentUrl: "", fileAttachmentType: "" },
+        });
+        updateUpload({
+            preview: "",
+            file: {},
+            isLoading: false,
+        });
+    };
 
     // const handleConvoClick = async (conversationId) => {
     //     triggerAgentTyping(true)
@@ -89,14 +121,13 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
     //                         toggleConvosView(false)
     //                         setSuggestedList(data)
     //                     }
-                        
+
     //                 }
     //             }
     //         } else {
     //             toggleConvosView(false)
 
     //         }
-
 
     //     } catch (err) {
     //         toggleConvosView(false)
@@ -110,25 +141,26 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
             console.log(value.replace(/\D/g, ""));
             value = value.replace(/\D/g, "");
         }
-        setMessage(value)
-    }
+        updateRequest({ ...request, message: value });
+    };
 
     useEffect(() => {
-        const decidedEvent = isTyping ? IS_TYPING : IS_NOT_TYPING
+        const decidedEvent = isTyping ? IS_TYPING : IS_NOT_TYPING;
         // if (isTyping == false) {
         //     fetchConvoSuggestions()
         // }
-        socket.emit(decidedEvent, { ticketId })
+        socket.emit(decidedEvent, { ticketId });
     }, [isTyping]);
 
     useEffect(() => {
         return () => {
-            socket.emit(IS_NOT_TYPING, { ticketId })
+            socket.emit(IS_NOT_TYPING, { ticketId });
         };
     }, []);
 
     const renderBasedOnInputType = () => {
-        const { formElementPlaceholder, formElementOptions, options } = currentFormElement || {}
+        const { formElementPlaceholder, formElementOptions, options } =
+            currentFormElement || {};
         switch (inputType) {
             case TEXT:
             case NUMERIC:
@@ -136,18 +168,22 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
             case LONG_TEXT:
                 return (
                     <Input
-                        placeholder={formElementPlaceholder ? formElementPlaceholder : "Type message here"}
-                        inputClass="w-100 border-0"
-                        value={message}
+                        placeholder={
+                            formElementPlaceholder
+                                ? formElementPlaceholder
+                                : "Type message here"
+                        }
+                        inputClass='w-100 border-0'
+                        value={request?.message}
                         onChange={handleTyping}
-                        grpClass="w-100"
-                        label="Chat"
+                        grpClass='w-100'
+                        label='Chat'
                         hideLabel={true}
                         ref={inputRef}
                         isLoading={fetchingConvos}
                         disabled={isDisabled}
                     />
-                )
+                );
             // case :
             //     <Textarea
             //         placeholder={formElementPlaceholder ? formElementPlaceholder : "Type message here"}
@@ -168,49 +204,72 @@ const LiveChatInput = ({ handleNewMessage, ticketId, triggerAgentTyping, fetchin
             //     )
 
             case MULTISELECT:
-                const usedArr = options ? options : formElementOptions
-                const selectOptions = usedArr?.map((item) => ({ label: item, value: item }))
-                return <SelectUI options={selectOptions} handleChange={(value) => setMessage(value)} />
+                const usedArr = options ? options : formElementOptions;
+                const selectOptions = usedArr?.map((item) => ({
+                    label: item,
+                    value: item,
+                }));
+                return (
+                    <SelectUI
+                        options={selectOptions}
+                        handleChange={(value) =>
+                            updateRequest({ ...request, message: value })
+                        }
+                    />
+                );
 
             default:
-                return <Input
-                    placeholder="Type message here"
-                    inputClass="w-100 border-0"
-                    value={message}
-                    onChange={handleTyping}
-                    grpClass="w-100"
-                    label="Chat"
-                    ref={inputRef}
-                    hideLabel={true}
-                    isLoading={fetchingConvos}
-                    disabled={isDisabled}
-                />
+                return (
+                    <Input
+                        placeholder='Type message here'
+                        inputClass='w-100 border-0'
+                        value={request?.message}
+                        onChange={handleTyping}
+                        grpClass='w-100'
+                        label='Chat'
+                        ref={inputRef}
+                        hideLabel={true}
+                        isLoading={fetchingConvos}
+                        disabled={isDisabled}
+                    />
+                );
         }
-    }
+    };
 
-    const handleSubmit = e => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        sendNewMessage()
-    }
+        sendNewMessage();
+    };
 
-    const btnDisabled = isDisabled || message === "";
+    const btnDisabled =
+        upload?.preview?.length > 0
+            ? upload?.isLoading
+            : isDisabled || request?.message === "";
 
     return (
-        <div id="inputGroup" className="col-md-10 col-12">
-        {/* {showConvos && <SuggestedConvos data={suggestedList} handleConvoClick={handleConvoClick} />} */}
-        <form onSubmit={handleSubmit} id="chatInput" className="chat__input--group">
-            {renderBasedOnInputType()}
-            <Button
-                type="submit"
-                text={"Send"}
-                icon={<ReactSVG src={imageLinks?.svg?.send} />}
-                classType="default"
-                otherClass={`send__button ${!btnDisabled ? 'active' : ''}`}
-                disabled={message === "" || fetchingInputStatus}
-            />
-        </form>
-        <PoweredBy />
-    </div>
+        <div id='inputGroup' className='col-md-10 col-12'>
+            {/* {showConvos && <SuggestedConvos data={suggestedList} handleConvoClick={handleConvoClick} />} */}
+            <form
+                onSubmit={handleSubmit}
+                id='chatInput'
+                className='chat__input--group'>
+                <UploadIcons
+                    updateRequest={updateRequest}
+                    upload={upload}
+                    updateUpload={updateUpload}
+                />
+                {renderBasedOnInputType()}
+                <Button
+                    type='submit'
+                    text={"Send"}
+                    icon={<ReactSVG src={imageLinks?.svg?.send} />}
+                    classType='default'
+                    otherClass={`send__button ${!btnDisabled ? "active" : ""}`}
+                    disabled={btnDisabled || fetchingInputStatus}
+                />
+            </form>
+            <PoweredBy />
+        </div>
     );
 };
 

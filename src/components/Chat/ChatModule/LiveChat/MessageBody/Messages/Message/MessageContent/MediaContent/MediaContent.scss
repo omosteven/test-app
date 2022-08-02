@@ -1,0 +1,9 @@
+.media {
+    width: 20rem;
+    height: 13.75rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+
+    &.img {
+        object-fit: contain;
+    }
+}
