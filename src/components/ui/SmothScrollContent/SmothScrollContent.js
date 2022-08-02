@@ -8,9 +8,7 @@ export const SmothScrollContentHorizontal = ({ children, activeElement, classNam
 
     // const Tag = ({ label, children, ...props }) => React.createElement((label ? label : "div"), props, children)
 
-    const loopDuration = 2000; //loop duration e.g. 7s to right, 7s to left
-    // const totalLoops=2; //number
-
+    const loopDuration = 2000; 
     const _autoScroll = (to) => {
         try {
             if (to) {
@@ -25,7 +23,6 @@ export const SmothScrollContentHorizontal = ({ children, activeElement, classNam
     const runOnClient = (func) => {
         if (typeof window !== "undefined") {
             if (window.document.readyState === "loading") {
-                console.log("window is overloding...")
                 window.addEventListener("load", func);
             } else {
                 func();
@@ -35,7 +32,6 @@ export const SmothScrollContentHorizontal = ({ children, activeElement, classNam
 
     const smoothScrollEffect = () => {
         try {
-            console.log('Came to scroll');
             $(`${selector}`).mCustomScrollbar({
                 theme: "minimal-dark",
                 callbacks: {//
@@ -73,6 +69,7 @@ export const SmothScrollContentHorizontal = ({ children, activeElement, classNam
         if (activeElement) {
             runOnClient(() => _autoScroll(`#${activeElement}`));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeElement])
 
     return (
@@ -84,60 +81,3 @@ export const SmothScrollContentHorizontal = ({ children, activeElement, classNam
         </div>
     )
 }
-
-
-const SmothScrollContentVertical = ({ children, className, tag, ID }) => {
-
-    const _autoScroll = () => {
-        try {
-            console.log('please auto scroll here')
-            // $(`#${ID}`).mCustomScrollbar("scrollTo", 'bottom', {     scrollEasing:"easeOut"        });
-            $('#dummy')[0].scrollIntoView({
-                behavior: "smooth", // or "auto" or "instant"
-                // block: "en" // or "end"
-            });
-            
-            // console.log($('#dummy'));
-        } catch (err) {
-            console.log('error scrolling')
-        }
-    }
-
-
-    const Tag = ({ label, children, ...props }) => React.createElement((label ? label : "div"), props, children)
-
-
-    const smoothScrollEffect = () => {
-        $(`#${ID}`).mCustomScrollbar({
-            theme: "minimal-dark",
-            callbacks: {//
-                onInit: function () {
-                    setTimeout(function () {
-                        _autoScroll()
-                    }, 1000);
-                }
-            }
-        });
-    }
-
-    
-    useEffect(() => (smoothScrollEffect()))
-
-    // useEffect(() => {
-    //     _autoScroll()
-    // },[elements])
-
-
-    return (
-        <Tag
-            label={tag}
-            className={className}
-            id={`${ID}`}>
-            {children}
-        </Tag>
-    )
-}
-
-export default React.memo(SmothScrollContentVertical, (prevProps, nextProps) => {
-    return prevProps?.elements?.length === nextProps?.elements?.length;
-});

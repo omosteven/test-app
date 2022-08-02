@@ -95,6 +95,7 @@
     z-index: 1;
     @include media("<=small-screen"){
         top: 56px;
+        position: fixed;
     }
     // margin-left: 2.563rem;
     // margin-top: 4rem;
@@ -318,6 +319,7 @@
 #inputGroup {
     position: fixed;
     bottom: 0;
+    -webkit-transform: translateZ(0);
 }
 
 .error__view {

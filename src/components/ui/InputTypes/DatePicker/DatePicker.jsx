@@ -1,11 +1,25 @@
-import React from 'react';
-import { DatePicker } from 'antd';
+import moment from 'moment';
+import React, { useState } from 'react';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-const CustomDatePicker = ({onChange}) => {
+const CustomDatePicker = ({ onChange }) => {
+    const [selectedDate, setSelectedDate] = useState()
     return (
-        <>
-            <DatePicker onChange={onChange}/>
-        </>
+        <div className={`form-group`}>
+            <DatePicker
+                onChange={(date) => {
+                    setSelectedDate(date)
+                    let dateString = moment(date).format('L');
+                    onChange(dateString)
+                }}
+                className="form-control"
+                placeholderText="Choose a date"
+                popperPlacement="top-start"
+                portalId="root"
+                selected={selectedDate}
+            />
+        </div>
     );
 };
 

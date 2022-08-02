@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef,  useLayoutEffect, useState } from 'react'
 
 export const useRenderCounter = (thing) => {
   const renderCount = React.useRef(1);
@@ -29,3 +29,26 @@ export const useInterval = (callback, delay) => {
     return null
   }, [delay])
 }
+
+
+export const useWindowSize = () => {
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+
+  const handleSize = () => {
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight
+    });
+  };
+
+  useLayoutEffect(() => {
+    handleSize();
+
+    window.addEventListener("resize", handleSize);
+
+    return () => window.removeEventListener("resize", handleSize);
+  }, []);
+
+  return windowSize;
+};
+

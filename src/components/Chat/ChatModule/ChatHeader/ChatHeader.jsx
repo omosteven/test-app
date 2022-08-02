@@ -24,7 +24,7 @@ const ChatHeader = ({ status,
                     onClick={() => toggleChatMenu((prevState) => !prevState)} 
                     />
                 <div className="logo">
-                    <img src={companyLogo} layout='fill' />
+                    <img src={companyLogo} alt="Metacare" layout='fill' />
                 </div>
 
                 <CustomerTicketsContainer

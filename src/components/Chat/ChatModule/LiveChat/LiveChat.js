@@ -5,7 +5,6 @@ import apiRoutes from "../../../../lib/api/apiRoutes";
 import { SocketContext } from "../../../../lib/socket/context/socket";
 import {
     FILL_FORM_RECORD,
-    NEW_TEST_TICKET,
     SEND_BRANCH_OPTION,
     SEND_CUSTOMER_CONVERSATION_REPLY,
     SEND_CUSTOMER_MESSAGE,
@@ -27,7 +26,6 @@ import TicketsHeader from "../TicketsHeader/TicketsHeader";
 import { ISSUE_DISCOVERY } from "../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import {
     setActiveTicket,
-    deleteTicketsMessages,
     saveTicketsMessages,
     clearTicketMessages,
     setTicketMessages,
@@ -59,7 +57,7 @@ const LiveChat = ({ getCustomerTickets }) => {
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
-    console.log({ messages });
+
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
 
@@ -379,6 +377,7 @@ const LiveChat = ({ getCustomerTickets }) => {
 
     const fetchConvoSuggestions = async (message) => {
         try {
+            console.log("Got called here to");
             const { messageContent, messageContentId } = message;
 
             const newMessageList = await messages.map((x) => {
@@ -459,7 +458,6 @@ const LiveChat = ({ getCustomerTickets }) => {
             let lastCustomerMssg = [...allMessagesCopy]
                 .reverse()
                 ?.find((message) => message.senderType === THIRD_USER);
-
             if (
                 lastCustomerMssg?.messageType === DEFAULT &&
                 lastMessage.messageType !== CONVERSATION &&
@@ -469,11 +467,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                 fetchConvoSuggestions(lastCustomerMssg);
             }
         }
-    }, [messages, activeConvo]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [messages, activeConvo, ticketPhase]);
 
     const handleReceive = (message) => {
-        console.log("recieved");
-        console.log(message);
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
             dispatch(
@@ -487,6 +484,7 @@ const LiveChat = ({ getCustomerTickets }) => {
 
     useEffect(() => {
         requestAllMessages();
+
         socket.emit("subscribe-to-ticket", { ticketId });
         socket.on("receive-message", handleReceive);
         socket.on("connect_error", handleSocketError);
@@ -496,12 +494,14 @@ const LiveChat = ({ getCustomerTickets }) => {
             triggerAgentTyping(false);
             setActiveConvo(false);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         figureChoiceAction();
         figureInputAction();
         processIssueDiscovery();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages]);
 
     return (

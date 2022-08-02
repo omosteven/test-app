@@ -1,5 +1,27 @@
 @import "../_include-media-lib/include-media";
 
+
+body.keyboard{
+  // background: red;
+  // height: 50%;
+  // height: 50vh;
+  // overflow: hidden;
+  #inputGroup {
+    position: sticky;
+    // bottom: 0;
+  }
+  .chat__container {
+    top: 0;
+    position: absolute;
+    height: 65vh;
+  }
+  // height: 50vh;
+}
+
+
+.chat__container {
+  overflow: scroll !important;
+}
 #header {
   background-color: $light__theme_color;
   position: sticky;
@@ -12,6 +34,7 @@
 
   @include media("<=small-screen") {
     min-height: 56px;
+    position: fixed;
   }
 
   #ticketsHeader {
@@ -50,20 +73,25 @@
       span {
         font-weight: 400;
         font-size: 14px;
-        line-height: 22px;
+        // line-height: 22px;
         color: $muted__theme_color_2;
       }
 
       @include media("<=small-screen") {
         display: flex;
-        align-items: self-end;
+        align-items: center;
         cursor: pointer;
         gap: 0.25rem;
+        height: 12px;
+        span {
+          margin-top: 1px;
+        }
       }
     }
 
     @include media("<=small-screen") {
       padding: 0 16px;
+      height: 56px;
       .logo {
         margin: auto;
       }
@@ -141,14 +169,16 @@
     @include media("<=small-screen") {
       padding-left: 16px;
       padding-right: 16px;
-      height: 80%;
+      height: 100vh;
+      padding-top: 40%;
       padding-bottom: 5%;
 
       // padding-bottom: 4rem;
       // height: 50%;
     }
     #dummy {
-      height: 4rem;
+      margin-top: 5rem;
+      height: 100px;
       display: block;
       width: 100%;
     }

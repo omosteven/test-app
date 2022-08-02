@@ -28,6 +28,7 @@ const TicketStatus = ({ticketPhase, ticketId }) => {
         return () => {
             socket.off(TICKET_PHASE_CHANGE);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
