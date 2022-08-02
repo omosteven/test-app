@@ -37,7 +37,9 @@ const TicketsHeader = ({
                         setActiveConvo,
                     }}
                 />
-                <ChatSettingsToggler />
+                <div className='show-only-on-desktop'>
+                    <ChatSettingsToggler />
+                </div>
             </div>
         </div>
     );

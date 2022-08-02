@@ -6,11 +6,11 @@ import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 import imageLinks from '../../../../../assets/images';
 import { Info } from '../../../../ui';
 
-const BraillePatternDots = () => {
-    return (<ReactSVG src={imageLinks?.svg?.verticalGrey} />)
+const BraillePatternDots = ({ isMobile }) => {
+    return (<ReactSVG src={isMobile ? imageLinks?.svg?.verticalGrey : imageLinks?.svg?.horizontalEllipsis} />)
 }
 
-const ChatSettingsToggler = () => {
+const ChatSettingsToggler = ({ isMobile }) => {
 	const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
     const { chatSettings: { workspaceSlug } } = useSelector(state => state.chat)
     const history = useHistory()
@@ -30,8 +30,8 @@ const ChatSettingsToggler = () => {
                 data-toggle="dropdown"
                 aria-expanded={isDropdownOpen}
             >
-                <Info otherClass={'chat__header--icon'}>
-                    <BraillePatternDots onClick={toggleDropdown} />
+                <Info otherClass={'ticket-header__icon'}>
+                    <BraillePatternDots onClick={toggleDropdown} isMobile={isMobile}/>
                 </Info>
             </DropdownToggle>
 

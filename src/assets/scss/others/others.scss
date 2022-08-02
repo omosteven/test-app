@@ -27,7 +27,6 @@
         margin-top: 1rem;
         margin-bottom: 0;
         white-space: pre-wrap;
-
     }
 }
 
@@ -70,7 +69,7 @@
         height: 100%;
         overflow: hidden;
         flex-wrap: nowrap;
-        width: 60% !important;
+        width: 70% !important;
         overflow: hidden;
         // background: $light__theme_color;
     }
@@ -93,14 +92,13 @@
     width: 100%;
     background-color: $light__theme_color;
     z-index: 1;
-    @include media("<=small-screen"){
+    @include media("<=small-screen") {
         top: 56px;
         position: fixed;
     }
     // margin-left: 2.563rem;
     // margin-top: 4rem;
     // height: 100%;
-   
 }
 #chatInput {
     position: sticky;
@@ -108,7 +106,7 @@
     // width: 100%;
     // margin-left: 2.1%;
     background-color: $light__theme_color;
-    @include media("<=small-screen"){
+    @include media("<=small-screen") {
         padding: 0 10px;
         margin-right: 0;
     }
@@ -129,13 +127,13 @@
     -webkit-flex-direction: row;
     flex-direction: row;
 }
-.customer__tickets--container .mCSB_container{
-    display: -webkit-flex; 
+.customer__tickets--container .mCSB_container {
+    display: -webkit-flex;
     display: flex;
     flex-wrap: nowrap;
 }
-  
-.customer__tickets--container .customer__ticket{
+
+.customer__tickets--container .customer__ticket {
     -webkit-flex-shrink: 0;
     flex-shrink: 0;
 }
@@ -146,16 +144,16 @@
     padding-bottom: 12px;
     padding-left: 3rem;
     padding-right: 6rem;
-    border-left: 1px solid #ECEBF5;
+    border-left: 1px solid #ecebf5;
     width: 300px;
     cursor: pointer;
     // height: 56px;
     position: relative;
- 
-    &:last-child{
-        border-right: 1px solid #ECEBF5;
+
+    &:last-child {
+        border-right: 1px solid #ecebf5;
     }
-    &::before{
+    &::before {
         content: "";
         position: absolute;
         display: block;
@@ -169,7 +167,7 @@
     &.active {
         // color: $primary__theme_color !important;
         // font-family: $primary_font_family--medium;
-        &::before{
+        &::before {
             width: 100%;
         }
         .close__ticket {
@@ -186,13 +184,13 @@
             // display: block !important;
         }
     }
-   
+
     // &:hover {
     //     .close__ticket {
     //         display: block !important;
     //     }
     // }
-   
+
     .agent__name {
         font-size: 16px;
         // font-family: $primary_font_family--lighter;
@@ -212,7 +210,7 @@
 }
 
 .since__when {
-    color: #696D8C;
+    color: #696d8c;
     font-size: 14px;
 }
 
@@ -229,12 +227,12 @@
     font-family: $primary_font_family--lighter;
     align-items: center;
     // padding: 0 8px;
-    @include media("<=small-screen"){
+    @include media("<=small-screen") {
         height: 16px;
-        color: #696D8C;
+        color: #696d8c;
         font-weight: bold;
     }
-    span{
+    span {
         line-height: 10px;
         letter-spacing: 0.15px;
     }
@@ -242,32 +240,32 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: #25BB87;
+        background: #25bb87;
         margin-right: 10px;
         margin-bottom: -2px;
-        @include media("<=small-screen"){
+        @include media("<=small-screen") {
             margin-right: 5px;
         }
     }
 }
 
-
 .live__chat--staus {
     position: fixed;
-    top: 25%;
+    top: 26%;
     left: 50%;
     // top: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
     z-index: 1;
     font-size: 14px;
-    @include media("<=small-screen"){
+    @include media("<=small-screen") {
         top: 23%;
+        z-index: 0;
     }
 }
 .react-select__control {
     border: 0 !important;
-    &--is-focused{
+    &--is-focused {
         border: 0 !important;
     }
 }
@@ -277,7 +275,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #ECEBF5;
+    color: #ecebf5;
 }
 
 .connected {
@@ -291,21 +289,21 @@
 
 .info__box {
     height: 30px;
-    border: 1px solid #ECEBF5;
+    border: 1px solid #ecebf5;
     border-radius: 6px;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 0 10px;
     .ticket__status span {
-        color: #696D8C;
+        color: #696d8c;
         font-family: $primary_font_family;
         font-size: 14px;
     }
     &.straight {
         height: 36px;
         margin: 0 0.5rem;
-        @include media("<=small-screen"){
+        @include media("<=small-screen") {
             margin: 0;
         }
         // padding: 0;
@@ -313,7 +311,6 @@
         //     transform: rotate(90deg);
         // }
     }
-
 }
 
 #inputGroup {
@@ -328,10 +325,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    p{
+    p {
         font-size: 14px;
         text-align: center;
-        color: #696D8C;
+        color: #696d8c;
         margin-bottom: 0;
         .retry__trigger {
             margin-left: 10px;
@@ -342,13 +339,11 @@
             }
         }
     }
-
 }
 
 #ticketGroup {
     display: contents;
 }
-
 
 .tickets__action--list {
     display: flex;
@@ -367,7 +362,7 @@
     margin-bottom: 4rem;
 }
 
-#authTickets{
+#authTickets {
     &.show-mobile-menu {
         display: block !important;
         position: fixed;
@@ -376,10 +371,12 @@
         bottom: 0;
         width: 100%;
         left: 0;
-        .customer__tickets--container, .mCustomScrollBox, .customer__ticket{
+        .customer__tickets--container,
+        .mCustomScrollBox,
+        .customer__ticket {
             width: 100% !important;
         }
-        .customer__tickets--container{
+        .customer__tickets--container {
             height: 60%;
             margin: 0;
             margin-bottom: 2rem;
@@ -396,8 +393,8 @@
                     margin-left: 0;
                     // margin-bottom: 2px;
                 }
-                &:not(:last-child){
-                    border-bottom: 1px solid #ECEBF5;
+                &:not(:last-child) {
+                    border-bottom: 1px solid #ecebf5;
                 }
             }
         }
@@ -411,19 +408,33 @@
 
 .scroll {
     // overflow: scroll;
-  
+
     &::-webkit-scrollbar {
-      width: 5px;
+        width: 5px;
     }
-  
+
     &::-webkit-scrollbar-track {
-    //   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-      border-radius: 10px;
+        //   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
     }
-  
+
     &::-webkit-scrollbar-thumb {
-      border-radius: 10px;
-      background: #e9e9e9;
-    //   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+        border-radius: 10px;
+        background: #e9e9e9;
+        //   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
     }
-  }
+}
+
+.show-only-on-mobile {
+    display: none;
+    @include media("<=small-screen") {
+        display: block;
+    }
+}
+
+.show-only-on-desktop {
+    display: block;
+    @include media("<=small-screen") {
+        display: none;
+    }
+}
