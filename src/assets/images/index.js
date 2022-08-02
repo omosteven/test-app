@@ -1,16 +1,12 @@
 const imageLinks = {
     svg: {
-        leaveIcon:
-            "https://res.cloudinary.com/metacare/image/upload/v1658366039/Vector_mrbwv9.svg",
-        verticalGrey:
-            "https://res.cloudinary.com/metacare/image/upload/v1658278459/Shape_dfwuev.svg",
-        crossIconGrey:
-            "https://res.cloudinary.com/metacare/image/upload/v1645569938/cross_1_f1infl.svg",
-        sendIcon: `https://res.cloudinary.com/metacare/image/upload/v1655970938/icons/Send_nputha.svg`,
+        leaveIcon: "https://res.cloudinary.com/metacare/image/upload/v1658366039/Vector_mrbwv9.svg",
+        verticalGrey: "https://res.cloudinary.com/metacare/image/upload/v1658278459/Shape_dfwuev.svg",
+        crossIconGrey: "https://res.cloudinary.com/metacare/image/upload/v1645569938/cross_1_f1infl.svg",
+		sendIcon: `https://res.cloudinary.com/metacare/image/upload/v1655970938/icons/Send_nputha.svg`,
         logo: "https://res.cloudinary.com/metacare/image/upload/v1658797121/Logo_Metacare_relayx.svg",
         cancel: "https://res.cloudinary.com/metacare/image/upload/v1645569938/cross_1_f1infl.svg",
-        chat_icon:
-            "https://res.cloudinary.com/metacare/image/upload/v1655681382/icons/Vector_1_qclow2.svg",
+        chat_icon: "https://res.cloudinary.com/metacare/image/upload/v1655681382/icons/Vector_1_qclow2.svg",
         info: "https://res.cloudinary.com/metacare/image/upload/v1655459906/icons/Combined_Shape_px9mhr.svg",
         success:
             "https://res.cloudinary.com/metacare/image/upload/v1649759463/icons/Ellipse_12_xicbrf.svg",
@@ -29,8 +25,6 @@ const imageLinks = {
             "https://res.cloudinary.com/metacare/image/upload/v1642339500/icons/icon_wocjvm.svg",
         leftArrow:
             "https://res.cloudinary.com/metacare/image/upload/v1642339360/icons/icon_iade0v.svg",
-        remove: "https://res.cloudinary.com/metacare/image/upload/v1642318605/icons/icon_yvfmbu.svg",
-        retry: "https://res.cloudinary.com/metacare/image/upload/v1657283767/icons/Group_1000003068_ycvxrb.svg",
     },
 };
 
