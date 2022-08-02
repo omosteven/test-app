@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import CustomerTicketsContainer from "../../CustomerTicketsContainer/CustomerTicketsContainer";
-import ChatSettingsToggler from "./ChatSettingsToggler/ChatSettingsToggler";
 import ChatToggler from "./ChatToggler/ChatToggler";
 
 
@@ -45,7 +44,6 @@ const ChatHeader = ({ status,
                     }
                     }
                 />
-                <ChatSettingsToggler />
             </div>
         </header>
     );

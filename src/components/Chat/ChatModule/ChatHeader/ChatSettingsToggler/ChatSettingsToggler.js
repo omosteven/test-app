@@ -30,7 +30,7 @@ const ChatSettingsToggler = () => {
                 data-toggle="dropdown"
                 aria-expanded={isDropdownOpen}
             >
-                <Info otherClass={'straight'}>
+                <Info otherClass={'chat__header--icon'}>
                     <BraillePatternDots onClick={toggleDropdown} />
                 </Info>
             </DropdownToggle>

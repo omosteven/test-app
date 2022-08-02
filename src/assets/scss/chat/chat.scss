@@ -67,6 +67,11 @@ body.keyboard{
         display: none;
       }
     }
+    &--icon {
+      margin: 0 0rem;
+      margin-left: 0.5rem;
+      cursor: pointer;
+    }
     .chat__toggler {
       display: none;
 
