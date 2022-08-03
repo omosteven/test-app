@@ -85,12 +85,10 @@ const UploadPreview = ({
 
     return (
         <>
-            {uploadPreview && (
-                <div className='upload__preview'>
-                    {renderBasedOnStatus()}
-                    {renderBasedOnUploadType()}
-                </div>
-            )}
+            <div className='upload__preview'>
+                {renderBasedOnStatus()}
+                {renderBasedOnUploadType()}
+            </div>
         </>
     );
 };

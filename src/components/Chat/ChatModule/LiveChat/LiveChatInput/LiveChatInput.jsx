@@ -10,6 +10,7 @@ import { useIsTyping } from "use-is-typing";
 import PoweredBy from "../../../../common/PoweredBy/PoweredBy";
 import CustomDatePicker from "../../../../ui/InputTypes/DatePicker/DatePicker";
 import UploadIcons from "./UploadIcons/UploadIcons";
+import "./LiveChatInput.scss";
 
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
 const LiveChatInput = ({
@@ -34,6 +35,7 @@ const LiveChatInput = ({
         file: {},
         isLoading: false,
     });
+    const [errors, setErrors] = useState({});
 
     const isDisabled = fetchingInputStatus || !allowUserInput;
 
@@ -179,6 +181,7 @@ const LiveChatInput = ({
                     updateRequest={updateRequest}
                     upload={upload}
                     updateUpload={updateUpload}
+                    setErrors={setErrors}
                 />
                 {renderBasedOnInputType()}
                 <Button
@@ -190,6 +193,7 @@ const LiveChatInput = ({
                     disabled={btnDisabled || fetchingInputStatus}
                 />
             </form>
+            {errors?.file && <span className='file_error'>{errors?.file}</span>}
             <PoweredBy />
         </div>
     );

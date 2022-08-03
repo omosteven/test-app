@@ -10,7 +10,13 @@ import "./UploadIcons.scss";
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
-const UploadIcons = ({ updateRequest, upload, updateUpload }) => {
+const UploadIcons = ({
+    updateRequest,
+    upload,
+    updateUpload,
+    isDisabled,
+    setErrors,
+}) => {
     const [uploadType, setUploadType] = useState("");
     const [status, setStatus] = useState("");
 
@@ -47,7 +53,7 @@ const UploadIcons = ({ updateRequest, upload, updateUpload }) => {
             const url = apiRoutes.fileUpload;
             const formData = new FormData();
 
-            formData.append("image", file);
+            formData.append("file", file);
             const res = await API.post(url, formData);
 
             if (res.status === 201) {
@@ -66,14 +72,26 @@ const UploadIcons = ({ updateRequest, upload, updateUpload }) => {
         } catch (err) {
             setStatus(ERROR);
             updateUpload((prev) => ({ ...prev, isLoading: false }));
-            console.log(err);
         }
     };
 
     const uploadFile = ({ target: { files } }) => {
         const file = files[0];
         if (file) {
+            setErrors((prev) => ({ ...prev, file: "" }));
             const uploadType = getFileType(file?.type);
+
+            if (
+                uploadType === IMAGE ? file.size > 2097152 : file.size > 5242880
+            ) {
+                const message =
+                    uploadType === IMAGE
+                        ? "Image should not be more than 2MB"
+                        : "File should not be more than 5MB";
+
+                return setErrors((prev) => ({ ...prev, file: message }));
+            }
+
             setUploadType(uploadType);
 
             const uploadPreview =
@@ -93,21 +111,25 @@ const UploadIcons = ({ updateRequest, upload, updateUpload }) => {
                     src={imageLinks?.svg?.attachment}
                     accept='.pdf,video/*'
                     onChange={uploadFile}
+                    disabled={isDisabled}
                 />
                 <AttachmentInput
                     id='image'
                     src={imageLinks?.svg?.upload_image}
                     accept='image/*'
                     onChange={uploadFile}
+                    disabled={isDisabled}
                 />
             </div>
-            <UploadPreview
-                uploadPreview={upload?.preview}
-                status={status}
-                uploadType={uploadType}
-                handleRemoveFile={handleRemoveFile}
-                handleRetry={() => handleUpload(upload?.file, uploadType)}
-            />
+            {upload?.preview && (
+                <UploadPreview
+                    uploadPreview={upload?.preview}
+                    status={status}
+                    uploadType={uploadType}
+                    handleRemoveFile={handleRemoveFile}
+                    handleRetry={() => handleUpload(upload?.file, uploadType)}
+                />
+            )}
         </div>
     );
 };
