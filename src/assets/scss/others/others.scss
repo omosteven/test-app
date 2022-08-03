@@ -376,7 +376,10 @@
         .customer__ticket {
             width: 100% !important;
         }
-        .customer__tickets--container {
+        .mCustomScrollBox {
+            overflow-y: auto;
+        }
+        .customer__tickets--container{
             height: 60%;
             margin: 0;
             margin-bottom: 2rem;
