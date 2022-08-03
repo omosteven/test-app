@@ -122,15 +122,12 @@ const LiveChat = ({ getCustomerTickets }) => {
             },
         ];
 
-        console.log(conversationId);
         dispatch(setTicketMessages(newMessageList));
         triggerAgentTyping(true);
 
-        socket.emit(NEW_TEST_TICKET, { ticketId });
-
         socket.emit(
             SEND_CUSTOMER_CONVERSATION_REPLY,
-            { ticketId, conversationId },
+            { ticketId, conversationId, message: branchOptionLabel },
             (err) => {
                 if (err) {
                     triggerAgentTyping(false);
@@ -138,7 +135,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                     //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
                     // })
                     console.log("Encountered error");
-                    console.log({ err });
                 } else {
                     triggerAgentTyping(false);
                 }
@@ -535,15 +531,17 @@ const LiveChat = ({ getCustomerTickets }) => {
                     handleOptConversation={handleOptConversation}
                 />
             </div>
-            <LiveChatInput
-                ticketId={ticketId}
-                inputType={currentInputType}
-                currentFormElement={currentFormElement}
-                handleNewMessage={handleNewMessage}
-                fetchingInputStatus={fetchingInputStatus}
-                allowUserInput={allowUserInput}
-                triggerAgentTyping={triggerAgentTyping}
-            />
+            <div className='chat__input__container'>
+                <LiveChatInput
+                    ticketId={ticketId}
+                    inputType={currentInputType}
+                    currentFormElement={currentFormElement}
+                    handleNewMessage={handleNewMessage}
+                    fetchingInputStatus={fetchingInputStatus}
+                    allowUserInput={allowUserInput}
+                    triggerAgentTyping={triggerAgentTyping}
+                />
+            </div>
         </>
     );
 };

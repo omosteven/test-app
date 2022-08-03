@@ -6,37 +6,38 @@
         font-size: 2rem;
         line-height: 142%;
         color: $black__theme_color;
-      }
-
-      .sub__text {
+    }
+    .sub__text {
         // font-weight: 400;
         font-size: 1.125rem;
         line-height: 1.625rem;
         color: $muted__theme_color_2;
-      }
+    }
 
-        .pincode-input-container {
-            padding: 0.625rem 0;
-            margin: 1.25rem 0;
-            white-space: nowrap;
+    .pincode-input-container {
+        padding: 0.625rem 0;
+        margin: 1.25rem 0;
+        white-space: nowrap;
+        text-align: center !important;
 
-               .pincode-input-text {
-                    border-radius: 0.625rem;
-                    font-weight: 600;
-                    margin-left: 0;
-                    &:focus {
-                      border: 1px solid $primary__theme_color !important;
-                    }
-                    &:not(:last-child) {
-                        margin-right: 1rem !important;
-                    }
-                    @include media("<=small-screen") {
-                      width: 40px;
-                      height: 40px;
-                      &:not(:last-child) {
-                        margin-right: 10px !important;
-                    }
-                    }
+        .pincode-input-text {
+            border-radius: 0.625rem;
+            font-weight: 600;
+            margin-left: 0;
+
+            &:focus {
+                border: 1px solid $primary__theme_color !important;
+            }
+            &:not(:last-child) {
+                margin-right: 1rem !important;
+            }
+            @include media("<=small-screen") {
+                width: 2.5rem !important;
+                height: 2.5rem !important;
+                &:not(:last-child) {
+                    margin-right: 10px !important;
                 }
+            }
         }
+    }
 }

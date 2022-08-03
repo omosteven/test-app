@@ -8,6 +8,7 @@ const CustomerTickets = ({ tickets, selectedTicket, handleTicketSelect, closeTic
             ID={'tickets-list'}
             activeElement={selectedTicket?.ticketId}
             className={`customer__tickets--container`}
+            
             selector={'#tickets-list'}
             extraProps={{
                 axis: showChatMenu ? 'y' : 'x',

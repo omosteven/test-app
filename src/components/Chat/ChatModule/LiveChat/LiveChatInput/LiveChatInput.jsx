@@ -10,6 +10,7 @@ import { useIsTyping } from 'use-is-typing';
 import PoweredBy from "../../../../common/PoweredBy/PoweredBy";
 import CustomDatePicker from "../../../../ui/InputTypes/DatePicker/DatePicker";
 
+
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes
 const LiveChatInput = ({ handleNewMessage, ticketId, fetchingInputStatus, allowUserInput, inputType, currentFormElement }) => {
     const [isTyping, inputRef] = useIsTyping();
