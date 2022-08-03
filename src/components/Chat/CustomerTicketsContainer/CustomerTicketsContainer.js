@@ -28,7 +28,7 @@ const CustomerTicketsContainer = ({
         if (tablet) {
             toggleChatMenu(false);
         }
-    }, [width]);
+    }, [tablet]);
 
     const renderBasedOnStatus = () => {
         switch (status) {
