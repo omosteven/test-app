@@ -43,6 +43,7 @@ const ChatHeader = ({
                         createNewTicket,
                         getCustomerTickets,
                         showChatMenu,
+                        toggleChatMenu,
                     }}
                 />
                 <div className='show-only-on-mobile'>

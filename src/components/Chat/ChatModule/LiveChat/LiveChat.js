@@ -98,7 +98,6 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleOptConversation = async (convo) => {
-        console.log({ convo });
         const {
             parentMessageId,
             conversationId,
@@ -277,7 +276,6 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleNewMessage = async (message) => {
-        console.log({ message });
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
             dispatch(
@@ -470,7 +468,6 @@ const LiveChat = ({ getCustomerTickets }) => {
     }, [messages, activeConvo, ticketPhase]);
 
     const handleReceive = (message) => {
-        console.log("sss", { message });
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
             dispatch(

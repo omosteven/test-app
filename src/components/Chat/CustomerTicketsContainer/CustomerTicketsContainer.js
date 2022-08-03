@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { dataQueryStatus } from "../../../utils/formatHandlers";
 import ErrorView from "../../common/ErrorView/ErrorView";
 import NewTicketButton from "./CustomerTickets/common/NewTicketButton/NewTicketButton";
@@ -18,10 +18,17 @@ const CustomerTicketsContainer = ({
     getCustomerTickets,
     closeTicket,
     showChatMenu,
+    toggleChatMenu,
 }) => {
     const { width } = useWindowSize();
 
     const tablet = width > 425;
+
+    useEffect(() => {
+        if (tablet) {
+            toggleChatMenu(false);
+        }
+    }, [width]);
 
     const renderBasedOnStatus = () => {
         switch (status) {
