@@ -8,6 +8,7 @@ import {
     SEND_BRANCH_OPTION,
     SEND_CUSTOMER_CONVERSATION_REPLY,
     SEND_CUSTOMER_MESSAGE,
+    NEW_TEST_TICKET,
 } from "../../../../lib/socket/events";
 import { dataQueryStatus } from "../../../../utils/formatHandlers";
 import { generateID, getErrorMessage } from "../../../../utils/helper";
@@ -120,9 +121,10 @@ const LiveChat = ({ getCustomerTickets }) => {
             },
         ];
 
-        console.log(conversationId);
         dispatch(setTicketMessages(newMessageList));
         triggerAgentTyping(true);
+
+        socket.emit(NEW_TEST_TICKET, { ticketId });
         socket
             .timeout(1000)
             .emit(
@@ -531,15 +533,17 @@ const LiveChat = ({ getCustomerTickets }) => {
                     handleOptConversation={handleOptConversation}
                 />
             </div>
-            <LiveChatInput
-                ticketId={ticketId}
-                inputType={currentInputType}
-                currentFormElement={currentFormElement}
-                handleNewMessage={handleNewMessage}
-                fetchingInputStatus={fetchingInputStatus}
-                allowUserInput={allowUserInput}
-                triggerAgentTyping={triggerAgentTyping}
-            />
+            <div className='chat__input__container'>
+                <LiveChatInput
+                    ticketId={ticketId}
+                    inputType={currentInputType}
+                    currentFormElement={currentFormElement}
+                    handleNewMessage={handleNewMessage}
+                    fetchingInputStatus={fetchingInputStatus}
+                    allowUserInput={allowUserInput}
+                    triggerAgentTyping={triggerAgentTyping}
+                />
+            </div>
         </>
     );
 };
