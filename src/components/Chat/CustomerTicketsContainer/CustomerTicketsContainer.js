@@ -4,6 +4,7 @@ import ErrorView from "../../common/ErrorView/ErrorView";
 import NewTicketButton from "./CustomerTickets/common/NewTicketButton/NewTicketButton";
 import CustomerTickets from "./CustomerTickets/CustomerTickets";
 import CustomerTicketsSkeleton from "./CustomerTicketsSkeleton/CustomerTicketsSkeleton";
+import { useWindowSize } from "../../../utils/hooks";
 
 const { LOADING, NULLMODE, DATAMODE, ERROR } = dataQueryStatus;
 
@@ -15,9 +16,13 @@ const CustomerTicketsContainer = ({
     handleTicketSelect,
     createNewTicket,
     getCustomerTickets,
-    closeTicket, 
-    showChatMenu
+    closeTicket,
+    showChatMenu,
 }) => {
+    const { width } = useWindowSize();
+
+    const tablet = width > 425;
+
     const renderBasedOnStatus = () => {
         switch (status) {
             case LOADING:
@@ -26,7 +31,10 @@ const CustomerTicketsContainer = ({
             case NULLMODE:
                 return (
                     <>
-                        <NewTicketButton handleClick={createNewTicket} otherClassNames={ showChatMenu ? "mt-5 large" : ""} />
+                        <NewTicketButton
+                            handleClick={createNewTicket}
+                            otherClassNames={showChatMenu ? "mt-5 large" : ""}
+                        />
                     </>
                 );
 
@@ -40,12 +48,17 @@ const CustomerTicketsContainer = ({
                             closeTicket={closeTicket}
                             showChatMenu={showChatMenu}
                         />
-                        <NewTicketButton handleClick={createNewTicket} otherClassNames={ showChatMenu ? "large" : "" }/>
+                        <NewTicketButton
+                            handleClick={createNewTicket}
+                            otherClassNames={showChatMenu ? "large" : ""}
+                        />
                     </>
                 );
 
             case ERROR:
-                return <ErrorView retry={getCustomerTickets} message={errorMssg} />;
+                return (
+                    <ErrorView retry={getCustomerTickets} message={errorMssg} />
+                );
 
             default:
                 return "";
@@ -53,7 +66,9 @@ const CustomerTicketsContainer = ({
     };
 
     return (
-        <div id={'authTickets'} className={showChatMenu ? 'show-mobile-menu' : ''}>
+        <div
+            id={"authTickets"}
+            className={showChatMenu ? "show-mobile-menu" : ""}>
             {renderBasedOnStatus()}
         </div>
     );

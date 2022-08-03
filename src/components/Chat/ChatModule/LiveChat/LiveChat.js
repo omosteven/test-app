@@ -98,6 +98,7 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleOptConversation = async (convo) => {
+        console.log({ convo });
         const {
             parentMessageId,
             conversationId,
@@ -127,23 +128,22 @@ const LiveChat = ({ getCustomerTickets }) => {
 
         socket.emit(NEW_TEST_TICKET, { ticketId });
 
-        socket
-            .timeout(1000)
-            .emit(
-                SEND_CUSTOMER_CONVERSATION_REPLY,
-                { ticketId, conversationId },
-                (err) => {
-                    if (err) {
-                        triggerAgentTyping(false);
-                        // const freshMessageList = (messages).map((x) => {
-                        //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
-                        // })
-                        console.log("Encountered error");
-                    } else {
-                        triggerAgentTyping(false);
-                    }
+        socket.emit(
+            SEND_CUSTOMER_CONVERSATION_REPLY,
+            { ticketId, conversationId },
+            (err) => {
+                if (err) {
+                    triggerAgentTyping(false);
+                    // const freshMessageList = (messages).map((x) => {
+                    //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
+                    // })
+                    console.log("Encountered error");
+                    console.log({ err });
+                } else {
+                    triggerAgentTyping(false);
                 }
-            );
+            }
+        );
     };
 
     const handleMessageOptionSelect = async (messageOption) => {
@@ -281,6 +281,7 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleNewMessage = async (message) => {
+        console.log({ message });
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
             dispatch(
@@ -398,6 +399,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             });
             if (res.status === 200) {
                 const { data } = res.data;
+                console.log({ data });
                 const compMessageId = "smartConvos";
                 let messageOptions = data?.map(
                     ({ conversationId, conversationTitle }) => ({
@@ -472,6 +474,7 @@ const LiveChat = ({ getCustomerTickets }) => {
     }, [messages, activeConvo, ticketPhase]);
 
     const handleReceive = (message) => {
+        console.log("sss", { message });
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
             dispatch(
