@@ -82,7 +82,9 @@ const UploadIcons = ({
             const uploadType = getFileType(file?.type);
 
             if (
-                uploadType === IMAGE ? file.size > 2097152 : file.size > 5242880
+                uploadType === IMAGE
+                    ? file.size > 5242880
+                    : file.size > 20971520
             ) {
                 const message =
                     uploadType === IMAGE
