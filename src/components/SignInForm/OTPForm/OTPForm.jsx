@@ -33,9 +33,10 @@ const OTPForm = ({ initialStepRequest }) => {
             });
             if (res.status === 200) {
                 const { data } = res.data;
-                pushToDashboard(data, () =>
-                    history.replace(`/chat?workspaceSlug=${workspaceSlug}`)
-                );
+                pushToDashboard(data, () => {
+                    history.replace(`/chat?workspaceSlug=${workspaceSlug}`);
+                    window.location.reload();
+                });
             }
         } catch (err) {
             setErrorMsg(getErrorMessage(err));
