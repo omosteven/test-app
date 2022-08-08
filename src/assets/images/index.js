@@ -29,7 +29,12 @@ const imageLinks = {
             "https://res.cloudinary.com/metacare/image/upload/v1642339500/icons/icon_wocjvm.svg",
         leftArrow:
             "https://res.cloudinary.com/metacare/image/upload/v1642339360/icons/icon_iade0v.svg",
-        remove: "https://res.cloudinary.com/metacare/image/upload/v1642318605/icons/icon_yvfmbu.svg",
+        remove: "https://res.cloudinary.com/metacare/image/upload/v1659960601/icons/remove_glyhiz.svg",
+        document:
+            "https://res.cloudinary.com/metacare/image/upload/v1659960640/icons/document_oojnni.svg",
+        play: "https://res.cloudinary.com/metacare/image/upload/v1659960678/icons/play_e7fdhn.svg",
+        loading:
+            "https://res.cloudinary.com/metacare/image/upload/v1659970761/icons/loading_c47v6s.svg",
         retry: "https://res.cloudinary.com/metacare/image/upload/v1657283767/icons/Group_1000003068_ycvxrb.svg",
     },
 };

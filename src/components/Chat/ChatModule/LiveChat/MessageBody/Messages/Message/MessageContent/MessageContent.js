@@ -6,6 +6,7 @@ const MessageContent = ({
     messageContent,
     messageStatus,
     fileAttachments,
+    openPreviewModal,
 }) => {
     return (
         <div
@@ -23,7 +24,11 @@ const MessageContent = ({
             <div>
                 {fileAttachments &&
                     fileAttachments?.map((attachment, i) => (
-                        <MediaContent attachment={attachment} key={i} />
+                        <MediaContent
+                            attachment={attachment}
+                            key={i}
+                            openPreviewModal={openPreviewModal}
+                        />
                     ))}
             </div>
             <span>{messageContent}</span>

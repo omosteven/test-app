@@ -36,6 +36,7 @@ const LiveChatInput = ({
         isLoading: false,
     });
     const [errors, setErrors] = useState({});
+    const [errorMssg, setErrorMssg] = useState("");
 
     const isDisabled = fetchingInputStatus || !allowUserInput;
 
@@ -181,7 +182,10 @@ const LiveChatInput = ({
                     updateRequest={updateRequest}
                     upload={upload}
                     updateUpload={updateUpload}
+                    isDisabled={isDisabled}
                     setErrors={setErrors}
+                    sendNewMessage={sendNewMessage}
+                    setErrorMssg={setErrorMssg}
                 />
                 {renderBasedOnInputType()}
                 <Button
@@ -193,7 +197,12 @@ const LiveChatInput = ({
                     disabled={btnDisabled || fetchingInputStatus}
                 />
             </form>
-            {errors?.file && <span className='file_error'>{errors?.file}</span>}
+            {errors?.file ||
+                (errorMssg && (
+                    <span className='file__error'>
+                        {errors?.file || errorMssg}
+                    </span>
+                ))}
             <PoweredBy />
         </div>
     );

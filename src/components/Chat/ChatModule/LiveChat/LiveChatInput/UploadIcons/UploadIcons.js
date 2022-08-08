@@ -3,10 +3,12 @@ import imageLinks from "../../../../../../assets/images";
 import API from "../../../../../../lib/api";
 import apiRoutes from "../../../../../../lib/api/apiRoutes";
 import AttachmentInput from "../../../../../ui/InputTypes/Attachment/Attachment";
-import { IMAGE, PDF, VIDEO } from "./enum";
+import { IMAGE, FILE, VIDEO } from "./enum";
 import UploadPreview from "./UploadPreview/UploadPreview";
 import { dataQueryStatus } from "../../../../../../utils/formatHandlers";
+import ModalPreview from "../../ModalPreview/ModalPreview";
 import "./UploadIcons.scss";
+import { getErrorMessage } from "../../../../../../utils/helper";
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
@@ -16,15 +18,18 @@ const UploadIcons = ({
     updateUpload,
     isDisabled,
     setErrors,
+    sendNewMessage,
+    setErrorMssg,
 }) => {
     const [uploadType, setUploadType] = useState("");
     const [status, setStatus] = useState("");
+    const [showModal, toggleModal] = useState(false);
 
-    const getFileType = (fileType) => {
+    const getFileFormat = (fileType) => {
         if (fileType?.startsWith("image/")) {
             return IMAGE;
-        } else if (fileType?.startsWith("application/pdf")) {
-            return PDF;
+        } else if (fileType?.startsWith("application/")) {
+            return FILE;
         } else if (fileType?.startsWith("video/")) {
             return VIDEO;
         }
@@ -58,8 +63,8 @@ const UploadIcons = ({
 
             if (res.status === 201) {
                 const { data } = res.data;
-
                 setStatus(DATAMODE);
+
                 updateUpload((prev) => ({ ...prev, isLoading: false }));
                 updateRequest((prev) => ({
                     ...prev,
@@ -72,6 +77,8 @@ const UploadIcons = ({
         } catch (err) {
             setStatus(ERROR);
             updateUpload((prev) => ({ ...prev, isLoading: false }));
+            const message = getErrorMessage(err);
+            setErrorMssg(message);
         }
     };
 
@@ -79,7 +86,7 @@ const UploadIcons = ({
         const file = files[0];
         if (file) {
             setErrors((prev) => ({ ...prev, file: "" }));
-            const uploadType = getFileType(file?.type);
+            const uploadType = getFileFormat(file?.type);
 
             if (
                 uploadType === IMAGE
@@ -88,48 +95,68 @@ const UploadIcons = ({
             ) {
                 const message =
                     uploadType === IMAGE
-                        ? "Image should not be more than 2MB"
-                        : "File should not be more than 5MB";
+                        ? "Image should not be more than 5MB"
+                        : "File should not be more than 20MB";
 
                 return setErrors((prev) => ({ ...prev, file: message }));
             }
 
             setUploadType(uploadType);
 
-            const uploadPreview =
-                uploadType === PDF ? file?.name : URL.createObjectURL(file);
+            const uploadPreview = URL.createObjectURL(file);
 
             updateUpload((prev) => ({ ...prev, preview: uploadPreview, file }));
-
             handleUpload(file, uploadType);
         }
     };
 
     return (
         <div className='upload'>
+            {upload?.preview && (
+                <UploadPreview
+                    uploadPreview={
+                        uploadType === FILE
+                            ? upload?.file?.name
+                            : upload?.preview
+                    }
+                    status={status}
+                    uploadType={uploadType}
+                    handleRemoveFile={handleRemoveFile}
+                    handleRetry={() => handleUpload(upload?.file, uploadType)}
+                    onClick={() => toggleModal(true)}
+                />
+            )}
             <div className='upload--icons'>
                 <AttachmentInput
                     id='file'
                     src={imageLinks?.svg?.attachment}
-                    accept='.pdf,video/*'
+                    accept='.pdf,.doc,.docx,video/*'
                     onChange={uploadFile}
                     disabled={isDisabled}
                 />
                 <AttachmentInput
                     id='image'
                     src={imageLinks?.svg?.upload_image}
-                    accept='image/*'
+                    accept='image/png,image/jpeg,image/jpg'
                     onChange={uploadFile}
                     disabled={isDisabled}
                 />
             </div>
-            {upload?.preview && (
-                <UploadPreview
-                    uploadPreview={upload?.preview}
-                    status={status}
-                    uploadType={uploadType}
-                    handleRemoveFile={handleRemoveFile}
-                    handleRetry={() => handleUpload(upload?.file, uploadType)}
+            {showModal && (
+                <ModalPreview
+                    showModal={showModal}
+                    toggleModal={() => toggleModal(false)}
+                    preview={upload?.preview}
+                    previewType={uploadType}
+                    fileName={upload?.file?.name}
+                    sendNewMessage={() => {
+                        toggleModal(false);
+                        sendNewMessage();
+                    }}
+                    handleRemoveFile={() => {
+                        toggleModal(false);
+                        handleRemoveFile();
+                    }}
                 />
             )}
         </div>

@@ -56,3 +56,8 @@ export const generateID = (length = 10) => {
 export const getUniqueListBy = (arr, key) => {
     return [...new Map(arr.map((item) => [item[key], item])).values()];
 };
+
+export const getFileFormat = (fileName) => {
+    const splitted = fileName?.split(".");
+    return splitted[splitted?.length - 1];
+};

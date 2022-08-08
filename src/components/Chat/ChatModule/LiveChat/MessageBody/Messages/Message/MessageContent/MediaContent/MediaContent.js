@@ -1,11 +1,11 @@
 import {
     IMAGE,
-    PDF,
+    FILE,
     VIDEO,
 } from "../../../../../LiveChatInput/UploadIcons/enum";
 import "./MediaContent.scss";
 
-const MediaContent = ({ attachment }) => {
+const MediaContent = ({ attachment, openPreviewModal }) => {
     const { fileAttachmentUrl, fileAttachmentType } = attachment || {};
 
     const renderBasedOnMediaType = () => {
@@ -16,13 +16,17 @@ const MediaContent = ({ attachment }) => {
                         src={fileAttachmentUrl}
                         alt='media'
                         className='media img'
+                        onClick={() => openPreviewModal(attachment)}
                     />
                 );
-            case PDF:
+            case FILE:
                 return <>{fileAttachmentUrl} </>;
             case VIDEO:
                 return (
-                    <video className='media' controls>
+                    <video
+                        className='media'
+                        controls
+                        onClick={() => openPreviewModal(attachment)}>
                         <source src={fileAttachmentUrl} />
                     </video>
                 );

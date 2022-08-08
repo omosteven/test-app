@@ -6,7 +6,32 @@
         right: -0.375rem;
         cursor: pointer;
         z-index: 2;
+        top: -10px;
+
+        &.loading {
+            &  svg {
+                height: 15px;
+                width: 15px;
+                background: rgba(225, 225, 235, 0.8);
+                border-radius: 100%;
+                animation-name: rotate;
+                animation-duration: 1.6s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+              }
+            
+              @keyframes rotate {
+                0% {
+                  transform: rotate(0deg);
+                }
+                100% {
+                  transform: rotate(359deg);
+                }
+              }
+        }
     }
+
+
 
     &--media__container {
         position: relative;
@@ -14,15 +39,48 @@
         .play {
             position: absolute;
             z-index: 2;
-            top: 1.138rem;
-            left: 1.188rem;
+            top: 0.938rem;
+            left: 40%;
+            cursor: pointer;
         }
     }
     
     &--media {
-        width: 3.75rem;
-        height: 3.125rem;
-        margin-top: 0.625rem;
+        width:4.521rem;
+        height: 3.5rem;
         object-fit: contain;
+        border-radius: 0.25rem;
+        cursor: pointer;
+    }
+
+    &--document {
+        padding: 0.547rem 0.641rem;
+        background: rgba(217, 217, 217, 0.6);
+        border-radius: 0.25rem;
+        display: flex;
+        gap: 0.453rem;
+        width: max-content;
+        align-items: center;
+        margin-bottom: 8px;
+        cursor: pointer;
+
+        .details{
+            display: flex;
+            flex-direction: column;
+            
+                p {
+                    font-size: 10px;
+                    line-height: 10px;
+                    display: flex;
+                    align-items: center;
+                    margin: 0;
+                }
+
+                span {
+                    font-size: 7px;
+                    line-height: 9px;
+                    text-transform: uppercase;
+                }
+        }
     }
 }

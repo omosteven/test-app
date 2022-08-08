@@ -11,6 +11,7 @@ const Message = ({
     handleOptConversation,
     messageIndex,
     messagesDepth,
+    openPreviewModal,
 }) => {
     const {
         senderType,
@@ -45,6 +46,7 @@ const Message = ({
                     messageContent={messageContent}
                     messageStatus={messageStatus}
                     fileAttachments={fileAttachments}
+                    openPreviewModal={openPreviewModal}
                 />
                 {branchOptions?.length > 0 && (
                     <MessageOptions
