@@ -10,9 +10,17 @@ import { useIsTyping } from "use-is-typing";
 import PoweredBy from "../../../../common/PoweredBy/PoweredBy";
 import CustomDatePicker from "../../../../ui/InputTypes/DatePicker/DatePicker";
 import UploadIcons from "./UploadIcons/UploadIcons";
+import UploadPreview from "./UploadIcons/UploadPreview/UploadPreview";
+import { FILE } from "./UploadIcons/enum";
+import API from "../../../../../lib/api";
+import apiRoutes from "../../../../../lib/api/apiRoutes";
+import { dataQueryStatus } from "../../../../../utils/formatHandlers";
+import { getErrorMessage } from "../../../../../utils/helper";
 import "./LiveChatInput.scss";
 
+const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
+
 const LiveChatInput = ({
     handleNewMessage,
     ticketId,
@@ -28,6 +36,7 @@ const LiveChatInput = ({
         fileAttachment: {
             fileAttachmentUrl: "",
             fileAttachmentType: "",
+            fileAttachmentName: "",
         },
     });
     const [upload, updateUpload] = useState({
@@ -37,16 +46,76 @@ const LiveChatInput = ({
     });
     const [errors, setErrors] = useState({});
     const [errorMssg, setErrorMssg] = useState("");
-
+    const [status, setStatus] = useState("");
+    const [uploadType, setUploadType] = useState("");
+    const [showModal, toggleModal] = useState(false);
     const isDisabled = fetchingInputStatus || !allowUserInput;
 
     const socket = useContext(SocketContext);
+
+    const handleRemoveFile = () => {
+        updateUpload({
+            preview: "",
+            file: "",
+            isLoading: false,
+        });
+        updateRequest((prev) => ({
+            ...prev,
+            fileAttachment: {
+                fileAttachmentUrl: "",
+                fileAttachmentType: "",
+                fileAttachmentName: "",
+            },
+        }));
+    };
+
+    const handleUpload = async (file, uploadType) => {
+        try {
+            setStatus(LOADING);
+            updateUpload((prev) => ({ ...prev, isLoading: true }));
+
+            const url = apiRoutes.fileUpload;
+            const formData = new FormData();
+
+            formData.append("file", file);
+            const res = await API.post(url, formData);
+
+            if (res.status === 201) {
+                const { data } = res.data;
+                setStatus(DATAMODE);
+                console.log({ data });
+
+                updateUpload((prev) => ({
+                    ...prev,
+                    preview: data,
+                    isLoading: false,
+                }));
+                updateRequest((prev) => ({
+                    ...prev,
+                    fileAttachment: {
+                        fileAttachmentUrl: data,
+                        fileAttachmentType: uploadType,
+                        fileAttachmentName: file?.name,
+                    },
+                }));
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            updateUpload((prev) => ({ ...prev, isLoading: false }));
+            const message = getErrorMessage(err);
+            setErrorMssg(message);
+        }
+    };
 
     const sendNewMessage = () => {
         handleNewMessage(request);
         updateRequest({
             message: "",
-            fileAttachment: { fileAttachmentUrl: "", fileAttachmentType: "" },
+            fileAttachment: {
+                fileAttachmentUrl: "",
+                fileAttachmentType: "",
+                fileAttachmentName: "",
+            },
         });
         updateUpload({
             preview: "",
@@ -170,39 +239,62 @@ const LiveChatInput = ({
         upload?.preview?.length > 0
             ? upload?.isLoading
             : isDisabled || request?.message === "";
-
+    console?.log(upload);
     return (
         <div id='inputGroup' className='col-md-10 col-12'>
             {/* {showConvos && <SuggestedConvos data={suggestedList} handleConvoClick={handleConvoClick} />} */}
-            <form
-                onSubmit={handleSubmit}
-                id='chatInput'
-                className='chat__input--group'>
-                <UploadIcons
-                    updateRequest={updateRequest}
-                    upload={upload}
-                    updateUpload={updateUpload}
-                    isDisabled={isDisabled}
-                    setErrors={setErrors}
-                    sendNewMessage={sendNewMessage}
-                    setErrorMssg={setErrorMssg}
-                />
-                {renderBasedOnInputType()}
-                <Button
-                    type='submit'
-                    text={"Send"}
-                    icon={<ReactSVG src={imageLinks?.svg?.send} />}
-                    classType='default'
-                    otherClass={`send__button ${!btnDisabled ? "active" : ""}`}
-                    disabled={btnDisabled || fetchingInputStatus}
-                />
-            </form>
-            {errors?.file ||
-                (errorMssg && (
+            <form onSubmit={handleSubmit} id='chatInput'>
+                <div className='chat__input--container'>
+                    {upload?.file?.name && (
+                        <UploadPreview
+                            uploadPreview={
+                                uploadType === FILE
+                                    ? upload?.file?.name
+                                    : upload?.preview
+                            }
+                            status={status}
+                            uploadType={uploadType}
+                            handleRemoveFile={handleRemoveFile}
+                            handleRetry={() => {
+                                handleUpload(upload?.file, uploadType);
+                                setErrorMssg("");
+                            }}
+                            onClick={() => toggleModal(true)}
+                            disableClick={upload?.isLoading}
+                        />
+                    )}
+                    <div className='chat__input--group'>
+                        <UploadIcons
+                            upload={upload}
+                            updateUpload={updateUpload}
+                            isDisabled={isDisabled}
+                            setErrors={setErrors}
+                            sendNewMessage={sendNewMessage}
+                            uploadType={uploadType}
+                            setUploadType={setUploadType}
+                            showModal={showModal}
+                            toggleModal={toggleModal}
+                            handleUpload={handleUpload}
+                        />
+                        {renderBasedOnInputType()}
+                        <Button
+                            type='submit'
+                            text={"Send"}
+                            icon={<ReactSVG src={imageLinks?.svg?.send} />}
+                            classType='default'
+                            otherClass={`send__button ${
+                                !btnDisabled ? "active" : ""
+                            }`}
+                            disabled={btnDisabled || fetchingInputStatus}
+                        />
+                    </div>
+                </div>
+                {(errors?.file || errorMssg) && (
                     <span className='file__error'>
                         {errors?.file || errorMssg}
                     </span>
-                ))}
+                )}
+            </form>
             <PoweredBy />
         </div>
     );

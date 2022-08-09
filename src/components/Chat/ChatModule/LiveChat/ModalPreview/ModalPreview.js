@@ -1,6 +1,5 @@
 import { Modal } from "../../../../ui/Modal/Modal";
 import { IMAGE, FILE, VIDEO } from "../LiveChatInput/UploadIcons/enum";
-import { getFileFormat } from "../../../../../utils/helper";
 import { Button } from "../../../../ui";
 import "./ModalPreview.scss";
 
@@ -26,20 +25,13 @@ const ModalPreview = ({
             case FILE:
                 return (
                     <div className='preview__file'>
-                        {getFileFormat(fileName) === "pdf" ? (
-                            <embed
-                                type=''
-                                src={`${preview}#scrollbar=0&toolbar=0&navpanes=0`}
-                                className='preview__file'
-                            />
-                        ) : (
-                            <iframe
-                                style={{ width: "900px", height: "900px" }}
-                                src='http://docs.google.com/gview?url=https://test-account-service.s3.amazonaws.com/agentInbox/2613476289/887f698d-d883-4bea-9dad-b6ade5696064.vnd.openxmlformats-officedocument.wordprocessingml.document&embedded=true'
-                                height='240'
-                                width='320'
-                                frameborder='0'></iframe>
-                        )}
+                        <iframe
+                            src={`https://docs.google.com/gview?url=${preview}&embedded=true`}
+                            width='100%'
+                            height='100%'
+                            frameborder='0'
+                            title={fileName}
+                            sandbox='allow-orientation-lock allow-pointer-lock allow-popups	allow-popups-to-escape-sandbox	allow-presentation	allow-same-origin	allow-scripts	allow-top-navigation allow-top-navigation-by-user-activation'></iframe>
                     </div>
                 );
             case VIDEO:
@@ -64,10 +56,12 @@ const ModalPreview = ({
             <div className='modal__preview--container'>
                 {renderBasedOnPreviewType()}
             </div>
-            <div className='custom__modal__footer'>
-                <Button text='Cancel' onClick={handleRemoveFile} />
-                <Button text='Upload' onClick={sendNewMessage} />
-            </div>
+            {sendNewMessage && (
+                <div className='custom__modal__footer'>
+                    <Button text='Cancel' onClick={handleRemoveFile} />
+                    <Button text='Upload' onClick={sendNewMessage} />
+                </div>
+            )}
         </Modal>
     );
 };

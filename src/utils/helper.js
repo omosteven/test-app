@@ -61,3 +61,11 @@ export const getFileFormat = (fileName) => {
     const splitted = fileName?.split(".");
     return splitted[splitted?.length - 1];
 };
+
+export const truncate = (str, len = 50) => {
+    if (str?.length > len) {
+        return str?.substring(0, len) + "...";
+    } else {
+        return str;
+    }
+};

@@ -14,6 +14,7 @@ const UploadPreview = ({
     handleRemoveFile,
     handleRetry,
     onClick,
+    disableClick,
 }) => {
     const renderBasedOnStatus = () => {
         switch (status) {
@@ -57,14 +58,18 @@ const UploadPreview = ({
                     <img
                         src={uploadPreview}
                         alt='upload'
-                        className='upload__preview--media'
+                        className={`upload__preview--media ${
+                            disableClick ? `disabled` : ``
+                        }`}
                         onClick={onClick}
                     />
                 );
             case FILE:
                 return (
                     <div
-                        className='upload__preview--document'
+                        className={`upload__preview--document  ${
+                            disableClick ? `disabled` : ``
+                        }`}
                         onClick={onClick}>
                         <ReactSVG src={imageLinks?.svg?.document} />
                         <div className='details'>
@@ -76,7 +81,9 @@ const UploadPreview = ({
             case VIDEO:
                 return (
                     <div
-                        className='upload__preview--media__container'
+                        className={`upload__preview--media__container  ${
+                            disableClick ? `disabled` : ``
+                        }`}
                         onClick={onClick}>
                         <video className='upload__preview--media'>
                             <source src={uploadPreview} />
@@ -92,7 +99,9 @@ const UploadPreview = ({
                     <img
                         src={uploadPreview}
                         alt='upload'
-                        className='upload__preview--media'
+                        className={`upload__preview--media ${
+                            disableClick ? `disabled` : ``
+                        }`}
                         onClick={onClick}
                     />
                 );

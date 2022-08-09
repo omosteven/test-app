@@ -1,5 +1,6 @@
 .upload__preview {
     position: relative;
+    width: fit-content;
 
     &--icon {
         position: absolute;
@@ -36,6 +37,10 @@
     &--media__container {
         position: relative;
 
+        &.disabled {
+            pointer-events: none;
+        }
+
         .play {
             position: absolute;
             z-index: 2;
@@ -51,6 +56,10 @@
         object-fit: contain;
         border-radius: 0.25rem;
         cursor: pointer;
+
+        &.disabled {
+            pointer-events: none;
+        }
     }
 
     &--document {
@@ -63,6 +72,10 @@
         align-items: center;
         margin-bottom: 8px;
         cursor: pointer;
+
+        &.disabled {
+            pointer-events: none;
+        }
 
         .details{
             display: flex;
