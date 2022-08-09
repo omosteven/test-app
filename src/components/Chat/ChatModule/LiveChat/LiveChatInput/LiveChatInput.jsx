@@ -72,6 +72,7 @@ const LiveChatInput = ({
     const handleUpload = async (file, uploadType) => {
         try {
             setStatus(LOADING);
+            setErrorMssg("");
             updateUpload((prev) => ({ ...prev, isLoading: true }));
 
             const url = apiRoutes.fileUpload;
@@ -83,7 +84,6 @@ const LiveChatInput = ({
             if (res.status === 201) {
                 const { data } = res.data;
                 setStatus(DATAMODE);
-                console.log({ data });
 
                 updateUpload((prev) => ({
                     ...prev,
@@ -239,7 +239,7 @@ const LiveChatInput = ({
         upload?.preview?.length > 0
             ? upload?.isLoading
             : isDisabled || request?.message === "";
-    console?.log(upload);
+
     return (
         <div id='inputGroup' className='col-md-10 col-12'>
             {/* {showConvos && <SuggestedConvos data={suggestedList} handleConvoClick={handleConvoClick} />} */}
@@ -255,12 +255,11 @@ const LiveChatInput = ({
                             status={status}
                             uploadType={uploadType}
                             handleRemoveFile={handleRemoveFile}
-                            handleRetry={() => {
-                                handleUpload(upload?.file, uploadType);
-                                setErrorMssg("");
-                            }}
+                            handleRetry={() =>
+                                handleUpload(upload?.file, uploadType)
+                            }
                             onClick={() => toggleModal(true)}
-                            disableClick={upload?.isLoading}
+                            disableClick={status !== DATAMODE}
                         />
                     )}
                     <div className='chat__input--group'>

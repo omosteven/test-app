@@ -66,14 +66,14 @@ const UploadIcons = ({
                     src={imageLinks?.svg?.attachment}
                     accept='.pdf,.doc,.docx,video/*'
                     onChange={uploadFile}
-                    // disabled={isDisabled}
+                    disabled={isDisabled}
                 />
                 <AttachmentInput
                     id='image'
                     src={imageLinks?.svg?.upload_image}
                     accept='image/png,image/jpeg,image/jpg'
                     onChange={uploadFile}
-                    // disabled={isDisabled}
+                    disabled={isDisabled}
                 />
             </div>
             {showModal && (

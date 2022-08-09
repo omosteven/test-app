@@ -9,6 +9,15 @@
         z-index: 2;
         top: -10px;
 
+        &.retry {
+            svg {
+                height: 15px;
+                width: 15px;
+                background: rgba(225, 225, 235, 0.8);
+                border-radius: 100%;
+            }
+        }
+
         &.loading {
             &  svg {
                 height: 15px;

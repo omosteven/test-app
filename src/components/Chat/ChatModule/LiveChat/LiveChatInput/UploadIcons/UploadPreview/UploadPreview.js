@@ -37,7 +37,7 @@ const UploadPreview = ({
                 return (
                     <ReactSVG
                         src={imageLinks?.svg?.retry}
-                        className='upload__preview--icon'
+                        className='upload__preview--icon retry'
                         onClick={handleRetry}
                     />
                 );
