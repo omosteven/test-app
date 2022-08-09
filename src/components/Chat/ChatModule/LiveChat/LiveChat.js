@@ -125,24 +125,21 @@ const LiveChat = ({ getCustomerTickets }) => {
         dispatch(setTicketMessages(newMessageList));
         triggerAgentTyping(true);
 
-        socket.emit(NEW_TEST_TICKET, { ticketId });
-        socket
-            .timeout(1000)
-            .emit(
-                SEND_CUSTOMER_CONVERSATION_REPLY,
-                { ticketId, conversationId },
-                (err) => {
-                    if (err) {
-                        triggerAgentTyping(false);
-                        // const freshMessageList = (messages).map((x) => {
-                        //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
-                        // })
-                        console.log("Encountered error");
-                    } else {
-                        triggerAgentTyping(false);
-                    }
+        socket.emit(
+            SEND_CUSTOMER_CONVERSATION_REPLY,
+            { ticketId, conversationId, message: branchOptionLabel },
+            (err) => {
+                if (err) {
+                    triggerAgentTyping(false);
+                    // const freshMessageList = (messages).map((x) => {
+                    //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
+                    // })
+                    console.log("Encountered error");
+                } else {
+                    triggerAgentTyping(false);
                 }
-            );
+            }
+        );
     };
 
     const handleMessageOptionSelect = async (messageOption) => {
@@ -400,6 +397,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             });
             if (res.status === 200) {
                 const { data } = res.data;
+                console.log({ data });
                 const compMessageId = "smartConvos";
                 let messageOptions = data?.map(
                     ({ conversationId, conversationTitle }) => ({
