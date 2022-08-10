@@ -108,14 +108,15 @@ const LiveChatInput = ({
                 }));
             }
         } catch (err) {
-            setStatus(ERROR);
+            const newStatus = err?.message ? "" : ERROR;
+            setStatus(newStatus);
             updateUpload((prev) => ({ ...prev, isLoading: false }));
             const message = getErrorMessage(err);
-            setErrorMssg(cancelRequest ? "" : message);
+            setErrorMssg(err?.message ? "" : message);
             setCancelRequest();
         }
     };
-
+    console.log({ status });
     const sendNewMessage = () => {
         handleNewMessage(request);
         updateRequest({
