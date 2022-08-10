@@ -50,10 +50,12 @@ const LiveChatInput = ({
     const [uploadType, setUploadType] = useState("");
     const [showModal, toggleModal] = useState(false);
     const isDisabled = fetchingInputStatus || !allowUserInput;
+    const [cancelRequest, setCancelRequest] = useState();
 
     const socket = useContext(SocketContext);
 
     const handleRemoveFile = () => {
+        cancelRequest?.abort();
         updateUpload({
             preview: "",
             file: "",
@@ -73,13 +75,19 @@ const LiveChatInput = ({
         try {
             setStatus(LOADING);
             setErrorMssg("");
+            let httpRequest = new AbortController();
+
+            setCancelRequest(httpRequest);
+
             updateUpload((prev) => ({ ...prev, isLoading: true }));
 
             const url = apiRoutes.fileUpload;
             const formData = new FormData();
 
             formData.append("file", file);
-            const res = await API.post(url, formData);
+            const res = await API.post(url, formData, {
+                signal: httpRequest?.signal,
+            });
 
             if (res.status === 201) {
                 const { data } = res.data;
@@ -103,7 +111,8 @@ const LiveChatInput = ({
             setStatus(ERROR);
             updateUpload((prev) => ({ ...prev, isLoading: false }));
             const message = getErrorMessage(err);
-            setErrorMssg(message);
+            setErrorMssg(cancelRequest ? "" : message);
+            setCancelRequest();
         }
     };
 
@@ -274,6 +283,7 @@ const LiveChatInput = ({
                             showModal={showModal}
                             toggleModal={toggleModal}
                             handleUpload={handleUpload}
+                            file={upload?.file}
                         />
                         {renderBasedOnInputType()}
                         <Button
