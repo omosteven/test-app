@@ -23,6 +23,7 @@ const UploadPreview = ({
                     <ReactSVG
                         src={imageLinks?.svg?.loading}
                         className='upload__preview--icon loading'
+                        onClick={handleRemoveFile}
                     />
                 );
             case DATAMODE:
