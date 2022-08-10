@@ -35,7 +35,8 @@ const imageLinks = {
         play: "https://res.cloudinary.com/metacare/image/upload/v1659960678/icons/play_e7fdhn.svg",
         loading:
             "https://res.cloudinary.com/metacare/image/upload/v1659970761/icons/loading_c47v6s.svg",
-        retry: "https://res.cloudinary.com/metacare/image/upload/v1657283767/icons/Group_1000003068_ycvxrb.svg",
+        retry: "https://res.cloudinary.com/metacare/image/upload/v1660125326/icons/Group_1000003017_h4hzpp.svg",
+        abort: "https://res.cloudinary.com/metacare/image/upload/v1660125321/icons/Group_1000003016_qnwr0r.svg",
     },
 };
 

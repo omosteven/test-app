@@ -33,21 +33,8 @@ const UploadPreview = ({
                         onClick={handleRemoveFile}
                     />
                 );
-            case ERROR:
-                return (
-                    <ReactSVG
-                        src={imageLinks?.svg?.retry}
-                        className='upload__preview--icon retry'
-                        onClick={handleRetry}
-                    />
-                );
             default:
-                return (
-                    <ReactSVG
-                        src={imageLinks?.svg?.loading}
-                        className='upload__preview--icon'
-                    />
-                );
+                return "";
         }
     };
 
@@ -113,6 +100,18 @@ const UploadPreview = ({
             <div className='upload__preview'>
                 {renderBasedOnStatus()}
                 {renderBasedOnUploadType()}
+                {status === ERROR && (
+                    <div className='upload__preview--error__group'>
+                        <ReactSVG
+                            src={imageLinks?.svg?.retry}
+                            onClick={handleRetry}
+                        />
+                        <ReactSVG
+                            src={imageLinks?.svg?.abort}
+                            onClick={handleRemoveFile}
+                        />
+                    </div>
+                )}
             </div>
         </>
     );
