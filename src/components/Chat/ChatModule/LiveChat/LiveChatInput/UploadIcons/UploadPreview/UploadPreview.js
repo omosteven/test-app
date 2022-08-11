@@ -4,6 +4,7 @@ import { IMAGE, FILE, VIDEO } from "../enum";
 import { dataQueryStatus } from "../../../../../../../utils/formatHandlers";
 import { getFileFormat } from "../../../../../../../utils/helper";
 import "./UploadPreview.scss";
+import { useState } from "react";
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
@@ -16,15 +17,28 @@ const UploadPreview = ({
     onClick,
     disableClick,
 }) => {
+    const [isCancellable, setIsCancellable] = useState(false);
+
     const renderBasedOnStatus = () => {
         switch (status) {
             case LOADING:
                 return (
-                    <ReactSVG
-                        src={imageLinks?.svg?.loading}
-                        className='upload__preview--icon loading'
-                        onClick={handleRemoveFile}
-                    />
+                    <div
+                        onMouseOver={() => setIsCancellable(true)}
+                        onMouseOut={() => setIsCancellable(false)}>
+                        {!isCancellable ? (
+                            <ReactSVG
+                                src={imageLinks?.svg?.loading}
+                                className='upload__preview--icon loading'
+                            />
+                        ) : (
+                            <ReactSVG
+                                src={imageLinks?.svg?.remove}
+                                className='upload__preview--icon'
+                                onClick={handleRemoveFile}
+                            />
+                        )}
+                    </div>
                 );
             case DATAMODE:
                 return (
