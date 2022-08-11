@@ -20,15 +20,14 @@ const Chat = () => {
     const [status, setStatus] = useState("");
     const [errorMssg, setErrorMssg] = useState("");
     const dispatch = useDispatch();
-    const { activeTicket } = useSelector(state => state.tickets)
+    const { activeTicket } = useSelector((state) => state.tickets);
     const selectedTicket = activeTicket;
     const [customerTickets, setCustomerTickets] = useState([]);
     // const [selectedTicket, setSelectedTicket] = useState();
 
-    
     const getCustomerTickets = async (ticketId) => {
         try {
-            dispatch(setActiveTicket())
+            dispatch(setActiveTicket());
 
             setStatus(LOADING);
             setErrorMssg();
@@ -38,9 +37,18 @@ const Chat = () => {
                 const tickets = res.data.data;
                 if (tickets.length > 0) {
                     setCustomerTickets(tickets);
-                    const {ticketId:prevSelectedId} = activeTicket || {};
-                    const newTicket = ticketId ? tickets?.find((x) => x.ticketId === ticketId) :  prevSelectedId ? tickets?.find((x) => x.ticketId === prevSelectedId): tickets[0];
-                    dispatch(setActiveTicket({...newTicket, activeConvoSuggestion: false}))
+                    const { ticketId: prevSelectedId } = activeTicket || {};
+                    const newTicket = ticketId
+                        ? tickets?.find((x) => x.ticketId === ticketId)
+                        : prevSelectedId
+                        ? tickets?.find((x) => x.ticketId === prevSelectedId)
+                        : tickets[0];
+                    dispatch(
+                        setActiveTicket({
+                            ...newTicket,
+                            activeConvoSuggestion: false,
+                        })
+                    );
                     setStatus(DATAMODE);
                 } else {
                     setStatus(NULLMODE);
@@ -54,14 +62,14 @@ const Chat = () => {
     };
 
     const handleTicketModalAction = () => {
-        toggleTicketActionModal(true)
-    }
+        toggleTicketActionModal(true);
+    };
 
     const handleTicketCloseSuccess = () => {
         dispatch(setActiveTicket());
         getCustomerTickets();
-        toggleTicketActionModal(false)
-    }
+        toggleTicketActionModal(false);
+    };
 
     const createNewTicket = async () => {
         try {
@@ -69,21 +77,20 @@ const Chat = () => {
             setErrorMssg();
             const url = apiRoutes?.createTicket;
             const res = await API.post(url, {
-                userToken: retriveAccessToken()
+                userToken: retriveAccessToken(),
             });
             if (res.status === 201) {
                 const { ticketId } = res.data.data;
-                getCustomerTickets(ticketId)
+                getCustomerTickets(ticketId);
             }
-
         } catch (err) {
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
         }
-    }
+    };
 
     const handleTicketSelect = (ticket) => {
-        dispatch(setActiveTicket(ticket))
+        dispatch(setActiveTicket(ticket));
     };
 
     useEffect(() => {
@@ -94,12 +101,11 @@ const Chat = () => {
     return (
         <>
             <SocketContext.Provider value={socket}>
-                <div className="row justify-content-center h-100">
-                    <div className="col-md-10 col-12">
-                        <div className="chat__container">
+                <div className='row justify-content-center h-100'>
+                    <div className='col-md-10 col-12'>
+                        <div className='chat__container'>
                             <ChatHeader
-                                {
-                                ...{
+                                {...{
                                     status,
                                     errorMssg,
                                     handleTicketSelect,
@@ -107,40 +113,49 @@ const Chat = () => {
                                     selectedTicket,
                                     createNewTicket,
                                     getCustomerTickets,
-                                    handleTicketModalAction
-                                }
-                                }
+                                    handleTicketModalAction,
+                                }}
                             />
-                            {selectedTicket.ticketId ?
+                            {selectedTicket.ticketId ? (
                                 <ChatModule
                                     key={selectedTicket?.ticketId}
                                     ticket={selectedTicket}
                                     getCustomerTickets={getCustomerTickets}
                                 />
-                                : <div className="empty__chat--interface">
-                                    <div className="empty__group">
-                                        <Empty message={`No conversation opened yet, click on any conversation on the sidebar \n to continue or start a new conversation`} />
-                                        <div className="d-sm-none w-100">
-                                            <div className="row justify-content-center">
-                                                <div className="col-md-10">
-                                                    <NewTicketButton handleClick={createNewTicket} otherClassNames={'large'} />
+                            ) : (
+                                <div className='empty__chat--interface'>
+                                    <div className='empty__group'>
+                                        <Empty
+                                            message={`No conversation opened yet, click on any conversation on the sidebar \n to continue or start a new conversation`}
+                                        />
+                                        <div className='d-sm-none w-100'>
+                                            <div className='row justify-content-center'>
+                                                <div className='col-md-10'>
+                                                    <NewTicketButton
+                                                        handleClick={
+                                                            createNewTicket
+                                                        }
+                                                        otherClassNames={
+                                                            "large"
+                                                        }
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            }
+                            )}
                         </div>
                     </div>
                 </div>
-                {
-                    showTictketActionModal && <ConfirmCloseChatModal 
+                {showTictketActionModal && (
+                    <ConfirmCloseChatModal
                         show={showTictketActionModal}
                         toggle={() => toggleTicketActionModal(false)}
                         referenceData={selectedTicket}
                         handleSuccess={handleTicketCloseSuccess}
                     />
-                }
+                )}
             </SocketContext.Provider>
         </>
     );

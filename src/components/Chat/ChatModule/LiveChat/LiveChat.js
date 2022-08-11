@@ -128,7 +128,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         socket.emit(
             SEND_CUSTOMER_CONVERSATION_REPLY,
             { ticketId, conversationId, message: branchOptionLabel },
-            (err) => {
+            (err, data) => {
                 if (err) {
                     triggerAgentTyping(false);
                     // const freshMessageList = (messages).map((x) => {
