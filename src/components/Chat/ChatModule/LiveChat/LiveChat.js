@@ -315,6 +315,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     ticketId,
                     message: request?.message,
                     messageType: DEFAULT,
+                    fileAttachments: [{ ...request?.fileAttachment }],
                 },
                 async (err) => {
                     if (err) {
@@ -397,7 +398,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             });
             if (res.status === 200) {
                 const { data } = res.data;
-                console.log({ data });
+
                 const compMessageId = "smartConvos";
                 let messageOptions = data?.map(
                     ({ conversationId, conversationTitle }) => ({
@@ -442,7 +443,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                 triggerAgentTyping(false);
             }
         } catch (err) {
-            console.log(err);
             triggerAgentTyping(false);
             setActiveConvo(false);
         }

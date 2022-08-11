@@ -16,7 +16,7 @@ const UploadIcons = ({
     showModal,
     toggleModal,
     handleUpload,
-    file
+    file,
 }) => {
     const getFileFormat = (fileType) => {
         if (fileType?.startsWith("image/")) {
@@ -65,15 +65,7 @@ const UploadIcons = ({
                 <AttachmentInput
                     id='file'
                     src={imageLinks?.svg?.attachment}
-                    accept='.pdf,.doc,.docx,video/*'
-                    onChange={uploadFile}
-                    disabled={isDisabled}
-                    file={file}
-                />
-                <AttachmentInput
-                    id='image'
-                    src={imageLinks?.svg?.upload_image}
-                    accept='image/png,image/jpeg,image/jpg'
+                    accept='.pdf,.doc,.docx,video/*,image/png,image/jpeg,image/jpg'
                     onChange={uploadFile}
                     disabled={isDisabled}
                     file={file}
