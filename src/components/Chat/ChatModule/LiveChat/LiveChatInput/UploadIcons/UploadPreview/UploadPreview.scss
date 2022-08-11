@@ -1,0 +1,112 @@
+.upload__preview {
+    position: relative;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    &--icon {
+        position: absolute;
+        right: -0.375rem;
+        cursor: pointer;
+        z-index: 2;
+        top: -10px;
+
+        &.loading {
+            &  svg {
+                height: 15px;
+                width: 15px;
+                background: rgba(225, 225, 235, 0.8);
+                border-radius: 100%;
+                animation-name: rotate;
+                animation-duration: 1.6s;
+                animation-timing-function: linear;
+                animation-iteration-count: infinite;
+              }
+            
+              @keyframes rotate {
+                0% {
+                  transform: rotate(0deg);
+                }
+                100% {
+                  transform: rotate(359deg);
+                }
+              }
+        }
+    }
+
+
+
+    &--media__container {
+        position: relative;
+        height: 3.5rem;
+
+        &.disabled {
+            pointer-events: none;
+        }
+
+        .play {
+            position: absolute;
+            z-index: 2;
+            top: 0.938rem;
+            left: 40%;
+            cursor: pointer;
+        }
+    }
+    
+    &--media {
+        width:4.521rem;
+        height: 3.5rem;
+        object-fit: contain;
+        border-radius: 0.25rem;
+        cursor: pointer;
+
+        &.disabled {
+            pointer-events: none;
+        }
+    }
+
+    &--document {
+        padding: 0.547rem 0.641rem;
+        background: rgba(217, 217, 217, 0.6);
+        border-radius: 0.25rem;
+        display: flex;
+        gap: 0.453rem;
+        width: max-content;
+        align-items: center;
+        cursor: pointer;
+
+        &.disabled {
+            pointer-events: none;
+        }
+
+        .details{
+            display: flex;
+            flex-direction: column;
+            
+                p {
+                    font-size: 10px;
+                    line-height: 10px;
+                    display: flex;
+                    align-items: center;
+                    margin: 0;
+                }
+
+                span {
+                    font-size: 7px;
+                    line-height: 9px;
+                    text-transform: uppercase;
+                }
+        }
+    }
+
+    &--error__group {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        svg {
+            cursor: pointer;
+        }
+    }
+}

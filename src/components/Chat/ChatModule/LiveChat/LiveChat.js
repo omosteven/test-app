@@ -32,6 +32,7 @@ import {
     setTicketMessages,
     updateTicketMessageStatus,
 } from "../../../../store/tickets/actions";
+
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
@@ -275,13 +276,13 @@ const LiveChat = ({ getCustomerTickets }) => {
         setFetchingInputStatus(false);
     };
 
-    const handleNewMessage = async (message) => {
+    const handleNewMessage = async (request) => {
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
             dispatch(
                 saveTicketsMessages({
                     ticketId,
-                    messageContent: message,
+                    messageContent: request?.message,
                     senderType: THIRD_USER,
                     messageContentId: generateID(),
                     messageType: messageTypes?.FORM_RESPONSE,
@@ -289,7 +290,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             );
             socket.timeout(5000).emit(FILL_FORM_RECORD, {
                 ticketId,
-                message,
+                message: request?.message,
                 currentFormOrder: order,
                 formElementId,
                 formId,
@@ -299,40 +300,43 @@ const LiveChat = ({ getCustomerTickets }) => {
             const messageEntry = {
                 ticketId,
                 senderType: THIRD_USER,
-                messageContent: message,
+                messageContent: request?.message,
                 messageContentId: newMessageId,
                 messageType: DEFAULT,
                 messageStatus: messageStatues?.SENDING,
                 suggestionRetryAttempt: 0,
+                fileAttachments: [{ ...request?.fileAttachment }],
             };
             dispatch(saveTicketsMessages(messageEntry));
 
-            await socket
-                .timeout(1000)
-                .emit(
-                    SEND_CUSTOMER_MESSAGE,
-                    { ticketId, message, messageType: DEFAULT },
-                    async (err) => {
-                        if (err) {
-                            // setStatus(ERROR);
-                            // setErrorMssg('Message not sent successfully');
-                            dispatch(
-                                updateTicketMessageStatus({
-                                    ...messageEntry,
-                                    messageStatus: messageStatues?.DELIVERED,
-                                })
-                            );
-                        } else {
-                            dispatch(
-                                updateTicketMessageStatus({
-                                    ...messageEntry,
-                                    messageStatus: messageStatues?.DELIVERED,
-                                })
-                            );
-                            // dispatch(updateTicketMessageStatus({ ticketId, messageId: newMessageId, messageStatus: messageStatues?.DELIVERED }))
-                        }
+            await socket.timeout(1000).emit(
+                SEND_CUSTOMER_MESSAGE,
+                {
+                    ticketId,
+                    message: request?.message,
+                    messageType: DEFAULT,
+                },
+                async (err) => {
+                    if (err) {
+                        // setStatus(ERROR);
+                        // setErrorMssg('Message not sent successfully');
+                        dispatch(
+                            updateTicketMessageStatus({
+                                ...messageEntry,
+                                messageStatus: messageStatues?.DELIVERED,
+                            })
+                        );
+                    } else {
+                        dispatch(
+                            updateTicketMessageStatus({
+                                ...messageEntry,
+                                messageStatus: messageStatues?.DELIVERED,
+                            })
+                        );
+                        // dispatch(updateTicketMessageStatus({ ticketId, messageId: newMessageId, messageStatus: messageStatues?.DELIVERED }))
                     }
-                );
+                }
+            );
         }
     };
 

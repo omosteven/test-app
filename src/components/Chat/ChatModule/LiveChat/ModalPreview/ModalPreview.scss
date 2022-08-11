@@ -1,0 +1,34 @@
+@import "../../../../../assets/scss/_include-media-lib/include-media";
+
+.modal__preview {
+    &--container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 90%;
+
+        .preview__media {
+            object-fit: contain;
+            height: auto;
+            width: 50%;
+            border-radius: 10px;
+            margin: 0 10px;
+
+            @include media("<=medium-screen") {
+                width: 90%;
+            }
+        }
+
+        .preview__file {
+            height: 100%;
+            width: 100%;
+        }
+    }
+}
+
+.custom__modal__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #F8F8FA;
+}

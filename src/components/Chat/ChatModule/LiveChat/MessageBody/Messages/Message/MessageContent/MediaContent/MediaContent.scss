@@ -1,0 +1,50 @@
+.content--media {
+    width: 100%;
+   
+    border-radius: 0.5rem 0.5rem 0 0;
+    cursor: pointer;
+
+    &.img {
+        object-fit: contain;
+        max-height: 13.75rem;
+    }
+
+    &.video {
+        height: auto;
+    }
+}
+
+.content--document {
+    padding: 0.75rem 0.688rem;
+    background: rgba(217, 217, 217, 0.6);
+    border-radius: 0.25rem 0.25rem 0 0;
+    display: flex;
+    gap: 0.453rem;
+    width: 100%;
+    align-items: center;
+    cursor: pointer;
+
+    svg {
+        width: 20px;
+        height: 24px;
+    }
+
+    .details{
+        display: flex;
+        flex-direction: column;
+        
+            p {
+                font-size: 12px;
+                line-height: 16px;
+                display: flex;
+                align-items: center;
+                margin: 0;
+            }
+
+            span {
+                font-size: 8px;
+                line-height: 12px;
+                text-transform: uppercase;
+            }
+    }
+}

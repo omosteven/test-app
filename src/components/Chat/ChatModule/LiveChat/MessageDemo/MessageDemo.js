@@ -1,13 +1,12 @@
-import { motion } from 'framer-motion'
-import Message from '../MessageBody/Messages/Message/Message'
+import { motion } from "framer-motion";
+import Message from "../MessageBody/Messages/Message/Message";
 
 const transition = {
-
-    type: 'spring',
+    type: "spring",
     stiffness: 200,
     mass: 0.2,
     damping: 20,
-}
+};
 
 const variants = {
     initial: {
@@ -19,13 +18,17 @@ const variants = {
         y: 0,
         transition,
     },
-}
+};
 
-const MessageDemo = ({ messages, agent, handleMessageOptionSelect, handleOptConversation }) => {
-
-
+const MessageDemo = ({
+    messages,
+    agent,
+    handleMessageOptionSelect,
+    handleOptConversation,
+    openPreviewModal,
+}) => {
     return (
-        <ol className='message-thread' >
+        <ol className='message-thread'>
             {messages.map((message, i) => {
                 //   const isLast = i === messages.length - 1
                 //   const noTail = !isLast && messages[i + 1]?.sent === sent
@@ -33,25 +36,27 @@ const MessageDemo = ({ messages, agent, handleMessageOptionSelect, handleOptConv
                     <motion.li
                         key={message?.messageContentId}
                         //   className={cn(styles.shared, sent ? styles.sent : styles.received, noTail && styles.noTail)}
-                        initial="initial"
-                        animate="enter"
+                        initial='initial'
+                        animate='enter'
                         variants={variants}
-                        transition={{ duration: 1,  delay: 1 }}
-                        layout
-                    >
+                        transition={{ duration: 1, delay: 1 }}
+                        layout>
                         <Message
                             messageIndex={i + 1}
                             messagesDepth={messages?.length}
                             data={message}
                             agent={agent}
-                            handleMessageOptionSelect={handleMessageOptionSelect}
+                            handleMessageOptionSelect={
+                                handleMessageOptionSelect
+                            }
                             handleOptConversation={handleOptConversation}
+                            openPreviewModal={openPreviewModal}
                         />
                     </motion.li>
-                )
+                );
             })}
         </ol>
-    )
-}
+    );
+};
 
 export default MessageDemo;
