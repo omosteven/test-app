@@ -10,7 +10,7 @@ export const loadState = async () => {
     }
 };
 
-export const saveState = state => {
+export const saveState = (state) => {
     try {
         const serializedState = JSON.stringify(state);
         sessionStorage.setItem("state", serializedState);
@@ -21,7 +21,7 @@ export const saveState = state => {
 
 export const retriveAccessToken = () => {
     try {
-        const serializedState = sessionStorage["accessToken"];
+        const serializedState = sessionStorage.getItem("accessToken");
         if (serializedState === null) {
             return undefined;
         }
@@ -42,4 +42,3 @@ export const retriveRefreshToken = () => {
         return undefined;
     }
 };
-
