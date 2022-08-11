@@ -84,29 +84,29 @@ const LiveChatInput = ({
             const url = apiRoutes.fileUpload;
             const formData = new FormData();
 
-            // formData.append("file", file);
-            // const res = await API.post(url, formData, {
-            //     signal: httpRequest?.signal,
-            // });
+            formData.append("file", file);
+            const res = await API.post(url, formData, {
+                signal: httpRequest?.signal,
+            });
 
-            // if (res.status === 201) {
-            //     const { data } = res.data;
-            //     setStatus(DATAMODE);
+            if (res.status === 201) {
+                const { data } = res.data;
+                setStatus(DATAMODE);
 
-            //     updateUpload((prev) => ({
-            //         ...prev,
-            //         preview: data,
-            //         isLoading: false,
-            //     }));
-            //     updateRequest((prev) => ({
-            //         ...prev,
-            //         fileAttachment: {
-            //             fileAttachmentUrl: data,
-            //             fileAttachmentType: uploadType,
-            //             fileAttachmentName: file?.name,
-            //         },
-            //     }));
-            // }
+                updateUpload((prev) => ({
+                    ...prev,
+                    preview: data,
+                    isLoading: false,
+                }));
+                updateRequest((prev) => ({
+                    ...prev,
+                    fileAttachment: {
+                        fileAttachmentUrl: data,
+                        fileAttachmentType: uploadType,
+                        fileAttachmentName: file?.name,
+                    },
+                }));
+            }
         } catch (err) {
             const newStatus = err?.message ? "" : ERROR;
             setStatus(newStatus);
