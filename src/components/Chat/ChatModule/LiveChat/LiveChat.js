@@ -84,11 +84,15 @@ const LiveChat = ({ getCustomerTickets }) => {
             if (res.status === 200) {
                 setStatus(DATAMODE);
                 const { data } = res.data;
+
                 const messagesArr = data.map((x) => ({
                     ...x,
                     ticketId,
                     suggestionRetryAttempt: 0,
                     messageStatus: messageStatues?.DELIVERED,
+                    messageContentId: x?.messageContentId
+                        ? x?.messageContentId
+                        : x?.deliveryDate,
                 }));
                 dispatch(setTicketMessages(messagesArr));
             }
