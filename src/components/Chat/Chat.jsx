@@ -1,15 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import API from "../../lib/api";
 import apiRoutes from "../../lib/api/apiRoutes";
+import { onMessageListener } from "../../lib/firebase/firebase";
 import { socket, SocketContext } from "../../lib/socket/context/socket";
 import { retriveAccessToken } from "../../storage/sessionStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
 import { getErrorMessage } from "../../utils/helper";
 import Empty from "../common/Empty/Empty";
+import { ToastContext } from "../common/Toast/context/ToastContextProvider";
 import ChatHeader from "./ChatModule/ChatHeader/ChatHeader";
 import ChatModule from "./ChatModule/ChatModule";
+import ChatToastNotification from "./ChatToastNotification/ChatToastNotification";
 import ConfirmCloseChatModal from "./ConfirmCloseChatModal/ConfirmCloseChatModal";
 import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/NewTicketButton/NewTicketButton";
 
@@ -92,6 +95,20 @@ const Chat = () => {
     const handleTicketSelect = (ticket) => {
         dispatch(setActiveTicket(ticket));
     };
+
+    const toastMessage = useContext(ToastContext);
+
+    const toastNotification = ({ title, body }) => {
+        toastMessage(<ChatToastNotification {...{ title, body }} />);
+    };
+
+    onMessageListener()
+        .then((payload) => {
+            const { notification, data } = payload;
+            console.log("payload", payload);
+            toastNotification(notification);
+        })
+        .catch((err) => console.log("failed: ", err));
 
     useEffect(() => {
         getCustomerTickets();

@@ -1,5 +1,5 @@
 import { useCallback, createContext } from "react";
-import { toast, ToastContainer } from 'react-nextjs-toast'
+import { toast, ToastContainer }  from "react-toasts";
 import { dataQueryStatus } from "../../../../utils/formatHandlers";
 
 export const ToastContext = createContext();
