@@ -10,6 +10,7 @@ import { dataQueryStatus } from "../../utils/formatHandlers";
 import { getErrorMessage } from "../../utils/helper";
 import Empty from "../common/Empty/Empty";
 import { ToastContext } from "../common/Toast/context/ToastContextProvider";
+
 import ChatHeader from "./ChatModule/ChatHeader/ChatHeader";
 import ChatModule from "./ChatModule/ChatModule";
 import ChatToastNotification from "./ChatToastNotification/ChatToastNotification";
@@ -23,7 +24,11 @@ const Chat = () => {
     const [status, setStatus] = useState("");
     const [errorMssg, setErrorMssg] = useState("");
     const dispatch = useDispatch();
+
+    const toastMessage = useContext(ToastContext);
+
     const { activeTicket } = useSelector((state) => state.tickets);
+
     const selectedTicket = activeTicket;
     const [customerTickets, setCustomerTickets] = useState([]);
     // const [selectedTicket, setSelectedTicket] = useState();
@@ -96,16 +101,13 @@ const Chat = () => {
         dispatch(setActiveTicket(ticket));
     };
 
-    const toastMessage = useContext(ToastContext);
-
     const toastNotification = ({ title, body }) => {
         toastMessage(<ChatToastNotification {...{ title, body }} />);
     };
 
     onMessageListener()
         .then((payload) => {
-            const { notification, data } = payload;
-            console.log("payload", payload);
+            const { notification } = payload;
             toastNotification(notification);
         })
         .catch((err) => console.log("failed: ", err));

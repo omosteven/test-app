@@ -37,6 +37,11 @@ const imageLinks = {
             "https://res.cloudinary.com/metacare/image/upload/v1659970761/icons/loading_c47v6s.svg",
         retry: "https://res.cloudinary.com/metacare/image/upload/v1660125326/icons/Group_1000003017_h4hzpp.svg",
         abort: "https://res.cloudinary.com/metacare/image/upload/v1660125321/icons/Group_1000003016_qnwr0r.svg",
+        mssgAlert:
+            "https://res.cloudinary.com/metacare/image/upload/v1642340068/icons/icon_rbefsu.svg",
+        check: "https://res.cloudinary.com/metacare/image/upload/v1642340363/icons/icon_yfq9tn.svg",
+        cancelX:
+            "https://res.cloudinary.com/metacare/image/upload/v1642338302/icons/icon_x3uj2c.svg",
     },
 };
 
