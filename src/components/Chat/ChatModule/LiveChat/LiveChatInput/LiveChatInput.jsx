@@ -116,7 +116,7 @@ const LiveChatInput = ({
             setCancelRequest();
         }
     };
-    console.log({ status });
+
     const sendNewMessage = () => {
         handleNewMessage(request);
         updateRequest({

@@ -37,7 +37,7 @@ const MediaContent = ({ attachment, openPreviewModal }) => {
                             </div>
                         </div>
                         <iframe
-                            src={`https://docs.google.com/gview?url=https://test-account-service.s3.us-east-2.amazonaws.com/agentInbox/2613476289/d8baf951-31d7-41d8-b2b7-7c7912322c1e.pdf&embedded=true`}
+                            src={`https://docs.google.com/gview?url=${fileAttachmentUrl}&embedded=true`}
                             width='100%'
                             height='100%'
                             frameborder='1'

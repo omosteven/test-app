@@ -8,7 +8,6 @@ import {
     SEND_BRANCH_OPTION,
     SEND_CUSTOMER_CONVERSATION_REPLY,
     SEND_CUSTOMER_MESSAGE,
-    NEW_TEST_TICKET,
 } from "../../../../lib/socket/events";
 import { dataQueryStatus } from "../../../../utils/formatHandlers";
 import { generateID, getErrorMessage } from "../../../../utils/helper";
@@ -84,11 +83,15 @@ const LiveChat = ({ getCustomerTickets }) => {
             if (res.status === 200) {
                 setStatus(DATAMODE);
                 const { data } = res.data;
+
                 const messagesArr = data.map((x) => ({
                     ...x,
                     ticketId,
                     suggestionRetryAttempt: 0,
                     messageStatus: messageStatues?.DELIVERED,
+                    messageContentId: x?.messageContentId
+                        ? x?.messageContentId
+                        : x?.deliveryDate,
                 }));
                 dispatch(setTicketMessages(messagesArr));
             }
@@ -315,6 +318,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     ticketId,
                     message: request?.message,
                     messageType: DEFAULT,
+                    fileAttachments: [{ ...request?.fileAttachment }],
                 },
                 async (err) => {
                     if (err) {
@@ -397,7 +401,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             });
             if (res.status === 200) {
                 const { data } = res.data;
-                console.log({ data });
+
                 const compMessageId = "smartConvos";
                 let messageOptions = data?.map(
                     ({ conversationId, conversationTitle }) => ({
@@ -442,7 +446,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                 triggerAgentTyping(false);
             }
         } catch (err) {
-            console.log(err);
             triggerAgentTyping(false);
             setActiveConvo(false);
         }
@@ -503,7 +506,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         figureInputAction();
         processIssueDiscovery();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [messages]);
+    }, [ticketsMessages]);
 
     return (
         <>

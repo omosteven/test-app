@@ -8,7 +8,7 @@ const AttachmentInput = ({ id, src, accept, onChange, disabled, file }) => {
             <input
                 type='file'
                 id={id}
-                name='image'
+                name='file'
                 onChange={onChange}
                 accept={accept}
                 hidden
