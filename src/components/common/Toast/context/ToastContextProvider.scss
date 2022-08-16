@@ -1,3 +1,7 @@
+@import "../../../../assets/scss/master";
+
+$toast-background: rgba($pending__theme_color, 0.04);
+
 .toasts-container {
     .toast {
         border-radius: 5px;
@@ -24,7 +28,7 @@
             width: 4rem;
             height: 4.188rem;
             margin-left: 0rem;
-            background: rgba(0, 102, 245, 0.04) !important;
+            background-color: $toast-background;
             border-width: 1px 0px 1px 1px !important;
             display: flex;
             justify-content: center;
@@ -40,7 +44,7 @@
             h6 {
                 font-size: 0.75rem;
                 line-height: 0.79rem;
-                color: #0066f5;
+                color: $primary__theme_color;
             }
             p {
                 font-size: 0.625rem;
@@ -55,10 +59,12 @@
             justify-content: center;
             align-items: center;
         }
-        // .toast-info__logo {
-        //     // color: #0066f5 !important;
-        //     // background-color: #0066f5 !important;
-        // }
+        .toast-info__logo {
+            path {
+                fill: $primary__theme_color;
+            }
+        }
+
         .toast-cancel__logo {
             color: #484848 !important;
             cursor: pointer;

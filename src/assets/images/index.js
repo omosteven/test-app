@@ -42,6 +42,8 @@ const imageLinks = {
         check: "https://res.cloudinary.com/metacare/image/upload/v1642340363/icons/icon_yfq9tn.svg",
         cancelX:
             "https://res.cloudinary.com/metacare/image/upload/v1642338302/icons/icon_x3uj2c.svg",
+        plainInfo:
+            "https://res.cloudinary.com/metacare/image/upload/v1660640291/icons/InfoIcon_c4osdm.svg",
     },
 };
 

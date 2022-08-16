@@ -1,4 +1,4 @@
-import { useCallback, createContext } from "react";
+import { useCallback, createContext, useState } from "react";
 import {
     ToastsContainer,
     ToastsContainerPosition,
@@ -11,6 +11,12 @@ import "./ToastContextProvider.scss";
 export const ToastContext = createContext();
 
 const ToastContextProvider = ({ children }) => {
+    const [timeOut, setTimeOut] = useState(5000);
+
+    const handleClose = () => {
+        setTimeOut(0);
+    };
+
     const toastMessage = useCallback(function (message, type) {
         let messageValueType = typeof message;
         if (messageValueType === "array") {
@@ -19,13 +25,21 @@ const ToastContextProvider = ({ children }) => {
 
         if (type === dataQueryStatus.ERROR) {
             ToastsStore.error(
-                <ToastContent message={message} isError={true} />,
-                5000
+                <ToastContent
+                    message={message}
+                    isError={true}
+                    handleClose={handleClose}
+                />,
+                timeOut
             );
         } else {
             ToastsStore.success(
-                <ToastContent message={message} isError={false} />,
-                5000
+                <ToastContent
+                    message={message}
+                    isError={false}
+                    handleClose={handleClose}
+                />,
+                timeOut
             );
         }
     });

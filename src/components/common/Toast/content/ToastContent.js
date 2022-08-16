@@ -1,7 +1,7 @@
 import imageLinks from "../../../../assets/images";
 import { ReactSVG } from "react-svg";
 
-const ToastContent = ({ message, isError }) => {
+const ToastContent = ({ message, isError, handleClose }) => {
     return (
         <>
             <div className='toast-content'>
@@ -10,7 +10,7 @@ const ToastContent = ({ message, isError }) => {
                         src={
                             isError
                                 ? imageLinks.svg?.mssgAlert
-                                : imageLinks.svg?.info
+                                : imageLinks.svg?.plainInfo
                         }
                         className={"toast-info__logo"}
                     />
@@ -18,7 +18,9 @@ const ToastContent = ({ message, isError }) => {
                 <div className='toast-content-message'>
                     <span>{message}</span>
                 </div>
-                <div className='toast-content-rightside'>
+                <div
+                    className='toast-content-rightside'
+                    onClick={() => handleClose()}>
                     <ReactSVG
                         src={imageLinks.svg?.cancelX}
                         className='toast-cancel__logo'

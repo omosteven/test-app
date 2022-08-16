@@ -8,7 +8,6 @@ export const getDevicePushToken = () => {
         vapidKey: config.firebase.VAPIDKEY,
     })
         .then((currentToken) => {
-            console.log("curren token", currentToken);
             if (currentToken) {
                 return currentToken;
             } else {
@@ -16,7 +15,6 @@ export const getDevicePushToken = () => {
             }
         })
         .catch((err) => {
-            console.log("curren error", err);
             return null;
         });
 };
