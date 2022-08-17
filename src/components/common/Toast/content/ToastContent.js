@@ -1,25 +1,31 @@
-// import imageLinks from "assets/images";
-// import { ReactSVG } from "react-svg";
+import imageLinks from "../../../../assets/images";
+import { ReactSVG } from "react-svg";
 
-const ToastContent = ({ message, isError }) => {
+const ToastContent = ({ message, isError, handleClose }) => {
     return (
         <>
-            <div className={`toast-content ${isError ? 'error' : ''}`}>
-                {/* <div>
+            <div className='toast-content'>
+                <div className='toast-content-leftside'>
                     <ReactSVG
                         src={
                             isError
-                                ? imageLinks.icons?.mssgAlert
-                                : imageLinks.icons?.check
+                                ? imageLinks.svg?.mssgAlert
+                                : imageLinks.svg?.plainInfo
                         }
+                        className={"toast-info__logo"}
                     />
-                </div> */}
+                </div>
                 <div className='toast-content-message'>
                     <span>{message}</span>
                 </div>
-                {/* <div>
-                    <ReactSVG src={imageLinks.icons?.cancel} />
-                </div> */}
+                <div
+                    className='toast-content-rightside'
+                    onClick={() => handleClose()}>
+                    <ReactSVG
+                        src={imageLinks.svg?.cancelX}
+                        className='toast-cancel__logo'
+                    />
+                </div>
             </div>
         </>
     );
