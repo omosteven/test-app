@@ -298,7 +298,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     senderType: THIRD_USER,
                     messageContentId: generateID(),
                     messageType: messageTypes?.FORM_RESPONSE,
-                    fileAttachments: [{ ...request?.fileAttachment }],
+                    fileAttachments: request?.fileAttachments,
                 })
             );
 
@@ -308,7 +308,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                 currentFormOrder: order,
                 formElementId,
                 formId,
-                fileAttachments: [{ ...request?.fileAttachment }],
+                fileAttachments: request?.fileAttachments,
             });
         } else {
             const newMessageId = generateID();
@@ -320,7 +320,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                 messageType: DEFAULT,
                 messageStatus: messageStatues?.SENDING,
                 suggestionRetryAttempt: 0,
-                fileAttachments: [{ ...request?.fileAttachment }],
+                fileAttachments: request?.fileAttachments,
             };
             dispatch(saveTicketsMessages(messageEntry));
 
@@ -330,7 +330,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     ticketId,
                     message: request?.message,
                     messageType: DEFAULT,
-                    fileAttachments: [{ ...request?.fileAttachment }],
+                    fileAttachments: request?.fileAttachments,
                 },
                 async (err) => {
                     if (err) {

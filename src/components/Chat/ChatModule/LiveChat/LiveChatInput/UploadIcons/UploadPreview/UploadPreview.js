@@ -9,17 +9,16 @@ import { useState } from "react";
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
 const UploadPreview = ({
-    uploadPreview,
+    upload,
     status,
-    uploadType,
     handleRemoveFile,
     handleRetry,
-    onClick,
+    maximize,
     disableClick,
 }) => {
     const [isCancellable, setIsCancellable] = useState(false);
 
-    const renderBasedOnStatus = () => {
+    const renderBasedOnStatus = (fileAttachmentName) => {
         switch (status) {
             case LOADING:
                 return (
@@ -35,7 +34,9 @@ const UploadPreview = ({
                             <ReactSVG
                                 src={imageLinks?.svg?.remove}
                                 className='upload__preview--icon'
-                                onClick={handleRemoveFile}
+                                onClick={() =>
+                                    handleRemoveFile(fileAttachmentName)
+                                }
                             />
                         )}
                     </div>
@@ -45,7 +46,7 @@ const UploadPreview = ({
                     <ReactSVG
                         src={imageLinks?.svg?.remove}
                         className='upload__preview--icon'
-                        onClick={handleRemoveFile}
+                        onClick={() => handleRemoveFile(fileAttachmentName)}
                     />
                 );
             default:
@@ -53,81 +54,188 @@ const UploadPreview = ({
         }
     };
 
-    const renderBasedOnUploadType = () => {
-        switch (uploadType) {
+    const renderBasedOnUploadType = (
+        fileAttachmentType,
+        fileAttachmentName,
+        fileAttachmentUrl
+    ) => {
+        console.log({
+            fileAttachmentType,
+            fileAttachmentName,
+            fileAttachmentUrl,
+        });
+        switch (fileAttachmentType) {
             case IMAGE:
                 return (
-                    <img
-                        src={uploadPreview}
-                        alt='upload'
-                        className={`upload__preview--media ${
-                            disableClick ? `disabled` : ``
-                        }`}
-                        onClick={onClick}
-                    />
+                    <>
+                        {renderBasedOnStatus(fileAttachmentName)}
+                        <img
+                            src={fileAttachmentUrl}
+                            alt='upload'
+                            className={`upload__preview--media ${
+                                disableClick ? `disabled` : ``
+                            }`}
+                            onClick={() =>
+                                maximize(
+                                    fileAttachmentType,
+                                    fileAttachmentName,
+                                    fileAttachmentUrl
+                                )
+                            }
+                        />
+                        {status === ERROR && (
+                            <div className='upload__preview--error__group'>
+                                <ReactSVG
+                                    src={imageLinks?.svg?.retry}
+                                    onClick={() =>
+                                        handleRetry(
+                                            fileAttachmentType,
+                                            fileAttachmentUrl
+                                        )
+                                    }
+                                />
+                                <ReactSVG
+                                    src={imageLinks?.svg?.abort}
+                                    onClick={handleRemoveFile}
+                                />
+                            </div>
+                        )}
+                    </>
                 );
             case FILE:
                 return (
-                    <div
-                        className={`upload__preview--document  ${
-                            disableClick ? `disabled` : ``
-                        }`}
-                        onClick={onClick}>
-                        <ReactSVG src={imageLinks?.svg?.document} />
-                        <div className='details'>
-                            <p>{uploadPreview}</p>
-                            <span>{getFileFormat(uploadPreview)}</span>
+                    <>
+                        {renderBasedOnStatus(fileAttachmentName)}
+                        <div
+                            className={`upload__preview--document  ${
+                                disableClick ? `disabled` : ``
+                            }`}
+                            onClick={() =>
+                                maximize(
+                                    fileAttachmentType,
+                                    fileAttachmentName,
+                                    fileAttachmentUrl
+                                )
+                            }>
+                            <ReactSVG src={imageLinks?.svg?.document} />
+                            <div className='details'>
+                                <p>{fileAttachmentName}</p>
+                                <span>{getFileFormat(fileAttachmentName)}</span>
+                            </div>
                         </div>
-                    </div>
+                        {status === ERROR && (
+                            <div className='upload__preview--error__group'>
+                                <ReactSVG
+                                    src={imageLinks?.svg?.retry}
+                                    onClick={() =>
+                                        handleRetry(
+                                            fileAttachmentType,
+                                            fileAttachmentUrl
+                                        )
+                                    }
+                                />
+                                <ReactSVG
+                                    src={imageLinks?.svg?.abort}
+                                    onClick={handleRemoveFile}
+                                />
+                            </div>
+                        )}
+                    </>
                 );
             case VIDEO:
                 return (
-                    <div
-                        className={`upload__preview--media__container  ${
-                            disableClick ? `disabled` : ``
-                        }`}
-                        onClick={onClick}>
-                        <video className='upload__preview--media'>
-                            <source src={uploadPreview} />
-                        </video>
-                        <ReactSVG
-                            src={imageLinks?.svg?.play}
-                            className='play'
-                        />
-                    </div>
+                    <>
+                        {renderBasedOnStatus(fileAttachmentName)}
+                        <div
+                            className={`upload__preview--media__container  ${
+                                disableClick ? `disabled` : ``
+                            }`}
+                            onClick={() =>
+                                maximize(
+                                    fileAttachmentType,
+                                    fileAttachmentName,
+                                    fileAttachmentUrl
+                                )
+                            }>
+                            <video className='upload__preview--media'>
+                                <source src={fileAttachmentUrl} />
+                            </video>
+                            <ReactSVG
+                                src={imageLinks?.svg?.play}
+                                className='play'
+                            />
+                        </div>
+                        {status === ERROR && (
+                            <div className='upload__preview--error__group'>
+                                <ReactSVG
+                                    src={imageLinks?.svg?.retry}
+                                    onClick={() =>
+                                        handleRetry(
+                                            fileAttachmentType,
+                                            fileAttachmentUrl
+                                        )
+                                    }
+                                />
+                                <ReactSVG
+                                    src={imageLinks?.svg?.abort}
+                                    onClick={handleRemoveFile}
+                                />
+                            </div>
+                        )}
+                    </>
                 );
             default:
                 return (
-                    <img
-                        src={uploadPreview}
-                        alt='upload'
-                        className={`upload__preview--media ${
-                            disableClick ? `disabled` : ``
-                        }`}
-                        onClick={onClick}
-                    />
+                    <>
+                        {renderBasedOnStatus(fileAttachmentName)}
+                        <img
+                            src={fileAttachmentUrl}
+                            alt='upload'
+                            className={`upload__preview--media ${
+                                disableClick ? `disabled` : ``
+                            }`}
+                            onClick={() =>
+                                maximize(
+                                    fileAttachmentType,
+                                    fileAttachmentName,
+                                    fileAttachmentUrl
+                                )
+                            }
+                        />
+                        {status === ERROR && (
+                            <div className='upload__preview--error__group'>
+                                <ReactSVG
+                                    src={imageLinks?.svg?.retry}
+                                    onClick={() =>
+                                        handleRetry(
+                                            fileAttachmentType,
+                                            fileAttachmentUrl
+                                        )
+                                    }
+                                />
+                                <ReactSVG
+                                    src={imageLinks?.svg?.abort}
+                                    onClick={handleRemoveFile}
+                                />
+                            </div>
+                        )}
+                    </>
                 );
         }
     };
 
+    const handleUploadPreviewRender = () => {
+        return upload?.map((file) => {
+            return renderBasedOnUploadType(
+                file?.fileAttachmentType,
+                file?.fileAttachmentName,
+                file?.fileAttachmentUrl
+            );
+        });
+    };
     return (
         <>
-            <div className='upload__preview'>
-                {renderBasedOnStatus()}
-                {renderBasedOnUploadType()}
-                {status === ERROR && (
-                    <div className='upload__preview--error__group'>
-                        <ReactSVG
-                            src={imageLinks?.svg?.retry}
-                            onClick={handleRetry}
-                        />
-                        <ReactSVG
-                            src={imageLinks?.svg?.abort}
-                            onClick={handleRemoveFile}
-                        />
-                    </div>
-                )}
-            </div>
+            <div className='upload__preview'>{handleUploadPreviewRender()}</div>
         </>
     );
 };
