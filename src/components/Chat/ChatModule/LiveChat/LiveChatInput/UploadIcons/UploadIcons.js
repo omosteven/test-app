@@ -11,12 +11,11 @@ const UploadIcons = ({
     isDisabled,
     setErrors,
     sendNewMessage,
-    uploadType,
-    setUploadType,
     showModal,
     toggleModal,
     handleUpload,
-    file,
+    selectedMedia,
+    currentFormElement,
 }) => {
     const getFileFormat = (fileType) => {
         if (fileType?.startsWith("image/")) {
@@ -28,10 +27,18 @@ const UploadIcons = ({
         }
     };
 
-    const uploadFile = ({ target: { files } }) => {
-        const file = files[0];
-        if (file) {
-            setErrors((prev) => ({ ...prev, file: "" }));
+    const uploadFile = (files) => {
+        if (upload?.length > 5 || upload?.length + files?.length > 5) {
+            return setErrors((prev) => ({
+                ...prev,
+                file: "Maximum of 5 files",
+            }));
+        }
+        const selectedFiles = currentFormElement ? files[0] : files;
+        setErrors((prev) => ({ ...prev, file: "" }));
+
+        const uploaded = [];
+        selectedFiles?.map((file) => {
             const uploadType = getFileFormat(file?.type);
 
             if (
@@ -40,22 +47,35 @@ const UploadIcons = ({
                     : file.size > 20971520
             ) {
                 const message =
-                    uploadType === IMAGE
-                        ? "Image should not be more than 5MB"
-                        : "File should not be more than 20MB";
+                    "Large files have been excluded. (Image, 5MB) (File, 20MB)";
 
                 return setErrors((prev) => ({ ...prev, file: message }));
             }
 
-            const uploadPreview = URL.createObjectURL(file);
+            const url = URL.createObjectURL(file);
 
-            updateUpload((prev) => ({
-                ...prev,
-                preview: uploadPreview,
+            const uploadObj = {
                 file,
-            }));
-            setUploadType(uploadType);
-            handleUpload(file, uploadType);
+                fileAttachmentUrl: url,
+                fileAttachmentType: uploadType,
+                fileAttachmentName: file?.name,
+                isCancellable: false,
+            };
+
+            updateUpload((prev) => [...prev, uploadObj]);
+            uploaded.push(uploadObj);
+        });
+
+        handleUpload(uploaded);
+    };
+
+    const handleFileEvent = ({ target: { files } }) => {
+        const file = currentFormElement ? files[0] : files;
+        if (file) {
+            const selectedFiles = Array.prototype.slice.call(file);
+            // maximum of five files
+            const firstFiveFiles = selectedFiles?.slice(0, 5);
+            uploadFile(firstFiveFiles);
         }
     };
 
@@ -66,25 +86,26 @@ const UploadIcons = ({
                     id='file'
                     src={imageLinks?.svg?.attachment}
                     accept='.pdf,.doc,.docx,video/*,image/png,image/jpeg,image/jpg'
-                    onChange={uploadFile}
+                    onChange={handleFileEvent}
                     disabled={isDisabled}
-                    file={file}
+                    file={upload}
+                    multiple={currentFormElement === undefined}
                 />
             </div>
             {showModal && (
                 <ModalPreview
                     showModal={showModal}
                     toggleModal={() => toggleModal(false)}
-                    preview={upload?.preview}
-                    previewType={uploadType}
-                    fileName={upload?.file?.name}
+                    preview={selectedMedia?.fileAttachmentUrl}
+                    previewType={selectedMedia?.fileAttachmentType}
+                    fileName={selectedMedia?.fileAttachmentName}
                     sendNewMessage={() => {
                         toggleModal(false);
                         sendNewMessage();
                     }}
-                    handleRemoveFile={() => {
+                    handleRemoveFile={(fileName) => {
+                        handleRemoveFile(fileName);
                         toggleModal(false);
-                        handleRemoveFile();
                     }}
                 />
             )}

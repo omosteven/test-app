@@ -58,7 +58,10 @@ const ModalPreview = ({
             </div>
             {sendNewMessage && (
                 <div className='custom__modal__footer'>
-                    <Button text='Cancel' onClick={handleRemoveFile} />
+                    <Button
+                        text='Cancel'
+                        onClick={() => handleRemoveFile(fileName)}
+                    />
                     <Button text='Upload' onClick={sendNewMessage} />
                 </div>
             )}

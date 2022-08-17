@@ -1,7 +1,15 @@
 import { ReactSVG } from "react-svg";
 import "./AttachmentInput.scss";
 
-const AttachmentInput = ({ id, src, accept, onChange, disabled, file }) => {
+const AttachmentInput = ({
+    id,
+    src,
+    accept,
+    onChange,
+    disabled,
+    file,
+    multiple,
+}) => {
     return (
         <label htmlFor={id}>
             <ReactSVG src={src} className={disabled ? "disabled" : ""} />
@@ -14,6 +22,7 @@ const AttachmentInput = ({ id, src, accept, onChange, disabled, file }) => {
                 hidden
                 disabled={disabled}
                 key={file}
+                multiple={multiple}
             />
         </label>
     );

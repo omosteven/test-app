@@ -9,23 +9,42 @@ import { useState } from "react";
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
 const UploadPreview = ({
-    uploadPreview,
+    upload,
+    updateUpload,
     status,
-    uploadType,
     handleRemoveFile,
     handleRetry,
-    onClick,
+    maximize,
     disableClick,
 }) => {
-    const [isCancellable, setIsCancellable] = useState(false);
-
-    const renderBasedOnStatus = () => {
+    // console?.log({ upload });
+    // const [isCancellable, setIsCancellable] = useState(false);
+    const updateCancellable = (fileAttachmentName, cancelStatus) => {
+        // console.log({ cancelStatus });
+        updateUpload((prev) =>
+            prev?.map((upload) =>
+                upload?.fileAttachmentName === fileAttachmentName
+                    ? { ...upload, isCancellable: cancelStatus }
+                    : upload
+            )
+        );
+    };
+    const renderBasedOnStatus = (fileAttachmentName, isCancellable) => {
         switch (status) {
             case LOADING:
                 return (
                     <div
-                        onMouseOver={() => setIsCancellable(true)}
-                        onMouseOut={() => setIsCancellable(false)}>
+                    // onMouseEnter={(e) => {
+                    //     e.stopPropagation();
+                    //     e.preventDefault();
+                    //     updateCancellable(fileAttachmentName, true);
+                    // }}
+                    // onMouseLeave={(e) => {
+                    //     e.stopPropagation();
+                    //     e.preventDefault();
+                    //     updateCancellable(fileAttachmentName, false);
+                    // }}
+                    >
                         {!isCancellable ? (
                             <ReactSVG
                                 src={imageLinks?.svg?.loading}
@@ -35,7 +54,11 @@ const UploadPreview = ({
                             <ReactSVG
                                 src={imageLinks?.svg?.remove}
                                 className='upload__preview--icon'
-                                onClick={handleRemoveFile}
+                                // onClick={(e) => {
+                                //     e.stopPropagation();
+                                //     e.preventDefault();
+                                //     handleRemoveFile(fileAttachmentName);
+                                // }}
                             />
                         )}
                     </div>
@@ -45,7 +68,7 @@ const UploadPreview = ({
                     <ReactSVG
                         src={imageLinks?.svg?.remove}
                         className='upload__preview--icon'
-                        onClick={handleRemoveFile}
+                        onClick={() => handleRemoveFile(fileAttachmentName)}
                     />
                 );
             default:
@@ -53,81 +76,193 @@ const UploadPreview = ({
         }
     };
 
-    const renderBasedOnUploadType = () => {
-        switch (uploadType) {
+    const renderBasedOnUploadType = (
+        fileAttachmentType,
+        fileAttachmentName,
+        fileAttachmentUrl,
+        isCancellable
+    ) => {
+        switch (fileAttachmentType) {
             case IMAGE:
                 return (
-                    <img
-                        src={uploadPreview}
-                        alt='upload'
-                        className={`upload__preview--media ${
-                            disableClick ? `disabled` : ``
-                        }`}
-                        onClick={onClick}
-                    />
+                    <div className='upload__preview--media__group'>
+                        {renderBasedOnStatus(fileAttachmentName, isCancellable)}
+                        <img
+                            src={fileAttachmentUrl}
+                            alt='upload'
+                            className={`upload__preview--media ${
+                                disableClick ? `disabled` : ``
+                            }`}
+                            onClick={() =>
+                                maximize(
+                                    fileAttachmentType,
+                                    fileAttachmentName,
+                                    fileAttachmentUrl
+                                )
+                            }
+                        />
+                        {status === ERROR && (
+                            <div className='upload__preview--error__group'>
+                                <ReactSVG
+                                    src={imageLinks?.svg?.retry}
+                                    onClick={() =>
+                                        handleRetry(
+                                            fileAttachmentType,
+                                            fileAttachmentUrl
+                                        )
+                                    }
+                                />
+                                <ReactSVG
+                                    src={imageLinks?.svg?.abort}
+                                    onClick={handleRemoveFile(
+                                        fileAttachmentName
+                                    )}
+                                />
+                            </div>
+                        )}
+                    </div>
                 );
             case FILE:
                 return (
-                    <div
-                        className={`upload__preview--document  ${
-                            disableClick ? `disabled` : ``
-                        }`}
-                        onClick={onClick}>
-                        <ReactSVG src={imageLinks?.svg?.document} />
-                        <div className='details'>
-                            <p>{uploadPreview}</p>
-                            <span>{getFileFormat(uploadPreview)}</span>
+                    <div className='upload__preview--media__group'>
+                        {renderBasedOnStatus(fileAttachmentName, isCancellable)}
+                        <div
+                            className={`upload__preview--document  ${
+                                disableClick ? `disabled` : ``
+                            }`}
+                            onClick={() =>
+                                maximize(
+                                    fileAttachmentType,
+                                    fileAttachmentName,
+                                    fileAttachmentUrl
+                                )
+                            }>
+                            <ReactSVG src={imageLinks?.svg?.document} />
+                            <div className='details'>
+                                <p>{fileAttachmentName}</p>
+                                <span>{getFileFormat(fileAttachmentName)}</span>
+                            </div>
                         </div>
+                        {status === ERROR && (
+                            <div className='upload__preview--error__group'>
+                                <ReactSVG
+                                    src={imageLinks?.svg?.retry}
+                                    onClick={() =>
+                                        handleRetry(
+                                            fileAttachmentType,
+                                            fileAttachmentUrl
+                                        )
+                                    }
+                                />
+                                <ReactSVG
+                                    src={imageLinks?.svg?.abort}
+                                    onClick={handleRemoveFile(
+                                        fileAttachmentName
+                                    )}
+                                />
+                            </div>
+                        )}
                     </div>
                 );
             case VIDEO:
                 return (
-                    <div
-                        className={`upload__preview--media__container  ${
-                            disableClick ? `disabled` : ``
-                        }`}
-                        onClick={onClick}>
-                        <video className='upload__preview--media'>
-                            <source src={uploadPreview} />
-                        </video>
-                        <ReactSVG
-                            src={imageLinks?.svg?.play}
-                            className='play'
-                        />
+                    <div className='upload__preview--media__group'>
+                        {renderBasedOnStatus(fileAttachmentName, isCancellable)}
+                        <div
+                            className={`upload__preview--media__container  ${
+                                disableClick ? `disabled` : ``
+                            }`}
+                            onClick={() =>
+                                maximize(
+                                    fileAttachmentType,
+                                    fileAttachmentName,
+                                    fileAttachmentUrl
+                                )
+                            }>
+                            <video className='upload__preview--media'>
+                                <source src={fileAttachmentUrl} />
+                            </video>
+                            <ReactSVG
+                                src={imageLinks?.svg?.play}
+                                className='play'
+                            />
+                        </div>
+                        {status === ERROR && (
+                            <div className='upload__preview--error__group'>
+                                <ReactSVG
+                                    src={imageLinks?.svg?.retry}
+                                    onClick={() =>
+                                        handleRetry(
+                                            fileAttachmentType,
+                                            fileAttachmentUrl
+                                        )
+                                    }
+                                />
+                                <ReactSVG
+                                    src={imageLinks?.svg?.abort}
+                                    onClick={handleRemoveFile(
+                                        fileAttachmentName
+                                    )}
+                                />
+                            </div>
+                        )}
                     </div>
                 );
             default:
                 return (
-                    <img
-                        src={uploadPreview}
-                        alt='upload'
-                        className={`upload__preview--media ${
-                            disableClick ? `disabled` : ``
-                        }`}
-                        onClick={onClick}
-                    />
+                    <div className='upload__preview--media__group'>
+                        {renderBasedOnStatus(fileAttachmentName, isCancellable)}
+                        <img
+                            src={fileAttachmentUrl}
+                            alt='upload'
+                            className={`upload__preview--media ${
+                                disableClick ? `disabled` : ``
+                            }`}
+                            onClick={() =>
+                                maximize(
+                                    fileAttachmentType,
+                                    fileAttachmentName,
+                                    fileAttachmentUrl
+                                )
+                            }
+                        />
+                        {status === ERROR && (
+                            <div className='upload__preview--error__group'>
+                                <ReactSVG
+                                    src={imageLinks?.svg?.retry}
+                                    onClick={() =>
+                                        handleRetry(
+                                            fileAttachmentType,
+                                            fileAttachmentUrl
+                                        )
+                                    }
+                                />
+                                <ReactSVG
+                                    src={imageLinks?.svg?.abort}
+                                    onClick={handleRemoveFile(
+                                        fileAttachmentName
+                                    )}
+                                />
+                            </div>
+                        )}
+                    </div>
                 );
         }
     };
 
+    const handleUploadPreviewRender = () => {
+        return upload?.map((file) => {
+            return renderBasedOnUploadType(
+                file?.fileAttachmentType,
+                file?.fileAttachmentName,
+                file?.fileAttachmentUrl,
+                file?.isCancellable
+            );
+        });
+    };
     return (
         <>
-            <div className='upload__preview'>
-                {renderBasedOnStatus()}
-                {renderBasedOnUploadType()}
-                {status === ERROR && (
-                    <div className='upload__preview--error__group'>
-                        <ReactSVG
-                            src={imageLinks?.svg?.retry}
-                            onClick={handleRetry}
-                        />
-                        <ReactSVG
-                            src={imageLinks?.svg?.abort}
-                            onClick={handleRemoveFile}
-                        />
-                    </div>
-                )}
-            </div>
+            <div className='upload__preview'>{handleUploadPreviewRender()}</div>
         </>
     );
 };

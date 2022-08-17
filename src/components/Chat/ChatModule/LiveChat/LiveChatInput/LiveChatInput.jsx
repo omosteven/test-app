@@ -33,45 +33,40 @@ const LiveChatInput = ({
 
     const [request, updateRequest] = useState({
         message: "",
-        fileAttachment: {
-            fileAttachmentUrl: "",
-            fileAttachmentType: "",
-            fileAttachmentName: "",
-        },
+        fileAttachments: [
+            {
+                fileAttachmentUrl: "",
+                fileAttachmentType: "",
+                fileAttachmentName: "",
+            },
+        ],
     });
-    const [upload, updateUpload] = useState({
-        preview: "",
-        file: {},
-        isLoading: false,
-    });
+    const [upload, updateUpload] = useState([]);
+    const [selectedMedia, setSelectedMedia] = useState({});
     const [errors, setErrors] = useState({});
     const [errorMssg, setErrorMssg] = useState("");
-    const [status, setStatus] = useState("");
-    const [uploadType, setUploadType] = useState("");
+    const [status, setStatus] = useState();
     const [showModal, toggleModal] = useState(false);
     const isDisabled = fetchingInputStatus || !allowUserInput;
     const [cancelRequest, setCancelRequest] = useState();
 
     const socket = useContext(SocketContext);
 
-    const handleRemoveFile = () => {
-        cancelRequest?.abort();
-        updateUpload({
-            preview: "",
-            file: "",
-            isLoading: false,
-        });
+    const handleRemoveFile = (fileName) => {
+        // cancelRequest?.abort();
+        updateUpload((prev) =>
+            prev?.filter((upload) => upload?.fileAttachmentName !== fileName)
+        );
         updateRequest((prev) => ({
             ...prev,
-            fileAttachment: {
-                fileAttachmentUrl: "",
-                fileAttachmentType: "",
-                fileAttachmentName: "",
-            },
+            fileAttachments: prev?.fileAttachments?.filter(
+                (upload) => upload?.fileAttachmentName !== fileName
+            ),
         }));
+        setErrors((prev) => ({ ...prev, file: "" }));
     };
 
-    const handleUpload = async (file, uploadType) => {
+    const handleUpload = async (files) => {
         try {
             setStatus(LOADING);
             setErrorMssg("");
@@ -79,38 +74,34 @@ const LiveChatInput = ({
 
             setCancelRequest(httpRequest);
 
-            updateUpload((prev) => ({ ...prev, isLoading: true }));
+            const uploadedFiles = files?.map(async (media) => {
+                const url = apiRoutes.fileUpload;
+                const formData = new FormData();
 
-            const url = apiRoutes.fileUpload;
-            const formData = new FormData();
+                formData.append("file", media?.file);
+                const res = await API.post(url, formData, {
+                    signal: httpRequest?.signal,
+                });
 
-            formData.append("file", file);
-            const res = await API.post(url, formData, {
-                signal: httpRequest?.signal,
+                if (res.status === 201) {
+                    const { data } = res.data;
+
+                    const { file, isCancellable, ...rest } = media;
+
+                    return { ...rest, fileAttachmentUrl: data };
+                }
             });
+            const resolvedUpload = await Promise.all(uploadedFiles);
 
-            if (res.status === 201) {
-                const { data } = res.data;
-                setStatus(DATAMODE);
-
-                updateUpload((prev) => ({
-                    ...prev,
-                    preview: data,
-                    isLoading: false,
-                }));
-                updateRequest((prev) => ({
-                    ...prev,
-                    fileAttachment: {
-                        fileAttachmentUrl: data,
-                        fileAttachmentType: uploadType,
-                        fileAttachmentName: file?.name,
-                    },
-                }));
-            }
+            updateUpload(resolvedUpload);
+            updateRequest((prev) => ({
+                ...prev,
+                fileAttachments: resolvedUpload,
+            }));
+            setStatus(DATAMODE);
         } catch (err) {
             const newStatus = err?.message ? "" : ERROR;
             setStatus(newStatus);
-            updateUpload((prev) => ({ ...prev, isLoading: false }));
             const message = getErrorMessage(err);
             setErrorMssg(err?.message ? "" : message);
             setCancelRequest();
@@ -121,17 +112,16 @@ const LiveChatInput = ({
         handleNewMessage(request);
         updateRequest({
             message: "",
-            fileAttachment: {
-                fileAttachmentUrl: "",
-                fileAttachmentType: "",
-                fileAttachmentName: "",
-            },
+            fileAttachments: [
+                {
+                    fileAttachmentUrl: "",
+                    fileAttachmentType: "",
+                    fileAttachmentName: "",
+                },
+            ],
         });
-        updateUpload({
-            preview: "",
-            file: {},
-            isLoading: false,
-        });
+        updateUpload([]);
+        setErrors((prev) => ({ ...prev, file: "" }));
     };
 
     // const handleInputFocus = () => {
@@ -246,8 +236,8 @@ const LiveChatInput = ({
     };
 
     const btnDisabled =
-        upload?.preview?.length > 0
-            ? upload?.isLoading
+        upload?.length > 0
+            ? status === LOADING || status === ""
             : isDisabled || request?.message === "";
 
     return (
@@ -255,20 +245,32 @@ const LiveChatInput = ({
             {/* {showConvos && <SuggestedConvos data={suggestedList} handleConvoClick={handleConvoClick} />} */}
             <form onSubmit={handleSubmit} id='chatInput'>
                 <div className='chat__input--container'>
-                    {upload?.file?.name && (
+                    {upload?.length > 0 && (
                         <UploadPreview
-                            uploadPreview={
-                                uploadType === FILE
-                                    ? upload?.file?.name
-                                    : upload?.preview
-                            }
+                            upload={upload}
+                            updateUpload={updateUpload}
                             status={status}
-                            uploadType={uploadType}
                             handleRemoveFile={handleRemoveFile}
-                            handleRetry={() =>
-                                handleUpload(upload?.file, uploadType)
+                            handleRetry={(
+                                fileAttachmentType,
+                                fileAttachmentUrl
+                            ) =>
+                                handleUpload([
+                                    { fileAttachmentType, fileAttachmentUrl },
+                                ])
                             }
-                            onClick={() => toggleModal(true)}
+                            maximize={(
+                                fileAttachmentType,
+                                fileAttachmentName,
+                                fileAttachmentUrl
+                            ) => {
+                                setSelectedMedia({
+                                    fileAttachmentType,
+                                    fileAttachmentName,
+                                    fileAttachmentUrl,
+                                });
+                                toggleModal(true);
+                            }}
                             disableClick={status !== DATAMODE}
                         />
                     )}
@@ -276,15 +278,15 @@ const LiveChatInput = ({
                         <UploadIcons
                             upload={upload}
                             updateUpload={updateUpload}
+                            handleRemoveFile={handleRemoveFile}
                             isDisabled={isDisabled}
                             setErrors={setErrors}
                             sendNewMessage={sendNewMessage}
-                            uploadType={uploadType}
-                            setUploadType={setUploadType}
                             showModal={showModal}
                             toggleModal={toggleModal}
                             handleUpload={handleUpload}
-                            file={upload?.file}
+                            selectedMedia={selectedMedia}
+                            currentFormElement={currentFormElement}
                         />
                         {renderBasedOnInputType()}
                         <Button

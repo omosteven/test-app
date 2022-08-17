@@ -289,38 +289,40 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleNewMessage = async (request) => {
+        const { message, fileAttachments } = request;
+
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
             dispatch(
                 saveTicketsMessages({
                     ticketId,
-                    messageContent: request?.message,
+                    messageContent: message,
                     senderType: THIRD_USER,
                     messageContentId: generateID(),
                     messageType: messageTypes?.FORM_RESPONSE,
-                    fileAttachments: [{ ...request?.fileAttachment }],
+                    fileAttachments: fileAttachments,
                 })
             );
 
             socket.timeout(5000).emit(FILL_FORM_RECORD, {
                 ticketId,
-                message: request?.message,
+                message: message,
                 currentFormOrder: order,
                 formElementId,
                 formId,
-                fileAttachments: [{ ...request?.fileAttachment }],
+                fileAttachments: fileAttachments,
             });
         } else {
             const newMessageId = generateID();
             const messageEntry = {
                 ticketId,
                 senderType: THIRD_USER,
-                messageContent: request?.message,
+                messageContent: message,
                 messageContentId: newMessageId,
                 messageType: DEFAULT,
                 messageStatus: messageStatues?.SENDING,
                 suggestionRetryAttempt: 0,
-                fileAttachments: [{ ...request?.fileAttachment }],
+                fileAttachments: fileAttachments,
             };
             dispatch(saveTicketsMessages(messageEntry));
 
@@ -328,9 +330,9 @@ const LiveChat = ({ getCustomerTickets }) => {
                 SEND_CUSTOMER_MESSAGE,
                 {
                     ticketId,
-                    message: request?.message,
+                    message: message,
                     messageType: DEFAULT,
-                    fileAttachments: [{ ...request?.fileAttachment }],
+                    fileAttachments: fileAttachments,
                 },
                 async (err) => {
                     if (err) {
