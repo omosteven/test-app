@@ -55,18 +55,15 @@ const LiveChatInput = ({
     const handleRemoveFile = (fileName) => {
         // cancelRequest?.abort();
         updateUpload((prev) =>
-            prev?.filter((upload) => upload?.file?.name !== fileName)
+            prev?.filter((upload) => upload?.fileAttachmentName !== fileName)
         );
         updateRequest((prev) => ({
             ...prev,
-            fileAttachment: [
-                {
-                    fileAttachmentUrl: "",
-                    fileAttachmentType: "",
-                    fileAttachmentName: "",
-                },
-            ],
+            fileAttachments: prev?.fileAttachments?.filter(
+                (upload) => upload?.fileAttachmentName !== fileName
+            ),
         }));
+        setErrors((prev) => ({ ...prev, file: "" }));
     };
 
     const handleUpload = async (files) => {
@@ -80,7 +77,6 @@ const LiveChatInput = ({
             const uploadedFiles = files?.map(async (media) => {
                 const url = apiRoutes.fileUpload;
                 const formData = new FormData();
-                console.log({ file: media?.file });
 
                 formData.append("file", media?.file);
                 const res = await API.post(url, formData, {
@@ -90,7 +86,7 @@ const LiveChatInput = ({
                 if (res.status === 201) {
                     const { data } = res.data;
 
-                    const { file, ...rest } = media;
+                    const { file, isCancellable, ...rest } = media;
 
                     return { ...rest, fileAttachmentUrl: data };
                 }
@@ -116,7 +112,7 @@ const LiveChatInput = ({
         handleNewMessage(request);
         updateRequest({
             message: "",
-            fileAttachment: [
+            fileAttachments: [
                 {
                     fileAttachmentUrl: "",
                     fileAttachmentType: "",
@@ -125,6 +121,7 @@ const LiveChatInput = ({
             ],
         });
         updateUpload([]);
+        setErrors((prev) => ({ ...prev, file: "" }));
     };
 
     // const handleInputFocus = () => {
@@ -237,7 +234,7 @@ const LiveChatInput = ({
         e.preventDefault();
         sendNewMessage();
     };
-    console.log({ currentFormElement });
+
     const btnDisabled =
         upload?.length > 0
             ? status === LOADING || status === ""
@@ -251,7 +248,8 @@ const LiveChatInput = ({
                     {upload?.length > 0 && (
                         <UploadPreview
                             upload={upload}
-                            status={DATAMODE}
+                            updateUpload={updateUpload}
+                            status={status}
                             handleRemoveFile={handleRemoveFile}
                             handleRetry={(
                                 fileAttachmentType,
@@ -278,6 +276,7 @@ const LiveChatInput = ({
                     )}
                     <div className='chat__input--group'>
                         <UploadIcons
+                            upload={upload}
                             updateUpload={updateUpload}
                             handleRemoveFile={handleRemoveFile}
                             isDisabled={isDisabled}
@@ -286,7 +285,6 @@ const LiveChatInput = ({
                             showModal={showModal}
                             toggleModal={toggleModal}
                             handleUpload={handleUpload}
-                            file={upload}
                             selectedMedia={selectedMedia}
                             currentFormElement={currentFormElement}
                         />

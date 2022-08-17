@@ -5,6 +5,7 @@ import ModalPreview from "../../ModalPreview/ModalPreview";
 import "./UploadIcons.scss";
 
 const UploadIcons = ({
+    upload,
     updateUpload,
     handleRemoveFile,
     isDisabled,
@@ -13,7 +14,6 @@ const UploadIcons = ({
     showModal,
     toggleModal,
     handleUpload,
-    file,
     selectedMedia,
     currentFormElement,
 }) => {
@@ -28,12 +28,30 @@ const UploadIcons = ({
     };
 
     const uploadFile = (files) => {
+        if (upload?.length > 5 || upload?.length + files?.length > 5) {
+            return setErrors((prev) => ({
+                ...prev,
+                file: "Maximum of 5 files",
+            }));
+        }
         const selectedFiles = currentFormElement ? files[0] : files;
+        setErrors((prev) => ({ ...prev, file: "" }));
 
         const uploaded = [];
         selectedFiles?.map((file) => {
-            console.log({ file });
             const uploadType = getFileFormat(file?.type);
+
+            if (
+                uploadType === IMAGE
+                    ? file.size > 5242880
+                    : file.size > 20971520
+            ) {
+                const message =
+                    "Large files have been excluded. (Image, 5MB) (File, 20MB)";
+
+                return setErrors((prev) => ({ ...prev, file: message }));
+            }
+
             const url = URL.createObjectURL(file);
 
             const uploadObj = {
@@ -41,25 +59,12 @@ const UploadIcons = ({
                 fileAttachmentUrl: url,
                 fileAttachmentType: uploadType,
                 fileAttachmentName: file?.name,
+                isCancellable: false,
             };
 
             updateUpload((prev) => [...prev, uploadObj]);
             uploaded.push(uploadObj);
         });
-        // setErrors((prev) => ({ ...prev, file: "" }));
-
-        // if (
-        //     uploadType === IMAGE
-        //         ? file.size > 5242880
-        //         : file.size > 20971520
-        // ) {
-        //     const message =
-        //         uploadType === IMAGE
-        //             ? "Image should not be more than 5MB"
-        //             : "File should not be more than 20MB";
-
-        //     return setErrors((prev) => ({ ...prev, file: message }));
-        // }
 
         handleUpload(uploaded);
     };
@@ -68,7 +73,9 @@ const UploadIcons = ({
         const file = currentFormElement ? files[0] : files;
         if (file) {
             const selectedFiles = Array.prototype.slice.call(file);
-            uploadFile(selectedFiles);
+            // maximum of five files
+            const firstFiveFiles = selectedFiles?.slice(0, 5);
+            uploadFile(firstFiveFiles);
         }
     };
 
@@ -81,7 +88,7 @@ const UploadIcons = ({
                     accept='.pdf,.doc,.docx,video/*,image/png,image/jpeg,image/jpg'
                     onChange={handleFileEvent}
                     disabled={isDisabled}
-                    file={file}
+                    file={upload}
                     multiple={currentFormElement === undefined}
                 />
             </div>

@@ -10,21 +10,41 @@ const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
 const UploadPreview = ({
     upload,
+    updateUpload,
     status,
     handleRemoveFile,
     handleRetry,
     maximize,
     disableClick,
 }) => {
-    const [isCancellable, setIsCancellable] = useState(false);
-
-    const renderBasedOnStatus = (fileAttachmentName) => {
+    // console?.log({ upload });
+    // const [isCancellable, setIsCancellable] = useState(false);
+    const updateCancellable = (fileAttachmentName, cancelStatus) => {
+        // console.log({ cancelStatus });
+        updateUpload((prev) =>
+            prev?.map((upload) =>
+                upload?.fileAttachmentName === fileAttachmentName
+                    ? { ...upload, isCancellable: cancelStatus }
+                    : upload
+            )
+        );
+    };
+    const renderBasedOnStatus = (fileAttachmentName, isCancellable) => {
         switch (status) {
             case LOADING:
                 return (
                     <div
-                        onMouseOver={() => setIsCancellable(true)}
-                        onMouseOut={() => setIsCancellable(false)}>
+                    // onMouseEnter={(e) => {
+                    //     e.stopPropagation();
+                    //     e.preventDefault();
+                    //     updateCancellable(fileAttachmentName, true);
+                    // }}
+                    // onMouseLeave={(e) => {
+                    //     e.stopPropagation();
+                    //     e.preventDefault();
+                    //     updateCancellable(fileAttachmentName, false);
+                    // }}
+                    >
                         {!isCancellable ? (
                             <ReactSVG
                                 src={imageLinks?.svg?.loading}
@@ -34,9 +54,11 @@ const UploadPreview = ({
                             <ReactSVG
                                 src={imageLinks?.svg?.remove}
                                 className='upload__preview--icon'
-                                onClick={() =>
-                                    handleRemoveFile(fileAttachmentName)
-                                }
+                                // onClick={(e) => {
+                                //     e.stopPropagation();
+                                //     e.preventDefault();
+                                //     handleRemoveFile(fileAttachmentName);
+                                // }}
                             />
                         )}
                     </div>
@@ -57,18 +79,14 @@ const UploadPreview = ({
     const renderBasedOnUploadType = (
         fileAttachmentType,
         fileAttachmentName,
-        fileAttachmentUrl
+        fileAttachmentUrl,
+        isCancellable
     ) => {
-        console.log({
-            fileAttachmentType,
-            fileAttachmentName,
-            fileAttachmentUrl,
-        });
         switch (fileAttachmentType) {
             case IMAGE:
                 return (
-                    <>
-                        {renderBasedOnStatus(fileAttachmentName)}
+                    <div className='upload__preview--media__group'>
+                        {renderBasedOnStatus(fileAttachmentName, isCancellable)}
                         <img
                             src={fileAttachmentUrl}
                             alt='upload'
@@ -96,16 +114,18 @@ const UploadPreview = ({
                                 />
                                 <ReactSVG
                                     src={imageLinks?.svg?.abort}
-                                    onClick={handleRemoveFile}
+                                    onClick={handleRemoveFile(
+                                        fileAttachmentName
+                                    )}
                                 />
                             </div>
                         )}
-                    </>
+                    </div>
                 );
             case FILE:
                 return (
-                    <>
-                        {renderBasedOnStatus(fileAttachmentName)}
+                    <div className='upload__preview--media__group'>
+                        {renderBasedOnStatus(fileAttachmentName, isCancellable)}
                         <div
                             className={`upload__preview--document  ${
                                 disableClick ? `disabled` : ``
@@ -136,16 +156,18 @@ const UploadPreview = ({
                                 />
                                 <ReactSVG
                                     src={imageLinks?.svg?.abort}
-                                    onClick={handleRemoveFile}
+                                    onClick={handleRemoveFile(
+                                        fileAttachmentName
+                                    )}
                                 />
                             </div>
                         )}
-                    </>
+                    </div>
                 );
             case VIDEO:
                 return (
-                    <>
-                        {renderBasedOnStatus(fileAttachmentName)}
+                    <div className='upload__preview--media__group'>
+                        {renderBasedOnStatus(fileAttachmentName, isCancellable)}
                         <div
                             className={`upload__preview--media__container  ${
                                 disableClick ? `disabled` : ``
@@ -178,16 +200,18 @@ const UploadPreview = ({
                                 />
                                 <ReactSVG
                                     src={imageLinks?.svg?.abort}
-                                    onClick={handleRemoveFile}
+                                    onClick={handleRemoveFile(
+                                        fileAttachmentName
+                                    )}
                                 />
                             </div>
                         )}
-                    </>
+                    </div>
                 );
             default:
                 return (
-                    <>
-                        {renderBasedOnStatus(fileAttachmentName)}
+                    <div className='upload__preview--media__group'>
+                        {renderBasedOnStatus(fileAttachmentName, isCancellable)}
                         <img
                             src={fileAttachmentUrl}
                             alt='upload'
@@ -215,11 +239,13 @@ const UploadPreview = ({
                                 />
                                 <ReactSVG
                                     src={imageLinks?.svg?.abort}
-                                    onClick={handleRemoveFile}
+                                    onClick={handleRemoveFile(
+                                        fileAttachmentName
+                                    )}
                                 />
                             </div>
                         )}
-                    </>
+                    </div>
                 );
         }
     };
@@ -229,7 +255,8 @@ const UploadPreview = ({
             return renderBasedOnUploadType(
                 file?.fileAttachmentType,
                 file?.fileAttachmentName,
-                file?.fileAttachmentUrl
+                file?.fileAttachmentUrl,
+                file?.isCancellable
             );
         });
     };
