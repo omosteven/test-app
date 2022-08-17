@@ -92,7 +92,16 @@ const LiveChat = ({ getCustomerTickets }) => {
                     messageContentId: x?.messageContentId
                         ? x?.messageContentId
                         : x?.deliveryDate,
+                    fileAttachments:
+                        x?.fileAttachments?.length > 0
+                            ? x?.fileAttachments
+                            : x?.form?.formElement?.media?.map((media) => ({
+                                  fileAttachmentUrl: media?.link,
+                                  fileAttachmentType: media?.type,
+                                  fileAttachmentName: media?.mediaName,
+                              })),
                 }));
+
                 dispatch(setTicketMessages(messagesArr));
             }
         } catch (err) {
@@ -289,14 +298,17 @@ const LiveChat = ({ getCustomerTickets }) => {
                     senderType: THIRD_USER,
                     messageContentId: generateID(),
                     messageType: messageTypes?.FORM_RESPONSE,
+                    fileAttachments: [{ ...request?.fileAttachment }],
                 })
             );
+
             socket.timeout(5000).emit(FILL_FORM_RECORD, {
                 ticketId,
                 message: request?.message,
                 currentFormOrder: order,
                 formElementId,
                 formId,
+                fileAttachments: [{ ...request?.fileAttachment }],
             });
         } else {
             const newMessageId = generateID();
@@ -477,10 +489,21 @@ const LiveChat = ({ getCustomerTickets }) => {
     const handleReceive = (message) => {
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
+
             dispatch(
                 saveTicketsMessages({
                     ...message,
                     ticketId,
+                    fileAttachments:
+                        message?.fileAttachments?.length > 0
+                            ? message?.fileAttachments
+                            : message?.form?.formElement?.media?.map(
+                                  (media) => ({
+                                      fileAttachmentUrl: media?.link,
+                                      fileAttachmentType: media?.type,
+                                      fileAttachmentName: media?.mediaName,
+                                  })
+                              ),
                 })
             );
         }
