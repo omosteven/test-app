@@ -111,6 +111,7 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleOptConversation = async (convo) => {
+        console.log({ convo });
         const {
             parentMessageId,
             conversationId,
@@ -168,7 +169,8 @@ const LiveChat = ({ getCustomerTickets }) => {
         // return ""branchOptionActionType
 
         let newMessageList = await messages.map((x) => {
-            return x.messageType === messageTypes?.BRANCH &&
+            return (x.messageType === messageTypes?.BRANCH ||
+                x.messageType === messageTypes?.COLLECTION) &&
                 x.messageContentId === branchId
                 ? { ...x, selectedOption: branchOptionId }
                 : x;
@@ -205,7 +207,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             restartConversation();
             return "";
         }
-        // triggerAgentTyping(true)
+        triggerAgentTyping(true);
 
         await socket.emit(
             SEND_BRANCH_OPTION,
@@ -217,14 +219,13 @@ const LiveChat = ({ getCustomerTickets }) => {
             },
             (err) => {
                 if (err) {
-                    console.log({ err });
                     triggerAgentTyping(false);
                     // const freshMessageList = (messages).map((x) => {
                     //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
                     // })
                     console.log("Encountered error");
                 } else {
-                    // triggerAgentTyping(false)
+                    triggerAgentTyping(false);
                 }
             }
         );
@@ -290,7 +291,6 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleNewMessage = async (request) => {
-        console.log({ request });
         const { message, fileAttachments } = request;
 
         if (currentFormElement) {
@@ -337,7 +337,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                     fileAttachments: fileAttachments,
                 },
                 async (err) => {
-                    console.log({ err });
                     if (err) {
                         // setStatus(ERROR);
                         // setErrorMssg('Message not sent successfully');
@@ -492,7 +491,6 @@ const LiveChat = ({ getCustomerTickets }) => {
     }, [messages, activeConvo, ticketPhase]);
 
     const handleReceive = (message) => {
-        console.log({ message });
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
 
