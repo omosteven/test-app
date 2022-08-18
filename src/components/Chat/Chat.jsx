@@ -135,7 +135,7 @@ const Chat = () => {
                                     handleTicketModalAction,
                                 }}
                             />
-                            {selectedTicket.ticketId ? (
+                            {selectedTicket?.ticketId ? (
                                 <ChatModule
                                     key={selectedTicket?.ticketId}
                                     ticket={selectedTicket}
