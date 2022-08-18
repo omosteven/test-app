@@ -100,11 +100,10 @@ const LiveChatInput = ({
             }));
             setStatus(DATAMODE);
         } catch (err) {
-            const newStatus = err?.message ? "" : ERROR;
-            setStatus(newStatus);
+            setStatus(ERROR);
             const message = getErrorMessage(err);
-            setErrorMssg(err?.message ? "" : message);
-            setCancelRequest();
+            setErrorMssg(message);
+            // setCancelRequest();
         }
     };
 

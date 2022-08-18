@@ -111,6 +111,7 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleOptConversation = async (convo) => {
+        console.log({ convo });
         const {
             parentMessageId,
             conversationId,
@@ -172,7 +173,8 @@ const LiveChat = ({ getCustomerTickets }) => {
                 x.messageType === messageTypes?.COLLECTION ||
                 x.messageType === messageTypes?.BRANCH_OPTION ||
                 x.messageType === messageTypes?.BRANCH_SUB_SENTENCE ||
-                x.messageType === messageTypes?.CONVERSATION) &&
+                x.messageType === messageTypes?.CONVERSATION ||
+                x.messageType === messageTypes?.COLLECTION) &&
                 x.messageContentId === branchId
                 ? { ...x, selectedOption: branchOptionId }
                 : x;
@@ -209,9 +211,9 @@ const LiveChat = ({ getCustomerTickets }) => {
             restartConversation();
             return "";
         }
-        // triggerAgentTyping(true)
+        triggerAgentTyping(true);
 
-        await socket.timeout(2000).emit(
+        await socket.emit(
             SEND_BRANCH_OPTION,
             {
                 ticketId,
@@ -227,7 +229,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     // })
                     console.log("Encountered error", err);
                 } else {
-                    // triggerAgentTyping(false)
+                    triggerAgentTyping(false);
                 }
             }
         );
@@ -501,6 +503,9 @@ const LiveChat = ({ getCustomerTickets }) => {
                 saveTicketsMessages({
                     ...message,
                     ticketId,
+                    messageContentId: message?.messageContentId
+                        ? message?.messageContentId
+                        : message?.deliveryDate,
                     fileAttachments:
                         message?.fileAttachments?.length > 0
                             ? message?.fileAttachments
