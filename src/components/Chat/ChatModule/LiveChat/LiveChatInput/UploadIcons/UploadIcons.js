@@ -34,9 +34,9 @@ const UploadIcons = ({
                 file: "Maximum of 5 files",
             }));
         }
-        const selectedFiles = currentFormElement ? files[0] : files;
+        const selectedFiles = currentFormElement ? [files[0]] : files;
         setErrors((prev) => ({ ...prev, file: "" }));
-
+        console.log({ selectedFiles });
         const uploaded = [];
         selectedFiles?.map((file) => {
             const uploadType = getFileFormat(file?.type);
@@ -70,9 +70,8 @@ const UploadIcons = ({
     };
 
     const handleFileEvent = ({ target: { files } }) => {
-        const file = currentFormElement ? files[0] : files;
-        if (file) {
-            const selectedFiles = Array.prototype.slice.call(file);
+        if (files) {
+            const selectedFiles = Array.prototype.slice.call(files);
             // maximum of five files
             const firstFiveFiles = selectedFiles?.slice(0, 5);
             uploadFile(firstFiveFiles);
