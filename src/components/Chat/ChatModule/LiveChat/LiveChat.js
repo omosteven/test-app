@@ -207,7 +207,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         }
         // triggerAgentTyping(true)
 
-        await socket.timeout(2000).emit(
+        await socket.emit(
             SEND_BRANCH_OPTION,
             {
                 ticketId,
@@ -217,6 +217,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             },
             (err) => {
                 if (err) {
+                    console.log({ err });
                     triggerAgentTyping(false);
                     // const freshMessageList = (messages).map((x) => {
                     //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
@@ -336,6 +337,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     fileAttachments: fileAttachments,
                 },
                 async (err) => {
+                    console.log({ err });
                     if (err) {
                         // setStatus(ERROR);
                         // setErrorMssg('Message not sent successfully');
@@ -498,6 +500,9 @@ const LiveChat = ({ getCustomerTickets }) => {
                 saveTicketsMessages({
                     ...message,
                     ticketId,
+                    messageContentId: message?.messageContentId
+                        ? message?.messageContentId
+                        : message?.deliveryDate,
                     fileAttachments:
                         message?.fileAttachments?.length > 0
                             ? message?.fileAttachments

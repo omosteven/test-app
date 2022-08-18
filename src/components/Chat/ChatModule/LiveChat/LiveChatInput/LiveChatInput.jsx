@@ -122,7 +122,7 @@ const LiveChatInput = ({
         updateUpload([]);
         setErrors((prev) => ({ ...prev, file: "" }));
     };
-    console?.log({ upload, request });
+
     // const handleInputFocus = () => {
     //     document.getElementById('inputGroup').scrollIntoView({ behavior: 'smooth', block: 'end' });
     // }
