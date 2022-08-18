@@ -1,6 +1,7 @@
 import React from "react";
 import { appMessageUserTypes } from "./enums";
 import { AgentImage } from "../../../../../../ui";
+import MessageAttachments from "./MessageAttachments/MessageAttachments";
 import MessageOptions from "./MessageOptions/MessageOptions";
 import MessageContent from "./MessageContent/MessageContent";
 
@@ -16,7 +17,6 @@ const Message = ({
     const {
         senderType,
         messageType,
-        messageStatus,
         branchOptions,
         messageContent,
         messageContentId,
@@ -41,13 +41,17 @@ const Message = ({
                 className={`d-flex flex-column w-100 ${
                     isReceivedMessage ? "" : "align-items-end"
                 }`}>
-                <MessageContent
-                    isReceivedMessage={isReceivedMessage}
-                    messageContent={messageContent}
-                    messageStatus={messageStatus}
+                {fileAttachments?.length > 0 && <MessageAttachments  
                     fileAttachments={fileAttachments}
                     openPreviewModal={openPreviewModal}
-                />
+                />}
+                {
+                    messageContent !== "" && <MessageContent
+                    isReceivedMessage={isReceivedMessage}
+                    messageContent={messageContent}
+                    fileAttachments={fileAttachments}
+                    openPreviewModal={openPreviewModal}
+                />}
                 {branchOptions?.length > 0 && (
                     <MessageOptions
                         selectedOption={selectedOption}
