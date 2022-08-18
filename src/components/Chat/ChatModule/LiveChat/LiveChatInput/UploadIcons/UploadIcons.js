@@ -36,7 +36,7 @@ const UploadIcons = ({
         }
         const selectedFiles = currentFormElement ? [files[0]] : files;
         setErrors((prev) => ({ ...prev, file: "" }));
-        console.log({ selectedFiles });
+
         const uploaded = [];
         selectedFiles?.map((file) => {
             const uploadType = getFileFormat(file?.type);
