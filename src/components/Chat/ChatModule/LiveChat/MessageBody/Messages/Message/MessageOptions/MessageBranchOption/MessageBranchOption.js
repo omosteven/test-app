@@ -1,21 +1,21 @@
-
 const MessageBranchOption = ({
     data: { branchOptionLabel },
     branchOptionId,
     selectedOption,
     handleMessageOptionSelect,
     messageIndex,
-    messagesDepth
+    messagesDepth,
 }) => {
     const shouldBeDisabled = messageIndex < messagesDepth;
     const isSelected = selectedOption === branchOptionId;
     return (
         <div
-            className={`branch__option ${selectedOption
-                    ? isSelected ? 'active' : '__fade_out'
-                    : ""
-                }`}
-            onClick={() => selectedOption ? null : handleMessageOptionSelect()}
+            className={`branch__option ${
+                selectedOption ? (isSelected ? "active" : "__fade_out") : ""
+            }`}
+            onClick={() =>
+                selectedOption ? null : handleMessageOptionSelect()
+            }
             disabled={shouldBeDisabled}>
             {branchOptionLabel}
         </div>
