@@ -4,7 +4,9 @@ export const messageTypes = Object.freeze({
   FORM_REQUEST: "FORM_REQUEST",
   FORM_RESPONSE: "FORM_RESPONSE",
   CONVERSATION: "CONVERSATION",
-  BRANCH_OPTION: "BRANCH_OPTION"
+  BRANCH_OPTION: "BRANCH_OPTION",
+  COLLECTION: "COLLECTION",
+  BRANCH_SUB_SENTENCE: "BRANCH_SUB_SENTENCE"
 });
 
 export const branchOptionsTypes = Object.freeze({
