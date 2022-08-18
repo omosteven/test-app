@@ -289,6 +289,7 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleNewMessage = async (request) => {
+        console.log({ request });
         const { message, fileAttachments } = request;
 
         if (currentFormElement) {
@@ -489,6 +490,7 @@ const LiveChat = ({ getCustomerTickets }) => {
     }, [messages, activeConvo, ticketPhase]);
 
     const handleReceive = (message) => {
+        console.log({ message });
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
 

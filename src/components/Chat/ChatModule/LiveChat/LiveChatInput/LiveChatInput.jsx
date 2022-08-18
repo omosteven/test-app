@@ -100,11 +100,10 @@ const LiveChatInput = ({
             }));
             setStatus(DATAMODE);
         } catch (err) {
-            const newStatus = err?.message ? "" : ERROR;
-            setStatus(newStatus);
+            setStatus(ERROR);
             const message = getErrorMessage(err);
-            setErrorMssg(err?.message ? "" : message);
-            setCancelRequest();
+            setErrorMssg(message);
+            // setCancelRequest();
         }
     };
 
@@ -123,7 +122,7 @@ const LiveChatInput = ({
         updateUpload([]);
         setErrors((prev) => ({ ...prev, file: "" }));
     };
-
+    console?.log({ upload, request });
     // const handleInputFocus = () => {
     //     document.getElementById('inputGroup').scrollIntoView({ behavior: 'smooth', block: 'end' });
     // }
