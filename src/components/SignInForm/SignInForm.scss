@@ -1,0 +1,29 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+.signin {
+    .signin-header {
+        font-weight: 600;
+        font-size: 2rem;
+        line-height: 142%;
+        color: $black__theme_color;
+
+        @include media("<=small-screen") {
+            font-size: 18px;
+            line-height: 130%;
+            color: #060213;
+        }
+    }
+
+    .signin-sub__text {
+        font-size: 1.125rem;
+        line-height: 1.625rem;
+        color: $muted__theme_color_2;
+        @include media("<=small-screen") {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 18px;
+            // color: #696d8c;
+        }
+    }
+}

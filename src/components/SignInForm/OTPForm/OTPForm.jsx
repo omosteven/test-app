@@ -9,6 +9,7 @@ import apiRoutes from "../../../lib/api/apiRoutes";
 import { ResendOTP } from "./ResendOTP/ResendOTP";
 import pushToDashboard from "../actions";
 import { getDevicePushToken } from "../../../lib/firebase/firebase";
+import "./OTPForm.scss";
 
 const OTPForm = ({ initialStepRequest }) => {
     const {

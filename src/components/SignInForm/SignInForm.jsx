@@ -2,6 +2,7 @@ import { useState } from "react";
 import FadeIn from "../ui/FadeIn";
 import EmailForm from "./EmailForm/EmailForm";
 import OTPForm from "./OTPForm/OTPForm";
+import "./SignInForm.scss";
 
 export const signInstages = {
     initial: "INPUT_EMAIL",
@@ -41,7 +42,7 @@ const SignInForm = () => {
                 <div
                     className='col-lg-4 col-md-5 col-sm-8 col-12'
                     key={signInStage}>
-                    <div className='otp__group'>{renderBasedOnStage()}</div>
+                    <div className='signin otp__group'>{renderBasedOnStage()}</div>
                 </div>
             </div>
         </FadeIn>
