@@ -9,6 +9,7 @@ import apiRoutes from "../../../lib/api/apiRoutes";
 import { ResendOTP } from "./ResendOTP/ResendOTP";
 import pushToDashboard from "../actions";
 import { getDevicePushToken } from "../../../lib/firebase/firebase";
+import "./OTPForm.scss";
 
 const OTPForm = ({ initialStepRequest }) => {
     const {
@@ -61,8 +62,8 @@ const OTPForm = ({ initialStepRequest }) => {
         <div>
             <div className='otp__form'>
                 <div>
-                    <h5 className='header'>Enter OTP</h5>
-                    <p className='sub__text'>
+                    <h5 className='signin-header'>Enter OTP</h5>
+                    <p className='signin-sub__text'>
                         Hello <strong>{email}</strong>, an email has been sent
                         to you containing an OTP code which is required to log
                         you into your account. Please check and enter the code

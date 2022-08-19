@@ -1,26 +1,14 @@
-@import "../master";
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
 
 .otp__form {
-    .header {
-        font-weight: 600;
-        font-size: 2rem;
-        line-height: 142%;
-        color: $black__theme_color;
-    }
-
-    .sub__text {
-        // font-weight: 400;
-        font-size: 1.125rem;
-        line-height: 1.625rem;
-        color: $muted__theme_color_2;
-    }
-
     .pincode-input-container {
         padding: 0.625rem 0;
         // margin: 1.25rem 0;
         white-space: nowrap;
         @include media("<=small-screen") {
             text-align: center;
+            padding: 0;
         }
 
         .pincode-input-text {

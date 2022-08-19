@@ -59,8 +59,8 @@ const EmailForm = ({handleInitialRequestUpdate}) => {
 
     return (
         <div>
-            <h5 className='bold'>Hello,</h5>
-            <p className='light-medium'>
+            <h5 className='signin-header'>Hello,</h5>
+            <p className='signin-sub__text'>
                 Welcome to <strong>{teamName}</strong>. To enable us solve your issue easily,
                 kindly enter your email address below.
             </p>
