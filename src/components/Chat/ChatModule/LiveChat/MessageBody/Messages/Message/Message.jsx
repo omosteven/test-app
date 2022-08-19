@@ -4,6 +4,7 @@ import { AgentImage } from "../../../../../../ui";
 import MessageAttachments from "./MessageAttachments/MessageAttachments";
 import MessageOptions from "./MessageOptions/MessageOptions";
 import MessageContent from "./MessageContent/MessageContent";
+import MessageTimeStatus from "./MessageTimeStatus/MessageTimeStatus";
 
 const Message = ({
     data,
@@ -22,6 +23,8 @@ const Message = ({
         messageContentId,
         selectedOption,
         fileAttachments,
+        readDate,
+        deliveryDate,
     } = data || {};
     const { displayPicture, firstName } = agent || {};
 
@@ -63,7 +66,17 @@ const Message = ({
                         handleOptConversation={handleOptConversation}
                     />
                 )}
-                {/* <span className='text-secondary'>Message seen 1:2pm</span> */}
+                {!isReceivedMessage ? (
+                    <MessageTimeStatus
+                        date={readDate}
+                        statusText={"Message seen"}
+                    />
+                ) : (
+                    <MessageTimeStatus
+                        date={deliveryDate}
+                        statusText={"Message received"}
+                    />
+                )}
             </div>
         </div>
     );

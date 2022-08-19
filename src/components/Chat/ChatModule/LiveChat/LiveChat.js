@@ -170,6 +170,10 @@ const LiveChat = ({ getCustomerTickets }) => {
 
         let newMessageList = await messages.map((x) => {
             return (x.messageType === messageTypes?.BRANCH ||
+                x.messageType === messageTypes?.COLLECTION ||
+                x.messageType === messageTypes?.BRANCH_OPTION ||
+                x.messageType === messageTypes?.BRANCH_SUB_SENTENCE ||
+                x.messageType === messageTypes?.CONVERSATION ||
                 x.messageType === messageTypes?.COLLECTION) &&
                 x.messageContentId === branchId
                 ? { ...x, selectedOption: branchOptionId }
@@ -223,7 +227,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     // const freshMessageList = (messages).map((x) => {
                     //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
                     // })
-                    console.log("Encountered error");
+                    console.log("Encountered error", err);
                 } else {
                     triggerAgentTyping(false);
                 }
@@ -491,6 +495,7 @@ const LiveChat = ({ getCustomerTickets }) => {
     }, [messages, activeConvo, ticketPhase]);
 
     const handleReceive = (message) => {
+        console.log("new messages", message);
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
 

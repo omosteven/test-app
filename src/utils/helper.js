@@ -40,6 +40,43 @@ export function timeSince(reqDate) {
     return Math.floor(seconds) + " s";
 }
 
+export const getFormatedDate = (reqDate) => {
+    let fullDate = new Date(reqDate);
+    const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sept",
+        "Oct",
+        "Nov",
+        "Dec",
+    ];
+
+    // const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+    const year = fullDate.getFullYear(); // 2019
+    const date = fullDate.getDate();
+
+    const monthName = months[fullDate.getMonth()];
+    // const dayName = days[fullDate.getDay()];
+    let hour = fullDate.getHours();
+
+    let minute = fullDate.getMinutes();
+
+    minute = minute < 10 ? `0${minute}` : minute;
+
+    let timePostfix = hour > 12 ? "pm" : "am";
+    
+    hour = hour > 12 ? hour - 12 : hour;
+
+    return `${date} ${monthName} ${year}, ${hour}:${minute} ${timePostfix}`;
+};
+
 export const generateID = (length = 10) => {
     var result = "";
     var characters =

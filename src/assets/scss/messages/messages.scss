@@ -6,54 +6,59 @@
     // animation-delay: #{$delay}s;
 }
 
-
 .suggested__convos {
     padding-left: 16px;
     margin-bottom: 20px;
     @include animation--fadedown;
-  
+
     p {
-      color: #696d8c;
-      font-size: 14px;
+        color: #696d8c;
+        font-size: 14px;
     }
     .suggestion__list {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-  
-      .suggested__convo {
-        height: 40px;
-        width: fit-content;
-        padding: 0 14px;
         display: flex;
         align-items: center;
-        justify-content: center;
-  
-        border: 1px solid $primary__theme_color;
-        border-radius: 20px;
-        span {
-          color: #060213;
-          font-size: 14px;
+        gap: 8px;
+
+        .suggested__convo {
+            height: 40px;
+            width: fit-content;
+            padding: 0 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid $primary__theme_color;
+            border-radius: 20px;
+            span {
+                color: #060213;
+                font-size: 14px;
+            }
+            &:hover {
+                opacity: 0.6;
+            }
         }
-        &:hover {
-          opacity: 0.6;
-        }
-      }
     }
-  }
-  
+}
 
 .message__group {
     display: flex;
     align-items: flex-end;
     gap: 16px;
     margin-bottom: 20px;
-    .options{
+    .options {
         .branch__option {
             margin-right: 8px;
         }
 
         // margin-top: ;
+    }
+    .read-time {
+        font-weight: 400;
+        font-size: 11px;
+        line-height: 12px;
+        color: #a3a3c2;
+        margin-top: 8px;
     }
 }
 
@@ -64,7 +69,6 @@ ol.message-thread {
     li {
         list-style: none;
     }
-
 }
 
 // Chat Bubble Animation Application
@@ -88,7 +92,6 @@ ol.message-thread {
 //         }
 //     }
 // }
-
 
 // ANIMATIONS START
 @keyframes appear {
