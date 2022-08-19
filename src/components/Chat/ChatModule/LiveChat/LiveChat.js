@@ -543,10 +543,6 @@ const LiveChat = ({ getCustomerTickets }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ticketsMessages]);
 
-    useEffect(() => {
-        console.log("all messages", ticketsMessages);
-    }, [ticketsMessages]);
-
     return (
         <>
             <TicketsHeader
