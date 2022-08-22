@@ -304,6 +304,7 @@ const LiveChat = ({ getCustomerTickets }) => {
 
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
+
             dispatch(
                 saveTicketsMessages({
                     ticketId,
@@ -447,6 +448,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                 ];
                 let newMessage = {
                     messageContentId: compMessageId,
+                    messageId: compMessageId,
                     messageContent:
                         "Are any of these relevant to the problem you’re having?",
                     messageType: CONVERSATION,
@@ -547,7 +549,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         figureInputAction();
         processIssueDiscovery();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [messages]);
+    }, [ticketsMessages]);
 
     return (
         <>

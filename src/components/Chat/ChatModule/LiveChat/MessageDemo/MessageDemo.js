@@ -34,7 +34,7 @@ const MessageDemo = ({
                 //   const noTail = !isLast && messages[i + 1]?.sent === sent
                 return (
                     <motion.li
-                        key={message?.messageContentId}
+                        key={message?.messageId}
                         //   className={cn(styles.shared, sent ? styles.sent : styles.received, noTail && styles.noTail)}
                         initial='initial'
                         animate='enter'
