@@ -28,7 +28,7 @@ export default function Layout({ children }) {
         );
         $("html, body").css({ width: w, height: h });
         // inputGroup.style.top = offsetTop;
-        inputGroup.style.bottom = 0;
+        // inputGroup.style.bottom = 0;
     };
 
     useEffect(() => {

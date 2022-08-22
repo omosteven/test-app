@@ -288,16 +288,18 @@ const LiveChatInput = ({
                             currentFormElement={currentFormElement}
                         />
                         {renderBasedOnInputType()}
-                        <Button
-                            type='submit'
-                            text={"Send"}
-                            icon={<ReactSVG src={imageLinks?.svg?.send} />}
-                            classType='default'
-                            otherClass={`send__button ${
-                                !btnDisabled ? "active" : ""
-                            }`}
-                            disabled={btnDisabled || fetchingInputStatus}
-                        />
+                        <div>
+                            <Button
+                                type='submit'
+                                text={"Send"}
+                                icon={<ReactSVG src={imageLinks?.svg?.send} />}
+                                classType='default'
+                                otherClass={`send__button ${
+                                    !btnDisabled ? "active" : ""
+                                }`}
+                                disabled={btnDisabled || fetchingInputStatus}
+                            />
+                        </div>
                     </div>
                 </div>
                 {(errors?.file || errorMssg) && (

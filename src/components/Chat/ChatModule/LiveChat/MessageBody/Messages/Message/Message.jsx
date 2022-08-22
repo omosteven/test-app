@@ -76,15 +76,9 @@ const Message = ({
                     />
                 )}
                 {!isReceivedMessage ? (
-                    <MessageTimeStatus
-                        date={readDate}
-                        statusText={"Message seen"}
-                    />
+                    <MessageTimeStatus date={readDate} />
                 ) : (
-                    <MessageTimeStatus
-                        date={deliveryDate}
-                        statusText={"Message received"}
-                    />
+                    <MessageTimeStatus date={deliveryDate} />
                 )}
             </div>
         </div>

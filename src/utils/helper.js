@@ -40,7 +40,7 @@ export function timeSince(reqDate) {
     return Math.floor(seconds) + " s";
 }
 
-export const getFormatedDate = (reqDate) => {
+export const getFormatedDate = (reqDate, getTimeOnly) => {
     let fullDate = new Date(reqDate);
     const months = [
         "Jan",
@@ -71,10 +71,16 @@ export const getFormatedDate = (reqDate) => {
     minute = minute < 10 ? `0${minute}` : minute;
 
     let timePostfix = hour > 12 ? "pm" : "am";
-    
+
     hour = hour > 12 ? hour - 12 : hour;
 
-    return `${date} ${monthName} ${year}, ${hour}:${minute} ${timePostfix}`;
+    let formattedTime = `${hour}:${minute} ${timePostfix}`;
+
+    let formattedDate = `${date} ${monthName} ${year}`;
+
+    return getTimeOnly
+        ? `${formattedTime}`
+        : `${formattedDate}, ${formattedTime}`;
 };
 
 export const generateID = (length = 10) => {

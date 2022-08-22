@@ -491,7 +491,6 @@ const LiveChat = ({ getCustomerTickets }) => {
             if (
                 lastCustomerMssg?.messageType === DEFAULT &&
                 lastMessage.messageType !== CONVERSATION &&
-                // ticketPhase === ISSUE_DISCOVERY &&
                 lastCustomerMssg?.suggestionRetryAttempt === 0
             ) {
                 fetchConvoSuggestions(lastCustomerMssg);
