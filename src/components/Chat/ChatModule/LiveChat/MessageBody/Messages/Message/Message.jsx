@@ -4,6 +4,7 @@ import { AgentImage } from "../../../../../../ui";
 import MessageOptions from "./MessageOptions/MessageOptions";
 import MessageContent from "./MessageContent/MessageContent";
 import MessageTimeStatus from "./MessageTimeStatus/MessageTimeStatus";
+import { messageTypes } from "./enums";
 
 const Message = ({
     data,
@@ -26,7 +27,7 @@ const Message = ({
         deliveryDate,
     } = data || {};
 
-    const parsedBranchOption =
+    const parsedBranchOptions =
         typeof branchOptions === "string"
             ? JSON.parse(branchOptions)
             : branchOptions;
@@ -54,10 +55,10 @@ const Message = ({
                         openPreviewModal={openPreviewModal}
                     />
                 )}
-                {parsedBranchOption?.length > 0 && (
+                {parsedBranchOptions?.length > 0 && (
                     <MessageOptions
                         selectedOption={selectedOption}
-                        options={parsedBranchOption}
+                        options={parsedBranchOptions}
                         messageIndex={messageIndex}
                         messagesDepth={messagesDepth}
                         messageType={messageType}
@@ -66,8 +67,9 @@ const Message = ({
                     />
                 )}
 
-                <MessageTimeStatus
+                {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && <MessageTimeStatus
                     date={isReceivedMessage ? readDate : deliveryDate} />
+                }
             </div>
         </div>
     );
