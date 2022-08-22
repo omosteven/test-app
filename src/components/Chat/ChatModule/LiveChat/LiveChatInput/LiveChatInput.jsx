@@ -274,20 +274,22 @@ const LiveChatInput = ({
                         />
                     )}
                     <div className='chat__input--group'>
-                        <UploadIcons
-                            upload={upload}
-                            updateUpload={updateUpload}
-                            handleRemoveFile={handleRemoveFile}
-                            isDisabled={isDisabled}
-                            setErrors={setErrors}
-                            sendNewMessage={sendNewMessage}
-                            showModal={showModal}
-                            toggleModal={toggleModal}
-                            handleUpload={handleUpload}
-                            selectedMedia={selectedMedia}
-                            currentFormElement={currentFormElement}
-                        />
-                        {renderBasedOnInputType()}
+                        <div className='chat__input--group--inputs'>
+                            <UploadIcons
+                                upload={upload}
+                                updateUpload={updateUpload}
+                                handleRemoveFile={handleRemoveFile}
+                                isDisabled={isDisabled}
+                                setErrors={setErrors}
+                                sendNewMessage={sendNewMessage}
+                                showModal={showModal}
+                                toggleModal={toggleModal}
+                                handleUpload={handleUpload}
+                                selectedMedia={selectedMedia}
+                                currentFormElement={currentFormElement}
+                            />
+                            {renderBasedOnInputType()}
+                        </div>
                         <div>
                             <Button
                                 type='submit'
