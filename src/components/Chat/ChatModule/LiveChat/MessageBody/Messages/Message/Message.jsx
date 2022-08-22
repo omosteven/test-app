@@ -1,7 +1,6 @@
 import React from "react";
 import { appMessageUserTypes } from "./enums";
 import { AgentImage } from "../../../../../../ui";
-import MessageAttachments from "./MessageAttachments/MessageAttachments";
 import MessageOptions from "./MessageOptions/MessageOptions";
 import MessageContent from "./MessageContent/MessageContent";
 import MessageTimeStatus from "./MessageTimeStatus/MessageTimeStatus";
