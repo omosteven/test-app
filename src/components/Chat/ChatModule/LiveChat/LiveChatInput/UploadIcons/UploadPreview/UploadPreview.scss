@@ -38,6 +38,9 @@
 
     &--media__group {
         position: relative;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
     }
 
     &--media__container {
@@ -100,16 +103,6 @@
                     line-height: 9px;
                     text-transform: uppercase;
                 }
-        }
-    }
-
-    &--error__group {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-
-        svg {
-            cursor: pointer;
         }
     }
 }

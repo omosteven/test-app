@@ -13,13 +13,13 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
     // console.log(ticketId, messageContentId, otherPayload )
     switch (type) {
         case types.SET_TICKET_MESSAGES:
-            let stmProposedVal = getUniqueListBy(payload, "messageContentId");
+            let stmProposedVal = getUniqueListBy(payload, "messageId");
             return { ...state, ticketsMessages: stmProposedVal };
 
         case types.UPDATE_TICKET_MESSAGES:
             let utmProposedVal = getUniqueListBy(
                 [...state?.ticketsMessages, payload],
-                "messageContentId"
+                "messageId"
             );
             return { ...state, ticketsMessages: utmProposedVal };
 

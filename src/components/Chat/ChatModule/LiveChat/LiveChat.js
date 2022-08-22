@@ -111,7 +111,8 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleOptConversation = async (convo) => {
-        console.log({ convo });
+        const newMessageId = generateID();
+
         const {
             parentMessageId,
             conversationId,
@@ -132,6 +133,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                 messageContent: branchOptionLabel,
                 messageContentId: branchOptionId,
                 messageType: BRANCH_OPTION,
+                messageId: newMessageId,
             },
         ];
 
@@ -141,7 +143,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         socket.emit(
             SEND_CUSTOMER_CONVERSATION_REPLY,
             { ticketId, conversationId, message: branchOptionLabel },
-            (err, data) => {
+            (err) => {
                 if (err) {
                     triggerAgentTyping(false);
                     // const freshMessageList = (messages).map((x) => {
@@ -156,6 +158,7 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleMessageOptionSelect = async (messageOption) => {
+        const newMessageId = generateID();
         const {
             branchId,
             branchOptionId,
@@ -188,6 +191,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                 messageContent: branchOptionLabel,
                 messageContentId: branchOptionId,
                 messageType: BRANCH_OPTION,
+                messageId: newMessageId,
             },
         ];
 
@@ -296,6 +300,7 @@ const LiveChat = ({ getCustomerTickets }) => {
 
     const handleNewMessage = async (request) => {
         const { message, fileAttachments } = request;
+        const newMessageId = generateID();
 
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
@@ -304,9 +309,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                     ticketId,
                     messageContent: message,
                     senderType: THIRD_USER,
-                    messageContentId: generateID(),
+                    messageContentId: newMessageId,
+                    messageId: newMessageId,
                     messageType: messageTypes?.FORM_RESPONSE,
-                    fileAttachments: fileAttachments,
+                    fileAttachments,
                 })
             );
 
@@ -316,19 +322,19 @@ const LiveChat = ({ getCustomerTickets }) => {
                 currentFormOrder: order,
                 formElementId,
                 formId,
-                fileAttachments: fileAttachments,
+                fileAttachments,
             });
         } else {
-            const newMessageId = generateID();
             const messageEntry = {
                 ticketId,
                 senderType: THIRD_USER,
                 messageContent: message,
                 messageContentId: newMessageId,
+                messageId: newMessageId,
                 messageType: DEFAULT,
                 messageStatus: messageStatues?.SENDING,
                 suggestionRetryAttempt: 0,
-                fileAttachments: fileAttachments,
+                fileAttachments,
             };
             dispatch(saveTicketsMessages(messageEntry));
 
@@ -338,7 +344,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     ticketId,
                     message: message,
                     messageType: DEFAULT,
-                    fileAttachments: fileAttachments,
+                    fileAttachments,
                 },
                 async (err) => {
                     if (err) {
@@ -485,7 +491,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             if (
                 lastCustomerMssg?.messageType === DEFAULT &&
                 lastMessage.messageType !== CONVERSATION &&
-                ticketPhase === ISSUE_DISCOVERY &&
+                // ticketPhase === ISSUE_DISCOVERY &&
                 lastCustomerMssg?.suggestionRetryAttempt === 0
             ) {
                 fetchConvoSuggestions(lastCustomerMssg);
@@ -495,14 +501,14 @@ const LiveChat = ({ getCustomerTickets }) => {
     }, [messages, activeConvo, ticketPhase]);
 
     const handleReceive = (message) => {
-        console.log("new messages", message);
+        // console.log("new message", message);
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
 
             dispatch(
                 saveTicketsMessages({
                     ...message,
-                    ticketId,
+                    ticketId: message?.ticket?.ticketId,
                     messageContentId: message?.messageContentId
                         ? message?.messageContentId
                         : message?.deliveryDate,
@@ -541,7 +547,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         figureInputAction();
         processIssueDiscovery();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ticketsMessages]);
+    }, [messages]);
 
     return (
         <>
