@@ -5,7 +5,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 90%;
+        height: 100%;
 
         .preview__media {
             object-fit: contain;
@@ -24,11 +24,4 @@
             width: 100%;
         }
     }
-}
-
-.custom__modal__footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #F8F8FA;
 }

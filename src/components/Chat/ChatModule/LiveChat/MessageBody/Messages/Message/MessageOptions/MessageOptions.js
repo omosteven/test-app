@@ -12,8 +12,8 @@ const MessageOptions = ({
     messagesDepth,
 }) => {
     return (
-        <div className='d-flex col-lg-5 col-md-7 col-12 flex-wrap options'>
-            {options.map((option, index) => (
+        <div className='options__group col-lg-5 col-md-7 col-12'>
+            {options?.map((option, index) => (
                 <MessageBranchOption
                     key={index}
                     data={option}

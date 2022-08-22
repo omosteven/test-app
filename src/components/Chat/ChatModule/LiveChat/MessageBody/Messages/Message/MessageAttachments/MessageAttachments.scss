@@ -1,6 +1,6 @@
 .attachment__list {
     display: flex;
     flex-direction: column;
-    max-width: 50%;
-    gap: 10px;
+    align-items: flex-start;
+    // max-width: 50%;
 }

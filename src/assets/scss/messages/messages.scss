@@ -1,15 +1,6 @@
-// Chat Bubble Animation Mixin
-@mixin animation--fadedown {
-    animation: appear 1s ease-in-out;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    // animation-delay: #{$delay}s;
-}
-
 .suggested__convos {
     padding-left: 16px;
     margin-bottom: 20px;
-    @include animation--fadedown;
 
     p {
         color: #696d8c;
@@ -46,19 +37,85 @@
     align-items: flex-end;
     gap: 16px;
     margin-bottom: 20px;
-    .options {
-        .branch__option {
-            margin-right: 8px;
-        }
-
-        // margin-top: ;
+    &.sent {
+        justify-content: flex-end;
     }
-    .read-time {
-        font-weight: 400;
-        font-size: 11px;
-        line-height: 12px;
-        color: #a3a3c2;
-        margin-top: 8px;
+    &--content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        .sent & {
+            align-items: flex-end;
+        }
+        .message__content {
+            width: fit-content;
+            max-width: 50%;
+            font-size: 15px;
+            letter-spacing: 0.05px;
+            margin-bottom: 10px;
+
+            .message {
+                padding: 12px 16px;
+                padding-bottom: 10px;
+            }
+
+            @include media("<=small-screen") {
+                font-size: 16px;
+                max-width: 80%;
+            }
+
+            &.received {
+                color: #fff;
+                background: $primary__theme_color;
+                border-radius: 12px 12px 12px 0px;
+            }
+            &.sent {
+                color: #696d8c;
+                background: #fafafc;
+                border-radius: 12px 12px 0px 12px;
+                text-align: left;
+            }
+        }
+        .options__group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+
+            .branch__option {
+                border-radius: 14px;
+                background-color: $light__theme_color;
+                border: 1px solid $border_highlight_color;
+                cursor: pointer;
+                color: $text__default_color;
+                outline: none;
+                font-size: 14.5px;
+                letter-spacing: 0.05px;
+                padding: 7px 12px;
+                transition: all 0.3s;
+                &:hover {
+                    opacity: 0.5;
+                }
+
+                &:disabled {
+                    color: $text__default_color;
+                }
+
+                &.__fade_out {
+                    color: $option__fade_out;
+                    pointer-events: none;
+                }
+                &.active {
+                    border-color: $primary__theme_color;
+                }
+            }
+        }
+        .read-time {
+            font-weight: 400;
+            font-size: 11px;
+            line-height: 12px;
+            color: #a3a3c2;
+            margin-top: 8px;
+        }
     }
 }
 
@@ -68,84 +125,5 @@ ol.message-thread {
     margin: 0;
     li {
         list-style: none;
-    }
-}
-
-// Chat Bubble Animation Application
-// .chat-thread {
-//     > *,
-//     > * > .message__group {
-//         @for $i from 1 through 10 {
-//             &:nth-child(#{$i}) {
-//                 // Quanti Messages [after user reply]
-//                 &.send {
-//                     // @include animation--fadedown(0);
-//                     align-items: flex-start;
-//                 }
-
-//                 // User Messages
-//                 &:not(.send) {
-//                     opacity: 0;
-//                     @include animation--fadedown(0);
-//                 }
-//             }
-//         }
-//     }
-// }
-
-// ANIMATIONS START
-@keyframes appear {
-    0% {
-        opacity: 0;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-    }
-
-    99% {
-        opacity: 0;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-    }
-
-    100% {
-        opacity: 1;
-        width: auto;
-        height: auto;
-    }
-}
-
-@keyframes blink {
-    50% {
-        opacity: 1;
-    }
-}
-
-@keyframes disappear {
-    0% {
-        opacity: 1;
-    }
-
-    99% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        transform: translateY(10px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
     }
 }

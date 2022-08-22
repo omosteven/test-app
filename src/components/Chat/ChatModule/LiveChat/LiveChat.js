@@ -304,6 +304,7 @@ const LiveChat = ({ getCustomerTickets }) => {
 
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
+
             dispatch(
                 saveTicketsMessages({
                     ticketId,
@@ -447,6 +448,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                 ];
                 let newMessage = {
                     messageContentId: compMessageId,
+                    messageId: compMessageId,
                     messageContent:
                         "Are any of these relevant to the problem you’re having?",
                     messageType: CONVERSATION,
@@ -491,7 +493,6 @@ const LiveChat = ({ getCustomerTickets }) => {
             if (
                 lastCustomerMssg?.messageType === DEFAULT &&
                 lastMessage.messageType !== CONVERSATION &&
-                ticketPhase === ISSUE_DISCOVERY &&
                 lastCustomerMssg?.suggestionRetryAttempt === 0
             ) {
                 fetchConvoSuggestions(lastCustomerMssg);
@@ -500,8 +501,9 @@ const LiveChat = ({ getCustomerTickets }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages, activeConvo, ticketPhase]);
 
+    console.log({ messages });
     const handleReceive = (message) => {
-        // console.log("new message", message);
+        console.log("new message", message);
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
 
@@ -547,7 +549,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         figureInputAction();
         processIssueDiscovery();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [messages]);
+    }, [ticketsMessages]);
 
     return (
         <>

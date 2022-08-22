@@ -274,14 +274,12 @@ const LiveChatInput = ({
                         />
                     )}
                     <div className='chat__input--group'>
-                        <div className='chat__input--group--inputs'>
+                        <div className="chat__input--group--inputs">
                             <UploadIcons
                                 upload={upload}
                                 updateUpload={updateUpload}
-                                handleRemoveFile={handleRemoveFile}
                                 isDisabled={isDisabled}
                                 setErrors={setErrors}
-                                sendNewMessage={sendNewMessage}
                                 showModal={showModal}
                                 toggleModal={toggleModal}
                                 handleUpload={handleUpload}
