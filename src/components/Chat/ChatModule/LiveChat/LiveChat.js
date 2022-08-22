@@ -500,8 +500,9 @@ const LiveChat = ({ getCustomerTickets }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages, activeConvo, ticketPhase]);
 
+    console.log({ messages });
     const handleReceive = (message) => {
-        // console.log("new message", message);
+        console.log("new message", message);
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
 

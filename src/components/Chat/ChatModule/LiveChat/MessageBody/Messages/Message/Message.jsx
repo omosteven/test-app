@@ -26,6 +26,12 @@ const Message = ({
         readDate,
         deliveryDate,
     } = data || {};
+
+    const parsedBranchOption =
+        typeof branchOptions === "string"
+            ? JSON.parse(branchOptions)
+            : branchOptions;
+
     const { displayPicture, firstName } = agent || {};
 
     const isReceivedMessage =
@@ -44,21 +50,24 @@ const Message = ({
                 className={`d-flex flex-column w-100 ${
                     isReceivedMessage ? "" : "align-items-end"
                 }`}>
-                {fileAttachments?.length > 0 && <MessageAttachments  
-                    fileAttachments={fileAttachments}
-                    openPreviewModal={openPreviewModal}
-                />}
-                {
-                    messageContent !== "" && <MessageContent
-                    isReceivedMessage={isReceivedMessage}
-                    messageContent={messageContent}
-                    fileAttachments={fileAttachments}
-                    openPreviewModal={openPreviewModal}
-                />}
-                {branchOptions?.length > 0 && (
+                {fileAttachments?.length > 0 && (
+                    <MessageAttachments
+                        fileAttachments={fileAttachments}
+                        openPreviewModal={openPreviewModal}
+                    />
+                )}
+                {messageContent !== "" && (
+                    <MessageContent
+                        isReceivedMessage={isReceivedMessage}
+                        messageContent={messageContent}
+                        fileAttachments={fileAttachments}
+                        openPreviewModal={openPreviewModal}
+                    />
+                )}
+                {parsedBranchOption?.length > 0 && (
                     <MessageOptions
                         selectedOption={selectedOption}
-                        options={branchOptions}
+                        options={parsedBranchOption}
                         messageIndex={messageIndex}
                         messagesDepth={messagesDepth}
                         messageType={messageType}
