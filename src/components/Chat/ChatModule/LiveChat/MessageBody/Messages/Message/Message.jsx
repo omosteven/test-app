@@ -20,7 +20,7 @@ const Message = ({
         messageType,
         branchOptions,
         messageContent,
-        messageContentId,
+        messageId,
         selectedOption,
         fileAttachments,
         readDate,
@@ -39,23 +39,14 @@ const Message = ({
 
     return (
         <div
-            id={messageContentId ? messageContentId : ""}
-            className={`message__group ${
-                isReceivedMessage ? "receive" : "send text-end"
-            }`}>
+            id={messageId ? messageId : ""}
+            className={`message__group ${isReceivedMessage ? "received" : "sent"
+                }`}>
             {isReceivedMessage && (
                 <AgentImage src={displayPicture} alt={firstName} />
             )}
             <div
-                className={`d-flex flex-column w-100 ${
-                    isReceivedMessage ? "" : "align-items-end"
-                }`}>
-                {fileAttachments?.length > 0 && (
-                    <MessageAttachments
-                        fileAttachments={fileAttachments}
-                        openPreviewModal={openPreviewModal}
-                    />
-                )}
+                className={`message__group--content `}>
                 {messageContent !== "" && (
                     <MessageContent
                         isReceivedMessage={isReceivedMessage}
@@ -75,11 +66,9 @@ const Message = ({
                         handleOptConversation={handleOptConversation}
                     />
                 )}
-                {!isReceivedMessage ? (
-                    <MessageTimeStatus date={readDate} />
-                ) : (
-                    <MessageTimeStatus date={deliveryDate} />
-                )}
+
+                <MessageTimeStatus
+                    date={isReceivedMessage ? readDate : deliveryDate} />
             </div>
         </div>
     );

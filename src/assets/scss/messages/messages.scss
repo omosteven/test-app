@@ -1,15 +1,7 @@
-// Chat Bubble Animation Mixin
-@mixin animation--fadedown {
-    animation: appear 1s ease-in-out;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-    // animation-delay: #{$delay}s;
-}
 
 .suggested__convos {
     padding-left: 16px;
     margin-bottom: 20px;
-    @include animation--fadedown;
 
     p {
         color: #696d8c;
@@ -46,6 +38,20 @@
     align-items: flex-end;
     gap: 16px;
     margin-bottom: 20px;
+    &.sent {
+        justify-content: flex-end;
+    }
+    &--content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        .sent & {
+            align-items: flex-end;
+        }
+        > div {
+           flex-grow: 1;
+        }
+    }
     .options {
         .branch__option {
             margin-right: 8px;
@@ -68,84 +74,5 @@ ol.message-thread {
     margin: 0;
     li {
         list-style: none;
-    }
-}
-
-// Chat Bubble Animation Application
-// .chat-thread {
-//     > *,
-//     > * > .message__group {
-//         @for $i from 1 through 10 {
-//             &:nth-child(#{$i}) {
-//                 // Quanti Messages [after user reply]
-//                 &.send {
-//                     // @include animation--fadedown(0);
-//                     align-items: flex-start;
-//                 }
-
-//                 // User Messages
-//                 &:not(.send) {
-//                     opacity: 0;
-//                     @include animation--fadedown(0);
-//                 }
-//             }
-//         }
-//     }
-// }
-
-// ANIMATIONS START
-@keyframes appear {
-    0% {
-        opacity: 0;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-    }
-
-    99% {
-        opacity: 0;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-    }
-
-    100% {
-        opacity: 1;
-        width: auto;
-        height: auto;
-    }
-}
-
-@keyframes blink {
-    50% {
-        opacity: 1;
-    }
-}
-
-@keyframes disappear {
-    0% {
-        opacity: 1;
-    }
-
-    99% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-        width: 0;
-        height: 0;
-        overflow: hidden;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        transform: translateY(10px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
     }
 }
