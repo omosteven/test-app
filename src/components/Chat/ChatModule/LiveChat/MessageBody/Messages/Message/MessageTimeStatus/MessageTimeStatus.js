@@ -1,11 +1,9 @@
-import { getFormatedDate } from "../../../../../../../../utils/helper";
+import { getFormatedDate } from "utils/helper";
 
-const MessageTimeStatus = ({ date, statusText }) => {
+const MessageTimeStatus = ({ date }) => {
     return (
         <>
-            <span className='read-time'>
-                {date && `${statusText} ${getFormatedDate(date)}`}
-            </span>
+            <span className='read-time'>{getFormatedDate(date, true)}</span>
         </>
     );
 };
