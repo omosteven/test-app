@@ -7,10 +7,8 @@ import "./UploadIcons.scss";
 const UploadIcons = ({
     upload,
     updateUpload,
-    handleRemoveFile,
     isDisabled,
     setErrors,
-    sendNewMessage,
     showModal,
     toggleModal,
     handleUpload,
@@ -98,14 +96,6 @@ const UploadIcons = ({
                     preview={selectedMedia?.fileAttachmentUrl}
                     previewType={selectedMedia?.fileAttachmentType}
                     fileName={selectedMedia?.fileAttachmentName}
-                    sendNewMessage={() => {
-                        toggleModal(false);
-                        sendNewMessage();
-                    }}
-                    handleRemoveFile={(fileName) => {
-                        handleRemoveFile(fileName);
-                        toggleModal(false);
-                    }}
                 />
             )}
         </div>

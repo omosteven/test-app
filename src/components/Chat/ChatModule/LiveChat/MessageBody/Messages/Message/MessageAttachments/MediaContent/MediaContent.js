@@ -10,10 +10,15 @@ import {
     getFileFormat,
     truncate,
 } from "../../../../../../../../../utils/helper";
+import MessageContent from "../../MessageContent/MessageContent";
 
 const MediaContent = ({ attachment, openPreviewModal }) => {
-    const { fileAttachmentUrl, fileAttachmentType, fileAttachmentName } =
-        attachment || {};
+    const {
+        fileAttachmentUrl,
+        fileAttachmentType,
+        fileAttachmentName,
+        fileAttachmentCaption,
+    } = attachment || {};
 
     const renderBasedOnMediaType = () => {
         switch (fileAttachmentType) {
@@ -57,7 +62,17 @@ const MediaContent = ({ attachment, openPreviewModal }) => {
         }
     };
 
-    return <>{renderBasedOnMediaType()}</>;
+    return (
+        <>
+            {renderBasedOnMediaType()}
+            {fileAttachmentCaption && fileAttachmentCaption !== "" && (
+                <MessageContent
+                    isReceivedMessage={true}
+                    messageContent={fileAttachmentCaption}
+                />
+            )}
+        </>
+    );
 };
 
 export default MediaContent;

@@ -277,10 +277,8 @@ const LiveChatInput = ({
                         <UploadIcons
                             upload={upload}
                             updateUpload={updateUpload}
-                            handleRemoveFile={handleRemoveFile}
                             isDisabled={isDisabled}
                             setErrors={setErrors}
-                            sendNewMessage={sendNewMessage}
                             showModal={showModal}
                             toggleModal={toggleModal}
                             handleUpload={handleUpload}

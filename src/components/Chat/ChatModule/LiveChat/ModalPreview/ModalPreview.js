@@ -1,6 +1,5 @@
 import { Modal } from "../../../../ui/Modal/Modal";
 import { IMAGE, FILE, VIDEO } from "../LiveChatInput/UploadIcons/enum";
-import { Button } from "../../../../ui";
 import "./ModalPreview.scss";
 
 const ModalPreview = ({
@@ -9,8 +8,6 @@ const ModalPreview = ({
     preview,
     previewType,
     fileName,
-    sendNewMessage,
-    handleRemoveFile,
 }) => {
     const renderBasedOnPreviewType = () => {
         switch (previewType) {
@@ -29,7 +26,7 @@ const ModalPreview = ({
                             src={`https://docs.google.com/gview?url=${preview}&embedded=true`}
                             width='100%'
                             height='100%'
-                            frameborder='0'
+                            frameBorder='0'
                             title={fileName}
                             sandbox='allow-orientation-lock allow-pointer-lock allow-popups	allow-popups-to-escape-sandbox	allow-presentation	allow-same-origin	allow-scripts	allow-top-navigation allow-top-navigation-by-user-activation'></iframe>
                     </div>
@@ -56,15 +53,6 @@ const ModalPreview = ({
             <div className='modal__preview--container'>
                 {renderBasedOnPreviewType()}
             </div>
-            {sendNewMessage && (
-                <div className='custom__modal__footer'>
-                    <Button
-                        text='Cancel'
-                        onClick={() => handleRemoveFile(fileName)}
-                    />
-                    <Button text='Upload' onClick={sendNewMessage} />
-                </div>
-            )}
         </Modal>
     );
 };
