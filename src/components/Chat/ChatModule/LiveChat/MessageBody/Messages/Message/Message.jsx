@@ -26,6 +26,12 @@ const Message = ({
         readDate,
         deliveryDate,
     } = data || {};
+
+    const parsedBranchOption =
+        typeof branchOptions === "string"
+            ? JSON.parse(branchOptions)
+            : branchOptions;
+
     const { displayPicture, firstName } = agent || {};
 
     const isReceivedMessage =
@@ -58,10 +64,10 @@ const Message = ({
                         openPreviewModal={openPreviewModal}
                     />
                 )}
-                {branchOptions?.length > 0 && (
+                {parsedBranchOption?.length > 0 && (
                     <MessageOptions
                         selectedOption={selectedOption}
-                        options={branchOptions}
+                        options={parsedBranchOption}
                         messageIndex={messageIndex}
                         messagesDepth={messagesDepth}
                         messageType={messageType}
