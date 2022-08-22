@@ -1,7 +1,6 @@
 import React from "react";
 import { appMessageUserTypes } from "./enums";
 import { AgentImage } from "../../../../../../ui";
-import MessageAttachments from "./MessageAttachments/MessageAttachments";
 import MessageOptions from "./MessageOptions/MessageOptions";
 import MessageContent from "./MessageContent/MessageContent";
 import MessageTimeStatus from "./MessageTimeStatus/MessageTimeStatus";
@@ -22,7 +21,6 @@ const Message = ({
         branchOptions,
         messageContent,
         messageId,
-
         selectedOption,
         fileAttachments,
         readDate,
@@ -42,22 +40,13 @@ const Message = ({
     return (
         <div
             id={messageId ? messageId : ""}
-            className={`message__group ${
-                isReceivedMessage ? "receive" : "send text-end"
-            }`}>
+            className={`message__group ${isReceivedMessage ? "received" : "sent"
+                }`}>
             {isReceivedMessage && (
                 <AgentImage src={displayPicture} alt={firstName} />
             )}
             <div
-                className={`d-flex flex-column w-100 ${
-                    isReceivedMessage ? "" : "align-items-end"
-                }`}>
-                {fileAttachments?.length > 0 && (
-                    <MessageAttachments
-                        fileAttachments={fileAttachments}
-                        openPreviewModal={openPreviewModal}
-                    />
-                )}
+                className={`message__group--content `}>
                 {messageContent !== "" && (
                     <MessageContent
                         isReceivedMessage={isReceivedMessage}
@@ -77,15 +66,10 @@ const Message = ({
                         handleOptConversation={handleOptConversation}
                     />
                 )}
-                {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && (
-                    <>
-                        {!isReceivedMessage ? (
-                            <MessageTimeStatus date={readDate} />
-                        ) : (
-                            <MessageTimeStatus date={deliveryDate} />
-                        )}
-                    </>
-                )}
+
+                {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && <MessageTimeStatus
+                    date={isReceivedMessage ? readDate : deliveryDate} />
+                }
             </div>
         </div>
     );
