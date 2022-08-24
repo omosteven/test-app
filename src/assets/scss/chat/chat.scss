@@ -201,13 +201,23 @@ body.keyboard {
 
 
 .chat__input--container {
-    padding: 1rem;
+    padding: 0.2rem 1rem;
     margin-right: 6px;
     border-top: 1px solid #ecebf5;
     border-bottom: 1px solid #ecebf5;
     border-right: 1px solid #ecebf5;
     // border-radius: 10px;
     overflow: hidden;
+
+    &::after {
+        content: '';
+        display: block;
+        height: 100%;
+        border: 2px solid #fff;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
 
     @include media("<=small-screen") {
         margin-right: 0px;

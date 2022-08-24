@@ -9,11 +9,10 @@ const initialState = {
 };
 
 const TicketsReducer = (state = initialState, { type, payload }) => {
-    const { ticketId, messageContentId, ...otherPayload } = payload || {};
-    // console.log(ticketId, messageContentId, otherPayload )
+    const { ticketId, messageId, ...otherPayload } = payload || {};
     switch (type) {
         case types.SET_TICKET_MESSAGES:
-            let stmProposedVal = getUniqueListBy(payload, "messageId");
+            let stmProposedVal = getUniqueListBy([...state?.ticketsMessages, ...payload], "messageId");
             return { ...state, ticketsMessages: stmProposedVal };
 
         case types.UPDATE_TICKET_MESSAGES:
@@ -29,7 +28,7 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
                 ticketsMessages: state?.ticketsMessages?.filter(
                     (x) =>
                         x.ticketId !== ticketId &&
-                        x.messageContentId !== messageContentId
+                        x.messageId !== messageId
                 ),
             };
 
@@ -37,7 +36,7 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 ticketsMessages: state?.ticketsMessages?.map((x) => {
-                    return x.messageContentId === messageContentId
+                    return x.messageId === messageId
                         ? { ...x, ...otherPayload }
                         : x;
                 }),

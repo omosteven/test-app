@@ -7,6 +7,7 @@ import {
     FILL_FORM_RECORD,
     SEND_BRANCH_OPTION,
     SEND_CUSTOMER_CONVERSATION_REPLY,
+    // SEND_CUSTOMER_CONVERSATION_REPLY,
     SEND_CUSTOMER_MESSAGE,
 } from "../../../../lib/socket/events";
 import { dataQueryStatus } from "../../../../utils/formatHandlers";
@@ -15,15 +16,15 @@ import LiveChatInput from "./LiveChatInput/LiveChatInput";
 import LiveChatStatusBar from "./LiveChatStatusBar/LiveChatStatusBar";
 import MessageBody from "./MessageBody/MessageBody";
 import {
+    AGENT_FOLLOWUP,
     appMessageUserTypes,
     branchOptionsTypes,
     formInputTypes,
     messageOptionActions,
     messageStatues,
     messageTypes,
-} from "./MessageBody/Messages/Message/enums";
+} from"./MessageBody/Messages/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
-import { ISSUE_DISCOVERY } from "../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import {
     setActiveTicket,
     saveTicketsMessages,
@@ -32,10 +33,11 @@ import {
     updateTicketMessageStatus,
 } from "../../../../store/tickets/actions";
 
+const NO_ACTION = "NO_ACTION";
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
-const { DEFAULT, BRANCH, FORM_REQUEST, CONVERSATION, BRANCH_OPTION } =
+const { DEFAULT, BRANCH, FORM_REQUEST, CONVERSATION, BRANCH_OPTION, ACTION_INFO } =
     messageTypes;
 
 const { TEXT } = formInputTypes;
@@ -110,6 +112,42 @@ const LiveChat = ({ getCustomerTickets }) => {
         }
     };
 
+    const handleIssueDiscovery = async (convo) => {
+        try {
+            triggerAgentTyping(true);
+
+            const { branchOptionId, branchOptionLabel } = convo;
+            const unDiscorved = branchOptionId === NO_ACTION;
+            const url = apiRoutes?.updateTicketDiscovery(ticketId);
+            const res = await API.put(url, {
+                discorved: !unDiscorved
+            })
+            if (res.status === 200) {
+                triggerAgentTyping(false);
+
+                if (unDiscorved) {
+
+                    dispatch(
+                        saveTicketsMessages({
+                            ticketId,
+                            messageId: NO_ACTION,
+                            messageRefContent: branchOptionLabel,
+                            messageContent: `This usually takes about two (2) minutes, please hold on`,
+                            messageType: ACTION_INFO,
+                            messageActionType: AGENT_FOLLOWUP,
+                            senderType: WORKSPACE_AGENT,
+                        })
+                    );
+    
+                }
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+            triggerAgentTyping(false);
+        }
+    }
+
     const handleOptConversation = async (convo) => {
         const newMessageId = generateID();
 
@@ -146,15 +184,12 @@ const LiveChat = ({ getCustomerTickets }) => {
             (err) => {
                 if (err) {
                     triggerAgentTyping(false);
-                    // const freshMessageList = (messages).map((x) => {
-                    //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
-                    // })
-                    console.log("Encountered error");
                 } else {
                     triggerAgentTyping(false);
                 }
             }
         );
+        handleIssueDiscovery(convo);
     };
 
     const handleMessageOptionSelect = async (messageOption) => {
@@ -237,10 +272,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                 }
             }
         );
-        // triggerAgentTyping(false)
-        // await setTimeout(function () {
-        //     triggerAgentTyping(false)
-        // }, 5000);
     };
 
     const handleSocketError = () => {
@@ -263,6 +294,13 @@ const LiveChat = ({ getCustomerTickets }) => {
                     shouldAllowUserInput = true;
                     userInputType = TEXT;
                     break;
+
+                case ACTION_INFO:
+                case CONVERSATION:
+                    shouldAllowUserInput = false;
+                    userInputType = TEXT;
+                    break;
+
                 case BRANCH:
                     if (branchOptions?.length > 0) {
                         shouldAllowUserInput = false;
@@ -408,7 +446,6 @@ const LiveChat = ({ getCustomerTickets }) => {
 
     const fetchConvoSuggestions = async (message) => {
         try {
-            console.log("Got called here to");
             const { messageContent, messageContentId } = message;
 
             const newMessageList = await messages.map((x) => {
@@ -442,7 +479,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     ...messageOptions,
                     {
                         branchOptionLabel: "No, it’s something else",
-                        branchOptionId: "NO_ACTION",
+                        branchOptionId: NO_ACTION,
                         parentMessageId: compMessageId,
                     },
                 ];
@@ -501,9 +538,8 @@ const LiveChat = ({ getCustomerTickets }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages, activeConvo, ticketPhase]);
 
-    console.log({ messages });
     const handleReceive = (message) => {
-        console.log("new message", message);
+        // console.log("new message", message);
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
 
@@ -537,7 +573,6 @@ const LiveChat = ({ getCustomerTickets }) => {
         socket.on("connect_error", handleSocketError);
         return () => {
             socket.off("receive-message");
-            dispatch(clearTicketMessages(ticketId));
             triggerAgentTyping(false);
             setActiveConvo(false);
         };

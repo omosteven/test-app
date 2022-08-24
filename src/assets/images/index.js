@@ -1,5 +1,6 @@
 const imageLinks = {
     svg: {
+        attention: "https://res.cloudinary.com/metacare/image/upload/v1661240831/ic_Information_er4k4y.svg",
         leaveIcon:
             "https://res.cloudinary.com/metacare/image/upload/v1658366039/Vector_mrbwv9.svg",
         verticalGrey:

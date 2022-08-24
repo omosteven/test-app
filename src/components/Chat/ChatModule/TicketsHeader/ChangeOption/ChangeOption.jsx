@@ -1,15 +1,16 @@
 import React from "react";
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import API from "../../../../../lib/api";
 import apiRoutes from "../../../../../lib/api/apiRoutes";
+import { clearTicketMessages } from "../../../../../store/tickets/actions";
 import { dataQueryStatus } from "../../../../../utils/formatHandlers";
 import { getErrorMessage } from "../../../../../utils/helper";
 import { Button } from "../../../../ui";
 import {
     appMessageUserTypes,
     messageTypes,
-} from "../../LiveChat/MessageBody/Messages/Message/enums";
+} from "../../LiveChat/MessageBody/Messages/enums";
 
 const { LOADING } = dataQueryStatus;
 const ChangeOption = ({
@@ -18,6 +19,7 @@ const ChangeOption = ({
     setErrorMssg,
     requestAllMessages,
 }) => {
+    const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
     const {
         chatSettings: { chatThemeColor },
@@ -58,7 +60,9 @@ const ChangeOption = ({
             const res = await API.post(url);
             if (res.status === 201) {
                 requestAllMessages();
+                dispatch(clearTicketMessages(ticketId))
                 setLoading(false);
+
             }
         } catch (err) {
             setLoading(false);

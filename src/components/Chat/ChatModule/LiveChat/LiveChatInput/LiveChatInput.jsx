@@ -5,18 +5,18 @@ import { SocketContext } from "../../../../../lib/socket/context/socket";
 import { IS_NOT_TYPING, IS_TYPING } from "../../../../../lib/socket/events";
 import { Button, Input } from "../../../../ui";
 import SelectUI from "../../../../ui/InputTypes/SelectUI/SelectUI";
-import { formInputTypes } from "../MessageBody/Messages/Message/enums";
 import { useIsTyping } from "use-is-typing";
 import PoweredBy from "../../../../common/PoweredBy/PoweredBy";
 import CustomDatePicker from "../../../../ui/InputTypes/DatePicker/DatePicker";
 import UploadIcons from "./UploadIcons/UploadIcons";
 import UploadPreview from "./UploadIcons/UploadPreview/UploadPreview";
-import { FILE } from "./UploadIcons/enum";
 import API from "../../../../../lib/api";
 import apiRoutes from "../../../../../lib/api/apiRoutes";
 import { dataQueryStatus } from "../../../../../utils/formatHandlers";
 import { getErrorMessage } from "../../../../../utils/helper";
+import { formInputTypes } from "../MessageBody/Messages/enums";
 import "./LiveChatInput.scss";
+
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
@@ -174,19 +174,6 @@ const LiveChatInput = ({
                         disabled={isDisabled}
                     />
                 );
-            // case :
-            //     <Textarea
-            //         placeholder={formElementPlaceholder ? formElementPlaceholder : "Type message here"}
-            //         inputClass="w-100 border-0"
-            //         value={message}
-            //         onChange={handleTyping}
-            //         grpClass="w-100"
-            //         label="Chat"
-            //         hideLabel={true}
-            //         ref={inputRef}
-            //         isLoading={fetchingConvos}
-            //         disabled={isDisabled}
-            //     />
 
             case DATE:
                 return (
@@ -240,8 +227,10 @@ const LiveChatInput = ({
             : isDisabled || request?.message === "";
 
     return (
-        <div id='inputGroup' className='col-md-10 col-12'>
-            {/* {showConvos && <SuggestedConvos data={suggestedList} handleConvoClick={handleConvoClick} />} */}
+        <div 
+            id='inputGroup' 
+            className={`col-md-10 col-12 ${!allowUserInput ? 'disallowed__section' : ''}`}
+            title={!allowUserInput ? 'Not Allowed' : 'Type a message'}>
             <form onSubmit={handleSubmit} id='chatInput'>
                 <div className='chat__input--container'>
                     {upload?.length > 0 && (
