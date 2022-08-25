@@ -57,7 +57,6 @@ const UploadIcons = ({
                 fileAttachmentUrl: url,
                 fileAttachmentType: uploadType,
                 fileAttachmentName: file?.name,
-                isCancellable: false,
             };
 
             updateUpload((prev) => [...prev, uploadObj]);
