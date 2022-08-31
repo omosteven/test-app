@@ -8,10 +8,14 @@
     &.img {
         object-fit: contain;
         max-height: 13.75rem;
+        width: fit-content;
+        max-width: 100%;
     }
 
     &.video {
         height: auto;
+        width: fit-content;
+        max-width: 100%;
     }
 }
 

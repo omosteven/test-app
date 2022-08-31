@@ -79,7 +79,7 @@ const Message = ({
                 )}
                 {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && (
                     <>
-                        {!isReceivedMessage ? (
+                        {isReceivedMessage ? (
                             <MessageTimeStatus date={readDate} />
                         ) : (
                             <MessageTimeStatus date={deliveryDate} />
