@@ -167,11 +167,7 @@ body.keyboard {
     .message-body {
         padding: 24px;
         padding-top: 4rem;
-        // padding-bottom: 5%;
         height: 70vh;
-        // display: flex;
-        // flex-direction: column ;
-        // overflow: scroll !important;
         overflow: scroll;
         &::-webkit-scrollbar {
             scrollbar-width: 10px;
@@ -182,9 +178,6 @@ body.keyboard {
             height: 100vh;
             padding-top: 65%;
             padding-bottom: 5%;
-
-            // padding-bottom: 4rem;
-            // height: 50%;
         }
         #dummy {
             margin-top: 5rem;
@@ -192,38 +185,6 @@ body.keyboard {
             display: block;
             width: 100%;
         }
-        // #mCSB_2 {
-        //   display: none;
-        // }
-        // .messages {
-        //   .receive {
-        //     display: grid;
-        //     grid-template-columns: 0.2fr 7fr;
-        //     .receive-border {
-        //       border-radius: 16px 16px 16px 0px;
-        //     }
-        //   }
-
-        //   .send {
-        //     display: grid;
-        //     grid-template-columns: 7fr 0.2fr;
-        //     .send-border {
-        //       border-radius: 16px 16px 0px 16px;
-        //     }
-        //   }
-
-        //   .message-text {
-        //     @media (max-width: 720px) {
-        //       width: 80% !important;
-        //     }
-        //   }
-
-        //   .options {
-        //     @include media("<=medium-screen") {
-        //       width: 80% !important;
-        //     }
-        //   }
-        // }
     }
 
     .chat-field {
@@ -238,61 +199,6 @@ body.keyboard {
     }
 }
 
-.branch__option {
-    border-radius: 14px;
-    background-color: $light__theme_color;
-    border: 1px solid $border_highlight_color;
-    cursor: pointer;
-    color: $text__default_color;
-    outline: none;
-    font-size: 14.5px;
-    letter-spacing: 0.05px;
-    padding: 7px 12px;
-    transition: all 0.3s;
-    &:hover {
-        opacity: 0.5;
-    }
-
-    &:disabled {
-        color: $text__default_color;
-    }
-
-    &.__fade_out {
-        color: $option__fade_out;
-        pointer-events: none;
-    }
-    &.active {
-        border-color: $primary__theme_color;
-    }
-}
-
-.message__content {
-    width: fit-content;
-    padding: 10px 16px;
-    padding-bottom: 8px;
-    max-width: 50%;
-    font-size: 15px;
-    letter-spacing: 0.05px;
-    margin-bottom: 10px;
-
-
-    @include media("<=small-screen") {
-        font-size: 16px;
-        max-width: 80%;
-    }
-
-    &.received {
-        color: #fff;
-        background: $primary__theme_color;
-        border-radius: 12px 12px 12px 0px;
-    }
-    &.sent {
-        color: #696d8c;
-        background: #fafafc;
-        border-radius: 12px 12px 0px 12px;
-        text-align: left;
-    }
-}
 
 .chat__input--container {
     padding: 1rem;
