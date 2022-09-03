@@ -15,7 +15,7 @@ export const SmothScrollContentHorizontal = ({ children, activeElement, classNam
                 $(`${selector}`).mCustomScrollbar("scrollTo", to, { scrollInertia: loopDuration / 2, easing: "easeInOutSmooth" });
             }
         } catch (err) {
-            console.log('error scrolling')
+            
         }
 
     }
@@ -58,7 +58,7 @@ export const SmothScrollContentHorizontal = ({ children, activeElement, classNam
                 ...extraProps
             });
         } catch (error) {
-            console.log(error)
+            
 
         }
 

@@ -1,3 +1,4 @@
+import { messageTypes } from "../../components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
 import { getUniqueListBy } from "../../utils/helper";
 import * as types from "./types";
 
@@ -12,31 +13,38 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
     const { ticketId, messageId, ...otherPayload } = payload || {};
     switch (type) {
         case types.SET_TICKET_MESSAGES:
-            let stmProposedVal = getUniqueListBy([...state?.ticketsMessages, ...payload], "messageId");
+            let stmProposedVal = getUniqueListBy([...state?.ticketsMessages, ...payload], "messageId")
             return { ...state, ticketsMessages: stmProposedVal };
 
         case types.UPDATE_TICKET_MESSAGES:
-            let utmProposedVal = getUniqueListBy(
-                [...state?.ticketsMessages, payload],
-                "messageId"
-            );
-            return { ...state, ticketsMessages: utmProposedVal };
+            let messageIndex = state.ticketsMessages.findIndex(el => el.messageId === payload.messageId && el.ticketId === payload.ticketId);
+            if(messageIndex === -1){
+                return { ...state, ticketsMessages: [...state?.ticketsMessages, payload] };
+            }
 
         case types.DELETE_TICKET_MESSAGE:
+            const filteredTickets = state?.ticketsMessages?.filter(
+                (x) =>
+                    x.ticketId !== ticketId &&
+                    x.messageId !== messageId
+            )
+            
+            
+
             return {
                 ...state,
-                ticketsMessages: state?.ticketsMessages?.filter(
-                    (x) =>
-                        x.ticketId !== ticketId &&
-                        x.messageId !== messageId
-                ),
+                // ticketsMessages: state?.ticketsMessages?.filter(
+                //     (x) =>
+                //         x.ticketId === ticketId &&
+                //         x.messageId === messageId
+                // ),
             };
 
         case types.UPDATE_TICKET_MESSAGE:
             return {
                 ...state,
                 ticketsMessages: state?.ticketsMessages?.map((x) => {
-                    return x.messageId === messageId
+                    return x.messageId === messageId && x.ticketId === ticketId
                         ? { ...x, ...otherPayload }
                         : x;
                 }),

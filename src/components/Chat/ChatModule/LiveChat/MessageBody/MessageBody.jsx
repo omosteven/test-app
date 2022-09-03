@@ -36,7 +36,7 @@ const MessageBody = ({
                 .getElementById("dummy")
                 .scrollIntoView({ behavior: "smooth", block: "end" });
         } catch (err) {
-            console.log("error scrolling");
+            
         }
     }, []);
 

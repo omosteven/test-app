@@ -281,7 +281,7 @@ body.keyboard {
 
 .typing-indicator {
     $ti-color-bg: #e6e7ed;
-    animation: 1s bulge infinite ease-out;
+    // animation: 1s bulge infinite ease-out;
     // padding: 10px;
     padding-top: 5px;
     padding-bottom: 10px;
@@ -296,7 +296,7 @@ body.keyboard {
         opacity: 0.4;
         @for $i from 1 through 3 {
             &:nth-of-type(#{$i}) {
-                animation: 1s blink infinite ($i * 0.3333s);
+                animation: 0.8s blink infinite ($i * 0.3333s);
             }
         }
     }

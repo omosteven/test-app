@@ -130,7 +130,7 @@ const LiveChatInput = ({
     const handleTyping = (e) => {
         let { value } = e.target;
         if (inputType === NUMERIC) {
-            console.log(value.replace(/\D/g, ""));
+            
             value = value.replace(/\D/g, "");
         }
         updateRequest({ ...request, message: value });

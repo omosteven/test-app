@@ -9,7 +9,7 @@ import rootReducer from "./rootReducer";
 const persistConfig = {
     key: "root",
     storage,
-    // whitelist: ["auth"]
+    // whitelist: ["chat"]
 };
 export const middleware = [thunk];
 const persistedReducer = persistReducer(persistConfig, rootReducer);

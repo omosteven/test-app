@@ -1,10 +1,11 @@
 import React from 'react';
-import { useHistory } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import queryString from 'query-string'
 import { ReactSVG } from 'react-svg';
 import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 import imageLinks from '../../../../../assets/images';
 import { Info } from '../../../../ui';
+import store from 'store/store';
+import { SIGNOUT_REQUEST } from 'store/rootReducer';
 
 const BraillePatternDots = ({ isMobile }) => {
     return (<ReactSVG src={isMobile ? imageLinks?.svg?.verticalGrey : imageLinks?.svg?.horizontalEllipsis} />)
@@ -12,14 +13,17 @@ const BraillePatternDots = ({ isMobile }) => {
 
 const ChatSettingsToggler = ({ isMobile }) => {
 	const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
-    const { chatSettings: { workspaceSlug } } = useSelector(state => state.chat)
-    const history = useHistory()
 	const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
     
-    const handleLogOut = () => {
-        // deleteAccessToken();
-        sessionStorage.clear()
-        history.push(`/?workspaceSlug=${workspaceSlug}`);
+    const handleLogOut = async () => {
+        let params = queryString.parse(window.location.search)
+        const slugCC = params?.workspaceSlug;
+        await sessionStorage.clear()
+        window.location.replace(`/?workspaceSlug=${slugCC}`);
+        await store.dispatch({type:SIGNOUT_REQUEST})
+
+
+        // history.push(`/?workspaceSlug=${workspaceSlug}`);
 
     }
 

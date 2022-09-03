@@ -1,3 +1,6 @@
+import { SocketContext } from "lib/socket/context/socket";
+import { CLOSED_TICKET } from "lib/socket/events";
+import { useContext, useEffect } from "react";
 import { ReactSVG } from "react-svg";
 import imageLinks from "../../../../../assets/images";
 import TicketStatus from "../common/TicketStatus/TicketStatus";
@@ -8,6 +11,20 @@ const Ticket = ({ data, isActive = false, handleTicketSelect, closeTicket }) => 
     const { agent, ticketPhase, ticketId } = data;
     const { firstName, lastName } = agent;
 
+    const socket = useContext(SocketContext);
+
+    const handleTicketClosure = (details) => {
+        console.log('seems like this ticket got closed');
+        console.log(details)
+    }
+
+    useEffect(() => {
+        // socket.emit(CLOSED_TICKET, { ticketId });
+        socket.on(CLOSED_TICKET, handleTicketClosure);
+        return () => {
+            socket.off(CLOSED_TICKET);
+        };
+    }, []);
 
     return (
         <div

@@ -12,3 +12,5 @@ export const SEND_AGENT_COLLECTION = 'send_agent_collection';
 export const NEW_TEST_TICKET = 'new_ticket_test'
 export const TICKET_PHASE_CHANGE = 'ticket_phase_change';
 export const SEND_CUSTOMER_CONVERSATION_REPLY = 'send_customer_conversation_reply';
+export const CLOSED_TICKET = 'closed_ticket';
+export const NEW_TICKET_UPDATE = 'new_ticket_update';
