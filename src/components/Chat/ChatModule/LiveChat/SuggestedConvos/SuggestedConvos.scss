@@ -1,0 +1,14 @@
+.suggested__convos {
+    padding-left: 16px;
+    margin-bottom: 20px;
+
+    p {
+        color: #696d8c;
+        font-size: 14px;
+    }
+    .suggestion__list {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+}

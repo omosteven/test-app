@@ -1,0 +1,22 @@
+.customer__tickets--container {
+        margin: 0 auto;
+        padding: 0;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+        height: 100%;
+        flex-wrap: nowrap;
+        width: 70% !important;
+        overflow: hidden;
+        overflow-x: auto;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: row;
+        flex-direction: row;
+}
+
+.customer__tickets--container .mCSB_container {
+    display: -webkit-flex;
+    display: flex;
+    flex-wrap: nowrap;
+}

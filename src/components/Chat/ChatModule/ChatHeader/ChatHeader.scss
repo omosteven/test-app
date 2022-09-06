@@ -1,0 +1,61 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+#header {
+    background-color: $light__theme_color;
+    position: sticky;
+    width: 100%;
+    display: block;
+    min-height: 78px;
+    top: 0;
+    z-index: 3;
+    border-bottom: 1px solid $border__theme_color;
+
+    @include media("<=small-screen") {
+        min-height: 56px;
+        position: fixed;
+    }
+
+    // justify-content: flex-end;
+    .chat__header {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        padding: 0 2rem;
+        #authTickets {
+            display: contents;
+            @include media("<=small-screen") {
+                display: none;
+            }
+        }
+        .chat__toggler {
+            display: none;
+
+            span {
+                font-weight: 400;
+                font-size: 14px;
+                // line-height: 22px;
+                color: $muted__theme_color_2;
+            }
+
+            @include media("<=small-screen") {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                gap: 0.25rem;
+                height: 12px;
+                span {
+                    margin-top: 1px;
+                }
+            }
+        }
+
+        @include media("<=small-screen") {
+            padding: 0 16px;
+            height: 56px;
+            .logo {
+                margin: auto;
+            }
+        }
+    }
+}

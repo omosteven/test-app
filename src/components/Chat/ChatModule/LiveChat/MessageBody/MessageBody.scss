@@ -1,0 +1,20 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+
+.message-body {
+    padding: 24px;
+    padding-top: 4rem;
+    height: 70vh;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+        scrollbar-width: 10px;
+    }
+    @include media("<=small-screen") {
+        padding-left: 16px;
+        padding-right: 16px;
+        height: 100vh;
+        padding-top: 65%;
+        padding-bottom: 5%;
+    }
+}

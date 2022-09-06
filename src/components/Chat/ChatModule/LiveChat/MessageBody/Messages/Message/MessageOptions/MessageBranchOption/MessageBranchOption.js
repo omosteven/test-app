@@ -1,3 +1,6 @@
+import React from "react";
+import "./MessageBranchOption.scss";
+
 const MessageBranchOption = ({
     data: { branchOptionLabel },
     branchOptionId,

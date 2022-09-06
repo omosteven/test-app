@@ -8,6 +8,7 @@ import {
     SEND_BRANCH_OPTION,
     SEND_CUSTOMER_CONVERSATION_REPLY,
     SEND_CUSTOMER_MESSAGE,
+    MARK_AS_READ,
 } from "../../../../lib/socket/events";
 import { dataQueryStatus } from "../../../../utils/formatHandlers";
 import { generateID, getErrorMessage } from "../../../../utils/helper";
@@ -31,6 +32,7 @@ import {
     setTicketMessages,
     updateTicketMessageStatus,
 } from "../../../../store/tickets/actions";
+import "./LiveChat.scss";
 
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
@@ -39,6 +41,7 @@ const { DEFAULT, BRANCH, FORM_REQUEST, CONVERSATION, BRANCH_OPTION } =
     messageTypes;
 
 const { TEXT } = formInputTypes;
+
 const LiveChat = ({ getCustomerTickets }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -501,11 +504,18 @@ const LiveChat = ({ getCustomerTickets }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages, activeConvo, ticketPhase]);
 
-    console.log({ messages });
+    const handleMarkAsRead = async (messageId) => {
+        await socket.emit(MARK_AS_READ, {
+            messageId,
+        });
+    };
+
+    // console.log({ messages });
     const handleReceive = (message) => {
-        console.log("new message", message);
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
+            console.log("new message", message);
+            handleMarkAsRead(message?.messageId);
 
             dispatch(
                 saveTicketsMessages({
@@ -524,6 +534,9 @@ const LiveChat = ({ getCustomerTickets }) => {
                                       fileAttachmentName: media?.mediaName,
                                   })
                               ),
+                    readDate:
+                        ticketId === message?.ticket?.ticketId &&
+                        new Date().toISOString(),
                 })
             );
         }

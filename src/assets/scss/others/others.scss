@@ -1,145 +1,9 @@
 @import "../master";
 @import "../_include-media-lib/include-media";
 
-.test--heading {
-    color: $primary__theme_color;
-}
 
-.empty__chat {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
-    width: 100%;
-
-    @include media("<=small-screen") {
-        // empty__chat
-        padding: 1rem;
-    }
-
-    &.with-margin {
-        margin-top: 6rem;
-    }
-    p {
-        font-family: $primary_font_family;
-        font-size: 16px;
-        color: $muted__theme_color_2;
-        margin-top: 1rem;
-        margin-bottom: 0;
-        white-space: pre-wrap;
-    }
-}
-
-.d-content {
-    display: contents;
-}
-
-.powered__by {
-    display: flex;
-    justify-content: center;
-    padding: 3px 0;
-    // gap: 0.25rem;
-    // align-items: baseline;
-    align-items: center;
-    background-color: white;
-
-    // & > span {
-    //     font-size: 14px;
-    //     line-height: 22px;
-    //     color: $muted__theme_color_2;
-    //     font-family: $primary_font_family--medium;
-    //     }
-    //     svg {
-    //         width: 80px;
-    //         path{
-    //             fill: #696D8C;
-    //         }
-    //     }
-}
-
-.customer__tickets {
-    &--container {
-        margin: 0 auto;
-        // margin-left: auto;
-        // margin-right: 1rem;
-        padding: 0;
-        display: flex;
-        justify-content: space-between;
-        flex-direction: row;
-        height: 100%;
-        overflow: hidden;
-        flex-wrap: nowrap;
-        width: 70% !important;
-        overflow: hidden;
-        // background: $light__theme_color;
-    }
-}
-.empty__chat--interface {
-    background: url(https://res.cloudinary.com/metacare/image/upload/v1654002124/Slice_1_ouxo0y.svg);
-    // width: calc(100% - $sidebarWidth);
-    height: 100%;
-    // padding-top: $headerHeight;
-    // position: fixed;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#ticketsHeader {
-    position: sticky;
-    top: 78px;
-    width: 100%;
-    background-color: $light__theme_color;
-    z-index: 1;
-    @include media("<=small-screen") {
-        top: 56px;
-        position: fixed;
-    }
-    // margin-left: 2.563rem;
-    // margin-top: 4rem;
-    // height: 100%;
-}
-#chatInput {
-    position: sticky;
-    bottom: 0;
-    // width: 100%;
-    // margin-left: 2.1%;
-    background-color: $light__theme_color;
-    @include media("<=small-screen") {
-        // padding: 0 10px;
-        margin-right: 0;
-    }
-}
-
-// .customer__tickets--container {
-//     .ticket-col {
-//         .customer__ticket {
-//             border-left: 1px solid #ECEBF5;
-//         }
-//     }
-// }
-
-.customer__tickets--container {
-    overflow-x: auto;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-flex-direction: row;
-    flex-direction: row;
-}
-.customer__tickets--container .mCSB_container {
-    display: -webkit-flex;
-    display: flex;
-    flex-wrap: nowrap;
-}
-
-.customer__tickets--container .customer__ticket {
-    -webkit-flex-shrink: 0;
-    flex-shrink: 0;
-}
 
 .customer__ticket {
-    // padding: 0 40px;
     padding-top: 16px;
     padding-bottom: 12px;
     padding-left: 3rem;
@@ -147,8 +11,9 @@
     border-left: 1px solid #ecebf5;
     width: 300px;
     cursor: pointer;
-    // height: 56px;
     position: relative;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0;
 
     &:last-child {
         border-right: 1px solid #ecebf5;
@@ -185,21 +50,14 @@
         }
     }
 
-    // &:hover {
-    //     .close__ticket {
-    //         display: block !important;
-    //     }
-    // }
-
     .agent__name {
-        font-size: 16px;
-        // font-family: $primary_font_family--lighter;
-        // font-weight: bold;
+        font-size: 1rem;
         margin-left: 18px;
         color: #060213;
         margin-bottom: 5px;
         text-transform: capitalize;
     }
+
     .agent__pic--small {
         img {
             width: 40px;
@@ -270,14 +128,6 @@
     }
 }
 
-.full__page_loader {
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ecebf5;
-}
-
 .connected {
     width: fit-content;
     padding: 4px 10px;
@@ -343,15 +193,6 @@
 
 #ticketGroup {
     display: contents;
-}
-
-.tickets__action--list {
-    display: flex;
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: 10px;
-    margin-left: auto;
-    // justify-content: ;
 }
 
 .empty__group {
@@ -432,13 +273,6 @@
     display: none;
     @include media("<=small-screen") {
         display: block;
-    }
-}
-
-.show-only-on-desktop {
-    display: block;
-    @include media("<=small-screen") {
-        display: none;
     }
 }
 

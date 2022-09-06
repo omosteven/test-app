@@ -1,0 +1,31 @@
+@import "assets/scss/master";
+
+.chat__container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $border__theme_color;
+    border-width: 0px 1px 0px 1px;
+    overflow: hidden;
+
+    .empty__chat--interface,
+    .chat__interface {
+        flex: 1 0 auto;
+        position: relative;
+    }
+
+    .chat__input__container {
+        bottom: 0;
+        position: fixed;
+        width: 100%;
+    }
+}
+
+.empty__chat--interface {
+    background: url(https://res.cloudinary.com/metacare/image/upload/v1654002124/Slice_1_ouxo0y.svg);
+    height: 100%;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
