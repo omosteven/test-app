@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import Message from "../MessageBody/Messages/Message/Message";
+import "./MessageDemo.scss";
 
 const transition = {
     type: "spring",

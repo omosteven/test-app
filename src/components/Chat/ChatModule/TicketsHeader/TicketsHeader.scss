@@ -1,0 +1,80 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+#ticketsHeader {
+    position: sticky;
+    top: 78px;
+    width: 100%;
+    background-color: $light__theme_color;
+    z-index: 1;
+    @include media("<=small-screen") {
+        top: 56px;
+        position: fixed;
+    }
+    
+    .agent-ticket--status {
+        .ticket__status {
+            display: none;
+            @include media("<=small-screen") {
+                display: flex;
+            }
+        }
+    }
+
+    .tickets__action--list {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 10px;
+        margin-left: auto;
+
+        .info__box {
+            @include media("<=small-screen") {
+                display: none !important;
+            }
+        }
+    }
+}
+
+.ticket-header {
+    padding: 25px 32px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    border-bottom: 1px solid #ecebf5;
+    .ticket-header__icon {
+        width: 2rem;
+        height: 1.875rem;
+        cursor: pointer;
+    }
+    @include media("<=small-screen") {
+        padding: 16px 17px;
+        padding-bottom: 13px;
+    }
+    .agents__name {
+        font-weight: 600;
+        font-size: 20px;
+        line-height: 160%;
+        color: $text__default_color;
+        margin: 0;
+        text-transform: capitalize;
+        font-family: $primary_font_family--medium;
+        @include media("<=small-screen") {
+            font-size: 18px;
+            margin-bottom: -2px;
+        }
+    }
+
+    .subtitle-text {
+        font-size: 14px;
+        line-height: 22px;
+        color: $muted__theme_color_2;
+    }
+}
+
+.show-only-on-desktop {
+    display: block;
+    @include media("<=small-screen") {
+        display: none;
+    }
+}

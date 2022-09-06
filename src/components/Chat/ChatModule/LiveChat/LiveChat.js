@@ -32,6 +32,7 @@ import {
     setTicketMessages,
     updateTicketMessageStatus,
 } from "../../../../store/tickets/actions";
+import "./LiveChat.scss";
 
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;

@@ -1,0 +1,9 @@
+@import "assets/scss/master";
+
+.powered__by {
+    display: flex;
+    justify-content: center;
+    padding: 0.188rem 0;
+    align-items: center;
+    background-color: $light__theme_color;
+}

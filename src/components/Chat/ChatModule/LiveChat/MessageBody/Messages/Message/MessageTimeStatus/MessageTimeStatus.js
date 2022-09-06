@@ -1,4 +1,5 @@
 import { getFormatedDate } from "utils/helper";
+import "./MessageTimeStatus.scss";
 
 const MessageTimeStatus = ({ date }) => {
     return (

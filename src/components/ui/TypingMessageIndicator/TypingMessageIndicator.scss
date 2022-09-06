@@ -1,0 +1,57 @@
+@import "assets/scss/master";
+
+.typing__indicator__group {
+    display: flex;
+    align-items: flex-end;
+    gap: 16px;
+    margin-bottom: 20px;
+  
+    .typing__content {
+        width: fit-content;
+        max-width: 50%;
+        font-size: 15px;
+        letter-spacing: 0.05px;
+        margin-bottom: 10px;
+    
+        &.received {
+            color: $light__theme_color;
+            background: $primary__theme_color;
+            border-radius: 12px 12px 12px 0px;
+            padding: 12px 16px 10px;
+        }
+    }
+}
+
+.typing-indicator {
+    $ti-color-bg: #e6e7ed;
+    animation: 1s bulge infinite ease-out;
+    padding-top: 5px;
+    padding-bottom: 10px;
+    span {
+        height: 5px;
+        width: 5px;
+        float: left;
+        margin: 0 5px;
+        background-color: $light__theme_color;
+        display: block;
+        border-radius: 50%;
+        opacity: 0.4;
+        @for $i from 1 through 3 {
+            &:nth-of-type(#{$i}) {
+                animation: 1s blink infinite ($i * 0.3333s);
+            }
+        }
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes bulge {
+    50% {
+        transform: scale(1.05);
+    }
+}
