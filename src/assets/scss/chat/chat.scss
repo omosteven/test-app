@@ -201,13 +201,23 @@ body.keyboard {
 
 
 .chat__input--container {
-    padding: 1rem;
+    padding: 0.2rem 1rem;
     margin-right: 6px;
     border-top: 1px solid #ecebf5;
     border-bottom: 1px solid #ecebf5;
     border-right: 1px solid #ecebf5;
     // border-radius: 10px;
     overflow: hidden;
+
+    &::after {
+        content: '';
+        display: block;
+        height: 100%;
+        border: 2px solid #fff;
+        position: absolute;
+        right: 0;
+        top: 0;
+    }
 
     @include media("<=small-screen") {
         margin-right: 0px;
@@ -271,7 +281,7 @@ body.keyboard {
 
 .typing-indicator {
     $ti-color-bg: #e6e7ed;
-    animation: 1s bulge infinite ease-out;
+    // animation: 1s bulge infinite ease-out;
     // padding: 10px;
     padding-top: 5px;
     padding-bottom: 10px;
@@ -286,7 +296,7 @@ body.keyboard {
         opacity: 0.4;
         @for $i from 1 through 3 {
             &:nth-of-type(#{$i}) {
-                animation: 1s blink infinite ($i * 0.3333s);
+                animation: 0.8s blink infinite ($i * 0.3333s);
             }
         }
     }

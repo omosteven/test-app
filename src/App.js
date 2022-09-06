@@ -40,7 +40,7 @@ const App = () => {
             }
 
         } catch (err) {
-            console.log(err);
+            
             sayFetching(false)
             setFetchingError(getErrorMessage(err))
         }

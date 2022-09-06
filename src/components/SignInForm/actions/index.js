@@ -1,13 +1,14 @@
 import store from "../../../store/store";
 import { pushAuthUser } from "../../../store/auth/actions";
 
-const pushToDashboard = (LoginResponse, callBack) => {
+const pushToDashboard = async (LoginResponse) => {
     const {
         userToken, thirdUser
     } = LoginResponse;
-    window.sessionStorage.setItem("accessToken", userToken);
+    await window.sessionStorage.setItem("accessToken", userToken);
+    console.log(thirdUser)
     store.dispatch(pushAuthUser(thirdUser));
-    callBack();
+    // callBack();
 };
 
 export default pushToDashboard;

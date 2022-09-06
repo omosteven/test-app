@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { SocketContext } from "../../../../../../lib/socket/context/socket";
 import { IS_NOT_TYPING, IS_TYPING } from "../../../../../../lib/socket/events";
 import TypingMessageIndicator from "../../../../../ui/TypingMessage/TypingMessage";
-import { appMessageUserTypes } from "./Message/enums";
-import MessageDemo from "../../MessageDemo/MessageDemo";
+import { appMessageUserTypes } from "./enums";
+import MessagesLayout from "./MessagesLayout/MessagesLayout";
 
 const Messages = (props) => {
     const {
@@ -49,7 +49,7 @@ const Messages = (props) => {
         <div className='d-content'>
             <AnimatePresence>
                 {messages?.length > 0 ? (
-                    <MessageDemo
+                    <MessagesLayout
                         messages={messages}
                         agent={agent}
                         handleMessageOptionSelect={handleMessageOptionSelect}

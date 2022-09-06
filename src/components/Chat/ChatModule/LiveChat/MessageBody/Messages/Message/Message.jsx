@@ -1,10 +1,9 @@
 import React from "react";
-import { appMessageUserTypes } from "./enums";
 import { AgentImage } from "../../../../../../ui";
 import MessageOptions from "./MessageOptions/MessageOptions";
 import MessageContent from "./MessageContent/MessageContent";
 import MessageTimeStatus from "./MessageTimeStatus/MessageTimeStatus";
-import { messageTypes } from "./enums";
+import { messageTypes, appMessageUserTypes } from "../enums";
 
 const Message = ({
     data,
@@ -47,14 +46,12 @@ const Message = ({
             )}
             <div
                 className={`message__group--content `}>
-                {messageContent !== "" && (
-                    <MessageContent
-                        isReceivedMessage={isReceivedMessage}
-                        messageContent={messageContent}
-                        fileAttachments={fileAttachments}
-                        openPreviewModal={openPreviewModal}
-                    />
-                )}
+                <MessageContent
+                    isReceivedMessage={isReceivedMessage}
+                    messageContent={messageContent}
+                    fileAttachments={fileAttachments}
+                    openPreviewModal={openPreviewModal}
+                />
                 {parsedBranchOptions?.length > 0 && (
                     <MessageOptions
                         selectedOption={selectedOption}

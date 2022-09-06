@@ -1,5 +1,31 @@
+@import "../../../../../assets/scss/master.scss";
+@import "../../../../../assets/scss/_include-media-lib/_include-media.scss";
+
 .file__error {
     font-size: 0.875rem;
     line-height: 1rem;
-    color: #F25A68;
+    color: #f25a68;
+}
+
+#chatInput {
+    position: sticky;
+    bottom: 0;
+    background-color: $light__theme_color;
+    .form-control {
+        background: transparent;
+        &::placeholder {
+            color:#A3A3C2;
+        }
+    }
+    @include media("<=small-screen") {
+        // padding: 0 10px;
+        margin-right: 0;
+    }
+}
+
+.disallowed__section {
+    #chatInput {
+        background: #f8f8fa;
+        
+    }
 }

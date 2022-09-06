@@ -58,6 +58,10 @@
           margin-right: 10px;
           margin-bottom: 4px;
 
+          path {
+            fill: $primary__theme_color;
+          }
+          
           @include media("<=small-screen"){
             margin-top: -20px;
           }

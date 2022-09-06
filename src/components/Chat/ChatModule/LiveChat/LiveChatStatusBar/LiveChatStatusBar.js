@@ -21,7 +21,7 @@ const LiveChatStatusBar = ({ status, errorMssg }) => {
                 return <span className='error'>{errorMssg}</span>;
 
             case DATAMODE:
-                return <span className='connected'>{email}</span>
+                return <>{ email && <span className='connected'>{email}</span>}</>
 
             default:
                 return "";

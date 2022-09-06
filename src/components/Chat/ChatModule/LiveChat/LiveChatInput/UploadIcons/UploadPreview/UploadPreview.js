@@ -21,7 +21,7 @@ const UploadPreview = ({
     // console?.log({ upload });
     // const [isCancellable, setIsCancellable] = useState(false);
     const updateCancellable = (fileAttachmentName, cancelStatus) => {
-        // console.log({ cancelStatus });
+        // 
         updateUpload((prev) =>
             prev?.map((upload) =>
                 upload?.fileAttachmentName === fileAttachmentName

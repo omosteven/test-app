@@ -7,6 +7,8 @@ const apiRoutes = {
     userTickets: `${agentsInbox}app-message-user/tickets`,
     initiateChat: `${agentsInbox}app-message-user/chat`,
     getTicketMessages: (ticketId) => `${agentsInbox}messages/${ticketId}`,
+    updateTicketDiscovery: (ticketId) =>
+    `${agentsInbox}ticket/${ticketId}/issueDiscovered`,
     changeTicketChoice: (ticketId) =>
         `${agentsInbox}ticket/${ticketId}/change-choice`,
     restartTicket: (ticketId) => `${agentsInbox}ticket/${ticketId}/restart`,

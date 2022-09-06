@@ -1,7 +1,9 @@
 import { UPDATE_CHAT_SETTINGS } from "./types";
 
 const initialState = {
-	chatSettings: {},
+	chatSettings: {
+		workspaceSlug:""
+	},
 };
 
 const ChatReducer = (state = initialState, { type, payload }) => {

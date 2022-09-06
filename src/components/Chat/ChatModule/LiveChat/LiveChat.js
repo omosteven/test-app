@@ -4,10 +4,14 @@ import API from "../../../../lib/api";
 import apiRoutes from "../../../../lib/api/apiRoutes";
 import { SocketContext } from "../../../../lib/socket/context/socket";
 import {
+    CLOSED_TICKET,
     FILL_FORM_RECORD,
+    NEW_TICKET_UPDATE,
+    RECEIVE_MESSAGE,
     SEND_BRANCH_OPTION,
     SEND_CUSTOMER_CONVERSATION_REPLY,
     SEND_CUSTOMER_MESSAGE,
+    SUBSCRIBE_TO_TICKET,
 } from "../../../../lib/socket/events";
 import { dataQueryStatus } from "../../../../utils/formatHandlers";
 import { generateID, getErrorMessage } from "../../../../utils/helper";
@@ -15,27 +19,30 @@ import LiveChatInput from "./LiveChatInput/LiveChatInput";
 import LiveChatStatusBar from "./LiveChatStatusBar/LiveChatStatusBar";
 import MessageBody from "./MessageBody/MessageBody";
 import {
+    AGENT_FOLLOWUP,
     appMessageUserTypes,
     branchOptionsTypes,
     formInputTypes,
     messageOptionActions,
     messageStatues,
     messageTypes,
-} from "./MessageBody/Messages/Message/enums";
+} from "./MessageBody/Messages/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
-import { ISSUE_DISCOVERY } from "../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import {
     setActiveTicket,
     saveTicketsMessages,
-    clearTicketMessages,
     setTicketMessages,
     updateTicketMessageStatus,
+    deleteTicketsMessages,
 } from "../../../../store/tickets/actions";
+import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 
+const NO_ACTION = "NO_ACTION";
+const SMART_CONVOS = "smartConvos";
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
-const { DEFAULT, BRANCH, FORM_REQUEST, CONVERSATION, BRANCH_OPTION } =
+const { DEFAULT, BRANCH, FORM_REQUEST, CONVERSATION, BRANCH_OPTION, ACTION_INFO } =
     messageTypes;
 
 const { TEXT } = formInputTypes;
@@ -48,7 +55,6 @@ const LiveChat = ({ getCustomerTickets }) => {
     const [allowUserInput, setAllowUserInput] = useState(false);
     const [currentInputType, setCurrentInputType] = useState(TEXT);
     const [currentFormElement, setCurrentFormElement] = useState();
-    const [showUndoChoice, setUndoChoiceVisibility] = useState();
 
     const [fetchingInputStatus, setFetchingInputStatus] = useState(true);
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
@@ -61,18 +67,6 @@ const LiveChat = ({ getCustomerTickets }) => {
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
-
-    const figureChoiceAction = () => {
-        const messagesCopy = messages;
-        let recentCustomerMssg = [...messagesCopy]
-            .reverse()
-            ?.find(
-                (message) =>
-                    message.senderType === appMessageUserTypes?.THIRD_USER
-            );
-        const showOrHide = recentCustomerMssg?.messageType === BRANCH_OPTION;
-        setUndoChoiceVisibility(showOrHide);
-    };
 
     const requestAllMessages = async () => {
         try {
@@ -96,10 +90,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                         x?.fileAttachments?.length > 0
                             ? x?.fileAttachments
                             : x?.form?.formElement?.media?.map((media) => ({
-                                  fileAttachmentUrl: media?.link,
-                                  fileAttachmentType: media?.type,
-                                  fileAttachmentName: media?.mediaName,
-                              })),
+                                fileAttachmentUrl: media?.link,
+                                fileAttachmentType: media?.type,
+                                fileAttachmentName: media?.mediaName,
+                            })),
                 }));
 
                 dispatch(setTicketMessages(messagesArr));
@@ -110,51 +104,76 @@ const LiveChat = ({ getCustomerTickets }) => {
         }
     };
 
+    const handleIssueDiscovery = async (convo) => {
+        try {
+            const lastMessage = messages[messages.length - 1];
+           
+            if (lastMessage.senderType === WORKSPACE_AGENT && lastMessage.messageId !== SMART_CONVOS) {
+                return "";
+            }
+
+            // triggerAgentTyping(true);
+
+            const { branchOptionId, branchOptionLabel } = convo;
+            const discovered = branchOptionId === NO_ACTION;
+            const url = apiRoutes?.updateTicketDiscovery(ticketId);
+
+            const res = await API.get(url, {
+                params: {
+                    discovered
+                }
+            })
+            if (res.status === 200) {
+                // triggerAgentTyping(false);
+
+                if (discovered) {
+                    dispatch(
+                        saveTicketsMessages({
+                            ticketId,
+                            messageId: NO_ACTION,
+                            messageRefContent: branchOptionLabel,
+                            messageContent: `This usually takes about two (2) minutes, please hold on`,
+                            messageType: ACTION_INFO,
+                            messageActionType: AGENT_FOLLOWUP,
+                            senderType: WORKSPACE_AGENT,
+                            deliveryDate: new Date().toISOString()
+                        })
+                    );
+                }
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+            // triggerAgentTyping(false);
+        }
+    }
+
     const handleOptConversation = async (convo) => {
-        const newMessageId = generateID();
+        // triggerAgentTyping(true);
 
         const {
-            parentMessageId,
             conversationId,
             branchOptionId,
             branchOptionLabel,
         } = convo;
 
-        let newMessageList = await messages.map((x) => {
-            return x.messageContentId === parentMessageId
-                ? { ...x, selectedOption: branchOptionId }
-                : x;
-        });
-        newMessageList = [
-            ...newMessageList,
-            {
-                ticketId,
-                senderType: THIRD_USER,
-                messageContent: branchOptionLabel,
-                messageContentId: branchOptionId,
-                messageType: BRANCH_OPTION,
-                messageId: newMessageId,
-            },
-        ];
+        dispatch(updateTicketMessageStatus({ messageId: SMART_CONVOS, ticketId, selectedOption: branchOptionId }));
+        if (branchOptionId === NO_ACTION ){
+            dispatch(
+                saveTicketsMessages({
+                    messageId: generateID(),
+                    messageContent: branchOptionLabel,
+                    messageType: BRANCH_OPTION,
+                    senderType: THIRD_USER,
+                    deliveryDate: new Date().toISOString(),
+                    ticketId,
+                })
+            );
+        } else {
+            await socket.timeout(1000).emit(SEND_CUSTOMER_CONVERSATION_REPLY, { ticketId, conversationId, message: branchOptionLabel });
+        }
 
-        dispatch(setTicketMessages(newMessageList));
-        triggerAgentTyping(true);
-
-        socket.emit(
-            SEND_CUSTOMER_CONVERSATION_REPLY,
-            { ticketId, conversationId, message: branchOptionLabel },
-            (err) => {
-                if (err) {
-                    triggerAgentTyping(false);
-                    // const freshMessageList = (messages).map((x) => {
-                    //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
-                    // })
-                    console.log("Encountered error");
-                } else {
-                    triggerAgentTyping(false);
-                }
-            }
-        );
+        handleIssueDiscovery(convo);
     };
 
     const handleMessageOptionSelect = async (messageOption) => {
@@ -231,20 +250,16 @@ const LiveChat = ({ getCustomerTickets }) => {
                     // const freshMessageList = (messages).map((x) => {
                     //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
                     // })
-                    console.log("Encountered error", err);
+                    
                 } else {
                     triggerAgentTyping(false);
                 }
             }
         );
-        // triggerAgentTyping(false)
-        // await setTimeout(function () {
-        //     triggerAgentTyping(false)
-        // }, 5000);
     };
 
     const handleSocketError = () => {
-        setErrorMssg("could not connect to chat");
+        setErrorMssg("Trying to connect to chat");
         setStatus(ERROR);
     };
 
@@ -263,6 +278,13 @@ const LiveChat = ({ getCustomerTickets }) => {
                     shouldAllowUserInput = true;
                     userInputType = TEXT;
                     break;
+
+                case ACTION_INFO:
+                case CONVERSATION:
+                    shouldAllowUserInput = false;
+                    userInputType = TEXT;
+                    break;
+
                 case BRANCH:
                     if (branchOptions?.length > 0) {
                         shouldAllowUserInput = false;
@@ -300,24 +322,9 @@ const LiveChat = ({ getCustomerTickets }) => {
 
     const handleNewMessage = async (request) => {
         const { message, fileAttachments } = request;
-        const newMessageId = generateID();
-
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
-
-            dispatch(
-                saveTicketsMessages({
-                    ticketId,
-                    messageContent: message,
-                    senderType: THIRD_USER,
-                    messageContentId: newMessageId,
-                    messageId: newMessageId,
-                    messageType: messageTypes?.FORM_RESPONSE,
-                    fileAttachments,
-                })
-            );
-
-            socket.timeout(5000).emit(FILL_FORM_RECORD, {
+            socket.emit(FILL_FORM_RECORD, {
                 ticketId,
                 message: message,
                 currentFormOrder: order,
@@ -326,20 +333,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                 fileAttachments,
             });
         } else {
-            const messageEntry = {
-                ticketId,
-                senderType: THIRD_USER,
-                messageContent: message,
-                messageContentId: newMessageId,
-                messageId: newMessageId,
-                messageType: DEFAULT,
-                messageStatus: messageStatues?.SENDING,
-                suggestionRetryAttempt: 0,
-                fileAttachments,
-            };
-            dispatch(saveTicketsMessages(messageEntry));
-
-            await socket.timeout(1000).emit(
+            socket.emit(
                 SEND_CUSTOMER_MESSAGE,
                 {
                     ticketId,
@@ -347,26 +341,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                     messageType: DEFAULT,
                     fileAttachments,
                 },
-                async (err) => {
-                    if (err) {
-                        // setStatus(ERROR);
-                        // setErrorMssg('Message not sent successfully');
-                        dispatch(
-                            updateTicketMessageStatus({
-                                ...messageEntry,
-                                messageStatus: messageStatues?.DELIVERED,
-                            })
-                        );
-                    } else {
-                        dispatch(
-                            updateTicketMessageStatus({
-                                ...messageEntry,
-                                messageStatus: messageStatues?.DELIVERED,
-                            })
-                        );
-                        // dispatch(updateTicketMessageStatus({ ticketId, messageId: newMessageId, messageStatus: messageStatues?.DELIVERED }))
-                    }
-                }
             );
         }
     };
@@ -408,17 +382,8 @@ const LiveChat = ({ getCustomerTickets }) => {
 
     const fetchConvoSuggestions = async (message) => {
         try {
-            console.log("Got called here to");
-            const { messageContent, messageContentId } = message;
-
-            const newMessageList = await messages.map((x) => {
-                return x.messageContentId === messageContentId
-                    ? { ...x, suggestionRetryAttempt: 2 }
-                    : x;
-            });
+            const { messageContent } = message;
             triggerAgentTyping(true);
-
-            dispatch(setTicketMessages(newMessageList));
 
             const url = apiRoutes?.investigateMesage;
             const res = await API.get(url, {
@@ -428,36 +393,37 @@ const LiveChat = ({ getCustomerTickets }) => {
             });
             if (res.status === 200) {
                 const { data } = res.data;
+                triggerAgentTyping(false);
 
-                const compMessageId = "smartConvos";
-                let messageOptions = data?.map(
-                    ({ conversationId, conversationTitle }) => ({
-                        branchOptionId: conversationId,
-                        branchOptionLabel: conversationTitle,
-                        conversationId,
-                        parentMessageId: compMessageId,
-                    })
-                );
-                messageOptions = [
-                    ...messageOptions,
-                    {
-                        branchOptionLabel: "No, it’s something else",
-                        branchOptionId: "NO_ACTION",
-                        parentMessageId: compMessageId,
-                    },
-                ];
-                let newMessage = {
-                    messageContentId: compMessageId,
-                    messageId: compMessageId,
-                    messageContent:
-                        "Are any of these relevant to the problem you’re having?",
-                    messageType: CONVERSATION,
-                    branchOptions: messageOptions,
-                    senderType: WORKSPACE_AGENT,
-                    selectedOption: "",
-                };
                 if (data.length > 0) {
-                    // handleReceive(newMessage);
+                    const compMessageId = SMART_CONVOS;
+                    let messageOptions = data?.map(
+                        ({ conversationId, conversationTitle }) => ({
+                            branchOptionId: conversationId,
+                            branchOptionLabel: conversationTitle,
+                            conversationId,
+                            parentMessageId: compMessageId,
+                        })
+                    );
+                    messageOptions = [
+                        ...messageOptions,
+                        {
+                            branchOptionLabel: "No, it’s something else",
+                            branchOptionId: NO_ACTION,
+                            parentMessageId: compMessageId,
+                        },
+                    ];
+                    let newMessage = {
+                        messageContentId: compMessageId,
+                        messageId: compMessageId,
+                        messageContent:
+                            "Are any of these relevant to the problem you’re having?",
+                        messageType: CONVERSATION,
+                        branchOptions: messageOptions,
+                        senderType: WORKSPACE_AGENT,
+                        selectedOption: "",
+                        deliveryDate: new Date().toISOString()
+                    };
                     dispatch(
                         saveTicketsMessages({
                             ...newMessage,
@@ -467,9 +433,9 @@ const LiveChat = ({ getCustomerTickets }) => {
 
                     setActiveConvo(true);
                 } else {
-                    setActiveConvo(false);
+                    setActiveConvo(true);
+                    handleIssueDiscovery({ branchOptionId: NO_ACTION, branchOptionLabel: messageContent })
                 }
-                triggerAgentTyping(false);
             } else {
                 triggerAgentTyping(false);
             }
@@ -480,76 +446,83 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const processIssueDiscovery = useCallback(() => {
-        // console.log('AN active convo', activeConvo)
+        
         const allMessagesCopy = messages;
         if (activeConvo) {
             return "";
-        } else {
-            const lastItemIndex = allMessagesCopy.length - 1;
-            const lastMessage = messages[lastItemIndex];
-            let lastCustomerMssg = [...allMessagesCopy]
-                .reverse()
-                ?.find((message) => message.senderType === THIRD_USER);
-            if (
-                lastCustomerMssg?.messageType === DEFAULT &&
-                lastMessage.messageType !== CONVERSATION &&
-                lastCustomerMssg?.suggestionRetryAttempt === 0
-            ) {
-                fetchConvoSuggestions(lastCustomerMssg);
-            }
+        }
+        const lastItemIndex = allMessagesCopy.length - 1;
+        const lastMessage = messages[lastItemIndex];
+        let lastCustomerMssg = [...allMessagesCopy]
+            .reverse()
+            ?.find((message) => message.senderType === THIRD_USER);
+        if (
+            lastCustomerMssg?.messageType === DEFAULT &&
+            lastMessage.messageType !== CONVERSATION && lastMessage.messageType !== ACTION_INFO
+            && ticketPhase === ISSUE_DISCOVERY
+        ) {
+            fetchConvoSuggestions(lastCustomerMssg);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages, activeConvo, ticketPhase]);
 
-    console.log({ messages });
-    const handleReceive = (message) => {
-        console.log("new message", message);
-        if (message.senderType === WORKSPACE_AGENT) {
-            triggerAgentTyping(false);
+    const handleTicketClosure = (ticket) => {
+        console.log("so what ")
+        console.log(ticket)
+    }
 
-            dispatch(
-                saveTicketsMessages({
-                    ...message,
-                    ticketId: message?.ticket?.ticketId,
-                    messageContentId: message?.messageContentId
-                        ? message?.messageContentId
-                        : message?.deliveryDate,
-                    fileAttachments:
-                        message?.fileAttachments?.length > 0
-                            ? message?.fileAttachments
-                            : message?.form?.formElement?.media?.map(
-                                  (media) => ({
-                                      fileAttachmentUrl: media?.link,
-                                      fileAttachmentType: media?.type,
-                                      fileAttachmentName: media?.mediaName,
-                                  })
-                              ),
-                })
-            );
+    const handleReceive = (message) => {
+        const {ticketId} = message?.ticket;
+        if (message.senderType === WORKSPACE_AGENT) {
+            triggerAgentTyping(false)
+            dispatch(deleteTicketsMessages({ messageId: NO_ACTION, ticketId }))
+
         }
+        dispatch(
+            saveTicketsMessages({
+                ...message,
+                ticketId,
+                fileAttachments:
+                    message?.fileAttachments?.length > 0
+                        ? message?.fileAttachments
+                        : message?.form?.formElement?.media?.map(
+                            (media) => ({
+                                fileAttachmentUrl: media?.link,
+                                fileAttachmentType: media?.type,
+                                fileAttachmentName: media?.mediaName,
+                            })
+                        ),
+            })
+        );
     };
 
     useEffect(() => {
         requestAllMessages();
 
-        socket.emit("subscribe-to-ticket", { ticketId });
-        socket.on("receive-message", handleReceive);
+        socket.emit(SUBSCRIBE_TO_TICKET, { ticketId });
+        socket.on(RECEIVE_MESSAGE, handleReceive);
+        socket.on(NEW_TICKET_UPDATE, handleTicketClosure);
+        // socket.on(CLOSED_TICKET, handleTicketClosure);
+        
         socket.on("connect_error", handleSocketError);
         return () => {
-            socket.off("receive-message");
-            dispatch(clearTicketMessages(ticketId));
+            socket.off(RECEIVE_MESSAGE);
+            socket.off(NEW_TICKET_UPDATE);
+            // socket.off(CLOSED_TICKET)
+
             triggerAgentTyping(false);
             setActiveConvo(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    
+
 
     useEffect(() => {
-        figureChoiceAction();
         figureInputAction();
         processIssueDiscovery();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ticketsMessages]);
+    }, [messages]);
 
     return (
         <>
@@ -559,7 +532,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                     setStatus,
                     setErrorMssg,
                     requestAllMessages,
-                    showUndoChoice,
                     setActiveConvo,
                 }}
             />

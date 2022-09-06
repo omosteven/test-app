@@ -52,7 +52,7 @@ export default function Layout({ children }) {
 
     //         visibleWindowHeight( function( visibleHeight ) {
 
-    //             console.log("visibleHeight:", visibleHeight);
+    //             
     //             /*
     //                 ... continue etc etc  ...
     //             */

@@ -38,8 +38,8 @@
     display: flex;
     justify-content: center;
     padding: 3px 0;
-    // gap: 0.25rem;
-    // align-items: baseline;
+    width: 90%;
+    margin: auto;
     align-items: center;
     background-color: white;
 
@@ -69,7 +69,7 @@
         height: 100%;
         overflow: hidden;
         flex-wrap: nowrap;
-        width: 70% !important;
+        width: 50% !important;
         overflow: hidden;
         // background: $light__theme_color;
     }
@@ -100,17 +100,6 @@
     // margin-top: 4rem;
     // height: 100%;
 }
-#chatInput {
-    position: sticky;
-    bottom: 0;
-    // width: 100%;
-    // margin-left: 2.1%;
-    background-color: $light__theme_color;
-    @include media("<=small-screen") {
-        // padding: 0 10px;
-        margin-right: 0;
-    }
-}
 
 // .customer__tickets--container {
 //     .ticket-col {
@@ -140,12 +129,12 @@
 
 .customer__ticket {
     // padding: 0 40px;
-    padding-top: 16px;
+    padding-top: 10px;
     padding-bottom: 12px;
-    padding-left: 3rem;
-    padding-right: 6rem;
+    padding-left: 29px;
+    // padding-right: 6rem;
     border-left: 1px solid #ecebf5;
-    width: 300px;
+    width: 220px;
     cursor: pointer;
     // height: 56px;
     position: relative;
@@ -158,7 +147,7 @@
         position: absolute;
         display: block;
         left: 0;
-        bottom: 0px;
+        bottom: 0;
         width: 0%;
         height: 0.063rem;
         background: $primary__theme_color;
@@ -221,7 +210,7 @@
     // background: #F5F5F7;
     border-radius: 6px;
     color: #060213;
-    font-size: 13px;
+    font-size: 14px;
     height: 26px;
     display: flex;
     font-family: $primary_font_family--lighter;
@@ -413,18 +402,11 @@
     // overflow: scroll;
 
     &::-webkit-scrollbar {
-        width: 5px;
-    }
-
-    &::-webkit-scrollbar-track {
-        //   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         border-radius: 10px;
+        width: 3px;
     }
-
     &::-webkit-scrollbar-thumb {
-        border-radius: 10px;
-        background: #e9e9e9;
-        //   -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+        background: rgba(0,0,0,0.1)
     }
 }
 

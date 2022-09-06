@@ -1,3 +1,21 @@
+export const TICKET_CLOSED_ALERT = 'TICKET_CLOSED_ALERT';
+export const AGENT_FOLLOWUP = 'AGENT_FOLLOWUP';
+export const FORM_FILLED_COMPLETLY = 'FORM_FILLED_COMPLETLY';
+
+export const messageActionTypes = Object.freeze({
+  [TICKET_CLOSED_ALERT]: {
+    title: `This ticket has been closed`
+  },
+  [AGENT_FOLLOWUP]: {
+    title: `Connecting you to an agent`
+  },
+  [FORM_FILLED_COMPLETLY]: {
+    title: `Form filled completely`
+  }
+});
+
+
+
 export const messageTypes = Object.freeze({
   DEFAULT: "DEFAULT",
   BRANCH: "BRANCH",
@@ -6,16 +24,17 @@ export const messageTypes = Object.freeze({
   CONVERSATION: "CONVERSATION",
   BRANCH_OPTION: "BRANCH_OPTION",
   COLLECTION: "COLLECTION",
-  BRANCH_SUB_SENTENCE: "BRANCH_SUB_SENTENCE"
+  BRANCH_SUB_SENTENCE: "BRANCH_SUB_SENTENCE",
+  ACTION_INFO: "ACTION_INFO"
 });
 
 export const branchOptionsTypes = Object.freeze({
-    LINK: "LINK"
+  LINK: "LINK"
 })
 
 export const messageStatues = Object.freeze({
-    SENDING: "SENDING",
-    DELIVERED: "DELIVERED"
+  SENDING: "SENDING",
+  DELIVERED: "DELIVERED"
 })
 
 export const appMessageUserTypes = Object.freeze({
@@ -23,7 +42,7 @@ export const appMessageUserTypes = Object.freeze({
   THIRD_USER: "THIRD_USER",
 });
 
-export const messageOptionActions =  Object.freeze({
+export const messageOptionActions = Object.freeze({
   CLOSE_CONVERSATION: "CLOSE_CONVERSATION",
   RESTART_CONVERSATION: "RESTART_CONVERSATION"
 });

@@ -63,7 +63,7 @@ const Chat = () => {
                 }
             }
         } catch (err) {
-            // console.log(err)
+            // 
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
         }
@@ -110,7 +110,6 @@ const Chat = () => {
             const { notification } = payload;
             toastNotification(notification);
         })
-        .catch((err) => console.log("failed: ", err));
 
     useEffect(() => {
         getCustomerTickets();
