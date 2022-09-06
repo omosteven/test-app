@@ -3,6 +3,7 @@ import ActionMessage from "../ActionMessage/ActionMessage";
 import { messageTypes } from "../enums";
 import Message from "../Message/Message";
 // import { messageTypes } from "../MessageBody/Messages/enums";
+import "./MessagesLayout.scss";
 
 const transition = {
     type: "spring",
@@ -33,7 +34,7 @@ const MessagesLayout = ({
     return (
         <ol className='message-thread'>
             {messages.map((message, i) => {
-                const {messageType} = message;
+                const { messageType } = message;
 
                 return (
                     <motion.li
@@ -41,26 +42,27 @@ const MessagesLayout = ({
                         initial='initial'
                         animate='enter'
                         variants={variants}
-                        transition={{ duration: 1.5, delay: 0.5, ...transition }}
+                        transition={{
+                            duration: 1.5,
+                            delay: 0.5,
+                            ...transition,
+                        }}
                         layout>
-                        {
-                            messageType === messageTypes?.ACTION_INFO ?
-                                <ActionMessage
-                                    data={message}
-                                    agent={agent}
-                                /> :
-                                <Message
-                                    messageIndex={i + 1}
-                                    messagesDepth={messages?.length}
-                                    data={message}
-                                    agent={agent}
-                                    handleMessageOptionSelect={
-                                        handleMessageOptionSelect
-                                    }
-                                    handleOptConversation={handleOptConversation}
-                                    openPreviewModal={openPreviewModal}
-                                />
-                        }
+                        {messageType === messageTypes?.ACTION_INFO ? (
+                            <ActionMessage data={message} agent={agent} />
+                        ) : (
+                            <Message
+                                messageIndex={i + 1}
+                                messagesDepth={messages?.length}
+                                data={message}
+                                agent={agent}
+                                handleMessageOptionSelect={
+                                    handleMessageOptionSelect
+                                }
+                                handleOptConversation={handleOptConversation}
+                                openPreviewModal={openPreviewModal}
+                            />
+                        )}
                     </motion.li>
                 );
             })}

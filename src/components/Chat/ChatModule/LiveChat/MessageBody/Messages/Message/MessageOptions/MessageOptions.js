@@ -1,5 +1,7 @@
 import { messageTypes } from "../../enums";
 import MessageBranchOption from "./MessageBranchOption/MessageBranchOption";
+import "./MessageOptions.scss";
+
 const { CONVERSATION } = messageTypes;
 
 const MessageOptions = ({

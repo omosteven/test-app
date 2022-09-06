@@ -1,13 +1,11 @@
-import React, { useContext } from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import React, { useContext, useEffect, useState } from "react";
 // import { useDispatch } from 'react-redux';
-import { SocketContext } from '../../../../../../lib/socket/context/socket';
-import { TICKET_PHASE_CHANGE } from '../../../../../../lib/socket/events';
+import { SocketContext } from "../../../../../../lib/socket/context/socket";
+import { TICKET_PHASE_CHANGE } from "../../../../../../lib/socket/events";
 // import { setActiveTicket } from '../../../../../../store/tickets/actions';
-import { ticketsPhases } from './enum';
+import { ticketsPhases } from "./enum";
 
-const TicketStatus = ({ticketPhase, ticketId }) => {
+const TicketStatus = ({ ticketPhase, ticketId }) => {
     // const dispatch = useDispatch();
 
     const [setPhase, updatePhase] = useState(ticketPhase);
@@ -16,14 +14,17 @@ const TicketStatus = ({ticketPhase, ticketId }) => {
     const socket = useContext(SocketContext);
 
     const handleNewPhase = (data) => {
-        if (data.ticketId === ticketId){
-            updatePhase(data?.ticketPhase)
+        const parsedData = typeof data === "string" ? JSON.parse(data) : data;
+
+        if (parsedData?.ticketId === ticketId) {
+            updatePhase(parsedData?.ticketPhase);
         }
         // dispatch(setActiveTicket(data))
-    }
+    };
 
     useEffect(() => {
-        socket.on(TICKET_PHASE_CHANGE, handleNewPhase)
+        socket.on(TICKET_PHASE_CHANGE, handleNewPhase);
+
         return () => {
             socket.off(TICKET_PHASE_CHANGE);
         };
@@ -32,7 +33,9 @@ const TicketStatus = ({ticketPhase, ticketId }) => {
 
     return (
         <div className='ticket__status'>
-            <div className="status__circle" style={{ background: currentPhase?.fillColor }}></div>
+            <div
+                className='status__circle'
+                style={{ background: currentPhase?.fillColor }}></div>
             <span>{currentPhase?.title} </span>
         </div>
     );

@@ -6,12 +6,19 @@
     cursor: pointer;
 
     &.img {
+        object-fit: contain;
+        max-height: 13.75rem;
+        width: fit-content;
+        max-width: 100%;
+
         object-fit: cover;
         max-height: 200px;
     }
 
     &.video {
         height: auto;
+        width: fit-content;
+        max-width: 100%;
     }
 }
 

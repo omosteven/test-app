@@ -1,17 +1,23 @@
 import React from "react";
 import { SmothScrollContentHorizontal } from "../../../ui/SmothScrollContent/SmothScrollContent";
 import Ticket from "./Ticket/Ticket";
+import "./CustomerTickets.scss";
 
-const CustomerTickets = ({ tickets, selectedTicket, handleTicketSelect, closeTicket, showChatMenu }) => {
+const CustomerTickets = ({
+    tickets,
+    selectedTicket,
+    handleTicketSelect,
+    closeTicket,
+    showChatMenu,
+}) => {
     return (
         <SmothScrollContentHorizontal
-            ID={'tickets-list'}
+            ID={"tickets-list"}
             activeElement={selectedTicket?.ticketId}
             className={`customer__tickets--container`}
-            
-            selector={'#tickets-list'}
+            selector={"#tickets-list"}
             extraProps={{
-                axis: showChatMenu ? 'y' : 'x',
+                axis: showChatMenu ? "y" : "x",
             }}>
             <>
                 {tickets.map((item, index) => {
@@ -20,7 +26,9 @@ const CustomerTickets = ({ tickets, selectedTicket, handleTicketSelect, closeTic
                             key={index}
                             data={item}
                             handleTicketSelect={() => handleTicketSelect(item)}
-                            isActive={selectedTicket?.ticketId === item?.ticketId}
+                            isActive={
+                                selectedTicket?.ticketId === item?.ticketId
+                            }
                             closeTicket={closeTicket}
                         />
                     );

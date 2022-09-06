@@ -1,4 +1,5 @@
 import React from "react";
+import "./ShinyLoader.scss";
 
 const ShinyLoader = ({ width, height, customClass, key }) => {
     return (
@@ -13,6 +14,5 @@ ShinyLoader.default = {
     width: "20px",
     height: "10px",
 };
-
 
 export default ShinyLoader;

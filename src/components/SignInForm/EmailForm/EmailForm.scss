@@ -1,0 +1,19 @@
+@import "assets/scss/master.scss";
+@import "assets/scss/_include-media-lib/include-media";
+
+.info__section {
+    svg {
+      margin-right: 10px;
+      margin-bottom: 4px;
+
+      @include media("<=small-screen"){
+        margin-top: -20px;
+      }
+    }
+    p {
+      font-size: 14px;
+      line-height: 22px;
+      color: $black__theme_color;
+      margin: 0;
+    }
+}

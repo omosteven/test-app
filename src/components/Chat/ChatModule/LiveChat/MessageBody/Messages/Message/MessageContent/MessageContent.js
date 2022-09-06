@@ -5,7 +5,7 @@ const MessageContent = ({
     messageContent,
     fileAttachments,
     openPreviewModal,
-    otherClassNames
+    otherClassNames,
 }) => {
     const hasAttachment = fileAttachments?.length > 0;
     return (
@@ -13,8 +13,8 @@ const MessageContent = ({
             className={`
                 message__content 
                 ${isReceivedMessage ? "received" : "sent"}
-                ${hasAttachment ? 'has__attachment' : ''}
-                ${otherClassNames ? otherClassNames : ''}
+                ${hasAttachment ? "has__attachment" : ""}
+                ${otherClassNames ? otherClassNames : ""}
             `}>
             {hasAttachment && (
                 <MessageAttachments
@@ -22,7 +22,7 @@ const MessageContent = ({
                     openPreviewModal={openPreviewModal}
                 />
             )}
-            <div className="message">{messageContent}</div>
+            <div className='message'>{messageContent}</div>
         </div>
     );
 };
