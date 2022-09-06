@@ -24,7 +24,6 @@ import {
     messageTypes,
 } from "./MessageBody/Messages/Message/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
-import { ISSUE_DISCOVERY } from "../../CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import {
     setActiveTicket,
     saveTicketsMessages,
@@ -510,11 +509,9 @@ const LiveChat = ({ getCustomerTickets }) => {
         });
     };
 
-    // console.log({ messages });
     const handleReceive = (message) => {
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
-            console.log("new message", message);
             handleMarkAsRead(message?.messageId);
 
             dispatch(

@@ -11,7 +11,7 @@ import PoweredBy from "../../../../common/PoweredBy/PoweredBy";
 import CustomDatePicker from "../../../../ui/InputTypes/DatePicker/DatePicker";
 import UploadIcons from "./UploadIcons/UploadIcons";
 import UploadPreview from "./UploadIcons/UploadPreview/UploadPreview";
-import { FILE } from "./UploadIcons/enum";
+
 import API from "../../../../../lib/api";
 import apiRoutes from "../../../../../lib/api/apiRoutes";
 import { dataQueryStatus } from "../../../../../utils/formatHandlers";
@@ -41,69 +41,147 @@ const LiveChatInput = ({
             },
         ],
     });
-    const [upload, updateUpload] = useState([]);
+    const [uploads, updateUploads] = useState([]);
     const [selectedMedia, setSelectedMedia] = useState({});
     const [errors, setErrors] = useState({});
     const [errorMssg, setErrorMssg] = useState("");
     const [status, setStatus] = useState();
     const [showModal, toggleModal] = useState(false);
     const isDisabled = fetchingInputStatus || !allowUserInput;
-    const [cancelRequest, setCancelRequest] = useState();
 
     const socket = useContext(SocketContext);
 
-    const handleRemoveFile = (fileName) => {
-        // cancelRequest?.abort();
-        updateUpload((prev) =>
+    const handleRemoveFile = (fileName, fileIndex) => {
+        updateUploads((prev) =>
             prev?.filter((upload) => upload?.fileAttachmentName !== fileName)
         );
+
         updateRequest((prev) => ({
             ...prev,
             fileAttachments: prev?.fileAttachments?.filter(
                 (upload) => upload?.fileAttachmentName !== fileName
             ),
         }));
+
         setErrors((prev) => ({ ...prev, file: "" }));
     };
 
-    const handleUpload = async (files) => {
+    const handleRetryUpload = async (file) => {
         try {
-            setStatus(LOADING);
-            setErrorMssg("");
+            setErrorMssg();
+
+            let prevUploads = [...uploads];
+            prevUploads[file?.fileIndex] = {
+                ...file,
+                uploadStatus: LOADING,
+            };
+
+            updateUploads(prevUploads);
+
+            const url = apiRoutes.fileUpload;
+            const formData = new FormData();
+
             let httpRequest = new AbortController();
 
-            setCancelRequest(httpRequest);
+            formData.append("file", file?.file);
 
-            const uploadedFiles = files?.map(async (media) => {
-                const url = apiRoutes.fileUpload;
-                const formData = new FormData();
-
-                formData.append("file", media?.file);
-                const res = await API.post(url, formData, {
-                    signal: httpRequest?.signal,
-                });
-
-                if (res.status === 201) {
-                    const { data } = res.data;
-
-                    const { file, isCancellable, ...rest } = media;
-
-                    return { ...rest, fileAttachmentUrl: data };
-                }
+            let resolvedUpload = await API.post(url, formData, {
+                signal: httpRequest?.signal,
             });
-            const resolvedUpload = await Promise.all(uploadedFiles);
 
-            updateUpload(resolvedUpload);
+            let newUpload = {
+                ...file,
+                fileAttachmentUrl: resolvedUpload.data.data,
+                uploadStatus: DATAMODE,
+            };
+
+            let newUploads = [...uploads];
+
+            newUploads[file?.fileIndex] = {
+                ...newUpload,
+                uploadStatus: DATAMODE,
+            };
+
+            updateUploads(newUploads);
+
             updateRequest((prev) => ({
                 ...prev,
-                fileAttachments: resolvedUpload,
+                fileAttachments: newUploads?.filter(
+                    (upload) => upload?.uploadStatus === DATAMODE
+                ),
+            }));
+        } catch (errorMsg) {
+            let prevUploads = [...uploads];
+            prevUploads[file?.fileIndex] = {
+                ...file,
+                uploadStatus: ERROR,
+            };
+
+            updateUploads(prevUploads);
+
+            setStatus(ERROR);
+            const message = getErrorMessage(errorMsg);
+            setErrorMssg(message);
+        }
+    };
+
+    const handleUpload = async (files) => {
+        setStatus(LOADING);
+        setErrorMssg("");
+
+        const uploadedFiles = files?.map(async (media, key) => {
+            const url = apiRoutes.fileUpload;
+            const formData = new FormData();
+
+            formData.append("file", media?.file);
+            const res = await API.post(url, formData);
+
+            if (res.status === 201) {
+                const { data } = res.data;
+
+                const { file, ...rest } = media;
+
+                return { ...rest, fileAttachmentUrl: data, isError: false };
+            }
+        });
+
+        const resolvedUploads = await Promise.allSettled(uploadedFiles);
+
+        let totalRequests = uploadedFiles.length;
+        let totalFailedRequests = 0;
+        let errorMsg = "";
+
+        let resolvedUpload = resolvedUploads.map(
+            (eachUploadResp, fileIndex) => {
+                let { status, reason, value } = eachUploadResp;
+                errorMsg = reason;
+                if (status === "fulfilled") {
+                    value = { ...value, fileIndex, uploadStatus: DATAMODE };
+                } else {
+                    totalFailedRequests += 1;
+                    value = {
+                        ...files[fileIndex],
+                        fileIndex,
+                        uploadStatus: ERROR,
+                    };
+                }
+                return value;
+            }
+        );
+
+        if (totalFailedRequests === totalRequests) {
+            setStatus(ERROR);
+            const message = getErrorMessage(errorMsg);
+            setErrorMssg(message);
+        } else {
+            updateUploads(resolvedUpload);
+            updateRequest((prev) => ({
+                ...prev,
+                fileAttachments: resolvedUpload?.filter(
+                    (upload) => upload?.uploadStatus === DATAMODE
+                ),
             }));
             setStatus(DATAMODE);
-        } catch (err) {
-            setStatus(ERROR);
-            const message = getErrorMessage(err);
-            setErrorMssg(message);
-            // setCancelRequest();
         }
     };
 
@@ -119,7 +197,7 @@ const LiveChatInput = ({
                 },
             ],
         });
-        updateUpload([]);
+        updateUploads([]);
         setErrors((prev) => ({ ...prev, file: "" }));
     };
 
@@ -235,7 +313,7 @@ const LiveChatInput = ({
     };
 
     const btnDisabled =
-        upload?.length > 0
+        uploads?.length > 0
             ? status === LOADING || status === ""
             : isDisabled || request?.message === "";
 
@@ -244,20 +322,12 @@ const LiveChatInput = ({
             {/* {showConvos && <SuggestedConvos data={suggestedList} handleConvoClick={handleConvoClick} />} */}
             <form onSubmit={handleSubmit} id='chatInput'>
                 <div className='chat__input--container'>
-                    {upload?.length > 0 && (
+                    {uploads?.length > 0 && (
                         <UploadPreview
-                            upload={upload}
-                            updateUpload={updateUpload}
+                            upload={uploads}
                             status={status}
                             handleRemoveFile={handleRemoveFile}
-                            handleRetry={(
-                                fileAttachmentType,
-                                fileAttachmentUrl
-                            ) =>
-                                handleUpload([
-                                    { fileAttachmentType, fileAttachmentUrl },
-                                ])
-                            }
+                            handleRetry={(file) => handleRetryUpload(file)}
                             maximize={(
                                 fileAttachmentType,
                                 fileAttachmentName,
@@ -274,10 +344,10 @@ const LiveChatInput = ({
                         />
                     )}
                     <div className='chat__input--group'>
-                        <div className="chat__input--group--inputs">
+                        <div className='chat__input--group--inputs'>
                             <UploadIcons
-                                upload={upload}
-                                updateUpload={updateUpload}
+                                upload={uploads}
+                                updateUpload={updateUploads}
                                 isDisabled={isDisabled}
                                 setErrors={setErrors}
                                 showModal={showModal}

@@ -57,11 +57,10 @@ const UploadIcons = ({
                 fileAttachmentUrl: url,
                 fileAttachmentType: uploadType,
                 fileAttachmentName: file?.name,
-                isCancellable: false,
             };
 
             updateUpload((prev) => [...prev, uploadObj]);
-            uploaded.push(uploadObj);
+            return uploaded.push(uploadObj);
         });
 
         handleUpload(uploaded);

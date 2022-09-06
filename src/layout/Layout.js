@@ -15,7 +15,7 @@ export default function Layout({ children }) {
 
     const resizeHandler = () => {
         // var correctInnerHeight = window.innerHeight;
-        const inputGroup = document.getElementById("inputGroup");
+        // const inputGroup = document.getElementById("inputGroup");
         // const docHeight = inputGroup.clientHeight;
         // var offsetTop = ((window).scrollTop() + correctInnerHeight) - docHeight;
         // offsetTop = Math.min(docHeight, offsetTop);
