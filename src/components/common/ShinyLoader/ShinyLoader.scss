@@ -1,0 +1,25 @@
+@import "assets/scss/animate/animate.scss";
+
+.shine__loader {
+    border-radius: 0px;
+    width: 120px;
+    height: 26px;
+    overflow: hidden;
+    position: relative;
+    animation: shine-animation 0.5s infinite cubic-bezier(0.4, 0, 1, 1);
+    -webkit-animation: shine-animation 0.5s infinite cubic-bezier(0.4, 0, 1, 1);
+}
+
+.shiny__background {
+    @include background-gradient;
+    animation: shine-animation 0.5s infinite cubic-bezier(0.4, 0, 1, 1);
+    -webkit-animation: shine-animation 0.5s infinite cubic-bezier(0.4, 0, 1, 1);
+}
+
+.shiny__line {
+    width: 120px;
+    height: 20px;
+    border-radius: 3px;
+    @include background-gradient;
+    animation: shine-lines $animation-duration infinite linear;
+}

@@ -1,0 +1,26 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+.empty__chat {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    width: 100%;
+
+    @include media("<=small-screen") {
+        padding: 1rem;
+    }
+
+    &.with-margin {
+        margin-top: 6rem;
+    }
+    p {
+        font-family: $primary_font_family;
+        font-size: 16px;
+        color: $muted__theme_color_2;
+        margin-top: 1rem;
+        margin-bottom: 0;
+        white-space: pre-wrap;
+    }
+}

@@ -1,10 +1,10 @@
-import React from 'react';
-import MediaContent from './MediaContent/MediaContent';
+import React from "react";
+import MediaContent from "./MediaContent/MediaContent";
 import "./MessageAttachments.scss";
 
-const MessageAttachments = ({ fileAttachments, openPreviewModal,}) => {
+const MessageAttachments = ({ fileAttachments, openPreviewModal }) => {
     return (
-        <div className="attachment__list">
+        <div className='attachment__list'>
             {fileAttachments &&
                 fileAttachments?.map((attachment, i) => (
                     <MediaContent

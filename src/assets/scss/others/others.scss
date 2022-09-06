@@ -1,61 +1,6 @@
 @import "../master";
 @import "../_include-media-lib/include-media";
 
-.test--heading {
-    color: $primary__theme_color;
-}
-
-.empty__chat {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
-    width: 100%;
-
-    @include media("<=small-screen") {
-        // empty__chat
-        padding: 1rem;
-    }
-
-    &.with-margin {
-        margin-top: 6rem;
-    }
-    p {
-        font-family: $primary_font_family;
-        font-size: 16px;
-        color: $muted__theme_color_2;
-        margin-top: 1rem;
-        margin-bottom: 0;
-        white-space: pre-wrap;
-    }
-}
-
-.d-content {
-    display: contents;
-}
-
-.powered__by {
-    display: flex;
-    justify-content: center;
-    padding: 3px 0;
-    width: 90%;
-    margin: auto;
-    align-items: center;
-    background-color: white;
-
-    // & > span {
-    //     font-size: 14px;
-    //     line-height: 22px;
-    //     color: $muted__theme_color_2;
-    //     font-family: $primary_font_family--medium;
-    //     }
-    //     svg {
-    //         width: 80px;
-    //         path{
-    //             fill: #696D8C;
-    //         }
-    //     }
-}
 
 .customer__tickets {
     &--container {
@@ -69,7 +14,6 @@
         height: 100%;
         overflow: hidden;
         flex-wrap: nowrap;
-        width: 50% !important;
         overflow: hidden;
         // background: $light__theme_color;
     }
@@ -423,4 +367,3 @@
         display: none;
     }
 }
-

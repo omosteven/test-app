@@ -3,35 +3,33 @@ import imageLinks from "assets/images";
 import { dataQueryStatus } from "utils/formatHandlers";
 import "./UploadPreviewError.scss";
 
-const { ERROR } = dataQueryStatus;
+const { ERROR, DATAMODE } = dataQueryStatus;
 
 const UploadPreviewError = ({
-    status,
+    status = ERROR,
     file,
     handleRemoveFile,
     handleRetry,
+    fileIndex,
+    uploadStatus = ERROR,
 }) => {
     return (
         <>
-            {status === ERROR && (
-                <div className='upload__preview--error__group'>
-                    <ReactSVG
-                        src={imageLinks?.svg?.retry}
-                        onClick={() =>
-                            handleRetry(
-                                file?.fileAttachmentType,
-                                file?.fileAttachmentUrl
-                            )
-                        }
-                    />{" "}
-                    <ReactSVG
-                        src={imageLinks?.svg?.abort}
-                        onClick={() =>
-                            handleRemoveFile(file?.fileAttachmentName)
-                        }
-                    />
-                </div>
-            )}
+            {(status === ERROR || status === DATAMODE) &&
+                uploadStatus === ERROR && (
+                    <div className='upload__preview--error__group'>
+                        <ReactSVG
+                            src={imageLinks?.svg?.retry}
+                            onClick={() => handleRetry({ ...file, fileIndex })}
+                        />{" "}
+                        <ReactSVG
+                            src={imageLinks?.svg?.abort}
+                            onClick={() =>
+                                handleRemoveFile(file?.fileAttachmentName)
+                            }
+                        />
+                    </div>
+                )}
         </>
     );
 };

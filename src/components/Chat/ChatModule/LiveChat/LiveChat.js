@@ -12,6 +12,7 @@ import {
     SEND_CUSTOMER_CONVERSATION_REPLY,
     SEND_CUSTOMER_MESSAGE,
     SUBSCRIBE_TO_TICKET,
+    MARK_AS_READ,
 } from "../../../../lib/socket/events";
 import { dataQueryStatus } from "../../../../utils/formatHandlers";
 import { generateID, getErrorMessage } from "../../../../utils/helper";
@@ -36,16 +37,24 @@ import {
     deleteTicketsMessages,
 } from "../../../../store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
+import "./LiveChat.scss";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
-const { DEFAULT, BRANCH, FORM_REQUEST, CONVERSATION, BRANCH_OPTION, ACTION_INFO } =
-    messageTypes;
+const {
+    DEFAULT,
+    BRANCH,
+    FORM_REQUEST,
+    CONVERSATION,
+    BRANCH_OPTION,
+    ACTION_INFO,
+} = messageTypes;
 
 const { TEXT } = formInputTypes;
+
 const LiveChat = ({ getCustomerTickets }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -90,10 +99,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                         x?.fileAttachments?.length > 0
                             ? x?.fileAttachments
                             : x?.form?.formElement?.media?.map((media) => ({
-                                fileAttachmentUrl: media?.link,
-                                fileAttachmentType: media?.type,
-                                fileAttachmentName: media?.mediaName,
-                            })),
+                                  fileAttachmentUrl: media?.link,
+                                  fileAttachmentType: media?.type,
+                                  fileAttachmentName: media?.mediaName,
+                              })),
                 }));
 
                 dispatch(setTicketMessages(messagesArr));
@@ -107,8 +116,11 @@ const LiveChat = ({ getCustomerTickets }) => {
     const handleIssueDiscovery = async (convo) => {
         try {
             const lastMessage = messages[messages.length - 1];
-           
-            if (lastMessage.senderType === WORKSPACE_AGENT && lastMessage.messageId !== SMART_CONVOS) {
+
+            if (
+                lastMessage.senderType === WORKSPACE_AGENT &&
+                lastMessage.messageId !== SMART_CONVOS
+            ) {
                 return "";
             }
 
@@ -120,9 +132,9 @@ const LiveChat = ({ getCustomerTickets }) => {
 
             const res = await API.get(url, {
                 params: {
-                    discovered
-                }
-            })
+                    discovered,
+                },
+            });
             if (res.status === 200) {
                 // triggerAgentTyping(false);
 
@@ -136,7 +148,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                             messageType: ACTION_INFO,
                             messageActionType: AGENT_FOLLOWUP,
                             senderType: WORKSPACE_AGENT,
-                            deliveryDate: new Date().toISOString()
+                            deliveryDate: new Date().toISOString(),
                         })
                     );
                 }
@@ -146,19 +158,21 @@ const LiveChat = ({ getCustomerTickets }) => {
             setErrorMssg(getErrorMessage(err));
             // triggerAgentTyping(false);
         }
-    }
+    };
 
     const handleOptConversation = async (convo) => {
         // triggerAgentTyping(true);
 
-        const {
-            conversationId,
-            branchOptionId,
-            branchOptionLabel,
-        } = convo;
+        const { conversationId, branchOptionId, branchOptionLabel } = convo;
 
-        dispatch(updateTicketMessageStatus({ messageId: SMART_CONVOS, ticketId, selectedOption: branchOptionId }));
-        if (branchOptionId === NO_ACTION ){
+        dispatch(
+            updateTicketMessageStatus({
+                messageId: SMART_CONVOS,
+                ticketId,
+                selectedOption: branchOptionId,
+            })
+        );
+        if (branchOptionId === NO_ACTION) {
             dispatch(
                 saveTicketsMessages({
                     messageId: generateID(),
@@ -170,7 +184,11 @@ const LiveChat = ({ getCustomerTickets }) => {
                 })
             );
         } else {
-            await socket.timeout(1000).emit(SEND_CUSTOMER_CONVERSATION_REPLY, { ticketId, conversationId, message: branchOptionLabel });
+            await socket.timeout(1000).emit(SEND_CUSTOMER_CONVERSATION_REPLY, {
+                ticketId,
+                conversationId,
+                message: branchOptionLabel,
+            });
         }
 
         handleIssueDiscovery(convo);
@@ -250,7 +268,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                     // const freshMessageList = (messages).map((x) => {
                     //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
                     // })
-                    
                 } else {
                     triggerAgentTyping(false);
                 }
@@ -333,15 +350,12 @@ const LiveChat = ({ getCustomerTickets }) => {
                 fileAttachments,
             });
         } else {
-            socket.emit(
-                SEND_CUSTOMER_MESSAGE,
-                {
-                    ticketId,
-                    message: message,
-                    messageType: DEFAULT,
-                    fileAttachments,
-                },
-            );
+            socket.emit(SEND_CUSTOMER_MESSAGE, {
+                ticketId,
+                message: message,
+                messageType: DEFAULT,
+                fileAttachments,
+            });
         }
     };
 
@@ -422,7 +436,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                         branchOptions: messageOptions,
                         senderType: WORKSPACE_AGENT,
                         selectedOption: "",
-                        deliveryDate: new Date().toISOString()
+                        deliveryDate: new Date().toISOString(),
                     };
                     dispatch(
                         saveTicketsMessages({
@@ -434,7 +448,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                     setActiveConvo(true);
                 } else {
                     setActiveConvo(true);
-                    handleIssueDiscovery({ branchOptionId: NO_ACTION, branchOptionLabel: messageContent })
+                    handleIssueDiscovery({
+                        branchOptionId: NO_ACTION,
+                        branchOptionLabel: messageContent,
+                    });
                 }
             } else {
                 triggerAgentTyping(false);
@@ -446,7 +463,6 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const processIssueDiscovery = useCallback(() => {
-        
         const allMessagesCopy = messages;
         if (activeConvo) {
             return "";
@@ -458,8 +474,9 @@ const LiveChat = ({ getCustomerTickets }) => {
             ?.find((message) => message.senderType === THIRD_USER);
         if (
             lastCustomerMssg?.messageType === DEFAULT &&
-            lastMessage.messageType !== CONVERSATION && lastMessage.messageType !== ACTION_INFO
-            && ticketPhase === ISSUE_DISCOVERY
+            lastMessage.messageType !== CONVERSATION &&
+            lastMessage.messageType !== ACTION_INFO &&
+            ticketPhase === ISSUE_DISCOVERY
         ) {
             fetchConvoSuggestions(lastCustomerMssg);
         }
@@ -467,31 +484,46 @@ const LiveChat = ({ getCustomerTickets }) => {
     }, [messages, activeConvo, ticketPhase]);
 
     const handleTicketClosure = (ticket) => {
-        console.log("so what ")
-        console.log(ticket)
-    }
+        console.log("so what ");
+        console.log(ticket);
+    };
+
+    const handleMarkAsRead = async (messageId) => {
+        await socket.emit(MARK_AS_READ, {
+            messageId,
+        });
+    };
 
     const handleReceive = (message) => {
-        const {ticketId} = message?.ticket;
+        const { ticketId: newMessageTicketId } = message?.ticket;
         if (message.senderType === WORKSPACE_AGENT) {
-            triggerAgentTyping(false)
-            dispatch(deleteTicketsMessages({ messageId: NO_ACTION, ticketId }))
-
+            triggerAgentTyping(false);
+            dispatch(
+                deleteTicketsMessages({
+                    messageId: NO_ACTION,
+                    newMessageTicketId,
+                })
+            );
         }
+
+        if (ticketId === newMessageTicketId) {
+            handleMarkAsRead(message?.messageId);
+        }
+
         dispatch(
             saveTicketsMessages({
                 ...message,
-                ticketId,
+                ticketId: newMessageTicketId,
                 fileAttachments:
                     message?.fileAttachments?.length > 0
                         ? message?.fileAttachments
-                        : message?.form?.formElement?.media?.map(
-                            (media) => ({
-                                fileAttachmentUrl: media?.link,
-                                fileAttachmentType: media?.type,
-                                fileAttachmentName: media?.mediaName,
-                            })
-                        ),
+                        : message?.form?.formElement?.media?.map((media) => ({
+                              fileAttachmentUrl: media?.link,
+                              fileAttachmentType: media?.type,
+                              fileAttachmentName: media?.mediaName,
+                          })),
+                readDate:
+                    ticketId === newMessageTicketId && new Date().toISOString(),
             })
         );
     };
@@ -503,7 +535,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         socket.on(RECEIVE_MESSAGE, handleReceive);
         socket.on(NEW_TICKET_UPDATE, handleTicketClosure);
         // socket.on(CLOSED_TICKET, handleTicketClosure);
-        
+
         socket.on("connect_error", handleSocketError);
         return () => {
             socket.off(RECEIVE_MESSAGE);
@@ -515,8 +547,6 @@ const LiveChat = ({ getCustomerTickets }) => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    
-
 
     useEffect(() => {
         figureInputAction();
