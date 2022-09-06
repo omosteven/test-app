@@ -48,14 +48,12 @@ const Message = ({
                 <AgentImage src={displayPicture} alt={firstName} />
             )}
             <div className={`message__group--content `}>
-                {messageContent !== "" && (
-                    <MessageContent
-                        isReceivedMessage={isReceivedMessage}
-                        messageContent={messageContent}
-                        fileAttachments={fileAttachments}
-                        openPreviewModal={openPreviewModal}
-                    />
-                )}
+                <MessageContent
+                    isReceivedMessage={isReceivedMessage}
+                    messageContent={messageContent}
+                    fileAttachments={fileAttachments}
+                    openPreviewModal={openPreviewModal}
+                />
                 {parsedBranchOptions?.length > 0 && (
                     <MessageOptions
                         selectedOption={selectedOption}
