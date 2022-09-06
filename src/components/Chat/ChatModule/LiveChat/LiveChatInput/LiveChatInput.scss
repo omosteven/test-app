@@ -4,7 +4,6 @@
 
 .chat__input--container {
     padding: 1rem;
-    margin-right: 6px;
     border-top: 1px solid #ECEBF5;
     border-bottom: 1px solid #ECEBF5;
     border-right: 1px solid #ECEBF5;
@@ -92,6 +91,7 @@
     position: sticky;
     bottom: 0;
     background-color: $light__theme_color;
+    margin-right: 6px;
     .form-control {
         background: transparent;
         &::placeholder {
@@ -107,6 +107,6 @@
 .disallowed__section {
     #chatInput {
         background: #f8f8fa;
-        
+        margin-right: 6px;
     }
 }

@@ -47,6 +47,7 @@ const ChatHeader = ({
                         toggleChatMenu,
                     }}
                 />
+                
                 <div className='show-only-on-mobile'>
                     <ChatSettingsToggler isMobile={true} />
                 </div>

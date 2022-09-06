@@ -1,3 +1,4 @@
+@import "assets/scss/_include-media-lib/include-media";
 .customer__tickets--container {
         margin: 0 auto;
         padding: 0;
@@ -13,6 +14,9 @@
         display: flex;
         -webkit-flex-direction: row;
         flex-direction: row;
+        @include media("<=large-screen") {
+            width: 50% !important;
+        }
 }
 
 .customer__tickets--container .mCSB_container {
