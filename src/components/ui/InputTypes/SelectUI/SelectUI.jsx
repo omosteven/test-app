@@ -3,7 +3,7 @@ import ReactSelect from "react-select";
 
 const SelectUI = ({ error, handleChange, options, optionValueKey, optionLabelKey, label, defaultValue, isLoading, serverError, handleRetry, ...rest }) => {
     return (
-        <div className="form-group mb-3">
+        <div className="form-group mb-2">
             <label className='select__label fs-17 text-primary fw-medium'>{label}</label>
             <ReactSelect
                 className="select__box"
