@@ -552,7 +552,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         figureInputAction();
         processIssueDiscovery();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [messages]);
+    }, [ticketsMessages]);
 
     return (
         <>
