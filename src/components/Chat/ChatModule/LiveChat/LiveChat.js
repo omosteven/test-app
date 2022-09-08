@@ -27,6 +27,7 @@ import {
     messageOptionActions,
     messageStatues,
     messageTypes,
+    TICKET_CLOSED_ALERT,
 } from "./MessageBody/Messages/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
 import {
@@ -99,10 +100,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                         x?.fileAttachments?.length > 0
                             ? x?.fileAttachments
                             : x?.form?.formElement?.media?.map((media) => ({
-                                  fileAttachmentUrl: media?.link,
-                                  fileAttachmentType: media?.type,
-                                  fileAttachmentName: media?.mediaName,
-                              })),
+                                fileAttachmentUrl: media?.link,
+                                fileAttachmentType: media?.type,
+                                fileAttachmentName: media?.mediaName,
+                            })),
                 }));
 
                 dispatch(setTicketMessages(messagesArr));
@@ -195,7 +196,6 @@ const LiveChat = ({ getCustomerTickets }) => {
     };
 
     const handleMessageOptionSelect = async (messageOption) => {
-        const newMessageId = generateID();
         const {
             branchId,
             branchOptionId,
@@ -220,17 +220,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                 : x;
         });
 
-        newMessageList = [
-            ...newMessageList,
-            {
-                ticketId,
-                senderType: THIRD_USER,
-                messageContent: branchOptionLabel,
-                messageContentId: branchOptionId,
-                messageType: BRANCH_OPTION,
-                messageId: newMessageId,
-            },
-        ];
 
         dispatch(setTicketMessages(newMessageList));
 
@@ -483,10 +472,22 @@ const LiveChat = ({ getCustomerTickets }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages, activeConvo, ticketPhase]);
 
-    const handleTicketClosure = (ticket) => {
-        console.log("so what ");
-        console.log(ticket);
-    };
+    const handleTicketClosure = (ticketStr) => {
+        const ticket = JSON.parse(ticketStr);
+        if (ticket.ticketStatus === false) {
+            saveTicketsMessages({
+                ticketId: ticket?.ticketId,
+                messageId: TICKET_CLOSED_ALERT,
+                // messageRefContent: branchOptionLabel,
+                messageContent: `This ticket has been closed`,
+                messageType: ACTION_INFO,
+                messageActionType: TICKET_CLOSED_ALERT,
+                senderType: WORKSPACE_AGENT,
+                deliveryDate: new Date().toISOString(),
+            })
+            console.log("Successfully added support for images")
+        }
+    }
 
     const handleMarkAsRead = async (messageId) => {
         await socket.emit(MARK_AS_READ, {
@@ -518,10 +519,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                     message?.fileAttachments?.length > 0
                         ? message?.fileAttachments
                         : message?.form?.formElement?.media?.map((media) => ({
-                              fileAttachmentUrl: media?.link,
-                              fileAttachmentType: media?.type,
-                              fileAttachmentName: media?.mediaName,
-                          })),
+                            fileAttachmentUrl: media?.link,
+                            fileAttachmentType: media?.type,
+                            fileAttachmentName: media?.mediaName,
+                        })),
                 readDate:
                     ticketId === newMessageTicketId && new Date().toISOString(),
             })
@@ -533,6 +534,7 @@ const LiveChat = ({ getCustomerTickets }) => {
 
         socket.emit(SUBSCRIBE_TO_TICKET, { ticketId });
         socket.on(RECEIVE_MESSAGE, handleReceive);
+        // socket.on(CLOSED_TICKET, handleTicketClosureProvision)
         socket.on(NEW_TICKET_UPDATE, handleTicketClosure);
         // socket.on(CLOSED_TICKET, handleTicketClosure);
 
@@ -540,7 +542,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         return () => {
             socket.off(RECEIVE_MESSAGE);
             socket.off(NEW_TICKET_UPDATE);
-            // socket.off(CLOSED_TICKET)
+            // socket.off(CLOSED_TICKET) 
 
             triggerAgentTyping(false);
             setActiveConvo(false);

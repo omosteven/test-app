@@ -4,6 +4,7 @@ import MessageContent from "../Message/MessageContent/MessageContent";
 import ActionMessageContent from "./ActionMessageContent/ActionMessageContent";
 
 
+
 const ActionMessage = ({
     data,
     agent,
@@ -20,11 +21,11 @@ const ActionMessage = ({
             <AgentImage src={displayPicture} alt={firstName} />
             <div
                 className={`message__group--content `}>
-                <MessageContent
+                {messageRefContent && <MessageContent
                     isReceivedMessage={false}
                     messageContent={messageRefContent}
                     otherClassNames={'grayed__out'}
-                />
+                />}
 
                 <ActionMessageContent
                     messageContent={messageContent}

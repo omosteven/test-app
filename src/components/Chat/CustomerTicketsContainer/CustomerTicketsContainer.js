@@ -54,6 +54,7 @@ const CustomerTicketsContainer = ({
                             selectedTicket={selectedTicket}
                             closeTicket={closeTicket}
                             showChatMenu={showChatMenu}
+                            getCustomerTickets={getCustomerTickets}
                         />
                         <NewTicketButton
                             handleClick={createNewTicket}

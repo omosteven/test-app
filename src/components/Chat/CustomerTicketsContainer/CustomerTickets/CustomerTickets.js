@@ -9,6 +9,7 @@ const CustomerTickets = ({
     handleTicketSelect,
     closeTicket,
     showChatMenu,
+    getCustomerTickets
 }) => {
     return (
         <SmothScrollContentHorizontal
@@ -30,6 +31,7 @@ const CustomerTickets = ({
                                 selectedTicket?.ticketId === item?.ticketId
                             }
                             closeTicket={closeTicket}
+                            getCustomerTickets={getCustomerTickets}
                         />
                     );
                 })}

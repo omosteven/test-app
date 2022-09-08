@@ -36,7 +36,7 @@ const Chat = () => {
 
     const getCustomerTickets = async (ticketId) => {
         try {
-            dispatch(setActiveTicket());
+            dispatch(setActiveTicket(null));
 
             setStatus(LOADING);
             setErrorMssg();
@@ -60,7 +60,8 @@ const Chat = () => {
                     );
                     setStatus(DATAMODE);
                 } else {
-                    setStatus(NULLMODE);
+                    createNewTicket();
+                    // setStatus(NULLMODE);
                 }
             }
         } catch (err) {
