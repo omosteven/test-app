@@ -16,6 +16,7 @@ const Messages = (props) => {
         handleMessageOptionSelect,
         handleOptConversation,
         openPreviewModal,
+        handleRateConversation
     } = props;
     const { activeTicket, ticketsMessages } = useSelector(
         (state) => state.tickets
@@ -56,6 +57,7 @@ const Messages = (props) => {
                         handleMessageOptionSelect={handleMessageOptionSelect}
                         handleOptConversation={handleOptConversation}
                         openPreviewModal={openPreviewModal}
+                        handleRateConversation={handleRateConversation}
                     />
                 ) : (
                     ""
