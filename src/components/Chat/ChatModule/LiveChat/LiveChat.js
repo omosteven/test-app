@@ -100,10 +100,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                         x?.fileAttachments?.length > 0
                             ? x?.fileAttachments
                             : x?.form?.formElement?.media?.map((media) => ({
-                                fileAttachmentUrl: media?.link,
-                                fileAttachmentType: media?.type,
-                                fileAttachmentName: media?.mediaName,
-                            })),
+                                  fileAttachmentUrl: media?.link,
+                                  fileAttachmentType: media?.type,
+                                  fileAttachmentName: media?.mediaName,
+                              })),
                 }));
 
                 dispatch(setTicketMessages(messagesArr));
@@ -219,7 +219,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                 ? { ...x, selectedOption: branchOptionId }
                 : x;
         });
-
 
         dispatch(setTicketMessages(newMessageList));
 
@@ -484,10 +483,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                 messageActionType: TICKET_CLOSED_ALERT,
                 senderType: WORKSPACE_AGENT,
                 deliveryDate: new Date().toISOString(),
-            })
-            console.log("Successfully added support for images")
+            });
+            console.log("Successfully added support for images");
         }
-    }
+    };
 
     const handleMarkAsRead = async (messageId) => {
         await socket.emit(MARK_AS_READ, {
@@ -519,10 +518,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                     message?.fileAttachments?.length > 0
                         ? message?.fileAttachments
                         : message?.form?.formElement?.media?.map((media) => ({
-                            fileAttachmentUrl: media?.link,
-                            fileAttachmentType: media?.type,
-                            fileAttachmentName: media?.mediaName,
-                        })),
+                              fileAttachmentUrl: media?.link,
+                              fileAttachmentType: media?.type,
+                              fileAttachmentName: media?.mediaName,
+                          })),
                 readDate:
                     ticketId === newMessageTicketId && new Date().toISOString(),
             })
@@ -542,7 +541,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         return () => {
             socket.off(RECEIVE_MESSAGE);
             socket.off(NEW_TICKET_UPDATE);
-            // socket.off(CLOSED_TICKET) 
+            // socket.off(CLOSED_TICKET)
 
             triggerAgentTyping(false);
             setActiveConvo(false);

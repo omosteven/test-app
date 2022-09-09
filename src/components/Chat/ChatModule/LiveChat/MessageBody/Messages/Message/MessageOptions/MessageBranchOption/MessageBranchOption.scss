@@ -11,6 +11,8 @@
     letter-spacing: 0.05px;
     padding: 7px 12px;
     transition: all 0.3s;
+    height: fit-content;
+    
     &:hover {
         opacity: 0.5;
     }
