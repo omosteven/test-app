@@ -6,13 +6,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    
     p {
-        font-size: 14px;
+        font-size: 0.875rem;
         text-align: center;
-        color: #696d8c;
+        color: $light__gray__theme_color;
         margin-bottom: 0;
+        
         .retry__trigger {
-            margin-left: 10px;
+            margin-left: 0.625rem;
             cursor: pointer;
             font-weight: bolder;
             &:hover {

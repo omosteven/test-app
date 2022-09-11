@@ -1,3 +1,4 @@
+@import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
 .upload__preview {
@@ -12,19 +13,19 @@
 
     &::-webkit-scrollbar {
         display: inline;
-        width: 20px;
-        height: 5px;
+        width: 1.25rem;
+        height: 0.313rem;
     }
     &::-webkit-scrollbar-track {
-        background: #fafafc;
-        border-radius: 20px;
+        background: $scroll__bar__track_color;
+        border-radius: 1.25rem;
     }
     &::-webkit-scrollbar-thumb {
-        background: #e6e6ed;
-        border-radius: 20px;
+        background: $scroll__bar__thumb_color;
+        border-radius: 1.25rem;
     }
     &::-webkit-scrollbar-thumb:hover {
-        background: #4d4b4b;
+        background: $scroll__bar__thumb_hover_color;
     }
 
     &--icon {
@@ -32,12 +33,12 @@
         right: -0.375rem;
         cursor: pointer;
         z-index: 2;
-        top: -10px;
+        top: -0.625rem;
 
         &.loading {
             & svg {
-                height: 15px;
-                width: 15px;
+                height: 0.938rem;
+                width: 0.938rem;
                 background: rgba(225, 225, 235, 0.8);
                 border-radius: 100%;
                 animation-name: rotate;
@@ -112,16 +113,16 @@
             flex-direction: column;
 
             p {
-                font-size: 10px;
-                line-height: 10px;
+                font-size: 0.625rem;
+                line-height: 0.625rem;
                 display: flex;
                 align-items: center;
                 margin: 0;
             }
 
             span {
-                font-size: 7px;
-                line-height: 9px;
+                font-size: 0.438rem;
+                line-height: 0.563rem;
                 text-transform: uppercase;
             }
         }

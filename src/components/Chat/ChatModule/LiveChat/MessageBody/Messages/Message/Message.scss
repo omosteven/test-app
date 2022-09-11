@@ -5,7 +5,7 @@
     display: flex;
     align-items: flex-end;
     gap: 1rem;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
     &.sent {
         justify-content: flex-end;
     }
@@ -19,63 +19,63 @@
         .message__content {
             width: fit-content;
             max-width: 50%;
-            font-size: 15px;
-            letter-spacing: 0.05px;
-            margin-bottom: 10px;
+            font-size: 0.938rem;
+            letter-spacing: 0.003rem;
+            margin-bottom: 0.625rem;
 
             .message {
-                padding: 12px 16px 10px;
+                padding: 0.75rem 1rem 0.625rem;
             }
 
             @include media("<=small-screen") {
-                font-size: 16px;
+                font-size: 1rem;
                 max-width: 80%;
             }
 
             &.received {
                 color: $light__theme_color;
                 background: $primary__theme_color;
-                border-radius: 12px 12px 12px 0px;
+                border-radius: 0.75rem 0.75rem 0.75rem 0;
             }
 
             &.info__action {
-                color: #060213;
-                background: #fff;
-                border: 1px solid $primary__theme_color;
-                border-radius: 12px 12px 12px 0px;
+                color: $text__default_color;
+                background: $light__theme_color;
+                border: 0.063rem solid $primary__theme_color;
+                border-radius: 0.75rem 0.75rem 0.75rem 0;
                 .message {
                     padding-top: 0;
                 }
                 .action__header {
                     display: flex;
                     align-items: center;
-                    padding: 12px 16px;
-                    padding-bottom: 5px;
-                    gap: 10px;
+                    padding: 0.75rem 1rem;
+                    padding-bottom: 0.313rem;
+                    gap: 0.625rem;
                     svg {
-                        margin-top: -3px;
+                        margin-top: -0.188rem;
                         path {
                             fill: $primary__theme_color;
                         }
                     }
                     h6 {
                         font-family: $primary_font_family--medium;
-                        font-size: 15px;
-                        color: #060213;
+                        font-size: 0.938rem;
+                        color: $text__default_color;
                         margin: 0;
                     }
                 }
             }
 
             &.sent {
-                color: #696d8c;
-                background: #fafafc;
-                border-radius: 12px 12px 0px 12px;
+                color: $light__gray__theme_color;
+                background: $scroll__bar__track_color;
+                border-radius: 0.75rem 0.75rem 0 0.75rem;
                 text-align: left;
             }
 
             &.grayed__out {
-                color: #A3A3C2;
+                color: $option__fade_out;
             }
         }
     }

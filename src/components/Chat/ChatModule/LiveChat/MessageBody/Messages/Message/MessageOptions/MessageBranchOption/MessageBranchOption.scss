@@ -1,15 +1,15 @@
 @import "assets/scss/master";
 
 .branch__option {
-    border-radius: 14px;
+    border-radius: 0.875rem;
     background-color: $light__theme_color;
-    border: 1px solid $border_highlight_color;
+    border: 0.063rem solid $border_highlight_color;
     cursor: pointer;
     color: $text__default_color;
     outline: none;
-    font-size: 14.5px;
-    letter-spacing: 0.05px;
-    padding: 7px 12px;
+    font-size: 0.906rem;
+    letter-spacing: 0.003rem;
+    padding: 7px 0.75rem;
     transition: all 0.3s;
     &:hover {
         opacity: 0.5;

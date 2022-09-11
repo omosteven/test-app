@@ -4,7 +4,7 @@ $toast-background: rgba($pending__theme_color, 0.04);
 
 .toasts-container {
     .toast {
-        border-radius: 5px;
+        border-radius: 0.313rem;
         box-shadow: none;
         height: 4.188rem;
         border-color: #f2f2f2 !important;
@@ -12,10 +12,10 @@ $toast-background: rgba($pending__theme_color, 0.04);
     .toast-success {
         width: 28.188rem !important;
         padding: 0 !important;
-        background-color: white !important;
+        background-color: $light__theme_color !important;
     }
     .toast-error {
-        background: #f25a68 !important;
+        background: $file__error__theme_color !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -29,13 +29,13 @@ $toast-background: rgba($pending__theme_color, 0.04);
             height: 4.188rem;
             margin-left: 0rem;
             background-color: $toast-background;
-            border-width: 1px 0px 1px 1px !important;
+            border-width: 0.063rem 0px 0.063rem 0.063rem !important;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         &-message {
-            border-left: 1px solid #ffffff;
+            border-left: 0.063rem solid $light__theme_color;
             font-weight: 400;
             width: 20.188rem;
             height: 4.188rem;
@@ -49,7 +49,7 @@ $toast-background: rgba($pending__theme_color, 0.04);
             p {
                 font-size: 0.625rem;
                 line-height: 0.8125rem;
-                color: #484848;
+                color: $ash__theme_color;
             }
         }
         &-rightside {
@@ -66,7 +66,7 @@ $toast-background: rgba($pending__theme_color, 0.04);
         }
 
         .toast-cancel__logo {
-            color: #484848 !important;
+            color: $ash__theme_color !important;
             cursor: pointer;
         }
     }

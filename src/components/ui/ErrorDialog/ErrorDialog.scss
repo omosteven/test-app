@@ -1,22 +1,24 @@
+@import "assets/scss/master";
+
 .error {
-    padding: 8px 16px;
-    padding-right: 20px;
+    padding: 0.5rem 1rem;
+    padding-right: 1.25rem;
     background-color: #fff5f5;
-    border: 1px solid #ffccc7 !important;
-    border-radius: 8px;
-    border-radius: 8px;
+    border: 0.063rem solid #ffccc7 !important;
+    border-radius: 0.5rem;
+    border-radius: 0.5rem;
     color: #ff000096;
 }
 
 .error__message {
-    font-size: 15px;
+    font-size: 0.938rem;
     font-weight: 300;
     color: #dc3545;
 }
 
 .error__close-btn {
     padding: 0;
-    font-size: 26px;
+    font-size: 1.625rem;
     line-height: 1;
     border: none;
     outline: none;
