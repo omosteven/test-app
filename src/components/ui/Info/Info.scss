@@ -1,0 +1,24 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+.info__box {
+    height: 30px;
+    border: 1px solid #ecebf5;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 10px;
+    .ticket__status span {
+        color: #696d8c;
+        font-family: $primary_font_family;
+        font-size: 14px;
+    }
+    &.straight {
+        height: 36px;
+        margin: 0 0.5rem;
+        @include media("<=small-screen") {
+            margin: 0;
+        }
+    }
+}

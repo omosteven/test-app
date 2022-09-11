@@ -1,11 +1,16 @@
-import React from 'react';
+import React from "react";
+import "./ErrorView.scss";
 
 const ErrorView = ({ message, retry }) => {
     return (
         <div className='error__view'>
             <p>
-                {message || "Something went wrong, please try again"} 
-                {retry && <span className='retry__trigger' onClick={() => retry()}>Retry Now?</span>}
+                {message || "Something went wrong, please try again"}
+                {retry && (
+                    <span className='retry__trigger' onClick={() => retry()}>
+                        Retry Now?
+                    </span>
+                )}
             </p>
         </div>
     );

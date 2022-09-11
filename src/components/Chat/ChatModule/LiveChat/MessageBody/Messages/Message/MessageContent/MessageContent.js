@@ -22,7 +22,9 @@ const MessageContent = ({
                     openPreviewModal={openPreviewModal}
                 />
             )}
-            <div className='message'>{messageContent}</div>
+            {messageContent !== "" && (
+                <div className='message'>{messageContent}</div>
+            )}
         </div>
     );
 };

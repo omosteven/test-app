@@ -16,7 +16,6 @@
         position: fixed;
     }
 
-    // justify-content: flex-end;
     .chat__header {
         display: flex;
         align-items: center;
@@ -57,5 +56,12 @@
                 margin: auto;
             }
         }
+    }
+}
+
+.show-only-on-mobile {
+    display: none;
+    @include media("<=small-screen") {
+        display: block;
     }
 }
