@@ -14,7 +14,6 @@
     @include media("<=small-screen") {
         height: 1rem;
         color: $light__gray__theme_color;
-        font-weight: bold;
     }
     span {
         line-height: 0.625rem;

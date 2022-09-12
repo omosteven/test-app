@@ -23,7 +23,7 @@ const CustomerTicketsContainer = ({
 }) => {
     const { width } = useWindowSize();
 
-    const tablet = width > 425;
+    const tablet = width > 768;
 
     useEffect(() => {
         if (tablet) {

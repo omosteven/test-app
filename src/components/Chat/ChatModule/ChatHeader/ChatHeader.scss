@@ -11,7 +11,7 @@
     z-index: 3;
     border-bottom: 0.063rem solid $border__theme_color;
 
-    @include media("<=small-screen") {
+    @include media("<=medium-screen") {
         min-height: 3.5rem;
         position: fixed;
     }
@@ -23,7 +23,7 @@
         padding: 0 2rem;
         #authTickets {
             display: contents;
-            @include media("<=small-screen") {
+            @include media("<=medium-screen") {
                 display: none;
             }
         }
@@ -36,7 +36,7 @@
                 color: $muted__theme_color_2;
             }
 
-            @include media("<=small-screen") {
+            @include media("<=medium-screen") {
                 display: flex;
                 align-items: center;
                 cursor: pointer;
@@ -48,7 +48,7 @@
             }
         }
 
-        @include media("<=small-screen") {
+        @include media("<=medium-screen") {
             padding: 0 1rem;
             height: 3.5rem;
             .logo {
@@ -60,7 +60,7 @@
 
 .show-only-on-mobile {
     display: none;
-    @include media("<=small-screen") {
+    @include media("<=medium-screen") {
         display: block;
     }
 }

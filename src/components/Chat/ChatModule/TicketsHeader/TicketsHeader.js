@@ -19,7 +19,7 @@ const TicketsHeader = ({
         <div id='ticketsHeader' className='ticket-header'>
             <div className='agent-ticket--status'>
                 <p className='agents__name'>{`${firstName} ${lastName}`}</p>
-                <div className={"d-sm-none"}>
+                <div>
                     <TicketStatus {...{ ticketPhase, ticketId }} />
                 </div>
             </div>

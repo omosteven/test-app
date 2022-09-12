@@ -7,7 +7,7 @@
     width: 100%;
     background-color: $light__theme_color;
     z-index: 1;
-    @include media("<=small-screen") {
+    @include media("<=medium-screen") {
         top: 3.5rem;
         position: fixed;
     }
@@ -15,7 +15,7 @@
     .agent-ticket--status {
         .ticket__status {
             display: none;
-            @include media("<=small-screen") {
+            @include media("<=medium-screen") {
                 display: flex;
             }
         }
@@ -29,7 +29,7 @@
         margin-left: auto;
 
         .info__box {
-            @include media("<=small-screen") {
+            @include media("<=medium-screen") {
                 display: none !important;
             }
         }
@@ -76,7 +76,7 @@
 
 .show-only-on-desktop {
     display: block;
-    @include media("<=small-screen") {
+    @include media("<=medium-screen") {
         display: none;
     }
 }
