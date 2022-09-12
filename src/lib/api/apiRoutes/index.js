@@ -13,6 +13,7 @@ const apiRoutes = {
         `${agentsInbox}ticket/${ticketId}/change-choice`,
     restartTicket: (ticketId) => `${agentsInbox}ticket/${ticketId}/restart`,
     closeTicket: (ticketId) => `${agentsInbox}ticket/${ticketId}/close`,
+    rateTicket: (ticketId) => `${agentsInbox}ticket/${ticketId}/rating`,
 
     investigateMesage: `${kSam}issue/investigate-message`,
     createTicket: `${agentsInbox}ticket`,

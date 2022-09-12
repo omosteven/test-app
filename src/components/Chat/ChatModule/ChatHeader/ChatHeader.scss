@@ -6,17 +6,16 @@
     position: sticky;
     width: 100%;
     display: block;
-    min-height: 78px;
+    min-height: 4.875rem;
     top: 0;
     z-index: 3;
-    border-bottom: 1px solid $border__theme_color;
+    border-bottom: 0.063rem solid $border__theme_color;
 
-    @include media("<=small-screen") {
-        min-height: 56px;
+    @include media("<=medium-screen") {
+        min-height: 3.5rem;
         position: fixed;
     }
 
-    // justify-content: flex-end;
     .chat__header {
         display: flex;
         align-items: center;
@@ -24,7 +23,7 @@
         padding: 0 2rem;
         #authTickets {
             display: contents;
-            @include media("<=small-screen") {
+            @include media("<=medium-screen") {
                 display: none;
             }
         }
@@ -33,29 +32,35 @@
 
             span {
                 font-weight: 400;
-                font-size: 14px;
-                // line-height: 22px;
+                font-size: 0.875rem;
                 color: $muted__theme_color_2;
             }
 
-            @include media("<=small-screen") {
+            @include media("<=medium-screen") {
                 display: flex;
                 align-items: center;
                 cursor: pointer;
                 gap: 0.25rem;
-                height: 12px;
+                height: 0.75rem;
                 span {
-                    margin-top: 1px;
+                    margin-top: 0.063rem;
                 }
             }
         }
 
-        @include media("<=small-screen") {
-            padding: 0 16px;
-            height: 56px;
+        @include media("<=medium-screen") {
+            padding: 0 1rem;
+            height: 3.5rem;
             .logo {
                 margin: auto;
             }
         }
+    }
+}
+
+.show-only-on-mobile {
+    display: none;
+    @include media("<=medium-screen") {
+        display: block;
     }
 }

@@ -1,6 +1,8 @@
+@import "assets/scss/master";
+
 .read-time {
-    font-size: 11px;
-    line-height: 12px;
-    color: #a3a3c2;
-    margin-top: 8px;
+    font-size: 0.688rem;
+    line-height: 0.75rem;
+    color: $option__fade_out;
+    margin-top: 0.5rem;
 }

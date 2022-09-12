@@ -4,6 +4,7 @@ import { SocketContext } from "../../../../../../lib/socket/context/socket";
 import { TICKET_PHASE_CHANGE } from "../../../../../../lib/socket/events";
 // import { setActiveTicket } from '../../../../../../store/tickets/actions';
 import { ticketsPhases } from "./enum";
+import "./TicketStatus.scss";
 
 const TicketStatus = ({ ticketPhase, ticketId }) => {
     // const dispatch = useDispatch();

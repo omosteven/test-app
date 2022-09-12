@@ -5,6 +5,7 @@ import NewTicketButton from "./CustomerTickets/common/NewTicketButton/NewTicketB
 import CustomerTickets from "./CustomerTickets/CustomerTickets";
 import CustomerTicketsSkeleton from "./CustomerTicketsSkeleton/CustomerTicketsSkeleton";
 import { useWindowSize } from "../../../utils/hooks";
+import "./CustomerTicketsContainer.scss";
 
 const { LOADING, NULLMODE, DATAMODE, ERROR } = dataQueryStatus;
 
@@ -22,7 +23,7 @@ const CustomerTicketsContainer = ({
 }) => {
     const { width } = useWindowSize();
 
-    const tablet = width > 425;
+    const tablet = width > 768;
 
     useEffect(() => {
         if (tablet) {

@@ -62,6 +62,7 @@ const Message = ({
                         messageType={messageType}
                         handleMessageOptionSelect={handleMessageOptionSelect}
                         handleOptConversation={handleOptConversation}
+                        deliveryDate={deliveryDate}
                     />
                 )}
                 {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && (

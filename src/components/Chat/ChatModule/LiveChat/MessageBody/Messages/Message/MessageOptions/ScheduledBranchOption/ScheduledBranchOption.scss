@@ -1,0 +1,61 @@
+@import "assets/scss/master";
+
+.scheduled__branch__option {
+    border-radius: 14px;
+    background-color: $light__theme_color;
+    cursor: pointer;
+    outline: none;
+    font-size: 14.5px;
+    letter-spacing: 0.05px;
+    padding: 7px 12px;
+    transition: all 0.3s;
+
+    &.active {
+        border: 1px solid $border_highlight_color;
+        color: $text__default_color;
+    }
+
+    &.inactive {
+        border: 1px dashed $border_highlight_color;
+        color: $option__fade_out;
+        pointer-events: none;
+    }
+
+    &:hover {
+        opacity: 0.5;
+    }
+
+    &:disabled {
+        color: $text__default_color;
+    }
+
+    &.__fade_out {
+        color: $option__fade_out;
+        pointer-events: none;
+    }
+    &.selected {
+        border-color: $primary__theme_color;
+    }
+}
+
+.countdown__timer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 0.177rem;
+
+
+    .countdown__clock {
+        path {
+            fill: $primary__theme_color;
+        }
+    }
+
+    .timer {
+        font-weight: 600;
+        font-size: 0.75rem;
+        line-height: 0.75rem;
+        color: $primary__theme_color;
+    }
+
+}

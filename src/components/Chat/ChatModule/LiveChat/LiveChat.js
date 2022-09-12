@@ -100,10 +100,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                         x?.fileAttachments?.length > 0
                             ? x?.fileAttachments
                             : x?.form?.formElement?.media?.map((media) => ({
-                                fileAttachmentUrl: media?.link,
-                                fileAttachmentType: media?.type,
-                                fileAttachmentName: media?.mediaName,
-                            })),
+                                  fileAttachmentUrl: media?.link,
+                                  fileAttachmentType: media?.type,
+                                  fileAttachmentName: media?.mediaName,
+                              })),
                 }));
 
                 dispatch(setTicketMessages(messagesArr));
@@ -220,7 +220,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                 : x;
         });
 
-
         dispatch(setTicketMessages(newMessageList));
 
         if (branchOptionType === branchOptionsTypes?.LINK) {
@@ -231,6 +230,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             branchOptionActionType === messageOptionActions?.CLOSE_CONVERSATION
         ) {
             handleCloseConversation();
+
             return "";
         }
 
@@ -356,6 +356,23 @@ const LiveChat = ({ getCustomerTickets }) => {
             const res = await API.post(url);
             if (res.status === 201) {
                 setStatus(DATAMODE);
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
+
+    const handleRateConversation = async (ratingValue) => {
+        try {
+            setStatus(LOADING);
+            setErrorMssg();
+            const url = apiRoutes?.rateTicket(ticketId);
+            const res = await API.put(url, {
+                rating: ratingValue / 20,
+            });
+            if (res.status === 200) {
+                setStatus(DATAMODE);
                 dispatch(setActiveTicket());
                 getCustomerTickets();
             }
@@ -473,7 +490,8 @@ const LiveChat = ({ getCustomerTickets }) => {
     }, [messages, activeConvo, ticketPhase]);
 
     const handleTicketClosure = (ticketStr) => {
-        const ticket = JSON.parse(ticketStr);
+        const ticket =
+            typeof ticketStr === "string" ? JSON.parse(ticketStr) : ticketStr;
         if (ticket.ticketStatus === false) {
             saveTicketsMessages({
                 ticketId: ticket?.ticketId,
@@ -484,10 +502,11 @@ const LiveChat = ({ getCustomerTickets }) => {
                 messageActionType: TICKET_CLOSED_ALERT,
                 senderType: WORKSPACE_AGENT,
                 deliveryDate: new Date().toISOString(),
-            })
-            console.log("Successfully added support for images")
+            });
+
+            console.log("Successfully added support for images");
         }
-    }
+    };
 
     const handleMarkAsRead = async (messageId) => {
         await socket.emit(MARK_AS_READ, {
@@ -519,10 +538,10 @@ const LiveChat = ({ getCustomerTickets }) => {
                     message?.fileAttachments?.length > 0
                         ? message?.fileAttachments
                         : message?.form?.formElement?.media?.map((media) => ({
-                            fileAttachmentUrl: media?.link,
-                            fileAttachmentType: media?.type,
-                            fileAttachmentName: media?.mediaName,
-                        })),
+                              fileAttachmentUrl: media?.link,
+                              fileAttachmentType: media?.type,
+                              fileAttachmentName: media?.mediaName,
+                          })),
                 readDate:
                     ticketId === newMessageTicketId && new Date().toISOString(),
             })
@@ -542,7 +561,7 @@ const LiveChat = ({ getCustomerTickets }) => {
         return () => {
             socket.off(RECEIVE_MESSAGE);
             socket.off(NEW_TICKET_UPDATE);
-            // socket.off(CLOSED_TICKET) 
+            // socket.off(CLOSED_TICKET)
 
             triggerAgentTyping(false);
             setActiveConvo(false);
@@ -580,6 +599,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     agent={agent}
                     handleMessageOptionSelect={handleMessageOptionSelect}
                     handleOptConversation={handleOptConversation}
+                    handleRateConversation={handleRateConversation}
                 />
             </div>
             <div className='chat__input__container'>

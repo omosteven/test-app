@@ -12,7 +12,7 @@ export const getErrorMessage = (error) => {
 };
 
 export function timeSince(reqDate) {
-    // 
+    //
     let date = new Date(reqDate);
     var seconds = Math.floor((new Date() - date) / 1000);
 
@@ -97,9 +97,11 @@ export const generateID = (length = 10) => {
 };
 
 export const getUniqueListBy = (arr, key) => {
-    return ([...new Map(arr.map((item) => [item[key], item])).values()]).sort(function(a,b){
-        return new Date(a.deliveryDate) - new Date(b.deliveryDate);
-      })
+    return [...new Map(arr.map((item) => [item[key], item])).values()].sort(
+        function (a, b) {
+            return new Date(a.deliveryDate) - new Date(b.deliveryDate);
+        }
+    );
 };
 
 export const getFileFormat = (fileName) => {
@@ -115,4 +117,8 @@ export const truncate = (str, len = 50) => {
     }
 };
 
-
+export const convertSecondsToISOString = (seconds) => {
+    let date = new Date(null);
+    date.setSeconds(seconds);
+    return date.toISOString();
+};

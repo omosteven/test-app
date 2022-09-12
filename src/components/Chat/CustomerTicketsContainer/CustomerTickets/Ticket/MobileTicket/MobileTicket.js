@@ -1,9 +1,10 @@
 import { timeSince } from "../../../../../../utils/helper";
 import { AgentImage } from "../../../../../ui";
 import TicketStatus from "../common/TicketStatus/TicketStatus";
+import "./MobileTicket.scss";
 
 const MobileTicket = ({ data, isActive = false, handleTicketSelect }) => {
-    const { agent, ticketPhase, ticketId , createdDate} = data;
+    const { agent, ticketPhase, ticketId, createdDate } = data;
     const { displayPicture, firstName, lastName } = agent;
 
     const ticketCreatedSince = timeSince(createdDate);

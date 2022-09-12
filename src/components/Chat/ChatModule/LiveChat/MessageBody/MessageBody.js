@@ -8,6 +8,7 @@ const MessageBody = ({
     forcedAgentTyping,
     handleMessageOptionSelect,
     handleOptConversation,
+    handleRateConversation
 }) => {
     const { activeTicket: ticket, ticketsMessages: messages } = useSelector(
         (state) => state.tickets
@@ -56,6 +57,7 @@ const MessageBody = ({
                 handleMessageOptionSelect={handleMessageOptionSelect}
                 handleOptConversation={handleOptConversation}
                 openPreviewModal={openPreviewModal}
+                handleRateConversation={handleRateConversation}
             />
             {showModal && (
                 <ModalPreview

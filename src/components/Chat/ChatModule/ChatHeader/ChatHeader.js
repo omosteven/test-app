@@ -23,9 +23,14 @@ const ChatHeader = ({
     return (
         <header id='header'>
             <div className='chat__header'>
-                <ChatToggler
-                    onClick={() => toggleChatMenu((prevState) => !prevState)}
-                />
+                {!showChatMenu && (
+                    <ChatToggler
+                        onClick={() =>
+                            toggleChatMenu((prevState) => !prevState)
+                        }
+                    />
+                )}
+
                 <div className='logo'>
                     <img src={companyLogo} alt='Metacare' layout='fill' />
                 </div>
@@ -47,10 +52,12 @@ const ChatHeader = ({
                         toggleChatMenu,
                     }}
                 />
-                
-                <div className='show-only-on-mobile'>
-                    <ChatSettingsToggler isMobile={true} />
-                </div>
+
+                {!showChatMenu && (
+                    <div className='show-only-on-mobile'>
+                        <ChatSettingsToggler isMobile={true} />
+                    </div>
+                )}
             </div>
         </header>
     );

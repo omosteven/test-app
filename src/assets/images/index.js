@@ -1,6 +1,7 @@
 const imageLinks = {
     svg: {
-        attention: "https://res.cloudinary.com/metacare/image/upload/v1661240831/ic_Information_er4k4y.svg",
+        attention:
+            "https://res.cloudinary.com/metacare/image/upload/v1661240831/ic_Information_er4k4y.svg",
         leaveIcon:
             "https://res.cloudinary.com/metacare/image/upload/v1658366039/Vector_mrbwv9.svg",
         verticalGrey:
@@ -45,6 +46,7 @@ const imageLinks = {
             "https://res.cloudinary.com/metacare/image/upload/v1642338302/icons/icon_x3uj2c.svg",
         plainInfo:
             "https://res.cloudinary.com/metacare/image/upload/v1660640291/icons/InfoIcon_c4osdm.svg",
+        clock: "https://res.cloudinary.com/metacare/image/upload/v1662667949/icons/clock_kxlqsk.svg",
     },
 };
 
