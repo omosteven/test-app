@@ -4,8 +4,8 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    border: 1px solid $border__theme_color;
-    border-width: 0px 1px 0px 1px;
+    border: 0.063rem solid $border__theme_color;
+    border-width: 0 0.063rem 0 0.063rem;
     overflow: hidden;
 
     .empty__chat--interface,
@@ -28,4 +28,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.empty__group {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 4rem;
 }

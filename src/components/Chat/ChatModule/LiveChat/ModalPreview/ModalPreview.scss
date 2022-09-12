@@ -1,4 +1,4 @@
-@import "../../../../../assets/scss/_include-media-lib/include-media";
+@import "assets/scss/_include-media-lib/include-media";
 
 .modal__preview {
     &--container {
@@ -11,8 +11,8 @@
             object-fit: contain;
             height: auto;
             width: 50%;
-            border-radius: 10px;
-            margin: 0 10px;
+            border-radius: 0.625rem;
+            margin: 0 0.625rem;
 
             @include media("<=medium-screen") {
                 width: 90%;

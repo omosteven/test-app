@@ -1,0 +1,25 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+.live__chat--status {
+    position: fixed;
+    top: 26%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1;
+    font-size: 0.875rem;
+    @include media("<=small-screen") {
+        top: 23%;
+        z-index: 0;
+    }
+}
+
+.connected {
+    width: fit-content;
+    padding: 0.25rem 0.625rem;
+    border: 0.063rem solid $primary__theme_color;
+    font-size: 0.813rem;
+    border-radius: 0.5rem;
+    background: $scroll__bar__track_color;
+}

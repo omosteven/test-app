@@ -1,11 +1,14 @@
+@import "assets/scss/master";
+
 .suggested__convos {
-    padding-left: 16px;
-    margin-bottom: 20px;
+    padding-left: 1rem;
+    margin-bottom: 1.25rem;
 
     p {
-        color: #696d8c;
-        font-size: 14px;
+        color: $light__gray__theme_color;
+        font-size: 0.875rem;
     }
+    
     .suggestion__list {
         display: flex;
         align-items: center;
