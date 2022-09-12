@@ -33,7 +33,6 @@ const MessagesLayout = ({
     handleRateConversation
 }) => {
 
-    console.log('new messages',messages);
     return (
         <ol className='message-thread'>
             {messages.map((message, i) => {

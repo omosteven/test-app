@@ -45,7 +45,6 @@ const Ticket = ({
             );
             // setTimeout(() => getCustomerTickets(), 50000)
             // console.log("Successfully added support for images")
-            console.log("closedagin here");
         }
     };
 
