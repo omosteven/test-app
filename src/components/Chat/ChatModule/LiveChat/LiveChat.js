@@ -230,6 +230,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             branchOptionActionType === messageOptionActions?.CLOSE_CONVERSATION
         ) {
             handleCloseConversation();
+
             return "";
         }
 
@@ -355,6 +356,23 @@ const LiveChat = ({ getCustomerTickets }) => {
             const res = await API.post(url);
             if (res.status === 201) {
                 setStatus(DATAMODE);
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
+
+    const handleRateConversation = async (ratingValue) => {
+        try {
+            setStatus(LOADING);
+            setErrorMssg();
+            const url = apiRoutes?.rateTicket(ticketId);
+            const res = await API.put(url, {
+                rating: ratingValue / 20,
+            });
+            if (res.status === 200) {
+                setStatus(DATAMODE);
                 dispatch(setActiveTicket());
                 getCustomerTickets();
             }
@@ -472,7 +490,8 @@ const LiveChat = ({ getCustomerTickets }) => {
     }, [messages, activeConvo, ticketPhase]);
 
     const handleTicketClosure = (ticketStr) => {
-        const ticket = JSON.parse(ticketStr);
+        const ticket =
+            typeof ticketStr === "string" ? JSON.parse(ticketStr) : ticketStr;
         if (ticket.ticketStatus === false) {
             saveTicketsMessages({
                 ticketId: ticket?.ticketId,
@@ -484,6 +503,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                 senderType: WORKSPACE_AGENT,
                 deliveryDate: new Date().toISOString(),
             });
+
             console.log("Successfully added support for images");
         }
     };
@@ -579,6 +599,7 @@ const LiveChat = ({ getCustomerTickets }) => {
                     agent={agent}
                     handleMessageOptionSelect={handleMessageOptionSelect}
                     handleOptConversation={handleOptConversation}
+                    handleRateConversation={handleRateConversation}
                 />
             </div>
             <div className='chat__input__container'>

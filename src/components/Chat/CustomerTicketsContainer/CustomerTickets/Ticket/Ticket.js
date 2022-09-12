@@ -1,4 +1,8 @@
-import { appMessageUserTypes, messageTypes, TICKET_CLOSED_ALERT } from "components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
+import {
+    appMessageUserTypes,
+    messageTypes,
+    TICKET_CLOSED_ALERT,
+} from "components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
 import { SocketContext } from "lib/socket/context/socket";
 import { CLOSED_TICKET } from "lib/socket/events";
 import { useContext, useEffect } from "react";
@@ -10,30 +14,40 @@ import TicketStatus from "../common/TicketStatus/TicketStatus";
 // import { AgentImage } from "../../../../ui";
 // import { timeSince } from "../../../../../utils/helper";
 
-const Ticket = ({ data, isActive = false, handleTicketSelect, closeTicket, getCustomerTickets }) => {
+const Ticket = ({
+    data,
+    isActive = false,
+    handleTicketSelect,
+    closeTicket,
+    getCustomerTickets,
+}) => {
     const { agent, ticketPhase, ticketId } = data;
     const { firstName, lastName } = agent;
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
 
-
     const handleTicketClosure = (ticketStr) => {
-        const ticket = JSON.parse(ticketStr);
+        const ticket =
+            typeof ticketStr === "string" ? JSON.parse(ticketStr) : ticketStr;
+
         if (ticket.ticketStatus === false) {
-            dispatch(saveTicketsMessages({
-                ticketId: ticket?.ticketId,
-                messageId: TICKET_CLOSED_ALERT,
-                messageContent: `How well did you like the experience?`,
-                messageType: messageTypes?.ACTION_INFO,
-                messageActionType: TICKET_CLOSED_ALERT,
-                senderType: appMessageUserTypes?.WORKSPACE_AGENT,
-                deliveryDate: new Date().toISOString(),
-            }));
-            setTimeout(() => getCustomerTickets(), 5000)
+            dispatch(
+                saveTicketsMessages({
+                    ticketId: ticket?.ticketId,
+                    messageId: TICKET_CLOSED_ALERT,
+                    messageContent: `How well did you like the experiencesss?`,
+                    messageType: messageTypes?.ACTION_INFO,
+                    messageActionType: TICKET_CLOSED_ALERT,
+                    senderType: appMessageUserTypes?.WORKSPACE_AGENT,
+                    deliveryDate: new Date().toISOString(),
+                })
+            );
+            // setTimeout(() => getCustomerTickets(), 50000)
             // console.log("Successfully added support for images")
+            console.log("closedagin here");
         }
-    }
+    };
 
     useEffect(() => {
         // socket.emit(CLOSED_TICKET, { ticketId });
@@ -48,16 +62,15 @@ const Ticket = ({ data, isActive = false, handleTicketSelect, closeTicket, getCu
             id={ticketId}
             className={`customer__ticket  ${isActive && "active"}`}
             onClick={() => handleTicketSelect(ticketId)}>
-            <div className="d-flex align-items-center w-100">
+            <div className='d-flex align-items-center w-100'>
                 <TicketStatus ticketPhase={ticketPhase} ticketId={ticketId} />
 
-                <div className="close__ticket" onClick={closeTicket}>
+                <div className='close__ticket' onClick={closeTicket}>
                     <ReactSVG
                         src={imageLinks?.svg?.crossIconGrey}
-                        className="d-inline-flex"
+                        className='d-inline-flex'
                     />
                 </div>
-
             </div>
             <h6 className='agent__name'>{`${firstName} ${lastName}`}</h6>
         </div>
