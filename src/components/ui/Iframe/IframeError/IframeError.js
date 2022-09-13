@@ -7,7 +7,7 @@ const IframeError = ({ size = "30" }) => {
             <div>
                 <div>
                     <ReactSVG
-                        src={asset?.icons?.error}
+                        src={asset?.svg?.error}
                         className='d-inline-flex mb-2'
                         beforeInjection={(svg) => {
                             svg.setAttribute(
