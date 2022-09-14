@@ -122,3 +122,8 @@ export const convertSecondsToISOString = (seconds) => {
     date.setSeconds(seconds);
     return date.toISOString();
 };
+
+export const validateEmail = (emailAddress) => {
+    let emailTest = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    return emailAddress.match(emailTest) ? true : false;
+};

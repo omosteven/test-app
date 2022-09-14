@@ -1,0 +1,62 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+.customer-verification {
+    height: 100%;
+    .customer-verify__icon {
+        text-align: right;
+        margin-top: 42px;
+        margin-right: 139px;
+        margin-bottom: 102px;
+        .verify-icon {
+            cursor: pointer;
+        }
+
+        @include media("<=medium-screen") {
+            margin-top: 4rem;
+            text-align: right;
+            padding: 21px;
+            margin-right: 0px;
+        }
+    }
+    .customer-verify__form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+        @include media("<=medium-screen") {
+            width: 100%;
+            padding: 21px;
+        }
+        .pincode-input-container {
+            padding: 0.625rem 0;
+            // margin: 1.25rem 0;
+            white-space: nowrap;
+            justify-content: space-between !important;
+            display: flex;
+            @include media("<=small-screen") {
+                text-align: center;
+                padding: 0;
+                justify-content: space-between !important;
+                display: flex;
+            }
+            .pincode-input-text {
+                border-radius: 0.625rem;
+                font-weight: 600;
+                margin-left: 0;
+                // justify-content: space-evenly !important;
+                width: 89px !important;
+                height: 89px !important;
+                @include media("<=small-screen") {
+                    width: 40px !important;
+                    height: 40px !important;
+                    &:not(:last-child) {
+                        margin-right: 0px !important;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -11,14 +11,18 @@ import { getErrorMessage } from "../../utils/helper";
 import Empty from "../common/Empty/Empty";
 import { ToastContext } from "../common/Toast/context/ToastContextProvider";
 
+import queryString from "query-string";
+
 import ChatHeader from "./ChatModule/ChatHeader/ChatHeader";
 import ChatModule from "./ChatModule/ChatModule";
 import ChatToastNotification from "./ChatToastNotification/ChatToastNotification";
 import ConfirmCloseChatModal from "./ConfirmCloseChatModal/ConfirmCloseChatModal";
 import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/NewTicketButton/NewTicketButton";
 import "./Chat.scss";
+import { pushAuthUser } from "store/auth/actions";
+import { ADD_EMAIL_ADDRESS } from "./ChatModule/LiveChat/MessageBody/Messages/enums";
 
-const { ERROR, LOADING, NULLMODE, DATAMODE } = dataQueryStatus;
+const { ERROR, LOADING, DATAMODE } = dataQueryStatus;
 
 const Chat = () => {
     const [showTictketActionModal, toggleTicketActionModal] = useState();
@@ -32,7 +36,38 @@ const Chat = () => {
 
     const selectedTicket = activeTicket;
     const [customerTickets, setCustomerTickets] = useState([]);
+
+    const [showVerifyForm, setShowVerifyForm] = useState(false);
+
+    let params = queryString.parse(window.location.search);
+
+    const isAuthCodeAvailable = params?.code ? true : false;
+
     // const [selectedTicket, setSelectedTicket] = useState();
+
+    const [customerTickedId, setCustomerTicketId] = useState();
+
+    const getCustomerTemporaryToken = async () => {
+        try {
+            setStatus(LOADING);
+            setErrorMssg();
+
+            const tickedId = params?.ticketId;
+            const tempCode = params?.code;
+
+            const res = await API.get(
+                apiRoutes.getTempAuth(tempCode, tickedId)
+            );
+
+            if (res.status === 200) {
+                setCustomerTicketId(tickedId);
+                await sessionStorage.setItem("tempToken", res.data.data.token);
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
 
     const getCustomerTickets = async (ticketId) => {
         try {
@@ -58,6 +93,9 @@ const Chat = () => {
                             activeConvoSuggestion: false,
                         })
                     );
+
+                    dispatch(pushAuthUser(newTicket?.customer));
+
                     setStatus(DATAMODE);
                 } else {
                     createNewTicket();
@@ -65,7 +103,6 @@ const Chat = () => {
                 }
             }
         } catch (err) {
-            // 
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
         }
@@ -107,16 +144,26 @@ const Chat = () => {
         toastMessage(<ChatToastNotification {...{ title, body }} />);
     };
 
-    onMessageListener()
-        .then((payload) => {
-            const { notification } = payload;
-            toastNotification(notification);
-        })
+    onMessageListener().then((payload) => {
+        const { notification } = payload;
+        toastNotification(notification);
+    });
+
+    const handleVerifyAction = () => {
+        setShowVerifyForm(!showVerifyForm);
+    };
+
+    const callHandler = () => {
+        isAuthCodeAvailable
+            ? customerTickedId
+                ? getCustomerTickets(customerTickedId)
+                : getCustomerTemporaryToken()
+            : getCustomerTickets();
+    };
 
     useEffect(() => {
-        getCustomerTickets();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        callHandler();
+    }, [customerTickedId]);
 
     return (
         <>
@@ -134,6 +181,7 @@ const Chat = () => {
                                     createNewTicket,
                                     getCustomerTickets,
                                     handleTicketModalAction,
+                                    showVerifyForm,
                                 }}
                             />
                             {selectedTicket?.ticketId ? (
@@ -141,6 +189,8 @@ const Chat = () => {
                                     key={selectedTicket?.ticketId}
                                     ticket={selectedTicket}
                                     getCustomerTickets={getCustomerTickets}
+                                    showVerifyForm={showVerifyForm}
+                                    handleVerifyAction={handleVerifyAction}
                                 />
                             ) : (
                                 <div className='empty__chat--interface'>

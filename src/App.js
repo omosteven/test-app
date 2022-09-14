@@ -69,6 +69,12 @@ const App = () => {
                         path='/chat'
                         exact 
                         component={Chat} />
+
+                    <ProtectedRoute
+                        path='/direct'
+                        exact 
+                        component={Chat} 
+                        />
                 </Switch>
             </Layout>
         </Router>

@@ -67,6 +67,15 @@
                 }
             }
 
+            &.add__email {
+                color: $text__default_color;
+                background: $light__theme_color;
+                border: 0.063rem solid $primary__theme_color;
+                border-radius: 12px;
+                padding: 6px 12px;
+                cursor: pointer;
+            }
+
             &.sent {
                 color: $light__gray__theme_color;
                 background: $scroll__bar__track_color;

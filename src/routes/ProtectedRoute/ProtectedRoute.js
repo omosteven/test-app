@@ -1,12 +1,16 @@
 import React from "react";
 import { Route, Redirect, withRouter } from "react-router-dom";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+
 import { retriveAccessToken } from "../../storage/sessionStorage";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
+    const isAuthenticated =
+        retriveAccessToken() || window.location.pathname === "/direct";
 
-    const isAuthenticated = retriveAccessToken();
-    const { chatSettings: { workspaceSlug } } = useSelector(state => state.chat)
+    const {
+        chatSettings: { workspaceSlug },
+    } = useSelector((state) => state.chat);
 
     return (
         <Route {...rest}>

@@ -14,6 +14,7 @@ const ChatHeader = ({
     createNewTicket,
     getCustomerTickets,
     handleTicketModalAction,
+    showVerifyForm,
 }) => {
     const [showChatMenu, toggleChatMenu] = useState(false);
     const {
@@ -35,28 +36,32 @@ const ChatHeader = ({
                     <img src={companyLogo} alt='Metacare' layout='fill' />
                 </div>
 
-                <CustomerTicketsContainer
-                    closeTicket={handleTicketModalAction}
-                    handleTicketSelect={(data) => {
-                        handleTicketSelect(data);
-                        toggleChatMenu(false);
-                    }}
-                    {...{
-                        status,
-                        errorMssg,
-                        customerTickets,
-                        selectedTicket,
-                        createNewTicket,
-                        getCustomerTickets,
-                        showChatMenu,
-                        toggleChatMenu,
-                    }}
-                />
+                {!showVerifyForm && (
+                    <>
+                        <CustomerTicketsContainer
+                            closeTicket={handleTicketModalAction}
+                            handleTicketSelect={(data) => {
+                                handleTicketSelect(data);
+                                toggleChatMenu(false);
+                            }}
+                            {...{
+                                status,
+                                errorMssg,
+                                customerTickets,
+                                selectedTicket,
+                                createNewTicket,
+                                getCustomerTickets,
+                                showChatMenu,
+                                toggleChatMenu,
+                            }}
+                        />
 
-                {!showChatMenu && (
-                    <div className='show-only-on-mobile'>
-                        <ChatSettingsToggler isMobile={true} />
-                    </div>
+                        {!showChatMenu && (
+                            <div className='show-only-on-mobile'>
+                                <ChatSettingsToggler isMobile={true} />
+                            </div>
+                        )}
+                    </>
                 )}
             </div>
         </header>
