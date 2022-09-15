@@ -11,8 +11,6 @@ import { ReactSVG } from "react-svg";
 import { saveTicketsMessages } from "store/tickets/actions";
 import imageLinks from "../../../../../assets/images";
 import TicketStatus from "../common/TicketStatus/TicketStatus";
-// import { AgentImage } from "../../../../ui";
-// import { timeSince } from "../../../../../utils/helper";
 
 const Ticket = ({
     data,
@@ -54,6 +52,7 @@ const Ticket = ({
         return () => {
             socket.off(CLOSED_TICKET);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

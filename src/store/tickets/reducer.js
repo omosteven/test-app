@@ -1,4 +1,3 @@
-import { messageTypes } from "../../components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
 import { getUniqueListBy } from "../../utils/helper";
 import * as types from "./types";
 
@@ -31,6 +30,7 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
                     ticketsMessages: [...state?.ticketsMessages, payload],
                 };
             }
+            break;
 
         case types.DELETE_TICKET_MESSAGE:
           

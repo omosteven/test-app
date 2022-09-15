@@ -42,7 +42,7 @@ const ToastContextProvider = ({ children }) => {
                 timeOut
             );
         }
-    });
+    },[timeOut]);
 
     return (
         <ToastContext.Provider value={toastMessage}>

@@ -23,6 +23,7 @@ export const Input = forwardRef(({
   onKeyDown,
   onKeyUp,
   hideLabel,
+  ...restProps
 }, ref) => {
   return (
     <>
@@ -58,6 +59,7 @@ export const Input = forwardRef(({
           onKeyDown={onKeyDown}
           onKeyUp={onKeyUp}
           onBlur={onBlur}
+          {...restProps}
         />
         {extraMssg ? (
           <div className="text-muted extra-input-mssg">{extraMssg}</div>

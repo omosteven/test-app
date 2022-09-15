@@ -59,6 +59,9 @@ const MediaContent = ({ attachment, openPreviewModal }) => {
                         <source src={fileAttachmentUrl} />
                     </video>
                 );
+                
+            default:
+                return ""
         }
     };
 
