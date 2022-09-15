@@ -3,7 +3,7 @@ import { AgentImage } from "../../../../../../ui";
 import MessageContent from "../Message/MessageContent/MessageContent";
 import ActionMessageContent from "./ActionMessageContent/ActionMessageContent";
 
-const ActionMessage = ({ data, agent, handleRating }) => {
+const ActionMessage = ({ data, agent, handleRating, handleVerifyAction }) => {
     const { messageRefContent, messageId, messageContent, messageActionType } =
         data;
     const { displayPicture, firstName } = agent || {};
@@ -26,6 +26,7 @@ const ActionMessage = ({ data, agent, handleRating }) => {
                     messageContent={messageContent}
                     messageActionType={messageActionType}
                     handleRating={handleRating}
+                    handleVerifyAction={handleVerifyAction}
                 />
             </div>
         </div>

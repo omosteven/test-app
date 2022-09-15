@@ -30,9 +30,9 @@ const MessagesLayout = ({
     handleMessageOptionSelect,
     handleOptConversation,
     openPreviewModal,
-    handleRateConversation
+    handleRateConversation,
+    handleVerifyAction,
 }) => {
-
     return (
         <ol className='message-thread'>
             {messages.map((message, i) => {
@@ -51,7 +51,12 @@ const MessagesLayout = ({
                         }}
                         layout>
                         {messageType === messageTypes?.ACTION_INFO ? (
-                            <ActionMessage data={message} agent={agent} handleRating={handleRateConversation} />
+                            <ActionMessage
+                                data={message}
+                                agent={agent}
+                                handleRating={handleRateConversation}
+                                handleVerifyAction={handleVerifyAction}
+                            />
                         ) : (
                             <Message
                                 messageIndex={i + 1}

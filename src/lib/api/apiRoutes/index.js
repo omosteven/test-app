@@ -6,9 +6,12 @@ const apiRoutes = {
     authenticate: `${agentsInbox}app-message-user/authenticate`,
     userTickets: `${agentsInbox}app-message-user/tickets`,
     initiateChat: `${agentsInbox}app-message-user/chat`,
+    decryptToken: `${agentsInbox}app-message-user/token/decrypt`,
+    getTempAuth: (code, tickedId) =>
+        `${agentsInbox}app-message-user/conversation/${code}/${tickedId}`,
     getTicketMessages: (ticketId) => `${agentsInbox}messages/${ticketId}`,
     updateTicketDiscovery: (ticketId) =>
-    `${agentsInbox}ticket/${ticketId}/issueDiscovered`,
+        `${agentsInbox}ticket/${ticketId}/issueDiscovered`,
     changeTicketChoice: (ticketId) =>
         `${agentsInbox}ticket/${ticketId}/change-choice`,
     restartTicket: (ticketId) => `${agentsInbox}ticket/${ticketId}/restart`,

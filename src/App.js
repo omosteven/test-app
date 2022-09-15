@@ -60,15 +60,23 @@ const App = () => {
         <Router>
             <Layout>
                 <Switch>
-                    <PublicRoute
-                        path='/'
-                        exact
-                        component={SignInForm}
-                    />
+                  
                     <ProtectedRoute
                         path='/chat'
                         exact 
                         component={Chat} />
+
+                    <ProtectedRoute
+                        path='/direct'
+                        exact 
+                        component={Chat} 
+                        />
+
+                    <PublicRoute
+                        path='/*'
+                        exact
+                        component={SignInForm}
+                    />
                 </Switch>
             </Layout>
         </Router>
