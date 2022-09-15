@@ -7,7 +7,7 @@ import { socket, SocketContext } from "../../lib/socket/context/socket";
 import { retriveAccessToken } from "../../storage/sessionStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
-import { getErrorMessage } from "../../utils/helper";
+import { getErrorMessage, validateEmail } from "../../utils/helper";
 import Empty from "../common/Empty/Empty";
 import { ToastContext } from "../common/Toast/context/ToastContextProvider";
 
@@ -20,7 +20,6 @@ import ConfirmCloseChatModal from "./ConfirmCloseChatModal/ConfirmCloseChatModal
 import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/NewTicketButton/NewTicketButton";
 import "./Chat.scss";
 import { pushAuthUser } from "store/auth/actions";
-import { ADD_EMAIL_ADDRESS } from "./ChatModule/LiveChat/MessageBody/Messages/enums";
 
 const { ERROR, LOADING, DATAMODE } = dataQueryStatus;
 
@@ -33,6 +32,10 @@ const Chat = () => {
     const toastMessage = useContext(ToastContext);
 
     const { activeTicket } = useSelector((state) => state.tickets);
+
+    const {
+        chatSettings: { workspaceSlug },
+    } = useSelector((state) => state.chat);
 
     const selectedTicket = activeTicket;
     const [customerTickets, setCustomerTickets] = useState([]);
@@ -69,6 +72,13 @@ const Chat = () => {
         }
     };
 
+    const redirectCustomer = async (customer) => {
+        if (!validateEmail(customer?.email)) {
+            await sessionStorage.clear();
+            window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+        }
+    };
+
     const getCustomerTickets = async (ticketId) => {
         try {
             dispatch(setActiveTicket(null));
@@ -93,6 +103,10 @@ const Chat = () => {
                             activeConvoSuggestion: false,
                         })
                     );
+
+                    if (newTicket === undefined || newTicket === null) {
+                        return redirectCustomer(newTicket?.customer);
+                    }
 
                     dispatch(pushAuthUser(newTicket?.customer));
 

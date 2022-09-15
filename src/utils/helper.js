@@ -123,7 +123,7 @@ export const convertSecondsToISOString = (seconds) => {
     return date.toISOString();
 };
 
-export const validateEmail = (emailAddress) => {
+export const validateEmail = (emailAddress="") => {
     let emailTest = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-    return emailAddress.match(emailTest) ? true : false;
+    return emailAddress?.match(emailTest) ? true : false;
 };
