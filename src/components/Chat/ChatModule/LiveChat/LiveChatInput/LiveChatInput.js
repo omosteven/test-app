@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { ReactSVG } from "react-svg";
 import imageLinks from "../../../../../assets/images";
 import { SocketContext } from "../../../../../lib/socket/context/socket";
@@ -29,6 +29,8 @@ const LiveChatInput = ({
     currentFormElement,
 }) => {
     const [isTyping, inputRef] = useIsTyping();
+    const inputContainerRef = useRef();
+
 
     const [request, updateRequest] = useState({
         message: "",
@@ -203,6 +205,101 @@ const LiveChatInput = ({
     // const handleInputFocus = () => {
     //     document.getElementById('inputGroup').scrollIntoView({ behavior: 'smooth', block: 'end' });
     // }
+    const showIphoneKeyboard = () => {
+        // Moves the real input on-screen
+        const chatInterface = document.getElementById('chatInterface')
+        const ticketsHeader = document.getElementById('ticketsHeader')
+
+        inputContainerRef.current.style.position = "absolute";
+        inputContainerRef.current.style.zIndex = 999;
+        inputContainerRef.current.style.left = "0px";
+        inputContainerRef.current.style.bottom = "0px";
+
+        // inputContainerRef.current.style.width = "100%";
+        // inputContainerRef.current.style.height = "64px";
+        inputContainerRef.current.addEventListener("wheel", e => {
+            e.preventDefault();
+        });
+        chatInterface.addEventListener("wheel", e => {
+            e.preventDefault();
+        });
+        ticketsHeader.addEventListener("wheel", e => {
+            e.preventDefault();
+        });
+
+
+        // const height = window.visualViewport.height;
+        // const viewport = window.visualViewport;
+
+        return "";
+        // Positions the real input at the right height for the type of iPhone
+        switch (window.innerHeight) {
+            case 896:
+            case 798: // iPhone XR, Xs Max iOS 12.4
+                inputContainerRef.current.style.bottom = "288px";
+                // messageListContainerRef.current.style.height = "312px";
+                break;
+            case 714: // iPhone X, Xs
+                inputContainerRef.current.style.top = "304px";
+                // messageListContainerRef.current.style.height = "300px";
+                break;
+            case 696: // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
+                inputContainerRef.current.style.top = "316px";
+                // messageListContainerRef.current.style.height = "300px";
+                break;
+            case 627: // iPhone 6, 6s, 7, 8
+                inputContainerRef.current.style.top = "258px";
+                // messageListContainerRef.current.style.height = "300px";
+                break;
+            case 528: // iPhone 5s, SE, iOS 12.4
+                inputContainerRef.current.style.top = "166px";
+                // messageListContainerRef.current.style.height = "300px";
+                break;
+            default:
+                inputContainerRef.current.style.top = "356px";
+            // messageListContainerRef.current.style.height = "300px";
+        }
+
+
+    };
+
+    const handleInputFocus = () => {
+        console.log("shoullll")
+        const iOS = !window.MSStream && /iPad|iPhone|iPod/.test(navigator.userAgent); // fails on iPad iOS 13
+        if (iOS) {
+            document.body.classList.add("keyboard")
+            console.log("on an iphone")
+            showIphoneKeyboard()
+        }
+    }
+
+    const handleInputBlur = () => {
+        const chatInterface = document.getElementById('chatInterface')
+        const ticketsHeader = document.getElementById('ticketsHeader')
+
+        document.body.classList.remove("keyboard")
+        inputContainerRef.current.style.position = "fixed";
+        inputContainerRef.current.style.bottom = "0px";
+        inputContainerRef.current.removeEventListener("wheel", (e) => { 
+            e.preventDefault();
+            e.stopPropagation();
+        
+            return false;
+        });
+        chatInterface.removeEventListener("wheel", (e) => { 
+            e.preventDefault();
+            e.stopPropagation();
+        
+            return false;
+        });
+        ticketsHeader.removeEventListener("wheel", (e) => { 
+            e.preventDefault();
+            e.stopPropagation();
+        
+            return false;
+        });
+    }
+
 
     const handleTyping = (e) => {
         let { value } = e.target;
@@ -244,7 +341,8 @@ const LiveChatInput = ({
                         onChange={handleTyping}
                         grpClass='w-100'
                         label='Chat'
-                        // onFocus={handleInputFocus}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                         hideLabel={true}
                         ref={inputRef}
                         disabled={isDisabled}
@@ -272,6 +370,8 @@ const LiveChatInput = ({
                         handleChange={(value) =>
                             updateRequest({ ...request, message: value })
                         }
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                     />
                 );
 
@@ -287,6 +387,8 @@ const LiveChatInput = ({
                         ref={inputRef}
                         hideLabel={true}
                         disabled={isDisabled}
+                        onFocus={handleInputFocus}
+                        onBlur={handleInputBlur}
                     />
                 );
         }
@@ -297,78 +399,83 @@ const LiveChatInput = ({
         sendNewMessage();
     };
 
+
     const btnDisabled =
         uploads?.length > 0
             ? status === LOADING || status === ""
             : isDisabled || request?.message === "";
 
     return (
-        <div
-            id='inputGroup'
-            className={`col-md-10 col-12 ${
-                !allowUserInput ? "disallowed__section" : ""
-            }`}
-            title={!allowUserInput ? "Not Allowed" : "Type a message"}>
-            <form onSubmit={handleSubmit} id='chatInput'>
-                <div className='chat__input--container'>
-                    {uploads?.length > 0 && (
-                        <UploadPreview
-                            upload={uploads}
-                            status={status}
-                            handleRemoveFile={handleRemoveFile}
-                            handleRetry={(file) => handleRetryUpload(file)}
-                            maximize={(
-                                fileAttachmentType,
-                                fileAttachmentName,
-                                fileAttachmentUrl
-                            ) => {
-                                setSelectedMedia({
+        <div className='chat__input__container'
+            ref={inputContainerRef}
+        >
+            <div
+                id='inputGroup'
+                className={`col-md-10 col-12 ${!allowUserInput ? "disallowed__section" : ""
+                    }`}
+                title={!allowUserInput ? "Not Allowed" : "Type a message"}
+            >
+                <form onSubmit={handleSubmit} id='chatInput'>
+                    <div className='chat__input--container'>
+                        {uploads?.length > 0 && (
+                            <UploadPreview
+                                upload={uploads}
+                                status={status}
+                                handleRemoveFile={handleRemoveFile}
+                                handleRetry={(file) => handleRetryUpload(file)}
+                                maximize={(
                                     fileAttachmentType,
                                     fileAttachmentName,
-                                    fileAttachmentUrl,
-                                });
-                                toggleModal(true);
-                            }}
-                            disableClick={status !== DATAMODE}
-                        />
-                    )}
-                    <div className='chat__input--group'>
-                        <div className='chat__input--group--inputs'>
-                            <UploadIcons
-                                upload={uploads}
-                                updateUpload={updateUploads}
-                                isDisabled={isDisabled}
-                                setErrors={setErrors}
-                                showModal={showModal}
-                                toggleModal={toggleModal}
-                                handleUpload={handleUpload}
-                                selectedMedia={selectedMedia}
-                                currentFormElement={currentFormElement}
+                                    fileAttachmentUrl
+                                ) => {
+                                    setSelectedMedia({
+                                        fileAttachmentType,
+                                        fileAttachmentName,
+                                        fileAttachmentUrl,
+                                    });
+                                    toggleModal(true);
+                                }}
+                                disableClick={status !== DATAMODE}
                             />
-                            {renderBasedOnInputType()}
-                        </div>
-                        <div>
-                            <Button
-                                type='submit'
-                                text={"Send"}
-                                icon={<ReactSVG src={imageLinks?.svg?.send} />}
-                                classType='default'
-                                otherClass={`send__button ${
-                                    !btnDisabled ? "active" : ""
-                                }`}
-                                disabled={btnDisabled || fetchingInputStatus}
-                            />
+                        )}
+                        <div className='chat__input--group'>
+                            <div className='chat__input--group--inputs'>
+                                <UploadIcons
+                                    upload={uploads}
+                                    updateUpload={updateUploads}
+                                    isDisabled={isDisabled}
+                                    setErrors={setErrors}
+                                    showModal={showModal}
+                                    toggleModal={toggleModal}
+                                    handleUpload={handleUpload}
+                                    selectedMedia={selectedMedia}
+                                    currentFormElement={currentFormElement}
+                                />
+                                {renderBasedOnInputType()}
+                            </div>
+                            <div>
+                                <Button
+                                    type='submit'
+                                    text={"Send"}
+                                    icon={<ReactSVG src={imageLinks?.svg?.send} />}
+                                    classType='default'
+                                    otherClass={`send__button ${!btnDisabled ? "active" : ""
+                                        }`}
+                                    disabled={btnDisabled || fetchingInputStatus}
+                                />
+                            </div>
                         </div>
                     </div>
-                </div>
-                {(errors?.file || errorMssg) && (
-                    <span className='file__error'>
-                        {errors?.file || errorMssg}
-                    </span>
-                )}
-            </form>
-            <PoweredBy />
+                    {(errors?.file || errorMssg) && (
+                        <span className='file__error'>
+                            {errors?.file || errorMssg}
+                        </span>
+                    )}
+                </form>
+                <PoweredBy />
+            </div>
         </div>
+
     );
 };
 

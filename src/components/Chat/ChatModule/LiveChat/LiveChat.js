@@ -4,7 +4,6 @@ import API from "../../../../lib/api";
 import apiRoutes from "../../../../lib/api/apiRoutes";
 import { SocketContext } from "../../../../lib/socket/context/socket";
 import {
-    CLOSED_TICKET,
     FILL_FORM_RECORD,
     NEW_TICKET_UPDATE,
     RECEIVE_MESSAGE,

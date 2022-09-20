@@ -29,6 +29,7 @@ const CustomerTicketsContainer = ({
         if (tablet) {
             toggleChatMenu(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tablet]);
 
     const renderBasedOnStatus = () => {
