@@ -36,7 +36,7 @@ const Ticket = ({
                 saveTicketsMessages({
                     ticketId: ticket?.ticketId,
                     messageId: TICKET_CLOSED_ALERT,
-                    messageContent: `How well did you like the experiencesss?`,
+                    messageContent: `How well did you like the experience?`,
                     messageType: messageTypes?.ACTION_INFO,
                     messageActionType: TICKET_CLOSED_ALERT,
                     senderType: appMessageUserTypes?.WORKSPACE_AGENT,

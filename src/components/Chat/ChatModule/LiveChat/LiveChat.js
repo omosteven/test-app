@@ -15,7 +15,11 @@ import {
     MARK_AS_READ,
 } from "../../../../lib/socket/events";
 import { dataQueryStatus } from "../../../../utils/formatHandlers";
-import { generateID, getErrorMessage } from "../../../../utils/helper";
+import {
+    generateID,
+    getErrorMessage,
+    validateEmail,
+} from "../../../../utils/helper";
 import LiveChatInput from "./LiveChatInput/LiveChatInput";
 import LiveChatStatusBar from "./LiveChatStatusBar/LiveChatStatusBar";
 import MessageBody from "./MessageBody/MessageBody";
@@ -28,6 +32,7 @@ import {
     messageStatues,
     messageTypes,
     TICKET_CLOSED_ALERT,
+    ADD_EMAIL_ADDRESS,
 } from "./MessageBody/Messages/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
 import {
@@ -39,6 +44,8 @@ import {
 } from "../../../../store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import "./LiveChat.scss";
+
+import CustomerVerification from "./CustomerVerification/CustomerVerification";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
@@ -56,7 +63,11 @@ const {
 
 const { TEXT } = formInputTypes;
 
-const LiveChat = ({ getCustomerTickets }) => {
+const LiveChat = ({
+    getCustomerTickets,
+    showVerifyForm,
+    handleVerifyAction,
+}) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
     const [errorMssg, setErrorMssg] = useState("");
@@ -69,7 +80,8 @@ const LiveChat = ({ getCustomerTickets }) => {
     const [fetchingInputStatus, setFetchingInputStatus] = useState(true);
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
 
-    const { ticketId, agent, ticketPhase } = ticket;
+    const { ticketId, agent, ticketPhase, customer } = ticket;
+
     const { ticketsMessages } = useSelector((state) => state.tickets);
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
@@ -83,6 +95,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             setStatus(LOADING);
             setErrorMssg();
             const url = apiRoutes?.getTicketMessages(ticketId);
+
             const res = await API.get(url);
             if (res.status === 200) {
                 setStatus(DATAMODE);
@@ -503,8 +516,6 @@ const LiveChat = ({ getCustomerTickets }) => {
                 senderType: WORKSPACE_AGENT,
                 deliveryDate: new Date().toISOString(),
             });
-
-            console.log("Successfully added support for images");
         }
     };
 
@@ -521,7 +532,7 @@ const LiveChat = ({ getCustomerTickets }) => {
             dispatch(
                 deleteTicketsMessages({
                     messageId: NO_ACTION,
-                    newMessageTicketId,
+                    ticketId: newMessageTicketId,
                 })
             );
         }
@@ -548,13 +559,41 @@ const LiveChat = ({ getCustomerTickets }) => {
         );
     };
 
+    const handleTriggerVerifyEmail = () => {
+        if (!validateEmail(customer?.email)) {
+            dispatch(
+                saveTicketsMessages({
+                    ticketId: ticket?.ticketId,
+                    messageId: ADD_EMAIL_ADDRESS,
+                    // messageRefContent: branchOptionLabel,
+                    messageContent: `Please add and verify your email address so we can also reach you via email with an update`,
+                    messageType: ACTION_INFO,
+                    messageActionType: ADD_EMAIL_ADDRESS,
+                    senderType: WORKSPACE_AGENT,
+                    deliveryDate: new Date().toISOString(),
+                })
+            );
+        } else {
+            dispatch(
+                deleteTicketsMessages({
+                    messageId: ADD_EMAIL_ADDRESS,
+                    ticketId,
+                })
+            );
+        }
+    };
+
     useEffect(() => {
         requestAllMessages();
+
+        handleTriggerVerifyEmail();
 
         socket.emit(SUBSCRIBE_TO_TICKET, { ticketId });
         socket.on(RECEIVE_MESSAGE, handleReceive);
         // socket.on(CLOSED_TICKET, handleTicketClosureProvision)
         socket.on(NEW_TICKET_UPDATE, handleTicketClosure);
+        // socket.on(NEW_TICKET_UPDATE, handleTriggerVerifyEmail);
+
         // socket.on(CLOSED_TICKET, handleTicketClosure);
 
         socket.on("connect_error", handleSocketError);
@@ -577,31 +616,43 @@ const LiveChat = ({ getCustomerTickets }) => {
 
     return (
         <>
-            <TicketsHeader
-                {...{
-                    ticket,
-                    setStatus,
-                    setErrorMssg,
-                    requestAllMessages,
-                    setActiveConvo,
-                }}
-            />
-            <div className='chat__interface'>
-                <LiveChatStatusBar
-                    status={status}
-                    agent={agent}
-                    errorMssg={errorMssg}
+            {!showVerifyForm ? (
+                <div>
+                    <TicketsHeader
+                        {...{
+                            ticket,
+                            setStatus,
+                            setErrorMssg,
+                            requestAllMessages,
+                            setActiveConvo,
+                        }}
+                    />
+                    <div className='chat__interface'>
+                        <LiveChatStatusBar
+                            status={status}
+                            agent={agent}
+                            errorMssg={errorMssg}
+                        />
+                        <MessageBody
+                            forcedAgentTyping={forcedAgentTyping}
+                            messages={messages}
+                            ticketId={ticketId}
+                            agent={agent}
+                            handleMessageOptionSelect={
+                                handleMessageOptionSelect
+                            }
+                            handleOptConversation={handleOptConversation}
+                            handleRateConversation={handleRateConversation}
+                            handleVerifyAction={handleVerifyAction}
+                        />
+                    </div>
+                </div>
+            ) : (
+                <CustomerVerification
+                    customer={customer}
+                    handleVerifyAction={handleVerifyAction}
                 />
-                <MessageBody
-                    forcedAgentTyping={forcedAgentTyping}
-                    messages={messages}
-                    ticketId={ticketId}
-                    agent={agent}
-                    handleMessageOptionSelect={handleMessageOptionSelect}
-                    handleOptConversation={handleOptConversation}
-                    handleRateConversation={handleRateConversation}
-                />
-            </div>
+            )}
             <div className='chat__input__container'>
                 <LiveChatInput
                     ticketId={ticketId}

@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "../../config/config";
-import { retriveAccessToken } from "../../storage/sessionStorage"
+import { retrieveTempToken, retriveAccessToken } from "../../storage/sessionStorage"
 
 const deleteAccessToken = () => sessionStorage.clear();
 
@@ -14,7 +14,7 @@ const API = axios.create({
 });
 
 const requestHandler = (request) => {
-    const token = retriveAccessToken();
+    const token = retriveAccessToken() || retrieveTempToken();
     
     if (token) request.headers.Authorization = `Bearer ${token}`;
 

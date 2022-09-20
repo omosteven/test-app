@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { validateEmail } from "utils/helper";
 import { dataQueryStatus } from "../../../../../utils/formatHandlers";
 import SmallLoader from "../../../../ui/SmallLoader/SmallLoader";
 import "./LiveChatStatusBar.scss";
@@ -8,9 +9,11 @@ const { IDLE, LOADING, ERROR, DATAMODE } = dataQueryStatus;
 
 const LiveChatStatusBar = ({ status, errorMssg }) => {
     // const {email} = agent || {}
-    const {
-        user: { email },
-    } = useSelector((state) => state?.auth);
+    const { user } = useSelector((state) => state?.auth);
+
+    // const {
+    //     user: { email },
+    // } = useSelector((state) => state?.auth);
 
     const renderBasedOnStatus = () => {
         switch (status) {
@@ -25,7 +28,11 @@ const LiveChatStatusBar = ({ status, errorMssg }) => {
 
             case DATAMODE:
                 return (
-                    <>{email && <span className='connected'>{email}</span>}</>
+                    <span className='connected'>
+                        {validateEmail(user?.email)
+                            ? user?.email
+                            : "Add email address"}
+                    </span>
                 );
 
             default:

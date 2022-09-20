@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { Button, ErrorDialog } from "../../ui";
 import PinInput from "react-pin-input";
 import { getErrorMessage } from "../../../utils/helper";
@@ -11,11 +10,16 @@ import pushToDashboard from "../actions";
 import { getDevicePushToken } from "../../../lib/firebase/firebase";
 import "./OTPForm.scss";
 
-const OTPForm = ({ initialStepRequest }) => {
+const OTPForm = ({
+    initialStepRequest,
+    pinLength = 6,
+    redirectUser = true,
+    handleSuccess,
+    userId,
+}) => {
     const {
         chatSettings: { workspaceSlug },
     } = useSelector((state) => state.chat);
-    const history = useHistory();
     const { email, sessionId } = initialStepRequest;
 
     const [errorMsg, setErrorMsg] = useState();
@@ -34,16 +38,19 @@ const OTPForm = ({ initialStepRequest }) => {
                 params: {
                     otp: request?.otp,
                     deviceToken,
+                    userId,
                 },
             });
             if (res.status === 200) {
                 const { data } = res.data;
                 await pushToDashboard(data, () => {
                     // history.replace(`);
-
                 });
-                window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
-
+                if (redirectUser) {
+                    window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+                } else {
+                    handleSuccess?.();
+                }
             }
         } catch (err) {
             setErrorMsg(getErrorMessage(err));
@@ -78,7 +85,7 @@ const OTPForm = ({ initialStepRequest }) => {
                             hide={() => setErrorMsg()}
                         />
                         <PinInput
-                            length={6}
+                            length={pinLength}
                             onChange={(otp) =>
                                 updateRequest({ ...request, otp })
                             }
@@ -97,7 +104,9 @@ const OTPForm = ({ initialStepRequest }) => {
                             text={"Continue"}
                             classType='primary'
                             otherClass='my-3 w-100'
-                            disabled={loading || request?.otp?.length !== 6}
+                            disabled={
+                                loading || request?.otp?.length !== pinLength
+                            }
                             loading={loading}
                         />
                     </form>

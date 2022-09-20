@@ -10,7 +10,7 @@ import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import "./EmailForm.scss";
 
-const EmailForm = ({ handleInitialRequestUpdate }) => {
+const EmailForm = ({ handleInitialRequestUpdate, title, subTitle, userId }) => {
     const {
         chatSettings: { teamName, workspaceId },
     } = useSelector((state) => state.chat);
@@ -22,6 +22,7 @@ const EmailForm = ({ handleInitialRequestUpdate }) => {
         // conversationId: conversationId,
         email: "xyz@gmail.com",
         workspaceId,
+        userId,
     });
 
     const handleChange = (e) => {
@@ -59,10 +60,17 @@ const EmailForm = ({ handleInitialRequestUpdate }) => {
 
     return (
         <div>
-            <h5 className='signin-header'>Hello,</h5>
+            <h5 className='signin-header'>{title ? title : "Hello,"}</h5>
             <p className='signin-sub__text'>
-                Welcome to <strong>{teamName}</strong>. To enable us solve your
-                issue easily, kindly enter your email address below.
+                {subTitle ? (
+                    subTitle
+                ) : (
+                    <>
+                        Welcome to <strong>{teamName}</strong>. To enable us
+                        solve your issue easily, kindly enter your email address
+                        below.
+                    </>
+                )}
             </p>
             <form onSubmit={handleSubmit}>
                 <ErrorDialog

@@ -1,3 +1,4 @@
+import Iframe from "components/ui/Iframe/Iframe";
 import { Modal } from "../../../../ui/Modal/Modal";
 import { IMAGE, FILE, VIDEO } from "../LiveChatInput/UploadIcons/enum";
 import "./ModalPreview.scss";
@@ -21,15 +22,10 @@ const ModalPreview = ({
                 );
             case FILE:
                 return (
-                    <div className='preview__file'>
-                        <iframe
-                            src={`https://docs.google.com/gview?url=${preview}&embedded=true`}
-                            width='100%'
-                            height='100%'
-                            frameBorder='0'
-                            title={fileName}
-                            sandbox='allow-orientation-lock allow-pointer-lock allow-popups	allow-popups-to-escape-sandbox	allow-presentation	allow-same-origin	allow-scripts	allow-top-navigation allow-top-navigation-by-user-activation'></iframe>
-                    </div>
+                    <Iframe
+                    src={`https://docs.google.com/gview?url=${preview}&embedded=true`}
+                    title={fileName}
+                />
                 );
             case VIDEO:
                 return (
