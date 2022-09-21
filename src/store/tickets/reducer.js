@@ -24,7 +24,7 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
                     el.messageId === payload.messageId &&
                     el.ticketId === payload.ticketId
             );
-            console.log({ messageIndex, payload, fff: state?.ticketsMessages });
+
             if (messageIndex === -1) {
                 return {
                     ...state,
