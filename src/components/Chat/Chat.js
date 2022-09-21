@@ -50,7 +50,7 @@ const Chat = () => {
 
     const [customerTickedId, setCustomerTicketId] = useState();
 
-    const getCustomerTemporaryToken = async () => {
+    const getCustomerAuthToken = async () => {
         try {
             setStatus(LOADING);
             setErrorMssg();
@@ -59,12 +59,12 @@ const Chat = () => {
             const tempCode = params?.code;
 
             const res = await API.get(
-                apiRoutes.getTempAuth(tempCode, tickedId)
+                apiRoutes.getAuthToken(tempCode, tickedId)
             );
 
             if (res.status === 200) {
                 setCustomerTicketId(tickedId);
-                await sessionStorage.setItem("tempToken", res.data.data.token);
+                await sessionStorage.setItem("accessToken", res.data.data.token);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -171,7 +171,7 @@ const Chat = () => {
         isAuthCodeAvailable
             ? customerTickedId
                 ? getCustomerTickets(customerTickedId)
-                : getCustomerTemporaryToken()
+                : getCustomerAuthToken()
             : getCustomerTickets();
     };
 
