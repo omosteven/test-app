@@ -24,20 +24,21 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
                     el.messageId === payload.messageId &&
                     el.ticketId === payload.ticketId
             );
+            console.log({ messageIndex, payload, fff: state?.ticketsMessages });
             if (messageIndex === -1) {
                 return {
                     ...state,
                     ticketsMessages: [...state?.ticketsMessages, payload],
                 };
             }
-            return {...state};
+            return { ...state };
 
         case types.DELETE_TICKET_MESSAGE:
-          
             return {
                 ...state,
                 ticketsMessages: state?.ticketsMessages?.filter(
-                    (x) => x.ticketId !== ticketId && x.messageId !== messageId
+                    (x) =>
+                        !(x.ticketId === ticketId && x.messageId === messageId)
                 ),
             };
 

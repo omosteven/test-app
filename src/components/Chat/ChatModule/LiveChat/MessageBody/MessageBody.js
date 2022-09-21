@@ -9,11 +9,10 @@ const MessageBody = ({
     handleMessageOptionSelect,
     handleOptConversation,
     handleRateConversation,
-    handleVerifyAction
+    handleVerifyAction,
+    messages,
 }) => {
-    const { activeTicket: ticket, ticketsMessages: messages } = useSelector(
-        (state) => state.tickets
-    );
+    const { activeTicket: ticket } = useSelector((state) => state.tickets);
     const { ticketId, agent } = ticket;
 
     const [showModal, toggleModal] = useState(false);
@@ -38,9 +37,7 @@ const MessageBody = ({
             document
                 .getElementById("dummy")
                 .scrollIntoView({ behavior: "smooth", block: "end" });
-        } catch (err) {
-            
-        }
+        } catch (err) {}
     }, []);
 
     useEffect(() => {

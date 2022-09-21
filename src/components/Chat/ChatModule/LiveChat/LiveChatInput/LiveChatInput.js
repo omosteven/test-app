@@ -31,7 +31,7 @@ const LiveChatInput = ({
 }) => {
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
-    console.log({ inputType, currentFormElement });
+
     const [request, updateRequest] = useState({
         message: "",
         fileAttachments: [
