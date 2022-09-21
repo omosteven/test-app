@@ -19,7 +19,7 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
             return { ...state, ticketsMessages: stmProposedVal };
 
         case types.UPDATE_TICKET_MESSAGES:
-            let messageIndex = state.ticketsMessages.findIndex(
+            let messageIndex = state.ticketsMessages?.findIndex(
                 (el) =>
                     el.messageId === payload.messageId &&
                     el.ticketId === payload.ticketId
@@ -30,7 +30,7 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
                     ticketsMessages: [...state?.ticketsMessages, payload],
                 };
             }
-            break;
+            return {...state};
 
         case types.DELETE_TICKET_MESSAGE:
           

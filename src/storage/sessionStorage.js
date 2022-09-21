@@ -42,15 +42,3 @@ export const retriveRefreshToken = () => {
         return undefined;
     }
 };
-
-export const retrieveTempToken = () => {
-    try {
-        const serializedState = sessionStorage["tempToken"];
-        if (serializedState === null) {
-            return undefined;
-        }
-        return serializedState;
-    } catch (err) {
-        return undefined;
-    }
-};
