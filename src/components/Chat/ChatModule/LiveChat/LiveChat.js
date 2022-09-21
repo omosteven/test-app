@@ -581,7 +581,7 @@ const LiveChat = ({
             );
         }
     };
-
+    console.log({ messages });
     useEffect(() => {
         requestAllMessages();
 

@@ -15,6 +15,7 @@ import apiRoutes from "../../../../../lib/api/apiRoutes";
 import { dataQueryStatus } from "../../../../../utils/formatHandlers";
 import { getErrorMessage } from "../../../../../utils/helper";
 import { formInputTypes } from "../MessageBody/Messages/enums";
+import { IMAGE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
@@ -30,8 +31,7 @@ const LiveChatInput = ({
 }) => {
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
-
-
+    console.log({ inputType, currentFormElement });
     const [request, updateRequest] = useState({
         message: "",
         fileAttachments: [
@@ -207,8 +207,8 @@ const LiveChatInput = ({
     // }
     const showIphoneKeyboard = () => {
         // Moves the real input on-screen
-        const chatInterface = document.getElementById('chatInterface')
-        const ticketsHeader = document.getElementById('ticketsHeader')
+        const chatInterface = document.getElementById("chatInterface");
+        const ticketsHeader = document.getElementById("ticketsHeader");
 
         inputContainerRef.current.style.position = "absolute";
         inputContainerRef.current.style.zIndex = 999;
@@ -217,16 +217,15 @@ const LiveChatInput = ({
 
         // inputContainerRef.current.style.width = "100%";
         // inputContainerRef.current.style.height = "64px";
-        inputContainerRef.current.addEventListener("wheel", e => {
+        inputContainerRef.current.addEventListener("wheel", (e) => {
             e.preventDefault();
         });
-        chatInterface.addEventListener("wheel", e => {
+        chatInterface.addEventListener("wheel", (e) => {
             e.preventDefault();
         });
-        ticketsHeader.addEventListener("wheel", e => {
+        ticketsHeader.addEventListener("wheel", (e) => {
             e.preventDefault();
         });
-
 
         // const height = window.visualViewport.height;
         // const viewport = window.visualViewport;
@@ -259,47 +258,45 @@ const LiveChatInput = ({
                 inputContainerRef.current.style.top = "356px";
             // messageListContainerRef.current.style.height = "300px";
         }
-
-
     };
 
     const handleInputFocus = () => {
-        console.log("shoullll")
-        const iOS = !window.MSStream && /iPad|iPhone|iPod/.test(navigator.userAgent); // fails on iPad iOS 13
+        console.log("shoullll");
+        const iOS =
+            !window.MSStream && /iPad|iPhone|iPod/.test(navigator.userAgent); // fails on iPad iOS 13
         if (iOS) {
-            document.body.classList.add("keyboard")
-            console.log("on an iphone")
-            showIphoneKeyboard()
+            document.body.classList.add("keyboard");
+            console.log("on an iphone");
+            showIphoneKeyboard();
         }
-    }
+    };
 
     const handleInputBlur = () => {
-        const chatInterface = document.getElementById('chatInterface')
-        const ticketsHeader = document.getElementById('ticketsHeader')
+        const chatInterface = document.getElementById("chatInterface");
+        const ticketsHeader = document.getElementById("ticketsHeader");
 
-        document.body.classList.remove("keyboard")
+        document.body.classList.remove("keyboard");
         inputContainerRef.current.style.position = "fixed";
         inputContainerRef.current.style.bottom = "0px";
-        inputContainerRef.current.removeEventListener("wheel", (e) => { 
+        inputContainerRef.current.removeEventListener("wheel", (e) => {
             e.preventDefault();
             e.stopPropagation();
-        
-            return false;
-        });
-        chatInterface.removeEventListener("wheel", (e) => { 
-            e.preventDefault();
-            e.stopPropagation();
-        
-            return false;
-        });
-        ticketsHeader.removeEventListener("wheel", (e) => { 
-            e.preventDefault();
-            e.stopPropagation();
-        
-            return false;
-        });
-    }
 
+            return false;
+        });
+        chatInterface.removeEventListener("wheel", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            return false;
+        });
+        ticketsHeader.removeEventListener("wheel", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            return false;
+        });
+    };
 
     const handleTyping = (e) => {
         let { value } = e.target;
@@ -386,7 +383,7 @@ const LiveChatInput = ({
                         label='Chat'
                         ref={inputRef}
                         hideLabel={true}
-                        disabled={isDisabled}
+                        disabled={isDisabled || inputType === IMAGE}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
                     />
@@ -399,22 +396,19 @@ const LiveChatInput = ({
         sendNewMessage();
     };
 
-
     const btnDisabled =
         uploads?.length > 0
             ? status === LOADING || status === ""
             : isDisabled || request?.message === "";
 
     return (
-        <div className='chat__input__container'
-            ref={inputContainerRef}
-        >
+        <div className='chat__input__container' ref={inputContainerRef}>
             <div
                 id='inputGroup'
-                className={`col-md-10 col-12 ${!allowUserInput ? "disallowed__section" : ""
-                    }`}
-                title={!allowUserInput ? "Not Allowed" : "Type a message"}
-            >
+                className={`col-md-10 col-12 ${
+                    !allowUserInput ? "disallowed__section" : ""
+                }`}
+                title={!allowUserInput ? "Not Allowed" : "Type a message"}>
                 <form onSubmit={handleSubmit} id='chatInput'>
                     <div className='chat__input--container'>
                         {uploads?.length > 0 && (
@@ -440,28 +434,52 @@ const LiveChatInput = ({
                         )}
                         <div className='chat__input--group'>
                             <div className='chat__input--group--inputs'>
-                                <UploadIcons
-                                    upload={uploads}
-                                    updateUpload={updateUploads}
-                                    isDisabled={isDisabled}
-                                    setErrors={setErrors}
-                                    showModal={showModal}
-                                    toggleModal={toggleModal}
-                                    handleUpload={handleUpload}
-                                    selectedMedia={selectedMedia}
-                                    currentFormElement={currentFormElement}
-                                />
+                                {currentFormElement ? (
+                                    currentFormElement?.formElementType ===
+                                        IMAGE && (
+                                        <UploadIcons
+                                            upload={uploads}
+                                            updateUpload={updateUploads}
+                                            isDisabled={isDisabled}
+                                            setErrors={setErrors}
+                                            showModal={showModal}
+                                            toggleModal={toggleModal}
+                                            handleUpload={handleUpload}
+                                            selectedMedia={selectedMedia}
+                                            currentFormElement={
+                                                currentFormElement
+                                            }
+                                        />
+                                    )
+                                ) : (
+                                    <UploadIcons
+                                        upload={uploads}
+                                        updateUpload={updateUploads}
+                                        isDisabled={isDisabled}
+                                        setErrors={setErrors}
+                                        showModal={showModal}
+                                        toggleModal={toggleModal}
+                                        handleUpload={handleUpload}
+                                        selectedMedia={selectedMedia}
+                                        currentFormElement={currentFormElement}
+                                    />
+                                )}
                                 {renderBasedOnInputType()}
                             </div>
                             <div>
                                 <Button
                                     type='submit'
                                     text={"Send"}
-                                    icon={<ReactSVG src={imageLinks?.svg?.send} />}
+                                    icon={
+                                        <ReactSVG src={imageLinks?.svg?.send} />
+                                    }
                                     classType='default'
-                                    otherClass={`send__button ${!btnDisabled ? "active" : ""
-                                        }`}
-                                    disabled={btnDisabled || fetchingInputStatus}
+                                    otherClass={`send__button ${
+                                        !btnDisabled ? "active" : ""
+                                    }`}
+                                    disabled={
+                                        btnDisabled || fetchingInputStatus
+                                    }
                                 />
                             </div>
                         </div>
@@ -475,7 +493,6 @@ const LiveChatInput = ({
                 <PoweredBy />
             </div>
         </div>
-
     );
 };
 
