@@ -48,7 +48,7 @@ const Chat = () => {
 
     // const [selectedTicket, setSelectedTicket] = useState();
 
-    const [customerTickedId, setCustomerTicketId] = useState();
+    const [customerTicketId, setCustomerTicketId] = useState();
 
     const getCustomerAuthToken = async () => {
         try {
@@ -64,7 +64,10 @@ const Chat = () => {
 
             if (res.status === 200) {
                 setCustomerTicketId(tickedId);
-                await sessionStorage.setItem("accessToken", res.data.data.token);
+                await sessionStorage.setItem(
+                    "accessToken",
+                    res.data.data.token
+                );
             }
         } catch (err) {
             setStatus(ERROR);
@@ -104,7 +107,10 @@ const Chat = () => {
                         })
                     );
 
-                    if (newTicket === undefined || newTicket === null) {
+                    if (
+                        (newTicket === undefined || newTicket === null) &&
+                        customerTicketId !== undefined
+                    ) {
                         return redirectCustomer(newTicket?.customer);
                     }
 
@@ -169,15 +175,15 @@ const Chat = () => {
 
     const callHandler = () => {
         isAuthCodeAvailable
-            ? customerTickedId
-                ? getCustomerTickets(customerTickedId)
+            ? customerTicketId
+                ? getCustomerTickets(customerTicketId)
                 : getCustomerAuthToken()
             : getCustomerTickets();
     };
 
     useEffect(() => {
         callHandler();
-    }, [customerTickedId]);
+    }, [customerTicketId]);
 
     return (
         <>
