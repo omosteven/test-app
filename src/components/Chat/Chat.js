@@ -118,11 +118,7 @@ const Chat = () => {
 
                     setStatus(DATAMODE);
                 } else {
-                    if (openNewTicket) {
-                        createNewTicket();
-                    } else {
-                        setStatus(NULLMODE);
-                    }
+                    openNewTicket ? createNewTicket() : setStatus(NULLMODE);
                 }
             }
         } catch (err) {
