@@ -386,7 +386,7 @@ const LiveChat = ({
             if (res.status === 200) {
                 setStatus(DATAMODE);
                 dispatch(setActiveTicket());
-                getCustomerTickets();
+                getCustomerTickets(null, false);
             }
         } catch (err) {
             setStatus(ERROR);

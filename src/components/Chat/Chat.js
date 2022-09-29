@@ -21,7 +21,7 @@ import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/N
 import "./Chat.scss";
 import { pushAuthUser } from "store/auth/actions";
 
-const { ERROR, LOADING, DATAMODE } = dataQueryStatus;
+const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 
 const Chat = () => {
     const [showTictketActionModal, toggleTicketActionModal] = useState();
@@ -82,7 +82,7 @@ const Chat = () => {
         }
     };
 
-    const getCustomerTickets = async (ticketId) => {
+    const getCustomerTickets = async (ticketId, openNewTicket = true) => {
         try {
             dispatch(setActiveTicket(null));
 
@@ -118,8 +118,11 @@ const Chat = () => {
 
                     setStatus(DATAMODE);
                 } else {
-                    createNewTicket();
-                    // setStatus(NULLMODE);
+                    if (openNewTicket) {
+                        createNewTicket();
+                    } else {
+                        setStatus(NULLMODE);
+                    }
                 }
             }
         } catch (err) {
@@ -134,7 +137,7 @@ const Chat = () => {
 
     const handleTicketCloseSuccess = () => {
         dispatch(setActiveTicket());
-        getCustomerTickets();
+        getCustomerTickets(null, false);
         toggleTicketActionModal(false);
     };
 
