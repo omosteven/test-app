@@ -523,7 +523,7 @@ const LiveChat = ({
             messageId,
         });
     };
-    console.log({ messages });
+
     const handleReceive = (message) => {
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (message.senderType === WORKSPACE_AGENT) {
