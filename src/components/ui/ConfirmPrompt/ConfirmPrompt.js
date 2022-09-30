@@ -6,23 +6,27 @@ export const ConfirmPrompt = ({
     subTitle,
     handleConfirmation,
     loading,
+    actionBtnText = "Continue",
+    cancelBtnText = "Close",
+    content,
 }) => {
     return (
-        <div className="confirm__action">
+        <div className='confirm__action'>
             {title && <h1>{title}</h1>}
             <p>{subTitle}</p>
-            <div id="btnActionGroup">
+            <div>{content}</div>
+            <div id='btnActionGroup'>
                 <Button
-                    type="button"
-                    text={`Continue`}
-                    classType="primary"
+                    type='button'
+                    text={actionBtnText}
+                    classType='primary'
                     onClick={handleConfirmation}
                     loading={loading}
                 />
                 <Button
-                    type="button"
-                    text="Close"
-                    classType="bordered"
+                    type='button'
+                    text={cancelBtnText}
+                    classType='bordered'
                     // otherClass="my-2 w-100"
                     onClick={handleCancel}
                     disabled={loading}
@@ -31,7 +35,5 @@ export const ConfirmPrompt = ({
         </div>
     );
 };
-
-
 
 export default ConfirmPrompt;

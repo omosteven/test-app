@@ -66,6 +66,7 @@ const LiveChat = ({
     getCustomerTickets,
     showVerifyForm,
     handleVerifyAction,
+    handleCloseTicket
 }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -624,6 +625,7 @@ const LiveChat = ({
                             setErrorMssg,
                             requestAllMessages,
                             setActiveConvo,
+                            handleCloseTicket
                         }}
                     />
                     <div className='chat__interface'>

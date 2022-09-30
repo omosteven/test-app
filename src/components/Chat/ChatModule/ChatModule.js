@@ -6,6 +6,7 @@ const ChatModule = ({
     getCustomerTickets,
     showVerifyForm,
     handleVerifyAction,
+    handleCloseTicket
 }) => {
     return (
         <>
@@ -15,6 +16,7 @@ const ChatModule = ({
                     getCustomerTickets,
                     showVerifyForm,
                     handleVerifyAction,
+                    handleCloseTicket
                 }}
             />
         </>

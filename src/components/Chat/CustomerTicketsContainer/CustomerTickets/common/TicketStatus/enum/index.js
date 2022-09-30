@@ -9,7 +9,7 @@ export const ticketsPhases = Object.freeze({
         title: 'Discovering Problem',
         fillColor: '#FBBF27',
     },
-    SOLUTION_DISCOVERY: {
+    SOLUTION_DELIVERY: {
         title: 'Fixing Issue',
         fillColor: '#25BB87'
     }

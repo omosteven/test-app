@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
-import API from '../../../lib/api';
-import apiRoutes from '../../../lib/api/apiRoutes';
-import { getErrorMessage } from '../../../utils/helper';
-import Modal from '../../common/Modal/Modal';
-import { ErrorDialog } from '../../ui';
-import ConfirmPrompt from '../../ui/ConfirmPrompt/ConfirmPrompt';
+import React, { useState } from "react";
+import API from "../../../lib/api";
+import apiRoutes from "../../../lib/api/apiRoutes";
+import { getErrorMessage } from "../../../utils/helper";
+import Modal from "../../common/Modal/Modal";
+import { ErrorDialog } from "../../ui";
+import ConfirmPrompt from "../../ui/ConfirmPrompt/ConfirmPrompt";
+import "./ConfirmCloseChatModal.scss";
 
-const ConfirmCloseChatModal = ({ show, toggle, handleSuccess, referenceData }) => {
+const ConfirmCloseChatModal = ({
+    show,
+    toggle,
+    handleSuccess,
+    referenceData,
+}) => {
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
 
@@ -19,21 +25,20 @@ const ConfirmCloseChatModal = ({ show, toggle, handleSuccess, referenceData }) =
             const url = apiRoutes?.closeTicket(ticketId);
             const res = await API.post(url);
             if (res.status === 201) {
-                handleSuccess()
+                handleSuccess();
             }
-
         } catch (err) {
             setErrorMsg(getErrorMessage(err));
             setLoading(false);
         }
-    }
+    };
     return (
-        <Modal {
-            ...{
+        <Modal
+            {...{
                 show,
-                toggle
-            }
-        }>
+                toggle,
+            }}
+            otherClassNames='confirm-modal'>
             <div>
                 <ErrorDialog
                     show={Boolean(errorMsg)}
