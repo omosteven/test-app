@@ -17,14 +17,11 @@ const Messages = (props) => {
         handleOptConversation,
         openPreviewModal,
         handleRateConversation,
-        handleVerifyAction
+        handleVerifyAction,
+        messages,
     } = props;
-    const { activeTicket, ticketsMessages } = useSelector(
-        (state) => state.tickets
-    );
-    const messages = ticketsMessages?.filter(
-        (item) => item?.ticketId === ticketId
-    );
+    const { activeTicket } = useSelector((state) => state.tickets);
+
     const { agentTyping } = activeTicket || {};
     const [agentIsTyping, sayAgentIsTyping] = useState(agentTyping);
     const socket = useContext(SocketContext);

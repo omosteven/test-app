@@ -21,7 +21,7 @@ import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/N
 import "./Chat.scss";
 import { pushAuthUser } from "store/auth/actions";
 
-const { ERROR, LOADING, DATAMODE } = dataQueryStatus;
+const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 
 const Chat = () => {
     const [showTictketActionModal, toggleTicketActionModal] = useState();
@@ -48,7 +48,7 @@ const Chat = () => {
 
     // const [selectedTicket, setSelectedTicket] = useState();
 
-    const [customerTickedId, setCustomerTicketId] = useState();
+    const [customerTicketId, setCustomerTicketId] = useState();
 
     const getCustomerAuthToken = async () => {
         try {
@@ -64,7 +64,10 @@ const Chat = () => {
 
             if (res.status === 200) {
                 setCustomerTicketId(tickedId);
-                await sessionStorage.setItem("accessToken", res.data.data.token);
+                await sessionStorage.setItem(
+                    "accessToken",
+                    res.data.data.token
+                );
             }
         } catch (err) {
             setStatus(ERROR);
@@ -79,7 +82,7 @@ const Chat = () => {
         }
     };
 
-    const getCustomerTickets = async (ticketId) => {
+    const getCustomerTickets = async (ticketId, openNewTicket = true) => {
         try {
             dispatch(setActiveTicket(null));
 
@@ -104,7 +107,10 @@ const Chat = () => {
                         })
                     );
 
-                    if (newTicket === undefined || newTicket === null) {
+                    if (
+                        (newTicket === undefined || newTicket === null) &&
+                        customerTicketId !== undefined
+                    ) {
                         return redirectCustomer(newTicket?.customer);
                     }
 
@@ -112,8 +118,7 @@ const Chat = () => {
 
                     setStatus(DATAMODE);
                 } else {
-                    createNewTicket();
-                    // setStatus(NULLMODE);
+                    openNewTicket ? createNewTicket() : setStatus(NULLMODE);
                 }
             }
         } catch (err) {
@@ -128,7 +133,7 @@ const Chat = () => {
 
     const handleTicketCloseSuccess = () => {
         dispatch(setActiveTicket());
-        getCustomerTickets();
+        getCustomerTickets(null, false);
         toggleTicketActionModal(false);
     };
 
@@ -169,15 +174,15 @@ const Chat = () => {
 
     const callHandler = () => {
         isAuthCodeAvailable
-            ? customerTickedId
-                ? getCustomerTickets(customerTickedId)
+            ? customerTicketId
+                ? getCustomerTickets(customerTicketId)
                 : getCustomerAuthToken()
             : getCustomerTickets();
     };
 
     useEffect(() => {
         callHandler();
-    }, [customerTickedId]);
+    }, [customerTicketId]);
 
     return (
         <>
