@@ -1,4 +1,5 @@
 import { Button } from "../Button/Button";
+import "./ConfirmPrompt.scss";
 
 export const ConfirmPrompt = ({
     handleCancel,
@@ -14,18 +15,17 @@ export const ConfirmPrompt = ({
         <div className='confirm__action'>
             {title && <h1>{title}</h1>}
             <p>{subTitle}</p>
-            <div>{content}</div>
             <div id='btnActionGroup'>
                 <Button
                     type='button'
-                    text={actionBtnText}
+                    text={`Continue`}
                     classType='primary'
                     onClick={handleConfirmation}
                     loading={loading}
                 />
                 <Button
                     type='button'
-                    text={cancelBtnText}
+                    text='Close'
                     classType='bordered'
                     // otherClass="my-2 w-100"
                     onClick={handleCancel}

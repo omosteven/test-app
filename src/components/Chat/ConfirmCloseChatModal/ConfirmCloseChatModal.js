@@ -38,7 +38,7 @@ const ConfirmCloseChatModal = ({
                 show,
                 toggle,
             }}
-            otherClassNames='confirm-modal'>
+            contentClassName='confirm__close__modal__content'>
             <div>
                 <ErrorDialog
                     show={Boolean(errorMsg)}
