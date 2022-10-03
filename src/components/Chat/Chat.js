@@ -215,6 +215,7 @@ const Chat = () => {
                                     showVerifyForm={showVerifyForm}
                                     handleVerifyAction={handleVerifyAction}
                                     handleCloseTicket={handleCloseTicket}
+                                    handleTicketCloseSuccess={handleTicketCloseSuccess}
                                 />
                             ) : (
                                 <div className='empty__chat--interface'>
