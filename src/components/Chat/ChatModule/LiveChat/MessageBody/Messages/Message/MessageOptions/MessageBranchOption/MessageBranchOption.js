@@ -14,7 +14,13 @@ const MessageBranchOption = ({
     return (
         <div
             className={`branch__option ${
-                selectedOption ? (isSelected ? "active" : "__fade_out") : ""
+                selectedOption
+                    ? isSelected
+                        ? "active"
+                        : "__fade_out"
+                    : shouldBeDisabled
+                    ? "__fade_out"
+                    : ""
             }`}
             onClick={() =>
                 selectedOption ? null : handleMessageOptionSelect()

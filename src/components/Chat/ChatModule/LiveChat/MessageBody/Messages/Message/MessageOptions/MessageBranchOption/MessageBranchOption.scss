@@ -27,6 +27,7 @@
     }
     &.active {
         border-color: $primary__theme_color;
+        cursor: default;
     }
 
 }

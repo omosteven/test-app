@@ -19,7 +19,8 @@ const ScheduledBranchOption = ({
     const shouldBeDisabled = messageIndex < messagesDepth;
     const isSelected = selectedOption === branchOptionId;
     const countdownTo =
-        new Date(deliveryDate).getTime() / 1000 + parseInt(scheduleDuration);
+        new Date(deliveryDate).getTime() / 1000 +
+        parseInt(scheduleDuration || 0);
     const startCountdown = Date.now() / 1000 > countdownTo;
     const disable = countdownEnded ? countdownEnded : startCountdown;
 
