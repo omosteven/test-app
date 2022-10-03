@@ -11,6 +11,7 @@ const TicketsHeader = ({
     setStatus,
     setErrorMssg,
     requestAllMessages,
+    handleCloseTicket
 }) => {
     const { agent, ticketPhase, ticketId } = ticket;
     const { firstName, lastName } = agent || {};
@@ -39,7 +40,7 @@ const TicketsHeader = ({
                     }}
                 />
                 <div className='show-only-on-desktop'>
-                    <ChatSettingsToggler />
+                    <ChatSettingsToggler handleCloseTicket={handleCloseTicket}/>
                 </div>
             </div>
         </div>

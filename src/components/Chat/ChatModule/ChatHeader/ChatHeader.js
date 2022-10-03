@@ -15,6 +15,7 @@ const ChatHeader = ({
     getCustomerTickets,
     handleTicketModalAction,
     showVerifyForm,
+    handleCloseTicket,
 }) => {
     const [showChatMenu, toggleChatMenu] = useState(false);
     const {
@@ -58,7 +59,10 @@ const ChatHeader = ({
 
                         {!showChatMenu && (
                             <div className='show-only-on-mobile'>
-                                <ChatSettingsToggler isMobile={true} />
+                                <ChatSettingsToggler
+                                    isMobile={true}
+                                    handleCloseTicket={handleCloseTicket}
+                                />
                             </div>
                         )}
                     </>

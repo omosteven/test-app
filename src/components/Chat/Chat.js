@@ -16,10 +16,10 @@ import queryString from "query-string";
 import ChatHeader from "./ChatModule/ChatHeader/ChatHeader";
 import ChatModule from "./ChatModule/ChatModule";
 import ChatToastNotification from "./ChatToastNotification/ChatToastNotification";
-import ConfirmCloseChatModal from "./ConfirmCloseChatModal/ConfirmCloseChatModal";
 import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/NewTicketButton/NewTicketButton";
 import "./Chat.scss";
 import { pushAuthUser } from "store/auth/actions";
+import TicketCloseModal from "./TicketCloseModal/TicketCloseModal";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 
@@ -184,6 +184,9 @@ const Chat = () => {
         callHandler();
     }, [customerTicketId]);
 
+    const handleCloseTicket = () => {
+        toggleTicketActionModal(true);
+    };
     return (
         <>
             <SocketContext.Provider value={socket}>
@@ -201,6 +204,7 @@ const Chat = () => {
                                     getCustomerTickets,
                                     handleTicketModalAction,
                                     showVerifyForm,
+                                    handleCloseTicket,
                                 }}
                             />
                             {selectedTicket?.ticketId ? (
@@ -210,6 +214,8 @@ const Chat = () => {
                                     getCustomerTickets={getCustomerTickets}
                                     showVerifyForm={showVerifyForm}
                                     handleVerifyAction={handleVerifyAction}
+                                    handleCloseTicket={handleCloseTicket}
+                                    handleTicketCloseSuccess={handleTicketCloseSuccess}
                                 />
                             ) : (
                                 <div className='empty__chat--interface'>
@@ -238,11 +244,12 @@ const Chat = () => {
                     </div>
                 </div>
                 {showTictketActionModal && (
-                    <ConfirmCloseChatModal
-                        show={showTictketActionModal}
-                        toggle={() => toggleTicketActionModal(false)}
+                    <TicketCloseModal
+                        showModal={showTictketActionModal}
+                        closeModal={() => toggleTicketActionModal(false)}
                         referenceData={selectedTicket}
                         handleSuccess={handleTicketCloseSuccess}
+                        handleTicketCloseSuccess={handleTicketCloseSuccess}
                     />
                 )}
             </SocketContext.Provider>

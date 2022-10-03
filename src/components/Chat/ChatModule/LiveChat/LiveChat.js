@@ -66,6 +66,8 @@ const LiveChat = ({
     getCustomerTickets,
     showVerifyForm,
     handleVerifyAction,
+    handleCloseTicket,
+    handleTicketCloseSuccess,
 }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -613,6 +615,44 @@ const LiveChat = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ticketsMessages]);
 
+    const closeTicket = async () => {
+        try {
+            setStatus(LOADING);
+            setErrorMssg();
+            const url = apiRoutes?.closeTicket(ticketId);
+            const res = await API.post(url);
+            if (res.status === 201) {
+                setStatus(DATAMODE);
+                handleTicketCloseSuccess();
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
+
+    const callTicketClosure = () => {
+        let selectedTicketMessages = ticketsMessages?.filter((message) => {
+            return message.ticketId === ticketId;
+        });
+
+        if (selectedTicketMessages?.length === 1) {
+            closeTicket();
+        }
+    };
+
+    useEffect(() => {
+        let timer = setTimeout(() => {
+            callTicketClosure();
+        }, 120000);
+
+        return () => {
+            clearTimeout(timer);
+        };
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ticketsMessages, ticketId]);
+
     return (
         <>
             {!showVerifyForm ? (
@@ -624,6 +664,7 @@ const LiveChat = ({
                             setErrorMssg,
                             requestAllMessages,
                             setActiveConvo,
+                            handleCloseTicket,
                         }}
                     />
                     <div className='chat__interface'>
