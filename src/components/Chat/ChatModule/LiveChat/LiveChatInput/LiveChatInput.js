@@ -202,9 +202,7 @@ const LiveChatInput = ({
         setErrors((prev) => ({ ...prev, file: "" }));
     };
 
-    // const handleInputFocus = () => {
-    //     document.getElementById('inputGroup').scrollIntoView({ behavior: 'smooth', block: 'end' });
-    // }
+ 
     const showIphoneKeyboard = () => {
         // Moves the real input on-screen
         const chatInterface = document.getElementById("chatInterface");
@@ -215,8 +213,6 @@ const LiveChatInput = ({
         inputContainerRef.current.style.left = "0px";
         inputContainerRef.current.style.bottom = "0px";
 
-        // inputContainerRef.current.style.width = "100%";
-        // inputContainerRef.current.style.height = "64px";
         inputContainerRef.current.addEventListener("wheel", (e) => {
             e.preventDefault();
         });
@@ -227,37 +223,9 @@ const LiveChatInput = ({
             e.preventDefault();
         });
 
-        // const height = window.visualViewport.height;
-        // const viewport = window.visualViewport;
-
+        
         return "";
-        // Positions the real input at the right height for the type of iPhone
-        switch (window.innerHeight) {
-            case 896:
-            case 798: // iPhone XR, Xs Max iOS 12.4
-                inputContainerRef.current.style.bottom = "288px";
-                // messageListContainerRef.current.style.height = "312px";
-                break;
-            case 714: // iPhone X, Xs
-                inputContainerRef.current.style.top = "304px";
-                // messageListContainerRef.current.style.height = "300px";
-                break;
-            case 696: // iPhone 6 Plus, 6s Plus, 7 Plus, 8 Plus
-                inputContainerRef.current.style.top = "316px";
-                // messageListContainerRef.current.style.height = "300px";
-                break;
-            case 627: // iPhone 6, 6s, 7, 8
-                inputContainerRef.current.style.top = "258px";
-                // messageListContainerRef.current.style.height = "300px";
-                break;
-            case 528: // iPhone 5s, SE, iOS 12.4
-                inputContainerRef.current.style.top = "166px";
-                // messageListContainerRef.current.style.height = "300px";
-                break;
-            default:
-                inputContainerRef.current.style.top = "356px";
-            // messageListContainerRef.current.style.height = "300px";
-        }
+     
     };
 
     const handleInputFocus = () => {
