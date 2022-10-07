@@ -32,6 +32,8 @@ import {
     messageTypes,
     TICKET_CLOSED_ALERT,
     ADD_EMAIL_ADDRESS,
+    FORM_FILLED_COMPLETLY,
+    messageActionTypes,
 } from "./MessageBody/Messages/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
 import {
@@ -58,6 +60,9 @@ const {
     CONVERSATION,
     BRANCH_OPTION,
     ACTION_INFO,
+    DOWNTIME_BRANCH,
+    DOWNTIME_BRANCH_SUB_SENTENCE,
+    FORM_FILLED,
 } = messageTypes;
 
 const { TEXT } = formInputTypes;
@@ -301,6 +306,8 @@ const LiveChat = ({
 
                 case ACTION_INFO:
                 case CONVERSATION:
+                case DOWNTIME_BRANCH:
+                case DOWNTIME_BRANCH_SUB_SENTENCE:
                     shouldAllowUserInput = false;
                     userInputType = TEXT;
                     break;
@@ -316,6 +323,7 @@ const LiveChat = ({
                         setCurrentFormElement();
                     }
                     break;
+
                 case FORM_REQUEST:
                     if (form) {
                         const { formElement, formId } = form || {};
@@ -526,6 +534,50 @@ const LiveChat = ({
         });
     };
 
+    const handleAddEmail = () => {
+        // if (!validateEmail(customer?.email)) {
+            dispatch(
+                saveTicketsMessages({
+                    ticketId: ticket?.ticketId,
+                    messageId: generateID(),
+                    messageContent:
+                        messageActionTypes.ADD_EMAIL_ADDRESS.content,
+                    messageType: ACTION_INFO,
+                    messageActionType: ADD_EMAIL_ADDRESS,
+                    senderType: WORKSPACE_AGENT,
+                })
+            );
+        // }
+    };
+
+    const handleAddBreaker = (messageActionType) => {
+        dispatch(
+            saveTicketsMessages({
+                ticketId: ticket?.ticketId,
+                messageId: generateID(),
+                messageContent: messageActionTypes[messageActionType].content,
+                messageType: ACTION_INFO,
+                messageActionType,
+                senderType: WORKSPACE_AGENT,
+            })
+        );
+    };
+
+    const handleConversationBreaker = (message) => {
+        const { messageType } = message;
+
+        switch (messageType) {
+            case FORM_FILLED:
+                handleAddBreaker(FORM_FILLED_COMPLETLY);
+                return handleAddEmail();
+            case DOWNTIME_BRANCH:
+                handleAddBreaker(DOWNTIME_BRANCH);
+                return handleAddEmail();
+            default:
+                return "";
+        }
+    };
+
     const handleReceive = (message) => {
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (message.senderType === WORKSPACE_AGENT) {
@@ -560,40 +612,16 @@ const LiveChat = ({
         );
     };
 
-    const handleTriggerVerifyEmail = () => {
-        if (!validateEmail(customer?.email)) {
-            dispatch(
-                saveTicketsMessages({
-                    ticketId: ticket?.ticketId,
-                    messageId: ADD_EMAIL_ADDRESS,
-                    // messageRefContent: branchOptionLabel,
-                    messageContent: `Please add and verify your email address so we can also reach you via email with an update`,
-                    messageType: ACTION_INFO,
-                    messageActionType: ADD_EMAIL_ADDRESS,
-                    senderType: WORKSPACE_AGENT,
-                    deliveryDate: new Date().toISOString(),
-                })
-            );
-        } else {
-            dispatch(
-                deleteTicketsMessages({
-                    messageId: ADD_EMAIL_ADDRESS,
-                    ticketId,
-                })
-            );
-        }
-    };
-
     useEffect(() => {
         requestAllMessages();
 
-        handleTriggerVerifyEmail();
+        // handleTriggerVerifyEmail();
 
         socket.emit(SUBSCRIBE_TO_TICKET, { ticketId });
         socket.on(RECEIVE_MESSAGE, handleReceive);
+        socket.on(RECEIVE_MESSAGE, handleConversationBreaker);
         // socket.on(CLOSED_TICKET, handleTicketClosureProvision)
         socket.on(NEW_TICKET_UPDATE, handleTicketClosure);
-        // socket.on(NEW_TICKET_UPDATE, handleTriggerVerifyEmail);
 
         // socket.on(CLOSED_TICKET, handleTicketClosure);
 
@@ -691,6 +719,7 @@ const LiveChat = ({
                 <CustomerVerification
                     customer={customer}
                     handleVerifyAction={handleVerifyAction}
+                    messages={messages}
                 />
             )}
             <div className='chat__input__container'>

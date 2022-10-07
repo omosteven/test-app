@@ -1,6 +1,6 @@
 import axios from "axios";
 import config from "../../config/config";
-import { retriveAccessToken } from "../../storage/sessionStorage"
+import { retriveAccessToken } from "../../storage/sessionStorage";
 
 const deleteAccessToken = () => sessionStorage.clear();
 
@@ -15,7 +15,7 @@ const API = axios.create({
 
 const requestHandler = (request) => {
     const token = retriveAccessToken();
-    
+
     if (token) request.headers.Authorization = `Bearer ${token}`;
 
     return request;
@@ -24,7 +24,7 @@ const requestHandler = (request) => {
 const responseHandler = (response) => {
     if (response.status === 401) {
         deleteAccessToken();
-        window.reload()
+        window.location.reload();
     }
 
     return response;
@@ -33,6 +33,7 @@ const responseHandler = (response) => {
 const errorHandler = (error) => {
     if (error?.response?.status === 401 || error?.response?.status === 403) {
         deleteAccessToken();
+        window.location.reload();
     }
     return Promise.reject(error);
 };

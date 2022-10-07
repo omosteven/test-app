@@ -114,7 +114,10 @@ const Chat = () => {
                         return redirectCustomer(newTicket?.customer);
                     }
 
-                    dispatch(pushAuthUser(newTicket?.customer));
+                    const { customer } = newTicket || {};
+                    if (customer) {
+                        dispatch(pushAuthUser(customer));
+                    }
 
                     setStatus(DATAMODE);
                 } else {
@@ -133,6 +136,7 @@ const Chat = () => {
 
     const handleTicketCloseSuccess = () => {
         dispatch(setActiveTicket());
+
         getCustomerTickets(null, false);
         toggleTicketActionModal(false);
     };
@@ -215,7 +219,9 @@ const Chat = () => {
                                     showVerifyForm={showVerifyForm}
                                     handleVerifyAction={handleVerifyAction}
                                     handleCloseTicket={handleCloseTicket}
-                                    handleTicketCloseSuccess={handleTicketCloseSuccess}
+                                    handleTicketCloseSuccess={
+                                        handleTicketCloseSuccess
+                                    }
                                 />
                             ) : (
                                 <div className='empty__chat--interface'>

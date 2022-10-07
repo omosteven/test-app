@@ -1,14 +1,16 @@
+import ChatToastNotification from "components/Chat/ChatToastNotification/ChatToastNotification";
+import { ToastContext } from "components/common/Toast/context/ToastContextProvider";
 import { Button } from "components/ui";
 import { useSelector } from "react-redux";
 
-const CustomerVerifySuccess = () => {
+const CustomerVerifySuccess = ({ closeModal }) => {
     const {
         chatSettings: { workspaceSlug },
     } = useSelector((state) => state.chat);
 
     const handleContinue = async () => {
-        await sessionStorage.removeItem("tempToken");
         window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+        closeModal();
     };
 
     return (

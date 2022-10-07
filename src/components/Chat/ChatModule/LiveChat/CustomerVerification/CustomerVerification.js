@@ -7,6 +7,9 @@ import "./CustomerVerification.scss";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import FadeIn from "components/ui/FadeIn";
+import { deleteTicketsMessages } from "store/tickets/actions";
+import { ADD_EMAIL_ADDRESS } from "../MessageBody/Messages/enums";
+import { useDispatch } from "react-redux";
 
 export const verifystages = {
     initial: "INPUT_EMAIL",
@@ -14,7 +17,7 @@ export const verifystages = {
     success: "SUCCESS",
 };
 
-const CustomerVerification = ({ customer, handleVerifyAction }) => {
+const CustomerVerification = ({ customer, handleVerifyAction, messages }) => {
     const [verifyStage, setVerifyStage] = useState(verifystages.initial);
     const [initialStepRequest, setinitialStepRequest] = useState();
 
@@ -23,8 +26,22 @@ const CustomerVerification = ({ customer, handleVerifyAction }) => {
         setVerifyStage(verifystages.final);
     };
 
+    const dispatch = useDispatch();
+
     const handleSuccess = () => {
         setVerifyStage(verifystages.success);
+
+        let { messageId, ticketId } = messages?.find(
+            (ticketMessage) =>
+                ticketMessage?.messageActionType === ADD_EMAIL_ADDRESS
+        );
+
+        dispatch(
+            deleteTicketsMessages({
+                messageId,
+                ticketId,
+            })
+        );
     };
 
     const renderBasedOnStage = () => {
@@ -52,16 +69,12 @@ const CustomerVerification = ({ customer, handleVerifyAction }) => {
                 );
 
             case success:
-                return <CustomerVerifySuccess />;
+                return (
+                    <CustomerVerifySuccess closeModal={handleVerifyAction} />
+                );
 
             default:
-                return (
-                    <EmailForm
-                        setSignInStage={setVerifyStage}
-                        title='Verify email address'
-                        subTitle='We’ll send you a 4 digit OTP to ensure this is your email address.'
-                    />
-                );
+                return "";
         }
     };
 

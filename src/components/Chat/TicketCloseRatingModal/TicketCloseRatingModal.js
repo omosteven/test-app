@@ -1,4 +1,4 @@
-import { ErrorDialog } from "components/ui";
+import { Button, ErrorDialog } from "components/ui";
 import ConfirmPrompt from "components/ui/ConfirmPrompt/ConfirmPrompt";
 import CustomRatings from "components/ui/CustomRatings/CustomRatings";
 import API from "lib/api";
@@ -42,29 +42,41 @@ const TicketCloseRatingModal = ({
                 show,
                 toggle,
             }}
-            otherClassNames='ticket-closure-modal'>
+            contentClassName='ticket-closure-modal'>
             <div>
                 <ErrorDialog
                     show={Boolean(errorMsg)}
                     message={errorMsg}
                     hide={() => setErrorMsg()}
                 />
-                <ConfirmPrompt
-                    handleCancel={toggle}
-                    handleConfirmation={rateTicket}
-                    subTitle={`Kindly give a few minutes of your time to rate your experience. Thank you.`}
-                    loading={loading}
-                    actionBtnText='Rate'
-                    cancelBtnText='Skip'
-                    content={
-                        <div className='ticket-closure-modal__rating'>
-                            <CustomRatings
-                                rating={ratingValue}
-                                handleRating={(value) => setRatingValue(value)}
-                            />
-                        </div>
-                    }
-                />
+
+                <p className='ticket-closure-modal__text'>
+                    Kindly give a few minutes of your time to rate your
+                    experience. Thank you.
+                </p>
+                <div className='ticket-closure-modal__rating'>
+                    <CustomRatings
+                        rating={ratingValue}
+                        handleRating={(value) => setRatingValue(value)}
+                    />
+                </div>
+                <div id='btnActionGroup'>
+                    <Button
+                        type='button'
+                        text={`Continue`}
+                        classType='primary'
+                        onClick={rateTicket}
+                        loading={loading}
+                    />
+                    <Button
+                        type='button'
+                        text='Close'
+                        classType='bordered'
+                        // otherClass="my-2 w-100"
+                        onClick={toggle}
+                        disabled={loading}
+                    />
+                </div>
             </div>
         </Modal>
     );
