@@ -127,3 +127,43 @@ export const validateEmail = (emailAddress = "") => {
     let emailTest = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return emailAddress?.match(emailTest) ? true : false;
 };
+
+export const getDaysHrsMinsAndSecs = (noOfSeconds) => {
+    let hours = 0;
+    let days = 0;
+    let mins = 0;
+    let secs = 0;
+
+    let totalSeconds = Number(noOfSeconds);
+
+    if (totalSeconds > 86400) {
+        let offSeconds = totalSeconds % 86400;
+        days = (totalSeconds - offSeconds) / 86400;
+        totalSeconds = offSeconds;
+    }
+
+    if (totalSeconds < 86400 && totalSeconds >= 3600) {
+        let offSeconds = totalSeconds % 3600;
+        hours = (totalSeconds - offSeconds) / 3600;
+        totalSeconds = offSeconds;
+    }
+
+    if (totalSeconds < 3600 && totalSeconds >= 60) {
+        let offSeconds = totalSeconds % 60;
+        mins = (totalSeconds - offSeconds) / 60;
+        totalSeconds = offSeconds;
+    }
+
+    secs = totalSeconds;
+
+    return { days, hours, mins, secs, total: noOfSeconds };
+};
+
+export const incrementDateTime = (dateTime) => {
+    if (dateTime?.length !== 24) {
+        return ""
+    };
+    let updatedMsecs =
+        Number.parseInt(dateTime.slice(20, dateTime.length - 1)) + 1;
+    return `${dateTime.slice(0, 20)}${updatedMsecs}Z`;
+};

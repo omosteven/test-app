@@ -22,7 +22,7 @@ const requestHandler = (request) => {
 };
 
 const responseHandler = (response) => {
-    if (response.status === 401) {
+    if (response.status === 401 || response.status === 409) {
         deleteAccessToken();
         window.location.reload();
     }
@@ -31,7 +31,11 @@ const responseHandler = (response) => {
 };
 
 const errorHandler = (error) => {
-    if (error?.response?.status === 401 || error?.response?.status === 403) {
+    if (
+        error?.response?.status === 401 ||
+        error?.response?.status === 403 ||
+        error?.response?.status === 409
+    ) {
         deleteAccessToken();
         window.location.reload();
     }

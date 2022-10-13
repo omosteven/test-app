@@ -17,6 +17,7 @@ import { dataQueryStatus } from "../../../../utils/formatHandlers";
 import {
     generateID,
     getErrorMessage,
+    incrementDateTime,
     validateEmail,
 } from "../../../../utils/helper";
 import LiveChatInput from "./LiveChatInput/LiveChatInput";
@@ -32,8 +33,9 @@ import {
     messageTypes,
     TICKET_CLOSED_ALERT,
     ADD_EMAIL_ADDRESS,
-    FORM_FILLED_COMPLETLY,
-    messageActionTypes,
+    FORM_FILLED_COMPLETELY,
+    INPUT_NEEDED,
+    AGENT_UNAVAILABLE,
 } from "./MessageBody/Messages/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
 import {
@@ -62,7 +64,6 @@ const {
     ACTION_INFO,
     DOWNTIME_BRANCH,
     DOWNTIME_BRANCH_SUB_SENTENCE,
-    FORM_FILLED,
 } = messageTypes;
 
 const { TEXT } = formInputTypes;
@@ -73,6 +74,7 @@ const LiveChat = ({
     handleVerifyAction,
     handleCloseTicket,
     handleTicketCloseSuccess,
+    handleOpenNewTicket,
 }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -86,6 +88,8 @@ const LiveChat = ({
     const [fetchingInputStatus, setFetchingInputStatus] = useState(true);
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
 
+    const { conversationBreakers } = useSelector((state) => state.chat);
+
     const { ticketId, agent, ticketPhase, customer } = ticket;
 
     const { ticketsMessages } = useSelector((state) => state.tickets);
@@ -95,6 +99,12 @@ const LiveChat = ({
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
+
+    const getConvoBreaker = (actionBranchType) => {
+        return conversationBreakers?.find(
+            (x) => x.actionBranchType === actionBranchType
+        );
+    };
 
     const requestAllMessages = async () => {
         try {
@@ -112,6 +122,10 @@ const LiveChat = ({
                     ticketId,
                     suggestionRetryAttempt: 0,
                     messageStatus: messageStatues?.DELIVERED,
+                    messageType:
+                        x.messageType === DOWNTIME_BRANCH
+                            ? ACTION_INFO
+                            : x.messageType,
                     messageContentId: x?.messageContentId
                         ? x?.messageContentId
                         : x?.deliveryDate,
@@ -159,14 +173,31 @@ const LiveChat = ({
                 // triggerAgentTyping(false);
 
                 if (discovered) {
+                    const {
+                        actionBranchHeader,
+                        displayAverageResponseTime,
+                        actionBranchOptions,
+                        actionBranchType,
+                        actionBranchId,
+                        requestRatings,
+                        actionBranchMainSentence,
+                    } = getConvoBreaker(AGENT_FOLLOWUP);
+
                     dispatch(
                         saveTicketsMessages({
                             ticketId,
                             messageId: NO_ACTION,
                             messageRefContent: branchOptionLabel,
-                            messageContent: `This usually takes about two (2) minutes, please hold on`,
+                            messageContent: actionBranchMainSentence,
+                            messageHeader: actionBranchHeader,
                             messageType: ACTION_INFO,
-                            messageActionType: AGENT_FOLLOWUP,
+                            messageActionType: actionBranchType,
+                            branchOptions: actionBranchOptions,
+                            messageActionData: {
+                                displayAverageResponseTime,
+                                actionBranchId,
+                                requestRatings,
+                            },
                             senderType: WORKSPACE_AGENT,
                             deliveryDate: new Date().toISOString(),
                         })
@@ -222,6 +253,7 @@ const LiveChat = ({
             branchOptionLabel,
             branchOptionValue,
             branchOptionActionType,
+            messageActionBranchId,
         } = messageOption;
         setStatus(DATAMODE);
         setErrorMssg();
@@ -236,7 +268,9 @@ const LiveChat = ({
                 x.messageType === messageTypes?.COLLECTION) &&
                 x.messageContentId === branchId
                 ? { ...x, selectedOption: branchOptionId }
-                : x;
+                : x ||
+                      x?.messageActionData?.actionBranchId ===
+                          messageActionBranchId;
         });
 
         dispatch(setTicketMessages(newMessageList));
@@ -246,10 +280,17 @@ const LiveChat = ({
         }
 
         if (
-            branchOptionActionType === messageOptionActions?.CLOSE_CONVERSATION
+            branchOptionActionType ===
+                messageOptionActions?.CLOSE_CONVERSATION ||
+            branchOptionActionType === messageOptionActions?.CLOSE_TICKET
         ) {
             handleCloseConversation();
 
+            return "";
+        }
+
+        if (branchOptionActionType === messageOptionActions?.OPEN_NEW_TICKET) {
+            handleOpenNewTicket();
             return "";
         }
 
@@ -515,16 +556,35 @@ const LiveChat = ({
         const ticket =
             typeof ticketStr === "string" ? JSON.parse(ticketStr) : ticketStr;
         if (ticket.ticketStatus === false) {
-            saveTicketsMessages({
-                ticketId: ticket?.ticketId,
-                messageId: TICKET_CLOSED_ALERT,
-                // messageRefContent: branchOptionLabel,
-                messageContent: `This ticket has been closed`,
-                messageType: ACTION_INFO,
-                messageActionType: TICKET_CLOSED_ALERT,
-                senderType: WORKSPACE_AGENT,
-                deliveryDate: new Date().toISOString(),
-            });
+            const {
+                actionBranchHeader,
+                displayAverageResponseTime,
+                actionBranchMainSentence,
+                actionBranchOptions,
+                actionBranchType,
+                actionBranchId,
+                requestRatings,
+            } = getConvoBreaker(TICKET_CLOSED_ALERT);
+
+            dispatch(
+                saveTicketsMessages({
+                    ticketId: ticket?.ticketId,
+                    messageId: actionBranchId,
+                    // messageRefContent: branchOptionLabel,
+                    messageContent: actionBranchMainSentence,
+                    messageHeader: actionBranchHeader,
+                    messageType: ACTION_INFO,
+                    messageActionType: actionBranchType,
+                    senderType: WORKSPACE_AGENT,
+                    branchOptions: actionBranchOptions,
+                    messageActionData: {
+                        displayAverageResponseTime,
+                        actionBranchId,
+                        requestRatings,
+                    },
+                    deliveryDate: new Date().toISOString(),
+                })
+            );
         }
     };
 
@@ -535,50 +595,79 @@ const LiveChat = ({
     };
 
     const handleAddEmail = () => {
-        // if (!validateEmail(customer?.email)) {
+        if (!validateEmail(customer?.email)) {
+            const {
+                actionBranchHeader,
+                displayAverageResponseTime,
+                actionBranchOptions,
+                actionBranchType,
+                actionBranchId,
+                actionBranchMainSentence,
+                requestRatings,
+            } = getConvoBreaker(ADD_EMAIL_ADDRESS);
+
             dispatch(
                 saveTicketsMessages({
-                    ticketId: ticket?.ticketId,
+                    ticketId,
                     messageId: generateID(),
-                    messageContent:
-                        messageActionTypes.ADD_EMAIL_ADDRESS.content,
+                    // messageRefContent: branchOptionLabel,
+                    messageContent: actionBranchMainSentence,
+                    messageHeader: actionBranchHeader,
                     messageType: ACTION_INFO,
-                    messageActionType: ADD_EMAIL_ADDRESS,
+                    messageActionType: actionBranchType,
+                    branchOptions: actionBranchOptions,
+                    messageActionData: {
+                        displayAverageResponseTime,
+                        actionBranchId,
+                        requestRatings,
+                    },
                     senderType: WORKSPACE_AGENT,
+                    deliveryDate: new Date().toISOString(),
                 })
             );
-        // }
-    };
-
-    const handleAddBreaker = (messageActionType) => {
-        dispatch(
-            saveTicketsMessages({
-                ticketId: ticket?.ticketId,
-                messageId: generateID(),
-                messageContent: messageActionTypes[messageActionType].content,
-                messageType: ACTION_INFO,
-                messageActionType,
-                senderType: WORKSPACE_AGENT,
-            })
-        );
-    };
-
-    const handleConversationBreaker = (message) => {
-        const { messageType } = message;
-
-        switch (messageType) {
-            case FORM_FILLED:
-                handleAddBreaker(FORM_FILLED_COMPLETLY);
-                return handleAddEmail();
-            case DOWNTIME_BRANCH:
-                handleAddBreaker(DOWNTIME_BRANCH);
-                return handleAddEmail();
-            default:
-                return "";
         }
     };
 
+    const handleConvoBreaker = (messageType, deliveryDate) => {
+        if (messageType) {
+            const {
+                actionBranchHeader,
+                displayAverageResponseTime,
+                actionBranchMainSentence,
+                actionBranchOptions,
+                actionBranchType,
+                actionBranchId,
+                requestRatings,
+            } = getConvoBreaker(messageType);
+
+            dispatch(
+                saveTicketsMessages({
+                    ticketId,
+                    messageId: generateID(),
+                    // messageRefContent: branchOptionLabel,
+                    messageContent: actionBranchMainSentence,
+                    messageHeader: actionBranchHeader,
+                    messageType: ACTION_INFO,
+                    messageActionType: actionBranchType,
+                    branchOptions: actionBranchOptions,
+                    messageActionData: {
+                        displayAverageResponseTime,
+                        actionBranchId,
+                        requestRatings,
+                    },
+                    senderType: WORKSPACE_AGENT,
+                    deliveryDate: deliveryDate
+                        ? incrementDateTime(deliveryDate)
+                        : new Date().toISOString(),
+                })
+            );
+        }
+
+        return handleAddEmail();
+    };
+
     const handleReceive = (message) => {
+        const { messageType, deliveryDate } = message;
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (message.senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
@@ -594,9 +683,24 @@ const LiveChat = ({
             handleMarkAsRead(message?.messageId);
         }
 
+        if (
+            [
+                INPUT_NEEDED,
+                FORM_FILLED_COMPLETELY,
+                TICKET_CLOSED_ALERT,
+                AGENT_UNAVAILABLE,
+                AGENT_FOLLOWUP,
+            ].includes(messageType)
+        ) {
+            handleConvoBreaker(messageType, deliveryDate);
+            return "";
+        }
+
         dispatch(
             saveTicketsMessages({
                 ...message,
+                messageType:
+                    messageType === DOWNTIME_BRANCH ? ACTION_INFO : messageType,
                 ticketId: newMessageTicketId,
                 fileAttachments:
                     message?.fileAttachments?.length > 0
@@ -614,12 +718,8 @@ const LiveChat = ({
 
     useEffect(() => {
         requestAllMessages();
-
-        // handleTriggerVerifyEmail();
-
         socket.emit(SUBSCRIBE_TO_TICKET, { ticketId });
         socket.on(RECEIVE_MESSAGE, handleReceive);
-        socket.on(RECEIVE_MESSAGE, handleConversationBreaker);
         // socket.on(CLOSED_TICKET, handleTicketClosureProvision)
         socket.on(NEW_TICKET_UPDATE, handleTicketClosure);
 

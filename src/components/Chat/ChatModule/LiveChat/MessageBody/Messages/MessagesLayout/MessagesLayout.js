@@ -56,6 +56,13 @@ const MessagesLayout = ({
                                 agent={agent}
                                 handleRating={handleRateConversation}
                                 handleVerifyAction={handleVerifyAction}
+                                messageIndex={i + 1}
+                                messagesDepth={messages?.length}
+                                handleMessageOptionSelect={
+                                    handleMessageOptionSelect
+                                }
+                                handleOptConversation={handleOptConversation}
+                                openPreviewModal={openPreviewModal}
                             />
                         ) : (
                             <Message

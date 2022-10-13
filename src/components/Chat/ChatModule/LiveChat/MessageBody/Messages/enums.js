@@ -1,8 +1,10 @@
 export const TICKET_CLOSED_ALERT = "TICKET_CLOSED_ALERT";
 export const AGENT_FOLLOWUP = "AGENT_FOLLOWUP";
-export const FORM_FILLED_COMPLETLY = "FORM_FILLED_COMPLETLY";
+export const FORM_FILLED_COMPLETELY = "FORM_FILLED_COMPLETELY";
 export const ADD_EMAIL_ADDRESS = "ADD_EMAIL_ADDRESS";
 export const DOWNTIME_BRANCH = "DOWNTIME_BRANCH";
+export const INPUT_NEEDED = "INPUT_NEEDED";
+export const AGENT_UNAVAILABLE = "AGENT_UNAVAILABLE";
 
 export const messageActionTypes = Object.freeze({
     [TICKET_CLOSED_ALERT]: {
@@ -11,7 +13,7 @@ export const messageActionTypes = Object.freeze({
     [AGENT_FOLLOWUP]: {
         title: `Connecting you to an agent`,
     },
-    [FORM_FILLED_COMPLETLY]: {
+    [FORM_FILLED_COMPLETELY]: {
         title: `Form filled completely`,
         content: "Thank you, we would get back to you with an update soon. ",
     },
@@ -42,6 +44,7 @@ export const messageTypes = Object.freeze({
     DOWNTIME_BRANCH: "DOWNTIME_BRANCH",
     DOWNTIME_BRANCH_SUB_SENTENCE: "DOWNTIME_BRANCH_SUB_SENTENCE",
     FORM_FILLED: "FORM_FILLED",
+    FORM_FILLED_COMPLETELY: "FORM_FILLED_COMPLETELY",
 });
 
 export const branchOptionsTypes = Object.freeze({
@@ -61,6 +64,9 @@ export const appMessageUserTypes = Object.freeze({
 export const messageOptionActions = Object.freeze({
     CLOSE_CONVERSATION: "CLOSE_CONVERSATION",
     RESTART_CONVERSATION: "RESTART_CONVERSATION",
+    OPEN_NEW_TICKET: "OPEN_NEW_TICKET",
+    ADD_EMAIL_ADDRESS: "ADD_EMAIL_ADDRESS",
+    CLOSE_TICKET: "CLOSE_TICKET",
 });
 
 export const formInputTypes = {

@@ -20,6 +20,7 @@ import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/N
 import "./Chat.scss";
 import { pushAuthUser } from "store/auth/actions";
 import TicketCloseModal from "./TicketCloseModal/TicketCloseModal";
+import { setConversationBreakers } from "store/chat/actions";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 
@@ -49,6 +50,22 @@ const Chat = () => {
     // const [selectedTicket, setSelectedTicket] = useState();
 
     const [customerTicketId, setCustomerTicketId] = useState();
+
+    const fetchConvoBreakers = async () => {
+        try {
+            setStatus(LOADING);
+            setErrorMssg();
+            const url = apiRoutes?.getActionBranches;
+            const res = await API.get(url);
+            if (res.status === 200) {
+                const { data } = res.data;
+                dispatch(setConversationBreakers(data));
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
 
     const getCustomerAuthToken = async () => {
         try {
@@ -177,6 +194,7 @@ const Chat = () => {
     };
 
     const callHandler = () => {
+        fetchConvoBreakers();
         isAuthCodeAvailable
             ? customerTicketId
                 ? getCustomerTickets(customerTicketId)
@@ -222,6 +240,7 @@ const Chat = () => {
                                     handleTicketCloseSuccess={
                                         handleTicketCloseSuccess
                                     }
+                                    handleOpenNewTicket={createNewTicket}
                                 />
                             ) : (
                                 <div className='empty__chat--interface'>
