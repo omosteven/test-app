@@ -16,3 +16,5 @@ export const SEND_CUSTOMER_CONVERSATION_REPLY =
 export const CLOSED_TICKET = "closed_ticket";
 export const NEW_TICKET_UPDATE = "new_ticket_update";
 export const MARK_AS_READ = "mark_as_read";
+export const AGENT_IS_UNAVAILABLE = "agent_unavailable";
+export const SEND_AGENT_TICKET = "assign_ticket_to_agent";

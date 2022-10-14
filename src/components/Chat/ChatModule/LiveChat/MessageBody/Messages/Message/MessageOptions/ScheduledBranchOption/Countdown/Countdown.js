@@ -28,7 +28,7 @@ const Countdown = ({ countdownTo, countdownEnded, setCountdownEnded }) => {
 
     useEffect(() => {
         let countdownId = setInterval(() => countdown(), 1000);
-        setCountdownEnded(false);
+        setCountdownEnded?.(false);
         return () => clearInterval(countdownId);
 
         // eslint-disable-next-line

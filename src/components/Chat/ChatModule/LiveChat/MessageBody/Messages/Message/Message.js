@@ -14,6 +14,7 @@ const Message = ({
     messageIndex,
     messagesDepth,
     openPreviewModal,
+    lastMessage
 }) => {
     const {
         senderType,
@@ -63,6 +64,7 @@ const Message = ({
                         handleMessageOptionSelect={handleMessageOptionSelect}
                         handleOptConversation={handleOptConversation}
                         deliveryDate={deliveryDate}
+                        lastMessage={lastMessage}
                     />
                 )}
                 {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && (

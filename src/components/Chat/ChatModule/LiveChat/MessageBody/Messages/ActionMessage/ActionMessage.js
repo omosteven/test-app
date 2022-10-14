@@ -1,6 +1,6 @@
 import React from "react";
 import { AgentImage } from "../../../../../../ui";
-import { messageTypes } from "../enums";
+import { AGENT_FOLLOWUP, messageTypes } from "../enums";
 import MessageContent from "../Message/MessageContent/MessageContent";
 import MessageTimeStatus from "../Message/MessageTimeStatus/MessageTimeStatus";
 import ActionMessageContent from "./ActionMessageContent/ActionMessageContent";
@@ -43,7 +43,7 @@ const ActionMessage = ({
         requestRatings,
         averageResponseTime,
     } = messageActionData || {};
-    
+
     return (
         <div
             id={messageId ? messageId : ""}
@@ -69,11 +69,12 @@ const ActionMessage = ({
                     requestRatings={requestRatings}
                 />
 
-                {displayAverageResponseTime && (
-                    <ActionResponseTime
-                        averageResponseTime={averageResponseTime}
-                    />
-                )}
+                {(displayAverageResponseTime &&
+                    messageActionType === AGENT_FOLLOWUP) && (
+                        <ActionResponseTime
+                            averageResponseTime={averageResponseTime}
+                        />
+                    )}
 
                 {parsedBranchOptions?.length > 0 && (
                     <ActionMessageOptions

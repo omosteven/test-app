@@ -12,9 +12,18 @@ const ActionResponseTime = ({ averageResponseTime }) => {
             <div className='action-response-time'>
                 <ReactSVG src={imageLinks?.svg?.clock} />{" "}
                 <span>
-                    Replies usually under {days > 0 && `${days}days`}{" "}
-                    {hours > 0 && `${hours}hours`} {mins > 0 && `${mins}mins`}{" "}
-                    {secs > 0 && `${secs}secs`}
+                    Replies usually under{" "}
+                    {!averageResponseTime ? (
+                        "10mins"
+                    ) : (
+                        <>
+                            {" "}
+                            {days > 0 && `${days}days`}{" "}
+                            {hours > 0 && `${hours}hours`}{" "}
+                            {mins > 0 && `${mins}mins`}{" "}
+                            {secs > 0 && `${secs}secs`}
+                        </>
+                    )}
                 </span>
             </div>
         </>

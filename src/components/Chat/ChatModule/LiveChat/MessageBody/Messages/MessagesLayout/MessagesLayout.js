@@ -33,6 +33,7 @@ const MessagesLayout = ({
     handleRateConversation,
     handleVerifyAction,
 }) => {
+    const lastMessage = messages[messages.length - 1];
     return (
         <ol className='message-thread'>
             {messages.map((message, i) => {
@@ -69,6 +70,7 @@ const MessagesLayout = ({
                                 messageIndex={i + 1}
                                 messagesDepth={messages?.length}
                                 data={message}
+                                lastMessage={lastMessage}
                                 agent={agent}
                                 handleMessageOptionSelect={
                                     handleMessageOptionSelect
