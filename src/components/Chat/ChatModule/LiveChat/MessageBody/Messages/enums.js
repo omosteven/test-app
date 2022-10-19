@@ -5,6 +5,7 @@ export const ADD_EMAIL_ADDRESS = "ADD_EMAIL_ADDRESS";
 export const DOWNTIME_BRANCH = "DOWNTIME_BRANCH";
 export const INPUT_NEEDED = "INPUT_NEEDED";
 export const AGENT_UNAVAILABLE = "AGENT_UNAVAILABLE";
+export const DOWNTIME_BRANCH_SUB_SENTENCE = "DOWNTIME_BRANCH_SUB_SENTENCE";
 
 export const messageActionTypes = Object.freeze({
     [TICKET_CLOSED_ALERT]: {
@@ -23,7 +24,12 @@ export const messageActionTypes = Object.freeze({
             "Please add and verify your email address so we can also reach you via email with an update",
     },
     [DOWNTIME_BRANCH]: {
-        title: "We’re experiencing an issue",
+        title: "Oops, there’s an issue here",
+        content:
+            "We are currently experiencing a downtime, please be patient while we fix this issue.",
+    },
+    [DOWNTIME_BRANCH_SUB_SENTENCE]: {
+        title: "We’re currently fixing the issue",
         content:
             "We are currently experiencing a downtime, please be patient while we fix this issue.",
     },

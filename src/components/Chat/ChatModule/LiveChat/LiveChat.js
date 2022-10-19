@@ -38,6 +38,7 @@ import {
     FORM_FILLED_COMPLETELY,
     INPUT_NEEDED,
     AGENT_UNAVAILABLE,
+    messageActionTypes,
 } from "./MessageBody/Messages/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
 import {
@@ -726,6 +727,12 @@ const LiveChat = ({
         dispatch(
             saveTicketsMessages({
                 ...message,
+                messageHeader:
+                    messageType === DOWNTIME_BRANCH
+                        ? messageActionTypes.DOWNTIME_BRANCH.title
+                        : messageType === DOWNTIME_BRANCH_SUB_SENTENCE
+                        ? messageActionTypes.DOWNTIME_BRANCH_SUB_SENTENCE.title
+                        : "",
                 messageType:
                     messageType === DOWNTIME_BRANCH ||
                     messageType === DOWNTIME_BRANCH_SUB_SENTENCE
@@ -822,26 +829,22 @@ const LiveChat = ({
     };
 
     const callTicketClosure = () => {
-        let selectedTicketMessages = ticketsMessages?.filter((message) => {
-            return message.ticketId === ticketId;
-        });
-
-        if (selectedTicketMessages?.length === 1) {
+        if (messages?.length === 1) {
             closeTicket();
         }
     };
 
     useEffect(() => {
-        let timer = setTimeout(() => {
+        let timer = setInterval(() => {
             callTicketClosure();
         }, 120000);
 
         return () => {
-            clearTimeout(timer);
+            clearInterval(timer);
         };
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [ticketsMessages, ticketId]);
+    }, [ticketsMessages, ticketId, messages]);
 
     const handleInputNeeded = () => {
         if (messages?.length > 1) {
@@ -866,12 +869,12 @@ const LiveChat = ({
     useEffect(() => {
         let timer = setInterval(() => {
             handleInputNeeded();
-        }, 300000);
+        }, 120000);
 
         return () => {
             clearInterval(timer);
         };
-    }, [messages]);
+    }, [ticketsMessages, ticketId, messages]);
 
     return (
         <>
