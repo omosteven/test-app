@@ -1,6 +1,6 @@
 import React from "react";
 import { AgentImage } from "../../../../../../ui";
-import { AGENT_FOLLOWUP, messageTypes } from "../enums";
+import { ADD_EMAIL_ADDRESS, AGENT_FOLLOWUP, messageTypes } from "../enums";
 import MessageContent from "../Message/MessageContent/MessageContent";
 import MessageTimeStatus from "../Message/MessageTimeStatus/MessageTimeStatus";
 import ActionMessageContent from "./ActionMessageContent/ActionMessageContent";
@@ -69,25 +69,28 @@ const ActionMessage = ({
                     requestRatings={requestRatings}
                 />
 
-                {(displayAverageResponseTime &&
-                    messageActionType === AGENT_FOLLOWUP) && (
+                {displayAverageResponseTime &&
+                    messageActionType === AGENT_FOLLOWUP && (
                         <ActionResponseTime
                             averageResponseTime={averageResponseTime}
                         />
                     )}
 
-                {parsedBranchOptions?.length > 0 && (
-                    <ActionMessageOptions
-                        actionBranchOptions={parsedBranchOptions}
-                        selectedOption={selectedActionOption}
-                        messageIndex={messageIndex}
-                        messagesDepth={messagesDepth}
-                        messageType={messageType}
-                        handleMessageOptionSelect={handleMessageOptionSelect}
-                        deliveryDate={deliveryDate}
-                        messageActionBranchId={actionBranchId}
-                    />
-                )}
+                {parsedBranchOptions?.length > 0 &&
+                    messageActionType !== ADD_EMAIL_ADDRESS && (
+                        <ActionMessageOptions
+                            actionBranchOptions={parsedBranchOptions}
+                            selectedOption={selectedActionOption}
+                            messageIndex={messageIndex}
+                            messagesDepth={messagesDepth}
+                            messageType={messageType}
+                            handleMessageOptionSelect={
+                                handleMessageOptionSelect
+                            }
+                            deliveryDate={deliveryDate}
+                            messageActionBranchId={actionBranchId}
+                        />
+                    )}
 
                 {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && (
                     <>

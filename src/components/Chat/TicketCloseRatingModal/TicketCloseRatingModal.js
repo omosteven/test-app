@@ -1,5 +1,4 @@
 import { Button, ErrorDialog } from "components/ui";
-import ConfirmPrompt from "components/ui/ConfirmPrompt/ConfirmPrompt";
 import CustomRatings from "components/ui/CustomRatings/CustomRatings";
 import API from "lib/api";
 import apiRoutes from "lib/api/apiRoutes";
