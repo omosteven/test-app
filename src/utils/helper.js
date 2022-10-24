@@ -194,7 +194,6 @@ export const cropImage = async (crop, url, setOutput) => {
 
     // translate canvas context to a central location to allow rotating and flipping around the center
     ctx.translate(image.width / 2, image.height / 2);
-    //   ctx.scale(flip.horizontal ? -1 : 1, flip.vertical ? -1 : 1)
     ctx.translate(-image.width / 2, -image.height / 2);
 
     // draw rotated image

@@ -29,7 +29,10 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     const tablet = width > 768;
 
     useEffect(() => {
-        if (Object?.entries(fileAttachmentImageConfig)?.length > 0) {
+        if (
+            Object?.entries(fileAttachmentImageConfig)?.length > 0 &&
+            width !== 0
+        ) {
             cropImage(
                 tablet ? desktopVersion : mobileVersion,
                 fileAttachmentUrl,
