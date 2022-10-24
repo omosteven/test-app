@@ -2,7 +2,11 @@ import React from "react";
 import MediaContent from "./MediaContent/MediaContent";
 import "./MessageAttachments.scss";
 
-const MessageAttachments = ({ fileAttachments, openPreviewModal }) => {
+const MessageAttachments = ({
+    fileAttachments,
+    openPreviewModal,
+    isReceivedMessage,
+}) => {
     return (
         <div className='attachment__list'>
             {fileAttachments &&
@@ -11,6 +15,7 @@ const MessageAttachments = ({ fileAttachments, openPreviewModal }) => {
                         attachment={attachment}
                         key={i}
                         openPreviewModal={openPreviewModal}
+                        isReceivedMessage={isReceivedMessage}
                     />
                 ))}
         </div>

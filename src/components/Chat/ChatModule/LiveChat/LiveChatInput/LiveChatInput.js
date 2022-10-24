@@ -202,7 +202,6 @@ const LiveChatInput = ({
         setErrors((prev) => ({ ...prev, file: "" }));
     };
 
- 
     const showIphoneKeyboard = () => {
         // Moves the real input on-screen
         const chatInterface = document.getElementById("chatInterface");
@@ -223,9 +222,7 @@ const LiveChatInput = ({
             e.preventDefault();
         });
 
-        
         return "";
-     
     };
 
     const handleInputFocus = () => {
