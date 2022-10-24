@@ -1,57 +1,78 @@
-.content--media {
-    width: 100%;
-    border-radius: 0rem 0.5rem 0 0;
-    cursor: pointer;
+    .content--media {
+        width: 100%;
+        cursor: pointer;
+        margin: 0.5rem 0;
 
-    &.img {
-        object-fit: contain;
-        max-height: 13.75rem;
-        width: fit-content;
-        min-width: 100%;
+        &.sent {
+            border-radius: 0.5rem 0.5rem 0 0.5rem;
+        }
 
-        object-fit: cover;
-        max-height: 12.5rem;
+        &.received {
+            border-radius: 0.5rem 0.5rem 0.5rem 0px;
+        }
+    
+        &.img {
+            object-fit: cover;
+
+            &.mobile {
+                width: 275px;
+                height: 160px;
+            }
+
+            &.desktop {
+                width: 440px;
+                height: 246px;
+            }
+        }
+    
+        &.video {
+            height: auto;
+            width: fit-content;
+            max-width: 100%;
+        }
     }
-
-    &.video {
-        height: auto;
-        width: fit-content;
-        max-width: 100%;
-    }
-}
-
-.content--document {
-    padding: 0.75rem 0.688rem;
-    background: rgba(217, 217, 217, 0.6);
-    border-radius: 0.25rem 0.25rem 0 0;
-    display: flex;
-    gap: 0.453rem;
-    width: 100%;
-    align-items: center;
-    cursor: pointer;
-
-    svg {
-        width: 1.25rem;
-        height: 1.5rem;
-    }
-
-    .details{
+    
+    .content--document {
+        padding: 0.75rem 0.688rem;
+        background: rgba(217, 217, 217, 0.6);
+        border-radius: 0.25rem 0.25rem 0 0;
         display: flex;
-        flex-direction: column;
-        
-            p {
-                font-size: 0.75rem;
-                line-height: 1rem;
-                display: flex;
-                align-items: center;
-                margin: 0;
-            }
+        gap: 0.453rem;
+        width: 100%;
+        align-items: center;
+        cursor: pointer;
+    
+        svg {
+            width: 1.25rem;
+            height: 1.5rem;
+        }
 
-            span {
-                font-size: 8px;
-                line-height: 0.75rem;
-                text-transform: uppercase;
-                text-align: left;
-            }
+        &.sent {
+            border-radius: 0.5rem 0.5rem 0 0.5rem;
+        }
+
+        &.received {
+            border-radius: 0.5rem 0.5rem 0.5rem 0px;
+        }
+    
+        .details{
+            display: flex;
+            flex-direction: column;
+            
+                p {
+                    font-size: 0.75rem;
+                    line-height: 1rem;
+                    display: flex;
+                    align-items: center;
+                    margin: 0;
+                }
+    
+                span {
+                    font-size: 8px;
+                    line-height: 0.75rem;
+                    text-transform: uppercase;
+                    text-align: left;
+                }
+        }
     }
-}
+

@@ -1,27 +1,17 @@
-import MessageAttachments from "../MessageAttachments/MessageAttachments";
+import React from "react";
 
 const MessageContent = ({
     isReceivedMessage,
     messageContent,
-    fileAttachments,
-    openPreviewModal,
     otherClassNames,
 }) => {
-    const hasAttachment = fileAttachments?.length > 0;
     return (
         <div
             className={`
                 message__content 
                 ${isReceivedMessage ? "received" : "sent"}
-                ${hasAttachment ? "has__attachment" : ""}
                 ${otherClassNames ? otherClassNames : ""}
             `}>
-            {hasAttachment && (
-                <MessageAttachments
-                    fileAttachments={fileAttachments}
-                    openPreviewModal={openPreviewModal}
-                />
-            )}
             {messageContent !== "" && (
                 <div className='message'>{messageContent}</div>
             )}

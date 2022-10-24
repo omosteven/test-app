@@ -161,9 +161,57 @@ export const getDaysHrsMinsAndSecs = (noOfSeconds) => {
 
 export const incrementDateTime = (dateTime) => {
     if (dateTime?.length !== 24) {
-        return ""
-    };
+        return "";
+    }
     let updatedMsecs =
         Number.parseInt(dateTime.slice(20, dateTime.length - 1)) + 1;
     return `${dateTime.slice(0, 20)}${updatedMsecs}Z`;
+};
+
+export const createImage = (url) =>
+    new Promise((resolve, reject) => {
+        const image = new Image();
+
+        image.addEventListener("load", () => resolve(image));
+        image.addEventListener("error", (error) => reject(error));
+        image.setAttribute("crossOrigin", "Anonymous");
+        image.src = url;
+    });
+
+export const cropImage = async (crop, url, setOutput) => {
+    const canvas = document.createElement("canvas");
+    const image = await createImage(url);
+
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+        throw new Error("No 2d context");
+    }
+
+    // set canvas size to match the bounding box
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    // translate canvas context to a central location to allow rotating and flipping around the center
+    ctx.translate(image.width / 2, image.height / 2);
+    //   ctx.scale(flip.horizontal ? -1 : 1, flip.vertical ? -1 : 1)
+    ctx.translate(-image.width / 2, -image.height / 2);
+
+    // draw rotated image
+    ctx.drawImage(image, 0, 0);
+
+    // extract the cropped image using these values
+    const data = ctx.getImageData(crop.x, crop.y, crop.width, crop.height);
+
+    // set canvas width to final desired crop size - this will clear existing context
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+
+    // paste generated rotate image at the top left corner
+    ctx.putImageData(data, 0, 0);
+
+    // Converting to base64
+    const base64Image = canvas.toDataURL("image/jpeg");
+
+    setOutput(base64Image);
 };
