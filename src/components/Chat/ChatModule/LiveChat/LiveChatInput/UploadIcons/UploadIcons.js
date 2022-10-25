@@ -51,7 +51,7 @@ const UploadIcons = ({
             }
 
             const url = URL.createObjectURL(file);
-
+            console.log({ url });
             const uploadObj = {
                 file,
                 fileAttachmentUrl: url,

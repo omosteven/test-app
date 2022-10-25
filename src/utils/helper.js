@@ -127,3 +127,90 @@ export const validateEmail = (emailAddress = "") => {
     let emailTest = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     return emailAddress?.match(emailTest) ? true : false;
 };
+
+export const getDaysHrsMinsAndSecs = (noOfSeconds) => {
+    let hours = 0;
+    let days = 0;
+    let mins = 0;
+    let secs = 0;
+
+    let totalSeconds = Number(noOfSeconds);
+
+    if (totalSeconds > 86400) {
+        let offSeconds = totalSeconds % 86400;
+        days = (totalSeconds - offSeconds) / 86400;
+        totalSeconds = offSeconds;
+    }
+
+    if (totalSeconds < 86400 && totalSeconds >= 3600) {
+        let offSeconds = totalSeconds % 3600;
+        hours = (totalSeconds - offSeconds) / 3600;
+        totalSeconds = offSeconds;
+    }
+
+    if (totalSeconds < 3600 && totalSeconds >= 60) {
+        let offSeconds = totalSeconds % 60;
+        mins = (totalSeconds - offSeconds) / 60;
+        totalSeconds = offSeconds;
+    }
+
+    secs = totalSeconds;
+
+    return { days, hours, mins, secs, total: noOfSeconds };
+};
+
+export const incrementDateTime = (dateTime) => {
+    if (dateTime?.length !== 24) {
+        return "";
+    }
+    let updatedMsecs =
+        Number.parseInt(dateTime.slice(20, dateTime.length - 1)) + 1;
+    return `${dateTime.slice(0, 20)}${updatedMsecs}Z`;
+};
+
+export const createImage = (url) =>
+    new Promise((resolve, reject) => {
+        const image = new Image();
+
+        image.addEventListener("load", () => resolve(image));
+        image.addEventListener("error", (error) => reject(error));
+        image.setAttribute("crossOrigin", "Anonymous");
+        image.src = url;
+    });
+
+export const cropImage = async (crop, url, setOutput) => {
+    const canvas = document.createElement("canvas");
+    const image = await createImage(url);
+
+    const ctx = canvas.getContext("2d");
+
+    if (!ctx) {
+        throw new Error("No 2d context");
+    }
+
+    // set canvas size to match the bounding box
+    canvas.width = image.width;
+    canvas.height = image.height;
+
+    // translate canvas context to a central location to allow rotating and flipping around the center
+    ctx.translate(image.width / 2, image.height / 2);
+    ctx.translate(-image.width / 2, -image.height / 2);
+
+    // draw rotated image
+    ctx.drawImage(image, 0, 0);
+
+    // extract the cropped image using these values
+    const data = ctx.getImageData(crop.x, crop.y, crop.width, crop.height);
+
+    // set canvas width to final desired crop size - this will clear existing context
+    canvas.width = crop.width;
+    canvas.height = crop.height;
+
+    // paste generated rotate image at the top left corner
+    ctx.putImageData(data, 0, 0);
+
+    // Converting to base64
+    const base64Image = canvas.toDataURL("image/jpeg");
+
+    setOutput(base64Image);
+};

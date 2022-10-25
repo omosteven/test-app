@@ -26,6 +26,7 @@ const apiRoutes = {
         `${agentsInbox}app-message-user/session/${sessionId}/otp/resend`,
     chatSettings: (workspaceSlug) =>
         `${accountsService}workspace/chat-appearance/${workspaceSlug}`,
+    getActionBranches: `${kSam}branches/action-branch`,
     fileUpload: `agents-inbox/file-upload/file-upload`,
 };
 

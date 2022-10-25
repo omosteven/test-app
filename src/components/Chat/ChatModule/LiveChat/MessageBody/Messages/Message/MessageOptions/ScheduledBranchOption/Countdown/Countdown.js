@@ -14,20 +14,21 @@ const Countdown = ({ countdownTo, countdownEnded, setCountdownEnded }) => {
     );
 
     let duration = moment.duration(Number(diff), "milliseconds");
+
     const countdown = () => {
         duration = moment.duration(Number(duration) - 1000, "milliseconds");
-        if (duration.minutes() <= 0) {
+        if (duration.hours() === 0 && duration.minutes() <= 0) {
             setCountdownEnded(true);
             return setMins(0);
         }
 
-        setHours(`${duration.hours()}`);
-        setMins(`${duration.minutes()}`);
+        setHours(duration.hours());
+        setMins(duration.minutes());
     };
 
     useEffect(() => {
         let countdownId = setInterval(() => countdown(), 1000);
-        setCountdownEnded(false);
+        setCountdownEnded?.(false);
         return () => clearInterval(countdownId);
 
         // eslint-disable-next-line
@@ -35,8 +36,13 @@ const Countdown = ({ countdownTo, countdownEnded, setCountdownEnded }) => {
 
     return (
         <span className='timer'>
-            {hours?.length > 1 ? hours : `0${hours}`}:
-            {mins?.length > 1 ? mins : `0${mins}`}
+            {hours > 0
+                ? `${hours > 9 ? hours : `0${hours}`}h:${
+                      mins > 9 ? mins : `0${mins}`
+                  }m`
+                : mins > 9
+                ? `${mins}:00m`
+                : `0${mins}:00m`}
         </span>
     );
 };

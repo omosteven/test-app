@@ -1,16 +1,31 @@
+@import "assets/scss/master";
+
 .content--media {
     width: 100%;
-    border-radius: 0rem 0.5rem 0 0;
     cursor: pointer;
+    margin: 0.5rem 0;
+
+    &.sent {
+        border-radius: 0.5rem 0.5rem 0 0.5rem;
+    }
+
+    &.received {
+        border-radius: 0.5rem 0.5rem 0.5rem 0px;
+    }
 
     &.img {
-        object-fit: contain;
-        max-height: 13.75rem;
-        width: fit-content;
-        min-width: 100%;
-
         object-fit: cover;
-        max-height: 12.5rem;
+        border: 1px solid $primary__theme_color;
+
+        &.mobile {
+            width: 275px;
+            height: 160px;
+        }
+
+        &.desktop {
+            width: 440px;
+            height: 246px;
+        }
     }
 
     &.video {
@@ -35,6 +50,14 @@
         height: 1.5rem;
     }
 
+    &.sent {
+        border-radius: 0.5rem 0.5rem 0 0.5rem;
+    }
+
+    &.received {
+        border-radius: 0.5rem 0.5rem 0.5rem 0px;
+    }
+
     .details{
         display: flex;
         flex-direction: column;
@@ -55,3 +78,4 @@
             }
     }
 }
+

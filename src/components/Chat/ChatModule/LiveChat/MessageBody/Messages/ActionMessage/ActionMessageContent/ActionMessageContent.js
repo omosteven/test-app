@@ -2,30 +2,28 @@ import CustomRatings from "components/ui/CustomRatings/CustomRatings";
 import React from "react";
 import { ReactSVG } from "react-svg";
 import imageLinks from "../../../../../../../../assets/images";
-import {
-    messageActionTypes,
-    TICKET_CLOSED_ALERT,
-    ADD_EMAIL_ADDRESS,
-} from "../../enums";
+import { ADD_EMAIL_ADDRESS } from "../../enums";
 import ActionAddEmail from "./ActionAddEmail/ActionAddEmail";
 
 const ActionMessageContent = ({
     messageContent,
+    messageHeader,
     messageActionType,
     rating,
     handleRating,
     handleVerifyAction,
+    requestRatings,
 }) => {
     return (
         <>
             <div className='message__content info__action'>
                 <div className='action__header'>
                     <ReactSVG src={imageLinks?.svg?.attention} />
-                    <h6>{messageActionTypes?.[messageActionType]?.title}</h6>
+                    <h6>{messageHeader}</h6>
                 </div>
                 <div className='message'>
                     <div>{messageContent}</div>
-                    {messageActionType === TICKET_CLOSED_ALERT && (
+                    {requestRatings && (
                         <CustomRatings {...{ rating, handleRating }} />
                     )}
                 </div>

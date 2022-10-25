@@ -6,10 +6,7 @@ export const ConfirmPrompt = ({
     title,
     subTitle,
     handleConfirmation,
-    loading,
-    actionBtnText = "Continue",
-    cancelBtnText = "Close",
-    content,
+    loading
 }) => {
     return (
         <div className='confirm__action'>

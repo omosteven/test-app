@@ -4,6 +4,7 @@ import MessageOptions from "./MessageOptions/MessageOptions";
 import MessageContent from "./MessageContent/MessageContent";
 import MessageTimeStatus from "./MessageTimeStatus/MessageTimeStatus";
 import { messageTypes, appMessageUserTypes } from "../enums";
+import MessageAttachments from "./MessageAttachments/MessageAttachments";
 import "./Message.scss";
 
 const Message = ({
@@ -14,6 +15,7 @@ const Message = ({
     messageIndex,
     messagesDepth,
     openPreviewModal,
+    lastMessage,
 }) => {
     const {
         senderType,
@@ -36,7 +38,7 @@ const Message = ({
 
     const isReceivedMessage =
         senderType === appMessageUserTypes.WORKSPACE_AGENT;
-
+    const hasAttachment = fileAttachments?.length > 0;
     return (
         <div
             id={messageId ? messageId : ""}
@@ -46,7 +48,15 @@ const Message = ({
             {isReceivedMessage && (
                 <AgentImage src={displayPicture} alt={firstName} />
             )}
+
             <div className={`message__group--content `}>
+                {hasAttachment && (
+                    <MessageAttachments
+                        fileAttachments={fileAttachments}
+                        openPreviewModal={openPreviewModal}
+                        isReceivedMessage={isReceivedMessage}
+                    />
+                )}
                 <MessageContent
                     isReceivedMessage={isReceivedMessage}
                     messageContent={messageContent}
@@ -63,6 +73,7 @@ const Message = ({
                         handleMessageOptionSelect={handleMessageOptionSelect}
                         handleOptConversation={handleOptConversation}
                         deliveryDate={deliveryDate}
+                        lastMessage={lastMessage}
                     />
                 )}
                 {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && (

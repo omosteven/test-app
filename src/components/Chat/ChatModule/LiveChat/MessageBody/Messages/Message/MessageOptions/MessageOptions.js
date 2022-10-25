@@ -14,6 +14,7 @@ const MessageOptions = ({
     messageIndex,
     messagesDepth,
     deliveryDate,
+    lastMessage
 }) => {
     return (
         <div className='options__group col-lg-5 col-md-7 col-12'>
@@ -26,6 +27,7 @@ const MessageOptions = ({
                         messagesDepth={messagesDepth}
                         branchOptionId={option?.branchOptionId}
                         selectedOption={selectedOption}
+                        lastMessage={lastMessage}
                         handleMessageOptionSelect={() =>
                             messageType === CONVERSATION
                                 ? handleOptConversation(option)
@@ -41,6 +43,7 @@ const MessageOptions = ({
                         messagesDepth={messagesDepth}
                         branchOptionId={option?.branchOptionId}
                         selectedOption={selectedOption}
+                        lastMessage={lastMessage}
                         handleMessageOptionSelect={() =>
                             messageType === CONVERSATION
                                 ? handleOptConversation(option)

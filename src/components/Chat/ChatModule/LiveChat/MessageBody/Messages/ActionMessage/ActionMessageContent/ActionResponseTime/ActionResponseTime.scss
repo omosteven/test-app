@@ -1,0 +1,20 @@
+@import "assets/scss/master";
+
+.action-response-time {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    padding: 4px 7px;
+    gap: 2px;
+
+    width: fit-content;
+    height: 22px;
+    background: #E9F2FF;
+    border-radius: 6px;
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+
+    color: #000000;
+    margin-bottom: 8px;
+}

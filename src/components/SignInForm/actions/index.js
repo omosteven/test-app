@@ -6,7 +6,6 @@ const pushToDashboard = async (LoginResponse) => {
         userToken, thirdUser
     } = LoginResponse;
     await window.sessionStorage.setItem("accessToken", userToken);
-    console.log(thirdUser)
     store.dispatch(pushAuthUser(thirdUser));
     // callBack();
 };
