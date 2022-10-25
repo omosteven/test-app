@@ -16,6 +16,7 @@ const OTPForm = ({
     redirectUser = true,
     handleSuccess,
     userId,
+    isDirectUser,
 }) => {
     const {
         chatSettings: { workspaceSlug },
@@ -73,10 +74,19 @@ const OTPForm = ({
                 <div>
                     <h5 className='signin-header'>Enter OTP</h5>
                     <p className='signin-sub__text'>
-                        Hello <strong>{email}</strong>, an email has been sent
-                        to you containing an OTP code which is required to log
-                        you into your account. Please check and enter the code
-                        received.
+                        {isDirectUser ? (
+                            <>
+                                Enter the code sent to <strong>{email}</strong>{" "}
+                                to complete your account verification.
+                            </>
+                        ) : (
+                            <>
+                                Hello <strong>{email}</strong>, an email has
+                                been sent to you containing an OTP code which is
+                                required to log you into your account. Please
+                                check and enter the code received.
+                            </>
+                        )}
                     </p>
                     <form onSubmit={handleSubmit}>
                         <ErrorDialog

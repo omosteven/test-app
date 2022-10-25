@@ -89,6 +89,7 @@ const Chat = () => {
         } catch (err) {
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
+            window.stop();
         }
     };
 
@@ -194,12 +195,15 @@ const Chat = () => {
     };
 
     const callHandler = () => {
-        fetchConvoBreakers();
         isAuthCodeAvailable
             ? customerTicketId
                 ? getCustomerTickets(customerTicketId)
                 : getCustomerAuthToken()
             : getCustomerTickets();
+
+        isAuthCodeAvailable
+            ? customerTicketId && fetchConvoBreakers()
+            : fetchConvoBreakers();
     };
 
     useEffect(() => {

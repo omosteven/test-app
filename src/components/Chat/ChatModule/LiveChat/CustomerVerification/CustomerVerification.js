@@ -65,6 +65,7 @@ const CustomerVerification = ({ customer, handleVerifyAction, messages }) => {
                         redirectUser={false}
                         userId={customer?.userId}
                         handleSuccess={handleSuccess}
+                        isDirectUser={true}
                     />
                 );
 
