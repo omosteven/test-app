@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
     IMAGE,
     FILE,
@@ -35,7 +35,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
         ) {
             cropImage(
                 tablet ? desktopVersion : mobileVersion,
-                fileAttachmentUrl,
+                `https://proxy.cors.sh/${fileAttachmentUrl}`,
                 setOutput
             );
         }

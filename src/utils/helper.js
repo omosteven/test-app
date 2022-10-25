@@ -174,7 +174,7 @@ export const createImage = (url) =>
 
         image.addEventListener("load", () => resolve(image));
         image.addEventListener("error", (error) => reject(error));
-        image.setAttribute("crossOrigin", "Anonymous");
+        image.setAttribute("crossOrigin", "anonymous");
         image.src = url;
     });
 
