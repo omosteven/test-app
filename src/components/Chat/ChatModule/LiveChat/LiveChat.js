@@ -216,8 +216,9 @@ const LiveChat = ({
                         ticketId,
                         workspaceId,
                     });
+
+                    handleAddEmail();
                 }
-                handleAddEmail();
             }
         } catch (err) {
             setStatus(ERROR);
@@ -917,7 +918,10 @@ const LiveChat = ({
                     messages={messages}
                 />
             )}
-            <div className='chat__input__container'>
+            <div
+                className={`chat__input__container ${
+                    showVerifyForm ? "live-chat-input__add-email" : ""
+                }`}>
                 <LiveChatInput
                     ticketId={ticketId}
                     inputType={currentInputType}
@@ -926,6 +930,7 @@ const LiveChat = ({
                     fetchingInputStatus={fetchingInputStatus}
                     allowUserInput={allowUserInput}
                     triggerAgentTyping={triggerAgentTyping}
+                    showVerifyForm={showVerifyForm}
                 />
             </div>
         </>

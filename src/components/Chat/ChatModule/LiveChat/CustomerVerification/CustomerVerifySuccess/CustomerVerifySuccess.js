@@ -1,7 +1,9 @@
+import imageLinks from "assets/images";
 import ChatToastNotification from "components/Chat/ChatToastNotification/ChatToastNotification";
 import { ToastContext } from "components/common/Toast/context/ToastContextProvider";
 import { Button } from "components/ui";
 import { useSelector } from "react-redux";
+import { ReactSVG } from "react-svg";
 
 const CustomerVerifySuccess = ({ closeModal }) => {
     const {
@@ -21,6 +23,13 @@ const CustomerVerifySuccess = ({ closeModal }) => {
                     We have successfully verified your account and your ticket
                     has been saved.
                 </p>
+                <div className='info__section d-flex align-items-center'>
+                    <ReactSVG src={imageLinks.svg.info} className='info-icon' />
+                    <p>
+                        This email address would be used to communicate updates
+                        with you
+                    </p>
+                </div>
                 <Button
                     type='submit'
                     text={"Continue"}

@@ -1,4 +1,13 @@
+@import "assets/scss/_include-media-lib/include-media";
+
 .chat__interface {
     flex: 1 0 auto;
     position: relative;
+}
+
+.live-chat-input__add-email {
+    display: none;
+    @include media("<=small-screen") {
+        display: block;
+    }
 }
