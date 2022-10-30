@@ -7,7 +7,7 @@ import { socket, SocketContext } from "../../lib/socket/context/socket";
 import { retriveAccessToken } from "../../storage/sessionStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
-import { getErrorMessage, validateEmail } from "../../utils/helper";
+import { getErrorMessage } from "../../utils/helper";
 import Empty from "../common/Empty/Empty";
 import { ToastContext } from "../common/Toast/context/ToastContextProvider";
 
@@ -93,13 +93,6 @@ const Chat = () => {
         }
     };
 
-    const redirectCustomer = async (customer) => {
-        if (!validateEmail(customer?.email)) {
-            await sessionStorage.clear();
-            window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
-        }
-    };
-
     const getCustomerTickets = async (ticketId, openNewTicket = true) => {
         try {
             dispatch(setActiveTicket(null));
@@ -124,13 +117,6 @@ const Chat = () => {
                             activeConvoSuggestion: false,
                         })
                     );
-
-                    if (
-                        (newTicket === undefined || newTicket === null) &&
-                        customerTicketId !== undefined
-                    ) {
-                        return redirectCustomer(newTicket?.customer);
-                    }
 
                     const { customer } = newTicket || {};
                     if (customer) {

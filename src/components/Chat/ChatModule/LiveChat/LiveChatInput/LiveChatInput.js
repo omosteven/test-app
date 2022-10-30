@@ -13,7 +13,10 @@ import UploadPreview from "./UploadIcons/UploadPreview/UploadPreview";
 import API from "../../../../../lib/api";
 import apiRoutes from "../../../../../lib/api/apiRoutes";
 import { dataQueryStatus } from "../../../../../utils/formatHandlers";
-import { getErrorMessage } from "../../../../../utils/helper";
+import {
+    getCurrentFormInputRules,
+    getErrorMessage,
+} from "../../../../../utils/helper";
 import { formInputTypes } from "../MessageBody/Messages/enums";
 import { IMAGE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
@@ -29,6 +32,7 @@ const LiveChatInput = ({
     inputType,
     currentFormElement,
 }) => {
+    console.log({ currentFormElement });
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
 
@@ -285,8 +289,14 @@ const LiveChatInput = ({
     }, []);
 
     const renderBasedOnInputType = () => {
-        const { formElementPlaceholder, formElementOptions, options } =
+        const { formElementPlaceholder, formElementOptions, options, rules } =
             currentFormElement || {};
+
+        const { maxLength, max, pattern } = getCurrentFormInputRules(
+            rules,
+            inputType
+        );
+
         switch (inputType) {
             case TEXT:
             case NUMERIC:
@@ -308,6 +318,9 @@ const LiveChatInput = ({
                         hideLabel={true}
                         ref={inputRef}
                         disabled={isDisabled}
+                        maxLength={maxLength?.ruleConstraint}
+                        pattern={pattern}
+                        max={max?.ruleConstraint}
                     />
                 );
 
@@ -351,6 +364,9 @@ const LiveChatInput = ({
                         disabled={isDisabled || inputType === IMAGE}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
+                        maxLength={maxLength?.ruleConstraint}
+                        pattern={pattern}
+                        max={max?.ruleConstraint}
                     />
                 );
         }

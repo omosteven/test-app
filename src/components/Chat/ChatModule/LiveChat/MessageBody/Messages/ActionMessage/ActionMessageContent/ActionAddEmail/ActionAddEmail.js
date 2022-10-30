@@ -4,7 +4,7 @@ const ActionAddEmail = ({ handleVerifyAction }) => {
     return (
         <>
             <div
-                className='message__content add__email'
+                className='message__content add__email branch__option'
                 onClick={handleVerifyAction}>
                 Add email address
             </div>

@@ -214,3 +214,37 @@ export const cropImage = async (crop, url, setOutput) => {
 
     setOutput(base64Image);
 };
+
+export const getCurrentFormInputRules = (rules, inputType) => {
+    const customRules = {
+        number00: "maxLength",
+        number01: "max",
+    };
+
+    const customPatterns = {
+        TEXT: "[aZ-Az]",
+        NUMERIC: "[0-9]d{10}",
+        LONG_TEXT: "[aZ-Az]",
+        number00: "",
+        number01: "",
+    };
+
+    let validationRules = {};
+    let pattern = "";
+    // min,max,minLength,maxLength, minSize,maxSize, isALink, isEmail, minDate,maxDate
+
+    pattern += `\+${customPatterns[inputType]}`;
+
+    for (let i = 0; i < rules?.length; i++) {
+        let { baseFormRule, ruleConstraint, ...rest } = rules[i];
+        let { formElementRuleCode } = baseFormRule;
+        let ruleType = customRules[formElementRuleCode];
+        validationRules[ruleType] = {
+            ruleConstraint,
+            baseFormRule,
+            ...rest,
+        };
+    }
+
+    return { ...validationRules, pattern };
+};

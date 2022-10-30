@@ -1,17 +1,16 @@
 import imageLinks from "assets/images";
-import ChatToastNotification from "components/Chat/ChatToastNotification/ChatToastNotification";
 import { ToastContext } from "components/common/Toast/context/ToastContextProvider";
 import { Button } from "components/ui";
-import { useSelector } from "react-redux";
+import { useContext } from "react";
+
 import { ReactSVG } from "react-svg";
+import ToastCustomerVerifySuccess from "./ToastCustomerVerifySuccess/ToastCustomerVerifySuccess";
 
 const CustomerVerifySuccess = ({ closeModal }) => {
-    const {
-        chatSettings: { workspaceSlug },
-    } = useSelector((state) => state.chat);
+    const toastMessage = useContext(ToastContext);
 
     const handleContinue = async () => {
-        window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+        toastMessage(<ToastCustomerVerifySuccess />);
         closeModal();
     };
 
