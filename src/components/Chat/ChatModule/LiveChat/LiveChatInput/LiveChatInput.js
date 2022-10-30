@@ -32,7 +32,6 @@ const LiveChatInput = ({
     inputType,
     currentFormElement,
 }) => {
-    console.log({ currentFormElement });
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
 

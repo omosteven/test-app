@@ -73,10 +73,10 @@ const Chat = () => {
             setErrorMssg();
 
             const tickedId = params?.ticketId;
-            const tempCode = params?.code;
+            const authCode = params?.code;
 
             const res = await API.get(
-                apiRoutes.getAuthToken(tempCode, tickedId)
+                apiRoutes.getAuthToken(authCode, tickedId)
             );
 
             if (res.status === 200) {
@@ -199,6 +199,7 @@ const Chat = () => {
     const handleCloseTicket = () => {
         toggleTicketActionModal(true);
     };
+
     return (
         <>
             <SocketContext.Provider value={socket}>

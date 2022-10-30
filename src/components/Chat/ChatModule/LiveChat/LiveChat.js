@@ -867,15 +867,15 @@ const LiveChat = ({
         }
     };
 
-    // useEffect(() => {
-    //     let timer = setInterval(() => {
-    //         handleInputNeeded();
-    //     }, 120000);
+    useEffect(() => {
+        let timer = setInterval(() => {
+            handleInputNeeded();
+        }, 120000);
 
-    //     return () => {
-    //         clearInterval(timer);
-    //     };
-    // }, [ticketsMessages, ticketId, messages]);
+        return () => {
+            clearInterval(timer);
+        };
+    }, [ticketsMessages, ticketId, messages]);
 
     return (
         <>
