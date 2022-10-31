@@ -472,6 +472,23 @@ const LiveChat = ({
         }
     };
 
+    const sendAgentTicket = async () => {
+        try {
+            setStatus(LOADING);
+            setErrorMssg();
+            const url = apiRoutes?.sendAgentTicket;
+            const res = await API.post(url, {
+                ticketId,
+            });
+            if (res.status === 201) {
+                setStatus(DATAMODE);
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
+
     const restartConversation = async () => {
         try {
             setStatus(LOADING);
@@ -692,10 +709,11 @@ const LiveChat = ({
         }
 
         if (messageType === FORM_FILLED_COMPLETELY) {
-            socket.emit(SEND_AGENT_TICKET, {
-                ticketId,
-                workspaceId,
-            });
+            // socket.emit(SEND_AGENT_TICKET, {
+            //     ticketId,
+            //     workspaceId,
+            // });
+            sendAgentTicket();
 
             return handleAddEmail();
         }

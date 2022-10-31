@@ -222,15 +222,16 @@ export const getCurrentFormInputRules = (rules, inputType) => {
     };
 
     const customPatterns = {
-        TEXT: "[aZ-Az]",
+        TEXT: "",
         NUMERIC: "[0-9]d{10}",
-        LONG_TEXT: "[aZ-Az]",
+        LONG_TEXT: "",
         number00: "",
         number01: "",
     };
 
     let validationRules = {};
     let pattern = "";
+    // [A-Za-z]
     // min,max,minLength,maxLength, minSize,maxSize, isALink, isEmail, minDate,maxDate
 
     pattern += `\+${customPatterns[inputType]}`;

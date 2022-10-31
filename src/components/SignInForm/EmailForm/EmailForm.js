@@ -20,7 +20,7 @@ const EmailForm = ({ handleInitialRequestUpdate, title, subTitle, userId }) => {
 
     const [request, setRequest] = useState({
         // conversationId: conversationId,
-        email: "xyz@gmail.com",
+        email: "",
         workspaceId,
         userId,
     });
