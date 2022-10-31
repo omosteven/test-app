@@ -85,7 +85,6 @@ const Chat = () => {
                     "accessToken",
                     res.data.data.token
                 );
-                window.location.reload();
             }
         } catch (err) {
             setStatus(ERROR);
@@ -200,7 +199,6 @@ const Chat = () => {
     const handleCloseTicket = () => {
         toggleTicketActionModal(true);
     };
-    console.log({socket})
 
     return (
         <>
