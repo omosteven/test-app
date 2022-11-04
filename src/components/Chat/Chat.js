@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import API from "../../lib/api";
 import apiRoutes from "../../lib/api/apiRoutes";
@@ -10,17 +11,15 @@ import { dataQueryStatus } from "../../utils/formatHandlers";
 import { getErrorMessage } from "../../utils/helper";
 import Empty from "../common/Empty/Empty";
 import { ToastContext } from "../common/Toast/context/ToastContextProvider";
-
 import queryString from "query-string";
-
 import ChatHeader from "./ChatModule/ChatHeader/ChatHeader";
 import ChatModule from "./ChatModule/ChatModule";
 import ChatToastNotification from "./ChatToastNotification/ChatToastNotification";
 import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/NewTicketButton/NewTicketButton";
-import "./Chat.scss";
 import { pushAuthUser } from "store/auth/actions";
 import TicketCloseModal from "./TicketCloseModal/TicketCloseModal";
 import { setConversationBreakers } from "store/chat/actions";
+import "./Chat.scss";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 
@@ -29,6 +28,7 @@ const Chat = () => {
     const [status, setStatus] = useState("");
     const [errorMssg, setErrorMssg] = useState("");
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const toastMessage = useContext(ToastContext);
 
@@ -199,6 +199,18 @@ const Chat = () => {
     const handleCloseTicket = () => {
         toggleTicketActionModal(true);
     };
+
+    useEffect(() => {
+        if (isAuthCodeAvailable && params?.connectionStatus !== "connected") {
+            history.push(
+                `/direct?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&code=${params?.code}&connectionStatus=connected`
+            );
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+    }, []);
 
     return (
         <>

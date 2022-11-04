@@ -103,7 +103,7 @@ const LiveChat = ({
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
-
+    // console.log({ messages });
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
 
