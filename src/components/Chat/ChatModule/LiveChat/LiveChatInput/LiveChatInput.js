@@ -252,13 +252,13 @@ const LiveChatInput = ({
 
             return false;
         });
-        chatInterface.removeEventListener("wheel", (e) => {
+        chatInterface?.removeEventListener("wheel", (e) => {
             e.preventDefault();
             e.stopPropagation();
 
             return false;
         });
-        ticketsHeader.removeEventListener("wheel", (e) => {
+        ticketsHeader?.removeEventListener("wheel", (e) => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -318,7 +318,7 @@ const LiveChatInput = ({
                         ref={inputRef}
                         disabled={isDisabled}
                         maxLength={maxLength?.ruleConstraint}
-                        pattern={pattern}
+                        // pattern={pattern}
                         max={max?.ruleConstraint}
                     />
                 );
@@ -364,7 +364,7 @@ const LiveChatInput = ({
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
                         maxLength={maxLength?.ruleConstraint}
-                        pattern={pattern}
+                        // pattern={pattern}
                         max={max?.ruleConstraint}
                     />
                 );

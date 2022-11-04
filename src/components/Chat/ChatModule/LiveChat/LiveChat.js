@@ -103,7 +103,7 @@ const LiveChat = ({
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
-    // console.log({ messages });
+
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
 
@@ -129,6 +129,13 @@ const LiveChat = ({
                     ticketId,
                     suggestionRetryAttempt: 0,
                     messageStatus: messageStatues?.DELIVERED,
+                    messageHeader:
+                        x.messageType === DOWNTIME_BRANCH
+                            ? messageActionTypes.DOWNTIME_BRANCH.title
+                            : x.messageType === DOWNTIME_BRANCH_SUB_SENTENCE
+                            ? messageActionTypes.DOWNTIME_BRANCH_SUB_SENTENCE
+                                  .title
+                            : "",
                     messageType:
                         x.messageType === DOWNTIME_BRANCH ||
                         x.messageType === DOWNTIME_BRANCH_SUB_SENTENCE
