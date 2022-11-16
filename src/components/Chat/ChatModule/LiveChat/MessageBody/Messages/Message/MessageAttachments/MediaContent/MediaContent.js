@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
     IMAGE,
     FILE,
@@ -98,12 +98,14 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     return (
         <>
             {renderBasedOnMediaType()}
-            {fileAttachmentCaption && fileAttachmentCaption !== "" && (
-                <MessageContent
-                    isReceivedMessage={true}
-                    messageContent={fileAttachmentCaption}
-                />
-            )}
+            {fileAttachmentCaption &&
+                fileAttachmentCaption !== "" &&
+                fileAttachmentCaption !== "null" && (
+                    <MessageContent
+                        isReceivedMessage={true}
+                        messageContent={fileAttachmentCaption}
+                    />
+                )}
         </>
     );
 };
