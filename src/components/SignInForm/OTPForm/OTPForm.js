@@ -44,6 +44,7 @@ const OTPForm = ({
             });
             if (res.status === 200) {
                 const { data } = res.data;
+
                 await pushToDashboard(data, () => {
                     // history.replace(`);
                 });

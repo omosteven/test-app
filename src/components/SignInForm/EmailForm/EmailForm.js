@@ -1,4 +1,5 @@
 import React from "react";
+import queryString from "query-string";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import API from "../../../lib/api";
@@ -8,18 +9,21 @@ import ValidateForm from "../../../utils/validations/validator";
 import { Button, ErrorDialog, Input } from "../../ui";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
+import pushToDashboard from "../actions";
 import "./EmailForm.scss";
 
 const EmailForm = ({ handleInitialRequestUpdate, title, subTitle, userId }) => {
     const {
-        chatSettings: { teamName, workspaceId },
+        chatSettings: { teamName, workspaceId, workspaceSlug },
     } = useSelector((state) => state.chat);
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
+    let params = queryString.parse(window.location.search);
+    const conversationId = params?.conversationId;
 
     const [request, setRequest] = useState({
-        // conversationId: conversationId,
+        conversationId: conversationId,
         email: "",
         workspaceId,
         userId,
@@ -36,10 +40,18 @@ const EmailForm = ({ handleInitialRequestUpdate, title, subTitle, userId }) => {
             setErrorMsg("");
             setLoading(true);
             const res = await API.post(apiRoutes.authenticate, request);
+
             if (res.status === 201) {
-                const { sessionId } = res.data.data;
+                const { data } = res?.data;
+                const { sessionId } = data;
                 const { email } = request;
-                handleInitialRequestUpdate({ sessionId, email });
+
+                if (sessionId) {
+                    handleInitialRequestUpdate({ sessionId, email });
+                } else {
+                    await pushToDashboard(data, () => {});
+                    window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+                }
             }
         } catch (err) {
             setErrorMsg(getErrorMessage(err));

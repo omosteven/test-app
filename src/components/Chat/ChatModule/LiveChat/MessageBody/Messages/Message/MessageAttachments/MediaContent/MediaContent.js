@@ -35,7 +35,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
         ) {
             cropImage(
                 tablet ? desktopVersion : mobileVersion,
-                `https://proxy.cors.sh/${fileAttachmentUrl}`,
+                fileAttachmentUrl,
                 setOutput
             );
         }
@@ -98,12 +98,14 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     return (
         <>
             {renderBasedOnMediaType()}
-            {fileAttachmentCaption && fileAttachmentCaption !== "" && (
-                <MessageContent
-                    isReceivedMessage={true}
-                    messageContent={fileAttachmentCaption}
-                />
-            )}
+            {fileAttachmentCaption &&
+                fileAttachmentCaption !== "" &&
+                fileAttachmentCaption !== "null" && (
+                    <MessageContent
+                        isReceivedMessage={true}
+                        messageContent={fileAttachmentCaption}
+                    />
+                )}
         </>
     );
 };
