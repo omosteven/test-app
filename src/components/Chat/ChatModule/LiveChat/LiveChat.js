@@ -38,7 +38,6 @@ import {
     FORM_FILLED_COMPLETELY,
     INPUT_NEEDED,
     AGENT_UNAVAILABLE,
-    messageActionTypes,
 } from "./MessageBody/Messages/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
 import {
@@ -129,13 +128,6 @@ const LiveChat = ({
                     ticketId,
                     suggestionRetryAttempt: 0,
                     messageStatus: messageStatues?.DELIVERED,
-                    messageHeader:
-                        x.messageType === DOWNTIME_BRANCH
-                            ? messageActionTypes.DOWNTIME_BRANCH.title
-                            : x.messageType === DOWNTIME_BRANCH_SUB_SENTENCE
-                            ? messageActionTypes.DOWNTIME_BRANCH_SUB_SENTENCE
-                                  .title
-                            : "",
                     messageType:
                         x.messageType === DOWNTIME_BRANCH ||
                         x.messageType === DOWNTIME_BRANCH_SUB_SENTENCE
@@ -363,7 +355,12 @@ const LiveChat = ({
         const messageCopy = messages;
         let recentAdminMessage = [...messageCopy]
             .reverse()
-            ?.find((message) => message.senderType === WORKSPACE_AGENT);
+            ?.find(
+                (message) =>
+                    message?.messageActionType !== INPUT_NEEDED &&
+                    message?.senderType === WORKSPACE_AGENT
+            );
+
         if (recentAdminMessage) {
             const { messageType, branchOptions, form, messageActionType } =
                 recentAdminMessage;
@@ -753,12 +750,6 @@ const LiveChat = ({
         dispatch(
             saveTicketsMessages({
                 ...message,
-                messageHeader:
-                    messageType === DOWNTIME_BRANCH
-                        ? messageActionTypes.DOWNTIME_BRANCH.title
-                        : messageType === DOWNTIME_BRANCH_SUB_SENTENCE
-                        ? messageActionTypes.DOWNTIME_BRANCH_SUB_SENTENCE.title
-                        : "",
                 messageType:
                     messageType === DOWNTIME_BRANCH ||
                     messageType === DOWNTIME_BRANCH_SUB_SENTENCE

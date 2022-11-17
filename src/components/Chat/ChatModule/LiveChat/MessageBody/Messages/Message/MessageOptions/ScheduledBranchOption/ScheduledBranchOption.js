@@ -3,8 +3,8 @@ import imageLinks from "assets/images";
 import { ReactSVG } from "react-svg";
 import Countdown from "./Countdown/Countdown";
 import { convertSecondsToISOString } from "utils/helper";
-import "./ScheduledBranchOption.scss";
 import { INPUT_NEEDED } from "../../../enums";
+import "./ScheduledBranchOption.scss";
 
 const ScheduledBranchOption = ({
     data,
@@ -20,8 +20,10 @@ const ScheduledBranchOption = ({
 
     const [countdownEnded, setCountdownEnded] = useState(false);
     const { branchOptionLabel, scheduleDuration } = data;
-    const shouldBeDisabled =  messageActionType === INPUT_NEEDED
-            ? false : messageIndex < messagesDepth;
+    const shouldBeDisabled =
+        messageActionType === INPUT_NEEDED
+            ? false
+            : messageIndex < messagesDepth;
     const isSelected = selectedOption === branchOptionId;
     const countdownTo =
         new Date(deliveryDate).getTime() / 1000 +
