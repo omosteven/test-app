@@ -15,6 +15,17 @@
     }
 }
 
+.error__status {
+    padding: 0.5rem 1rem;
+    padding-right: 1.25rem;
+    background-color: #fff5f5;
+    border: 0.063rem solid #ffccc7 !important;
+    border-radius: 0.5rem;
+    border-radius: 0.5rem;
+    color: #ff000096;
+    cursor: pointer;
+}
+
 .connected {
     width: fit-content;
     padding: 0.25rem 0.625rem;

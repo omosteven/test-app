@@ -12,6 +12,8 @@ import {
     messageTypes,
 } from "../../LiveChat/MessageBody/Messages/enums";
 
+const { DEFAULT, BRANCH, FORM_REQUEST, CONVERSATION, ACTION_INFO } =
+    messageTypes;
 const { LOADING } = dataQueryStatus;
 const ChangeOption = ({
     setStatus,
@@ -31,6 +33,7 @@ const ChangeOption = ({
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
+    const lastMessage = messages[messages.length - 1];
 
     const changeLastBranchOptionChoice = async () => {
         try {
@@ -48,10 +51,10 @@ const ChangeOption = ({
                 );
 
             if (
-                lastAgentMssg?.messageType === messageTypes.CONVERSATION ||
-                lastAgentMssg?.messageType === messageTypes.BRANCH
+                lastAgentMssg?.messageType === CONVERSATION ||
+                lastAgentMssg?.messageType === BRANCH
             ) {
-                // 
+                //
                 setActiveConvo(false);
                 // return ""
             }
@@ -60,9 +63,8 @@ const ChangeOption = ({
             const res = await API.post(url);
             if (res.status === 201) {
                 requestAllMessages();
-                dispatch(clearTicketMessages(ticketId))
+                dispatch(clearTicketMessages(ticketId));
                 setLoading(false);
-
             }
         } catch (err) {
             setLoading(false);
@@ -71,7 +73,12 @@ const ChangeOption = ({
         }
     };
 
-    // chatThemeColor
+    const disableChangeChoice =
+        lastMessage?.messageType === ACTION_INFO ||
+        lastMessage?.messageType === FORM_REQUEST ||
+        lastMessage?.messageType === DEFAULT ||
+        loading;
+
     return (
         <div>
             <Button
@@ -81,7 +88,7 @@ const ChangeOption = ({
                     e.preventDefault();
                     changeLastBranchOptionChoice();
                 }}
-                disabled={loading}
+                disabled={disableChangeChoice}
                 style={{
                     color: chatThemeColor,
                     background: `${chatThemeColor}21`,

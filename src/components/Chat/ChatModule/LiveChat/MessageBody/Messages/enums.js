@@ -73,6 +73,7 @@ export const messageOptionActions = Object.freeze({
     OPEN_NEW_TICKET: "OPEN_NEW_TICKET",
     ADD_EMAIL_ADDRESS: "ADD_EMAIL_ADDRESS",
     CLOSE_TICKET: "CLOSE_TICKET",
+    FORWARD_AGENT: "FORWARD_AGENT",
 });
 
 export const formInputTypes = {
