@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import CustomerTicketsContainer from "../../CustomerTicketsContainer/CustomerTicketsContainer";
 import ChatSettingsToggler from "./ChatSettingsToggler/ChatSettingsToggler";
@@ -16,8 +15,9 @@ const ChatHeader = ({
     handleTicketModalAction,
     showVerifyForm,
     handleCloseTicket,
+    showChatMenu,
+    toggleChatMenu,
 }) => {
-    const [showChatMenu, toggleChatMenu] = useState(false);
     const {
         chatSettings: { companyLogo },
     } = useSelector((state) => state.chat);

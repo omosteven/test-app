@@ -26,6 +26,10 @@
             width: 440px;
             height: 246px;
         }
+
+        &.img-contain {
+            object-fit: contain;
+        }
     }
 
     &.video {

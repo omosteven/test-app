@@ -7,7 +7,7 @@
 
 .live-chat-input__add-email {
     display: none;
-    @include media("<=small-screen") {
+    @include media("<=medium-screen") {
         display: block;
     }
 }

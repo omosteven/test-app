@@ -48,9 +48,8 @@ import {
     deleteTicketsMessages,
 } from "../../../../store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
-import "./LiveChat.scss";
-
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
+import "./LiveChat.scss";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
@@ -125,48 +124,34 @@ const LiveChat = ({
                 setStatus(DATAMODE);
                 const { data } = res.data;
 
-                const messagesArr = data.map((x) => {
-                    if (x?.messageType === DEFAULT) {
-                        dispatch(
-                            deleteTicketsMessages({
-                                messageId: DEFAULT,
-                                ticketId: x?.ticketId,
-                            })
-                        );
-
-                        dispatch(
-                            deleteTicketsMessages({
-                                messageId: SMART_CONVOS,
-                                ticketId: x?.ticketId,
-                            })
-                        );
-                    }
-
-                    return {
-                        ...x,
-                        ticketId,
-                        messageId:
-                            x?.messageType === DEFAULT ? DEFAULT : x?.messageId,
-                        suggestionRetryAttempt: 0,
-                        messageStatus: messageStatues?.DELIVERED,
-                        messageType:
-                            x.messageType === DOWNTIME_BRANCH ||
-                            x.messageType === DOWNTIME_BRANCH_SUB_SENTENCE
-                                ? ACTION_INFO
-                                : x.messageType,
-                        messageContentId: x?.messageContentId
-                            ? x?.messageContentId
-                            : x?.deliveryDate,
-                        fileAttachments:
-                            x?.fileAttachments?.length > 0
-                                ? x?.fileAttachments
-                                : x?.form?.formElement?.media?.map((media) => ({
-                                      fileAttachmentUrl: media?.link,
-                                      fileAttachmentType: media?.type,
-                                      fileAttachmentName: media?.mediaName,
-                                  })),
-                    };
-                });
+                const messagesArr = data.map((x) => ({
+                    ...x,
+                    ticketId,
+                    messageId:
+                        x?.senderType === WORKSPACE_AGENT
+                            ? x?.messageId
+                            : x?.messageType === DEFAULT
+                            ? DEFAULT
+                            : x?.messageId,
+                    suggestionRetryAttempt: 0,
+                    messageStatus: messageStatues?.DELIVERED,
+                    messageType:
+                        x.messageType === DOWNTIME_BRANCH ||
+                        x.messageType === DOWNTIME_BRANCH_SUB_SENTENCE
+                            ? ACTION_INFO
+                            : x.messageType,
+                    messageContentId: x?.messageContentId
+                        ? x?.messageContentId
+                        : x?.deliveryDate,
+                    fileAttachments:
+                        x?.fileAttachments?.length > 0
+                            ? x?.fileAttachments
+                            : x?.form?.formElement?.media?.map((media) => ({
+                                  fileAttachmentUrl: media?.link,
+                                  fileAttachmentType: media?.type,
+                                  fileAttachmentName: media?.mediaName,
+                              })),
+                }));
 
                 dispatch(setTicketMessages(messagesArr));
             }
@@ -325,11 +310,14 @@ const LiveChat = ({
             branchOptionActionType === messageOptionActions?.CLOSE_TICKET
         ) {
             handleCloseConversation();
-
             return "";
         }
 
-        if (branchOptionActionType === messageOptionActions?.OPEN_NEW_TICKET) {
+        if (
+            branchOptionActionType === messageOptionActions?.OPEN_NEW_TICKET ||
+            branchOptionActionType ===
+                messageOptionActions?.RESTART_CONVERSATION
+        ) {
             handleOpenNewTicket();
             return "";
         }
@@ -339,13 +327,6 @@ const LiveChat = ({
             return "";
         }
 
-        if (
-            branchOptionActionType ===
-            messageOptionActions?.RESTART_CONVERSATION
-        ) {
-            restartConversation();
-            return "";
-        }
         triggerAgentTyping(true);
 
         await socket.emit(
@@ -474,7 +455,7 @@ const LiveChat = ({
                 fileAttachments,
             };
             dispatch(saveTicketsMessages(messageEntry));
-            // console.log({ fileAttachments });
+
             socket.emit(SEND_CUSTOMER_MESSAGE, {
                 ticketId,
                 message: message,
@@ -528,24 +509,6 @@ const LiveChat = ({
             });
             if (res.status === 201) {
                 setStatus(DATAMODE);
-            }
-        } catch (err) {
-            setStatus(ERROR);
-            setErrorMssg(getErrorMessage(err));
-        }
-    };
-
-    const restartConversation = async () => {
-        try {
-            setStatus(LOADING);
-            setErrorMssg();
-            const url = apiRoutes?.restartTicket(ticketId);
-            const res = await API.post(url);
-            if (res.status === 201) {
-                setStatus(DATAMODE);
-                const { ticketId } = res.data.data;
-                dispatch(setActiveTicket());
-                getCustomerTickets(ticketId);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -764,17 +727,23 @@ const LiveChat = ({
             return handleAddEmail();
         }
     };
-    console.log({ messages });
 
     const handleReceive = (message) => {
-        const { messageType, deliveryDate, messageId } = message;
-        console.log("message", { message });
+        const { messageType, senderType, deliveryDate } = message;
+
         const { ticketId: newMessageTicketId } = message?.ticket;
-        if (message.senderType === WORKSPACE_AGENT) {
+        if (senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
             dispatch(
                 deleteTicketsMessages({
                     messageId: NO_ACTION,
+                    ticketId: newMessageTicketId,
+                })
+            );
+        } else {
+            dispatch(
+                deleteTicketsMessages({
+                    messageId: DEFAULT,
                     ticketId: newMessageTicketId,
                 })
             );
@@ -792,7 +761,6 @@ const LiveChat = ({
         dispatch(
             saveTicketsMessages({
                 ...message,
-                messageId: messageType === DEFAULT ? DEFAULT : messageId,
                 messageType:
                     messageType === DOWNTIME_BRANCH ||
                     messageType === DOWNTIME_BRANCH_SUB_SENTENCE

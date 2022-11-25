@@ -24,6 +24,7 @@ import "./Chat.scss";
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 
 const Chat = () => {
+    const [showChatMenu, toggleChatMenu] = useState(false);
     const [showTictketActionModal, toggleTicketActionModal] = useState();
     const [status, setStatus] = useState("");
     const [errorMssg, setErrorMssg] = useState("");
@@ -124,6 +125,7 @@ const Chat = () => {
                     }
 
                     setStatus(DATAMODE);
+                    toggleChatMenu(false);
                 } else {
                     openNewTicket ? createNewTicket() : setStatus(NULLMODE);
                 }
@@ -230,6 +232,8 @@ const Chat = () => {
                                     handleTicketModalAction,
                                     showVerifyForm,
                                     handleCloseTicket,
+                                    showChatMenu,
+                                    toggleChatMenu,
                                 }}
                             />
                             {selectedTicket?.ticketId ? (

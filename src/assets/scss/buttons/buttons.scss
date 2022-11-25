@@ -29,7 +29,7 @@
         &:hover {
             opacity: 0.8;
         }
-        @include media("<=small-screen") {
+        @include media("<=medium-screen") {
             padding: 0 10px;
             border-radius: 12px;
         }

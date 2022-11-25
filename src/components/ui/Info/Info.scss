@@ -17,7 +17,7 @@
     &.straight {
         height: 2.25rem;
         margin: 0 0.5rem;
-        @include media("<=small-screen") {
+        @include media("<=medium-screen") {
             margin: 0;
         }
     }

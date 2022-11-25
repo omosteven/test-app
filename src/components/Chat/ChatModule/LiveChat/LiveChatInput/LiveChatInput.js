@@ -42,7 +42,6 @@ const LiveChatInput = ({
                 fileAttachmentUrl: "",
                 fileAttachmentType: "",
                 fileAttachmentName: "",
-                fileAttachmentImageConfig: {},
             },
         ],
     });
@@ -199,7 +198,6 @@ const LiveChatInput = ({
                     fileAttachmentUrl: "",
                     fileAttachmentType: "",
                     fileAttachmentName: "",
-                    fileAttachmentImageConfig: {},
                 },
             ],
         });
