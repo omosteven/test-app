@@ -5,7 +5,7 @@
         padding: 0.625rem 0;
         // margin: 1.25rem 0;
         white-space: nowrap;
-        @include media("<=small-screen") {
+        @include media("<=medium-screen") {
             text-align: center;
             padding: 0;
             justify-content: space-between !important;
@@ -21,7 +21,7 @@
             &:not(:last-child) {
                 margin-right: 1rem !important;
             }
-            @include media("<=small-screen") {
+            @include media("<=medium-screen") {
                 width: 40px !important;
                 height: 40px !important;
                 &:not(:last-child) {

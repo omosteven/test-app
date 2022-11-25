@@ -27,7 +27,7 @@
                 padding: 0.75rem 1rem 0.625rem;
             }
 
-            @include media("<=small-screen") {
+            @include media("<=medium-screen") {
                 font-size: 1rem;
                 max-width: 80%;
             }

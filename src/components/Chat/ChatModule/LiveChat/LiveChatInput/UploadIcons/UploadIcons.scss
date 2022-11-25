@@ -11,7 +11,7 @@
         svg {
             cursor: pointer;
     
-            @include media("<=small-screen") {
+            @include media("<=medium-screen") {
                 height: 0.917rem;
                 width: 0.917rem;
             }

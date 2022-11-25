@@ -1,20 +1,9 @@
 import React from "react";
 import { ReactSVG } from "react-svg";
 import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
-import imageLinks from "../../../../../assets/images";
-import { Info } from "../../../../ui";
-
-const BraillePatternDots = ({ isMobile }) => {
-    return (
-        <ReactSVG
-            src={
-                isMobile
-                    ? imageLinks?.svg?.verticalGrey
-                    : imageLinks?.svg?.horizontalEllipsis
-            }
-        />
-    );
-};
+import imageLinks from "assets/images";
+import { Info } from "components/ui";
+import BraillePatternDots from "./BraillePatternDots/BraillePatternDots";
 
 const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);

@@ -49,7 +49,7 @@
         cursor: pointer;
     }
 
-    @include media("<=small-screen") {
+    @include media("<=medium-screen") {
         padding: 1rem 1.063rem;
         padding-bottom: 0.813rem;
     }
@@ -61,7 +61,7 @@
         margin: 0;
         text-transform: capitalize;
         font-family: $primary_font_family--medium;
-        @include media("<=small-screen") {
+        @include media("<=medium-screen") {
             font-size: 1.125rem;
             margin-bottom: -0.125rem;
         }

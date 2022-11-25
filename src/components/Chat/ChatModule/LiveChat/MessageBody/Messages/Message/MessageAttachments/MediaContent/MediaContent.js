@@ -30,6 +30,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
 
     useEffect(() => {
         if (
+            fileAttachmentImageConfig &&
             Object?.entries(fileAttachmentImageConfig)?.length > 0 &&
             width !== 0
         ) {
@@ -41,21 +42,22 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
         }
     }, [tablet]);
 
+    const cropOutImage =
+        fileAttachmentImageConfig &&
+        Object?.entries(fileAttachmentImageConfig)?.length > 0;
+
     const renderBasedOnMediaType = () => {
         switch (fileAttachmentType) {
             case IMAGE:
                 return (
                     <img
-                        src={
-                            Object?.entries(fileAttachmentImageConfig)?.length >
-                            0
-                                ? outPut
-                                : fileAttachmentUrl
-                        }
+                        src={cropOutImage ? outPut : fileAttachmentUrl}
                         alt='media'
                         className={`content--media img ${
                             isReceivedMessage ? "received" : "sent"
-                        } ${tablet ? "desktop" : "mobile"}`}
+                        } ${tablet ? "desktop" : "mobile"} ${
+                            !cropOutImage ? "img-contain" : ""
+                        }`}
                         onClick={() => openPreviewModal(attachment)}
                     />
                 );
