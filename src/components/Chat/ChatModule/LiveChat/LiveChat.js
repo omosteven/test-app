@@ -879,6 +879,30 @@ const LiveChat = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ticketsMessages, ticketId, messages]);
 
+    const senderReminderEmail = async () => {
+        try {
+           
+            setStatus(LOADING);
+            setErrorMssg();
+
+            let request = {
+                message: "You've Successfully Added An Email To Your Ticket",
+                subject: "Email Added To Ticket",
+                ticketId,
+            };
+
+            const url = apiRoutes?.sendTicketReminder;
+            const res = await API.post(url, request);
+            if (res.status === 201) {
+                setStatus(DATAMODE);
+                handleTicketCloseSuccess();
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
+
     const handleInputNeeded = () => {
         if (messages?.length > 1) {
             let lastMessage = messages[messages.length - 1];
@@ -896,6 +920,8 @@ const LiveChat = ({
                 default:
                     return "";
             }
+
+            senderReminderEmail();
         }
     };
 
