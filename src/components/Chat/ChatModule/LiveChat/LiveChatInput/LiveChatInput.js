@@ -26,6 +26,7 @@ const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
 
 const LiveChatInput = ({
     handleNewMessage,
+    handleScrollChatToBottom,
     ticketId,
     fetchingInputStatus,
     allowUserInput,
@@ -228,26 +229,28 @@ const LiveChatInput = ({
         return "";
     };
 
-    const scrollChatToBottom = () => {
-        const messageBody = document.getElementById("messageBody");
-        messageBody.style.scrollBehavior = "smooth";
-        messageBody.scrollTop = messageBody.scrollHeight;
+    const handleAndroidKeyboard = () => {
+        window.addEventListener("resize", (e) => {
+            const messageBody = document.getElementById("messageBody");
+            messageBody.style.scrollBehavior = "smooth";
+            messageBody.scrollTop = messageBody.scrollHeight-500;
+        });
     };
 
     const handleInputFocus = () => {
-        scrollChatToBottom();
-
         const iOS =
             !window.MSStream && /iPad|iPhone|iPod/.test(navigator.userAgent); // fails on iPad iOS 13
         if (iOS) {
             document.body.classList.add("keyboard");
             console.log("on an iphone");
             showIphoneKeyboard();
+        } else {
+            handleAndroidKeyboard();
         }
     };
 
     const handleInputBlur = () => {
-        scrollChatToBottom();
+        handleScrollChatToBottom();
 
         const chatInterface = document.getElementById("chatInterface");
         const ticketsHeader = document.getElementById("ticketsHeader");
@@ -276,7 +279,7 @@ const LiveChatInput = ({
     };
 
     const handleTyping = (e) => {
-        scrollChatToBottom();
+        handleScrollChatToBottom();
 
         let { value } = e.target;
         if (inputType === NUMERIC) {
@@ -325,7 +328,7 @@ const LiveChatInput = ({
                         label='Chat'
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
-                        onClick={() => scrollChatToBottom()}
+                        // onClick={() => handleScrollChatToBottom()}
                         hideLabel={true}
                         ref={inputRef}
                         disabled={isDisabled}
@@ -358,7 +361,7 @@ const LiveChatInput = ({
                         }
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
-                        onClick={() => scrollChatToBottom()}
+                        // onClick={() => handleScrollChatToBottom()}
                     />
                 );
 
@@ -376,7 +379,7 @@ const LiveChatInput = ({
                         disabled={isDisabled || inputType === IMAGE}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
-                        onClick={() => scrollChatToBottom()}
+                        // onClick={() => handleScrollChatToBottom()}
                         maxLength={maxLength?.ruleConstraint}
                         // pattern={pattern}
                         max={max?.ruleConstraint}

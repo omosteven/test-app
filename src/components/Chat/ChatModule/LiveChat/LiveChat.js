@@ -136,6 +136,7 @@ const LiveChat = ({
                                 data[index]?.messageContentId
                             }`
                         );
+                        handleAddEmail();
                     }
 
                     return {
@@ -176,7 +177,9 @@ const LiveChat = ({
         }
     };
 
+    console.log({ messages });
     const handleIssueDiscovery = async (convo) => {
+        console.log("issue discpbery here");
         try {
             const lastMessage = messages[messages.length - 1];
 
@@ -444,6 +447,7 @@ const LiveChat = ({
     };
 
     const handleNewMessage = async (request) => {
+        console.log("new message csme in");
         const { message, fileAttachments } = request;
         const newMessageId = generateID();
 
@@ -458,6 +462,7 @@ const LiveChat = ({
                 fileAttachments,
             });
         } else {
+            console.log("new message entry");
             const messageEntry = {
                 ticketId,
                 senderType: THIRD_USER,
@@ -532,6 +537,7 @@ const LiveChat = ({
     };
 
     const fetchConvoSuggestions = async (message) => {
+        console.log("fetching intents");
         try {
             const { messageContent } = message;
             triggerAgentTyping(true);
@@ -738,9 +744,14 @@ const LiveChat = ({
             //     workspaceId,
             // });
             sendAgentTicket();
-
             return handleAddEmail();
         }
+    };
+
+    const handleScrollChatToBottom = () => {
+        const messageBody = document.getElementById("messageBody");
+        messageBody.style.scrollBehavior = "smooth";
+        messageBody.scrollTop = messageBody.scrollHeight;
     };
 
     const handleReceive = (message) => {
@@ -796,9 +807,15 @@ const LiveChat = ({
         );
 
         if ([FORM_FILLED_COMPLETELY].includes(messageType)) {
-            handleConvoBreaker(messageType, deliveryDate);
+            handleConvoBreaker(
+                messageType,
+                deliveryDate,
+                `${message?.messageId + message?.messageContentId}`
+            );
             return "";
         }
+
+        handleScrollChatToBottom();
     };
 
     const handleAgentUnavailable = () => {
@@ -917,8 +934,6 @@ const LiveChat = ({
         }
     };
 
-    console.log({ messages });
-
     const handleInputNeeded = () => {
         if (messages?.length > 1) {
             let lastMessage = messages[messages.length - 1];
@@ -1005,6 +1020,7 @@ const LiveChat = ({
                     allowUserInput={allowUserInput}
                     triggerAgentTyping={triggerAgentTyping}
                     showVerifyForm={showVerifyForm}
+                    handleScrollChatToBottom={handleScrollChatToBottom}
                 />
             </div>
         </>
