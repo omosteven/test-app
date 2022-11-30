@@ -124,34 +124,49 @@ const LiveChat = ({
                 setStatus(DATAMODE);
                 const { data } = res.data;
 
-                const messagesArr = data.map((x) => ({
-                    ...x,
-                    ticketId,
-                    messageId:
-                        x?.senderType === WORKSPACE_AGENT
-                            ? x?.messageId
-                            : x?.messageType === DEFAULT
-                            ? DEFAULT
-                            : x?.messageId,
-                    suggestionRetryAttempt: 0,
-                    messageStatus: messageStatues?.DELIVERED,
-                    messageType:
-                        x.messageType === DOWNTIME_BRANCH ||
-                        x.messageType === DOWNTIME_BRANCH_SUB_SENTENCE
-                            ? ACTION_INFO
-                            : x.messageType,
-                    messageContentId: x?.messageContentId
-                        ? x?.messageContentId
-                        : x?.deliveryDate,
-                    fileAttachments:
-                        x?.fileAttachments?.length > 0
-                            ? x?.fileAttachments
-                            : x?.form?.formElement?.media?.map((media) => ({
-                                  fileAttachmentUrl: media?.link,
-                                  fileAttachmentType: media?.type,
-                                  fileAttachmentName: media?.mediaName,
-                              })),
-                }));
+                const messagesArr = data.map((x, index) => {
+                    let currentMessageType = data[index]?.messageType;
+
+                    if (currentMessageType === FORM_FILLED_COMPLETELY) {
+                        handleConvoBreaker(
+                            FORM_FILLED_COMPLETELY,
+                            new Date().toISOString(),
+                            `${
+                                data[index]?.messageId +
+                                data[index]?.messageContentId
+                            }`
+                        );
+                    }
+
+                    return {
+                        ...x,
+                        ticketId,
+                        messageId:
+                            x?.senderType === WORKSPACE_AGENT
+                                ? x?.messageId
+                                : x?.messageType === DEFAULT
+                                ? DEFAULT
+                                : x?.messageId,
+                        suggestionRetryAttempt: 0,
+                        messageStatus: messageStatues?.DELIVERED,
+                        messageType:
+                            x.messageType === DOWNTIME_BRANCH ||
+                            x.messageType === DOWNTIME_BRANCH_SUB_SENTENCE
+                                ? ACTION_INFO
+                                : x.messageType,
+                        messageContentId: x?.messageContentId
+                            ? x?.messageContentId
+                            : x?.deliveryDate,
+                        fileAttachments:
+                            x?.fileAttachments?.length > 0
+                                ? x?.fileAttachments
+                                : x?.form?.formElement?.media?.map((media) => ({
+                                      fileAttachmentUrl: media?.link,
+                                      fileAttachmentType: media?.type,
+                                      fileAttachmentName: media?.mediaName,
+                                  })),
+                    };
+                });
 
                 dispatch(setTicketMessages(messagesArr));
             }
@@ -681,7 +696,7 @@ const LiveChat = ({
         }
     };
 
-    const handleConvoBreaker = (messageType, deliveryDate) => {
+    const handleConvoBreaker = (messageType, deliveryDate, customMessageId) => {
         if (messageType) {
             const {
                 actionBranchHeader,
@@ -696,7 +711,7 @@ const LiveChat = ({
             dispatch(
                 saveTicketsMessages({
                     ticketId,
-                    messageId: generateID(),
+                    messageId: customMessageId ? customMessageId : generateID(),
                     // messageRefContent: branchOptionLabel,
                     messageContent: actionBranchMainSentence,
                     messageHeader: actionBranchHeader,
@@ -881,7 +896,6 @@ const LiveChat = ({
 
     const senderReminderEmail = async () => {
         try {
-           
             setStatus(LOADING);
             setErrorMssg();
 
@@ -902,6 +916,8 @@ const LiveChat = ({
             setErrorMssg(getErrorMessage(err));
         }
     };
+
+    console.log({ messages });
 
     const handleInputNeeded = () => {
         if (messages?.length > 1) {

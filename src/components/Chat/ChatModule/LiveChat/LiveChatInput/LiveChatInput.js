@@ -228,8 +228,15 @@ const LiveChatInput = ({
         return "";
     };
 
+    const scrollChatToBottom = () => {
+        const messageBody = document.getElementById("messageBody");
+        messageBody.style.scrollBehavior = "smooth";
+        messageBody.scrollTop = messageBody.scrollHeight;
+    };
+
     const handleInputFocus = () => {
-        console.log("shoullll");
+        scrollChatToBottom();
+
         const iOS =
             !window.MSStream && /iPad|iPhone|iPod/.test(navigator.userAgent); // fails on iPad iOS 13
         if (iOS) {
@@ -240,6 +247,8 @@ const LiveChatInput = ({
     };
 
     const handleInputBlur = () => {
+        scrollChatToBottom();
+
         const chatInterface = document.getElementById("chatInterface");
         const ticketsHeader = document.getElementById("ticketsHeader");
 
@@ -267,6 +276,8 @@ const LiveChatInput = ({
     };
 
     const handleTyping = (e) => {
+        scrollChatToBottom();
+
         let { value } = e.target;
         if (inputType === NUMERIC) {
             value = value.replace(/\D/g, "");
@@ -314,6 +325,7 @@ const LiveChatInput = ({
                         label='Chat'
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
+                        onClick={() => scrollChatToBottom()}
                         hideLabel={true}
                         ref={inputRef}
                         disabled={isDisabled}
@@ -346,6 +358,7 @@ const LiveChatInput = ({
                         }
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
+                        onClick={() => scrollChatToBottom()}
                     />
                 );
 
@@ -363,6 +376,7 @@ const LiveChatInput = ({
                         disabled={isDisabled || inputType === IMAGE}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
+                        onClick={() => scrollChatToBottom()}
                         maxLength={maxLength?.ruleConstraint}
                         // pattern={pattern}
                         max={max?.ruleConstraint}

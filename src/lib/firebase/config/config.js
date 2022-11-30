@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging } from "firebase/messaging";
+import { getMessaging, isSupported } from "firebase/messaging";
 import config from "../../../config/config";
 
 const {
@@ -24,4 +24,18 @@ export const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 
-export const firebaseMessaging = getMessaging(firebaseApp);
+// export const firebaseMessaging = getMessaging(firebaseApp);
+
+export const firebaseMessaging = (async () => {
+    try {
+        const isSupportedBrowser = await isSupported();
+        if (isSupportedBrowser) {
+            return getMessaging(firebaseApp);
+        }
+        console.log("Firebase not supported this browser");
+        return null;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+})();
