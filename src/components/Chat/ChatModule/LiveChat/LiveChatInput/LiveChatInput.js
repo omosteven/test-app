@@ -233,7 +233,7 @@ const LiveChatInput = ({
         window.addEventListener("resize", (e) => {
             const messageBody = document.getElementById("messageBody");
             messageBody.style.scrollBehavior = "smooth";
-            messageBody.scrollTop = messageBody.scrollHeight-500;
+            messageBody.scrollTop = messageBody.scrollHeight;
         });
     };
 
