@@ -177,7 +177,6 @@ const LiveChat = ({
         }
     };
 
-    console.log({ messages });
     const handleIssueDiscovery = async (convo) => {
         console.log("issue discpbery here");
         try {
@@ -449,7 +448,6 @@ const LiveChat = ({
     const handleNewMessage = async (request) => {
         console.log("new message csme in");
         const { message, fileAttachments } = request;
-        const newMessageId = generateID();
 
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
@@ -462,20 +460,6 @@ const LiveChat = ({
                 fileAttachments,
             });
         } else {
-            console.log("new message entry");
-            const messageEntry = {
-                ticketId,
-                senderType: THIRD_USER,
-                messageContent: message,
-                messageContentId: newMessageId,
-                messageId: DEFAULT,
-                messageType: DEFAULT,
-                messageStatus: messageStatues?.SENDING,
-                suggestionRetryAttempt: 0,
-                fileAttachments,
-            };
-            dispatch(saveTicketsMessages(messageEntry));
-
             socket.emit(SEND_CUSTOMER_MESSAGE, {
                 ticketId,
                 message: message,
@@ -763,13 +747,6 @@ const LiveChat = ({
             dispatch(
                 deleteTicketsMessages({
                     messageId: NO_ACTION,
-                    ticketId: newMessageTicketId,
-                })
-            );
-        } else {
-            dispatch(
-                deleteTicketsMessages({
-                    messageId: DEFAULT,
                     ticketId: newMessageTicketId,
                 })
             );
