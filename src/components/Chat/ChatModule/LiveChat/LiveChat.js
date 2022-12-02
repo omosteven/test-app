@@ -124,7 +124,7 @@ const LiveChat = ({
             if (res.status === 200) {
                 setStatus(DATAMODE);
                 const { data } = res.data;
-
+                console.log({ data });
                 dispatch(
                     deleteTicketsMessages({
                         messageId: SMART_CONVOS,
@@ -922,7 +922,6 @@ const LiveChat = ({
             const res = await API.post(url, request);
             if (res.status === 201) {
                 setStatus(DATAMODE);
-                handleTicketCloseSuccess();
             }
         } catch (err) {
             setStatus(ERROR);
