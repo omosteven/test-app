@@ -46,6 +46,7 @@ import {
     setTicketMessages,
     updateTicketMessageStatus,
     deleteTicketsMessages,
+    clearThirdUserMessage,
 } from "../../../../store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
@@ -124,6 +125,13 @@ const LiveChat = ({
                 setStatus(DATAMODE);
                 const { data } = res.data;
 
+                dispatch(
+                    deleteTicketsMessages({
+                        messageId: SMART_CONVOS,
+                        ticketId: ticketId,
+                    })
+                );
+
                 const messagesArr = data.map((x, index) => {
                     let currentMessageType = data[index]?.messageType;
 
@@ -142,12 +150,6 @@ const LiveChat = ({
                     return {
                         ...x,
                         ticketId,
-                        messageId:
-                            x?.senderType === WORKSPACE_AGENT
-                                ? x?.messageId
-                                : x?.messageType === DEFAULT
-                                ? DEFAULT
-                                : x?.messageId,
                         suggestionRetryAttempt: 0,
                         messageStatus: messageStatues?.DELIVERED,
                         messageType:
@@ -178,7 +180,6 @@ const LiveChat = ({
     };
 
     const handleIssueDiscovery = async (convo) => {
-        console.log("issue discpbery here");
         try {
             const lastMessage = messages[messages.length - 1];
 
@@ -446,8 +447,8 @@ const LiveChat = ({
     };
 
     const handleNewMessage = async (request) => {
-        console.log("new message csme in");
         const { message, fileAttachments } = request;
+        const newMessageId = generateID();
 
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
@@ -460,6 +461,18 @@ const LiveChat = ({
                 fileAttachments,
             });
         } else {
+            const messageEntry = {
+                ticketId,
+                senderType: THIRD_USER,
+                messageContent: message,
+                messageContentId: newMessageId,
+                messageId: newMessageId,
+                messageType: DEFAULT,
+                fileAttachments,
+            };
+
+            dispatch(saveTicketsMessages(messageEntry));
+
             socket.emit(SEND_CUSTOMER_MESSAGE, {
                 ticketId,
                 message: message,
@@ -521,7 +534,6 @@ const LiveChat = ({
     };
 
     const fetchConvoSuggestions = async (message) => {
-        console.log("fetching intents");
         try {
             const { messageContent } = message;
             triggerAgentTyping(true);
@@ -600,6 +612,7 @@ const LiveChat = ({
             .reverse()
             ?.find((message) => message.senderType === THIRD_USER);
         if (
+            allMessagesCopy?.length === 2 &&
             lastCustomerMssg?.messageType === DEFAULT &&
             lastMessage.messageType !== CONVERSATION &&
             lastMessage.messageType !== ACTION_INFO &&
@@ -740,7 +753,7 @@ const LiveChat = ({
 
     const handleReceive = (message) => {
         const { messageType, senderType, deliveryDate } = message;
-
+        console.log({ message });
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
@@ -761,27 +774,32 @@ const LiveChat = ({
             return "";
         }
 
-        dispatch(
-            saveTicketsMessages({
-                ...message,
-                messageType:
-                    messageType === DOWNTIME_BRANCH ||
-                    messageType === DOWNTIME_BRANCH_SUB_SENTENCE
-                        ? ACTION_INFO
-                        : messageType,
-                ticketId: newMessageTicketId,
-                fileAttachments:
-                    message?.fileAttachments?.length > 0
-                        ? message?.fileAttachments
-                        : message?.form?.formElement?.media?.map((media) => ({
-                              fileAttachmentUrl: media?.link,
-                              fileAttachmentType: media?.type,
-                              fileAttachmentName: media?.mediaName,
-                          })),
-                readDate:
-                    ticketId === newMessageTicketId && new Date().toISOString(),
-            })
-        );
+        if (senderType !== THIRD_USER || messageType !== DEFAULT) {
+            dispatch(
+                saveTicketsMessages({
+                    ...message,
+                    messageType:
+                        messageType === DOWNTIME_BRANCH ||
+                        messageType === DOWNTIME_BRANCH_SUB_SENTENCE
+                            ? ACTION_INFO
+                            : messageType,
+                    ticketId: newMessageTicketId,
+                    fileAttachments:
+                        message?.fileAttachments?.length > 0
+                            ? message?.fileAttachments
+                            : message?.form?.formElement?.media?.map(
+                                  (media) => ({
+                                      fileAttachmentUrl: media?.link,
+                                      fileAttachmentType: media?.type,
+                                      fileAttachmentName: media?.mediaName,
+                                  })
+                              ),
+                    readDate:
+                        ticketId === newMessageTicketId &&
+                        new Date().toISOString(),
+                })
+            );
+        }
 
         if ([FORM_FILLED_COMPLETELY].includes(messageType)) {
             handleConvoBreaker(
@@ -840,6 +858,7 @@ const LiveChat = ({
         return () => {
             socket.off(RECEIVE_MESSAGE);
             socket.off(NEW_TICKET_UPDATE);
+            dispatch(clearThirdUserMessage(ticketId));
             // socket.off(CLOSED_TICKET)
 
             triggerAgentTyping(false);
@@ -913,23 +932,26 @@ const LiveChat = ({
 
     const handleInputNeeded = () => {
         if (messages?.length > 1) {
-            let lastMessage = messages[messages.length - 1];
-            switch (lastMessage?.messageType) {
-                case FORM_REQUEST:
-                case DEFAULT:
-                    handleConvoBreaker(INPUT_NEEDED);
-                    break;
-                case CONVERSATION:
-                case BRANCH:
-                    if (lastMessage?.branchOptions?.length > 0) {
-                        handleConvoBreaker(INPUT_NEEDED);
-                    }
-                    break;
-                default:
-                    return "";
-            }
+            let lastMessage = messages[messages?.length - 1];
 
-            senderReminderEmail();
+            if (lastMessage?.senderType === WORKSPACE_AGENT) {
+                switch (lastMessage?.messageType) {
+                    case FORM_REQUEST:
+                    case DEFAULT:
+                        handleConvoBreaker(INPUT_NEEDED);
+                        break;
+                    case CONVERSATION:
+                    case BRANCH:
+                        if (lastMessage?.branchOptions?.length > 0) {
+                            handleConvoBreaker(INPUT_NEEDED);
+                        }
+                        break;
+                    default:
+                        return "";
+                }
+
+                senderReminderEmail();
+            }
         }
     };
 
