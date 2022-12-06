@@ -915,8 +915,8 @@ const LiveChat = ({
             setErrorMssg();
 
             let request = {
-                message: "You've Successfully Added An Email To Your Ticket",
-                subject: "Email Added To Ticket",
+                message: "It seems like you've forgotten your open conversation with us. You can continue by clicking the button below",
+                subject: "We need your input!",
                 ticketId,
             };
 
