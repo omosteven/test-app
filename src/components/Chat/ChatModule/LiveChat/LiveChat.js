@@ -20,6 +20,7 @@ import {
     generateID,
     getErrorMessage,
     incrementDateTime,
+    isDeviceMobileTablet,
     validateEmail,
 } from "../../../../utils/helper";
 import LiveChatInput from "./LiveChatInput/LiveChatInput";
@@ -746,14 +747,15 @@ const LiveChat = ({
     };
 
     const handleScrollChatToBottom = () => {
-        const messageBody = document.getElementById("messageBody");
-        messageBody.style.scrollBehavior = "smooth";
-        messageBody.scrollTop = messageBody.scrollHeight;
+        if (isDeviceMobileTablet()) {
+            const messageBody = document.getElementById("messageBody");
+            messageBody.style.scrollBehavior = "smooth";
+            messageBody.scrollTop = messageBody.scrollHeight;
+        }
     };
 
     const handleReceive = (message) => {
         const { messageType, senderType, deliveryDate } = message;
-        console.log({ message });
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);

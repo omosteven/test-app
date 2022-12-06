@@ -16,6 +16,7 @@ import { dataQueryStatus } from "../../../../../utils/formatHandlers";
 import {
     getCurrentFormInputRules,
     getErrorMessage,
+    isDeviceMobileTablet,
 } from "../../../../../utils/helper";
 import { formInputTypes } from "../MessageBody/Messages/enums";
 import { IMAGE } from "./UploadIcons/enum";
@@ -245,7 +246,9 @@ const LiveChatInput = ({
             console.log("on an iphone");
             showIphoneKeyboard();
         } else {
-            handleAndroidKeyboard();
+            if (isDeviceMobileTablet()) {
+                handleAndroidKeyboard();
+            }
         }
     };
 
