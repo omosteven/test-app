@@ -244,7 +244,7 @@ const LiveChat = ({
                     });
 
                     sendAgentTicket();
-                    
+
                     handleAddEmail();
                 }
             }
@@ -396,6 +396,7 @@ const LiveChat = ({
                 recentAdminMessage;
             switch (messageType) {
                 case DEFAULT:
+                case CANNED_RESPONSE:
                     shouldAllowUserInput = true;
                     userInputType = TEXT;
                     break;
@@ -760,6 +761,7 @@ const LiveChat = ({
 
     const handleReceive = (message) => {
         const { messageType, senderType, deliveryDate } = message;
+        console.log({ message });
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
@@ -919,7 +921,8 @@ const LiveChat = ({
             setErrorMssg();
 
             let request = {
-                message: "It seems like you've forgotten your open conversation with us. You can continue by clicking the button below",
+                message:
+                    "It seems like you've forgotten your open conversation with us. You can continue by clicking the button below",
                 subject: "We need your input!",
                 ticketId,
             };
