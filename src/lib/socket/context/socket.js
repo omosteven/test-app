@@ -11,8 +11,8 @@ export const socket = io.connect(config.apiGateway.SOCKET_BASE_URL, {
     },
     reconnection: true,
     reconnectionDelay: 1000,
-    reconnectionDelayMax : 5000,
-    reconnectionAttempts: 5
+    reconnectionDelayMax: 5000,
+    reconnectionAttempts: 5,
 });
 
 export const SocketContext = React.createContext();

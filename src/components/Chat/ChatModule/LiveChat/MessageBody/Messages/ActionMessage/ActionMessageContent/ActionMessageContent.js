@@ -17,10 +17,12 @@ const ActionMessageContent = ({
     return (
         <>
             <div className='message__content info__action'>
-                <div className='action__header'>
-                    <ReactSVG src={imageLinks?.svg?.attention} />
-                    <h6>{messageHeader}</h6>
-                </div>
+                {messageHeader && (
+                    <div className='action__header'>
+                        <ReactSVG src={imageLinks?.svg?.attention} />
+                        <h6>{messageHeader}</h6>
+                    </div>
+                )}
                 <div className='message'>
                     <div>{messageContent}</div>
                     {requestRatings && (

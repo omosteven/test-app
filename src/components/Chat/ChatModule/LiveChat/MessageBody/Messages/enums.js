@@ -51,6 +51,7 @@ export const messageTypes = Object.freeze({
     DOWNTIME_BRANCH_SUB_SENTENCE: "DOWNTIME_BRANCH_SUB_SENTENCE",
     FORM_FILLED: "FORM_FILLED",
     FORM_FILLED_COMPLETELY: "FORM_FILLED_COMPLETELY",
+    CANNED_RESPONSE: "CANNED_RESPONSE",
 });
 
 export const branchOptionsTypes = Object.freeze({
@@ -73,6 +74,7 @@ export const messageOptionActions = Object.freeze({
     OPEN_NEW_TICKET: "OPEN_NEW_TICKET",
     ADD_EMAIL_ADDRESS: "ADD_EMAIL_ADDRESS",
     CLOSE_TICKET: "CLOSE_TICKET",
+    FORWARD_AGENT: "FORWARD_AGENT",
 });
 
 export const formInputTypes = {

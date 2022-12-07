@@ -17,7 +17,8 @@ const apiRoutes = {
     restartTicket: (ticketId) => `${agentsInbox}ticket/${ticketId}/restart`,
     closeTicket: (ticketId) => `${agentsInbox}ticket/${ticketId}/close`,
     rateTicket: (ticketId) => `${agentsInbox}ticket/${ticketId}/rating`,
-
+    sendTicketReminder: `${agentsInbox}ticket/customer-email`,
+    sendAgentTicket: `${agentsInbox}ticket/assign-by-capsule`,
     investigateMesage: `${kSam}issue/investigate-message`,
     createTicket: `${agentsInbox}ticket`,
     validateSessionOtp: (sessionId) =>

@@ -13,7 +13,11 @@ import UploadPreview from "./UploadIcons/UploadPreview/UploadPreview";
 import API from "../../../../../lib/api";
 import apiRoutes from "../../../../../lib/api/apiRoutes";
 import { dataQueryStatus } from "../../../../../utils/formatHandlers";
-import { getErrorMessage } from "../../../../../utils/helper";
+import {
+    getCurrentFormInputRules,
+    getErrorMessage,
+    isDeviceMobileTablet,
+} from "../../../../../utils/helper";
 import { formInputTypes } from "../MessageBody/Messages/enums";
 import { IMAGE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
@@ -23,6 +27,7 @@ const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
 
 const LiveChatInput = ({
     handleNewMessage,
+    handleScrollChatToBottom,
     ticketId,
     fetchingInputStatus,
     allowUserInput,
@@ -225,18 +230,31 @@ const LiveChatInput = ({
         return "";
     };
 
+    const handleAndroidKeyboard = () => {
+        window.addEventListener("resize", (e) => {
+            const messageBody = document.getElementById("messageBody");
+            messageBody.style.scrollBehavior = "smooth";
+            messageBody.scrollTop = messageBody.scrollHeight;
+        });
+    };
+
     const handleInputFocus = () => {
-        console.log("shoullll");
         const iOS =
             !window.MSStream && /iPad|iPhone|iPod/.test(navigator.userAgent); // fails on iPad iOS 13
         if (iOS) {
             document.body.classList.add("keyboard");
             console.log("on an iphone");
             showIphoneKeyboard();
+        } else {
+            if (isDeviceMobileTablet()) {
+                handleAndroidKeyboard();
+            }
         }
     };
 
     const handleInputBlur = () => {
+        handleScrollChatToBottom();
+
         const chatInterface = document.getElementById("chatInterface");
         const ticketsHeader = document.getElementById("ticketsHeader");
 
@@ -249,13 +267,13 @@ const LiveChatInput = ({
 
             return false;
         });
-        chatInterface.removeEventListener("wheel", (e) => {
+        chatInterface?.removeEventListener("wheel", (e) => {
             e.preventDefault();
             e.stopPropagation();
 
             return false;
         });
-        ticketsHeader.removeEventListener("wheel", (e) => {
+        ticketsHeader?.removeEventListener("wheel", (e) => {
             e.preventDefault();
             e.stopPropagation();
 
@@ -264,6 +282,8 @@ const LiveChatInput = ({
     };
 
     const handleTyping = (e) => {
+        handleScrollChatToBottom();
+
         let { value } = e.target;
         if (inputType === NUMERIC) {
             value = value.replace(/\D/g, "");
@@ -285,8 +305,14 @@ const LiveChatInput = ({
     }, []);
 
     const renderBasedOnInputType = () => {
-        const { formElementPlaceholder, formElementOptions, options } =
+        const { formElementPlaceholder, formElementOptions, options, rules } =
             currentFormElement || {};
+
+        const { maxLength, max, pattern } = getCurrentFormInputRules(
+            rules,
+            inputType
+        );
+
         switch (inputType) {
             case TEXT:
             case NUMERIC:
@@ -305,9 +331,13 @@ const LiveChatInput = ({
                         label='Chat'
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
+                        // onClick={() => handleScrollChatToBottom()}
                         hideLabel={true}
                         ref={inputRef}
                         disabled={isDisabled}
+                        maxLength={maxLength?.ruleConstraint}
+                        // pattern={pattern}
+                        max={max?.ruleConstraint}
                     />
                 );
 
@@ -334,6 +364,7 @@ const LiveChatInput = ({
                         }
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
+                        // onClick={() => handleScrollChatToBottom()}
                     />
                 );
 
@@ -351,6 +382,10 @@ const LiveChatInput = ({
                         disabled={isDisabled || inputType === IMAGE}
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
+                        // onClick={() => handleScrollChatToBottom()}
+                        maxLength={maxLength?.ruleConstraint}
+                        // pattern={pattern}
+                        max={max?.ruleConstraint}
                     />
                 );
         }

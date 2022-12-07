@@ -15,6 +15,10 @@ const LiveChatStatusBar = ({ status, errorMssg }) => {
     //     user: { email },
     // } = useSelector((state) => state?.auth);
 
+    const handleRetry = () => {
+        window.location.reload();
+    };
+
     const renderBasedOnStatus = () => {
         switch (status) {
             case IDLE:
@@ -24,7 +28,11 @@ const LiveChatStatusBar = ({ status, errorMssg }) => {
                 return <SmallLoader otherClassName={"primary"} />;
 
             case ERROR:
-                return <span className='error'>{errorMssg}</span>;
+                return (
+                    <span className='error__status' onClick={handleRetry}>
+                        {errorMssg}
+                    </span>
+                );
 
             case DATAMODE:
                 return (

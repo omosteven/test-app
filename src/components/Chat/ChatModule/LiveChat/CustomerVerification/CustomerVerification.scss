@@ -7,7 +7,7 @@
         text-align: right;
         margin-top: 42px;
         margin-right: 139px;
-        margin-bottom: 102px;
+        margin-bottom: 60px;
         .verify-icon {
             cursor: pointer;
         }
@@ -36,7 +36,7 @@
             white-space: nowrap;
             justify-content: space-between !important;
             display: flex;
-            @include media("<=small-screen") {
+            @include media("<=medium-screen") {
                 text-align: center;
                 padding: 0;
                 justify-content: space-between !important;
@@ -49,9 +49,9 @@
                 // justify-content: space-evenly !important;
                 width: 89px !important;
                 height: 89px !important;
-                @include media("<=small-screen") {
-                    width: 40px !important;
-                    height: 40px !important;
+                @include media("<=medium-screen") {
+                    width: 60px !important;
+                    height: 60px !important;
                     &:not(:last-child) {
                         margin-right: 0px !important;
                     }

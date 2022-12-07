@@ -8,7 +8,7 @@
     flex-direction: column;
     width: 100%;
 
-    @include media("<=small-screen") {
+    @include media("<=medium-screen") {
         padding: 1rem;
     }
 

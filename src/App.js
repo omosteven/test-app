@@ -7,7 +7,6 @@ import API from "./lib/api";
 import apiRoutes from "./lib/api/apiRoutes";
 import FullPageLoader from "./components/common/FullPageLoader/FullPageLoader";
 import {
-    setConversationBreakers,
     updateChatSettings,
 } from "./store/chat/actions";
 import store from "./store/store";

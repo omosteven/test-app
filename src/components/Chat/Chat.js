@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import API from "../../lib/api";
 import apiRoutes from "../../lib/api/apiRoutes";
@@ -7,28 +8,28 @@ import { socket, SocketContext } from "../../lib/socket/context/socket";
 import { retriveAccessToken } from "../../storage/sessionStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
-import { getErrorMessage, validateEmail } from "../../utils/helper";
+import { getErrorMessage } from "../../utils/helper";
 import Empty from "../common/Empty/Empty";
 import { ToastContext } from "../common/Toast/context/ToastContextProvider";
-
 import queryString from "query-string";
-
 import ChatHeader from "./ChatModule/ChatHeader/ChatHeader";
 import ChatModule from "./ChatModule/ChatModule";
 import ChatToastNotification from "./ChatToastNotification/ChatToastNotification";
 import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/NewTicketButton/NewTicketButton";
-import "./Chat.scss";
 import { pushAuthUser } from "store/auth/actions";
 import TicketCloseModal from "./TicketCloseModal/TicketCloseModal";
 import { setConversationBreakers } from "store/chat/actions";
+import "./Chat.scss";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 
 const Chat = () => {
+    const [showChatMenu, toggleChatMenu] = useState(false);
     const [showTictketActionModal, toggleTicketActionModal] = useState();
     const [status, setStatus] = useState("");
     const [errorMssg, setErrorMssg] = useState("");
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const toastMessage = useContext(ToastContext);
 
@@ -73,10 +74,10 @@ const Chat = () => {
             setErrorMssg();
 
             const tickedId = params?.ticketId;
-            const tempCode = params?.code;
+            const authCode = params?.code;
 
             const res = await API.get(
-                apiRoutes.getAuthToken(tempCode, tickedId)
+                apiRoutes.getAuthToken(authCode, tickedId)
             );
 
             if (res.status === 200) {
@@ -89,13 +90,7 @@ const Chat = () => {
         } catch (err) {
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
-        }
-    };
-
-    const redirectCustomer = async (customer) => {
-        if (!validateEmail(customer?.email)) {
-            await sessionStorage.clear();
-            window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+            window.stop();
         }
     };
 
@@ -124,19 +119,13 @@ const Chat = () => {
                         })
                     );
 
-                    if (
-                        (newTicket === undefined || newTicket === null) &&
-                        customerTicketId !== undefined
-                    ) {
-                        return redirectCustomer(newTicket?.customer);
-                    }
-
                     const { customer } = newTicket || {};
                     if (customer) {
                         dispatch(pushAuthUser(customer));
                     }
 
                     setStatus(DATAMODE);
+                    toggleChatMenu(false);
                 } else {
                     openNewTicket ? createNewTicket() : setStatus(NULLMODE);
                 }
@@ -194,12 +183,15 @@ const Chat = () => {
     };
 
     const callHandler = () => {
-        fetchConvoBreakers();
         isAuthCodeAvailable
             ? customerTicketId
                 ? getCustomerTickets(customerTicketId)
                 : getCustomerAuthToken()
             : getCustomerTickets();
+
+        isAuthCodeAvailable
+            ? customerTicketId && fetchConvoBreakers()
+            : fetchConvoBreakers();
     };
 
     useEffect(() => {
@@ -209,6 +201,19 @@ const Chat = () => {
     const handleCloseTicket = () => {
         toggleTicketActionModal(true);
     };
+
+    useEffect(() => {
+        if (isAuthCodeAvailable && params?.connectionStatus !== "connected") {
+            history.push(
+                `/direct?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&code=${params?.code}&connectionStatus=connected`
+            );
+
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000);
+        }
+    }, []);
+
     return (
         <>
             <SocketContext.Provider value={socket}>
@@ -227,6 +232,8 @@ const Chat = () => {
                                     handleTicketModalAction,
                                     showVerifyForm,
                                     handleCloseTicket,
+                                    showChatMenu,
+                                    toggleChatMenu,
                                 }}
                             />
                             {selectedTicket?.ticketId ? (

@@ -20,6 +20,7 @@ import {
     generateID,
     getErrorMessage,
     incrementDateTime,
+    isDeviceMobileTablet,
     validateEmail,
 } from "../../../../utils/helper";
 import LiveChatInput from "./LiveChatInput/LiveChatInput";
@@ -38,7 +39,6 @@ import {
     FORM_FILLED_COMPLETELY,
     INPUT_NEEDED,
     AGENT_UNAVAILABLE,
-    messageActionTypes,
 } from "./MessageBody/Messages/enums";
 import TicketsHeader from "../TicketsHeader/TicketsHeader";
 import {
@@ -47,11 +47,11 @@ import {
     setTicketMessages,
     updateTicketMessageStatus,
     deleteTicketsMessages,
+    clearThirdUserMessage,
 } from "../../../../store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
-import "./LiveChat.scss";
-
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
+import "./LiveChat.scss";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
@@ -67,6 +67,9 @@ const {
     ACTION_INFO,
     DOWNTIME_BRANCH,
     DOWNTIME_BRANCH_SUB_SENTENCE,
+    BRANCH_SUB_SENTENCE,
+    COLLECTION,
+    CANNED_RESPONSE,
 } = messageTypes;
 
 const { TEXT } = formInputTypes;
@@ -124,28 +127,51 @@ const LiveChat = ({
                 setStatus(DATAMODE);
                 const { data } = res.data;
 
-                const messagesArr = data.map((x) => ({
-                    ...x,
-                    ticketId,
-                    suggestionRetryAttempt: 0,
-                    messageStatus: messageStatues?.DELIVERED,
-                    messageType:
-                        x.messageType === DOWNTIME_BRANCH ||
-                        x.messageType === DOWNTIME_BRANCH_SUB_SENTENCE
-                            ? ACTION_INFO
-                            : x.messageType,
-                    messageContentId: x?.messageContentId
-                        ? x?.messageContentId
-                        : x?.deliveryDate,
-                    fileAttachments:
-                        x?.fileAttachments?.length > 0
-                            ? x?.fileAttachments
-                            : x?.form?.formElement?.media?.map((media) => ({
-                                  fileAttachmentUrl: media?.link,
-                                  fileAttachmentType: media?.type,
-                                  fileAttachmentName: media?.mediaName,
-                              })),
-                }));
+                dispatch(
+                    deleteTicketsMessages({
+                        messageId: SMART_CONVOS,
+                        ticketId: ticketId,
+                    })
+                );
+
+                const messagesArr = data.map((x, index) => {
+                    let currentMessageType = data[index]?.messageType;
+
+                    if (currentMessageType === FORM_FILLED_COMPLETELY) {
+                        handleConvoBreaker(
+                            FORM_FILLED_COMPLETELY,
+                            new Date().toISOString(),
+                            `${
+                                data[index]?.messageId +
+                                data[index]?.messageContentId
+                            }`
+                        );
+                        handleAddEmail();
+                    }
+
+                    return {
+                        ...x,
+                        ticketId,
+                        suggestionRetryAttempt: 0,
+                        messageStatus: messageStatues?.DELIVERED,
+                        messageType:
+                            x.messageType === DOWNTIME_BRANCH ||
+                            x.messageType === DOWNTIME_BRANCH_SUB_SENTENCE
+                                ? ACTION_INFO
+                                : x.messageType,
+                        messageContentId: x?.messageContentId
+                            ? x?.messageContentId
+                            : x?.deliveryDate,
+                        fileAttachments:
+                            x?.fileAttachments?.length > 0
+                                ? x?.fileAttachments
+                                : x?.form?.formElement?.media?.map((media) => ({
+                                      fileAttachmentUrl: media?.link,
+                                      fileAttachmentType: media?.type,
+                                      fileAttachmentName: media?.mediaName,
+                                  })),
+                    };
+                });
 
                 dispatch(setTicketMessages(messagesArr));
             }
@@ -216,8 +242,11 @@ const LiveChat = ({
                         ticketId,
                         workspaceId,
                     });
+
+                    sendAgentTicket();
+                    
+                    handleAddEmail();
                 }
-                handleAddEmail();
             }
         } catch (err) {
             setStatus(ERROR);
@@ -242,6 +271,7 @@ const LiveChat = ({
                 ticketId,
                 workspaceId,
             });
+            sendAgentTicket();
             dispatch(
                 saveTicketsMessages({
                     messageId: generateID(),
@@ -279,12 +309,11 @@ const LiveChat = ({
         // return ""branchOptionActionType
 
         let newMessageList = await messages.map((x) => {
-            return (x.messageType === messageTypes?.BRANCH ||
-                x.messageType === messageTypes?.COLLECTION ||
-                x.messageType === messageTypes?.BRANCH_OPTION ||
-                x.messageType === messageTypes?.BRANCH_SUB_SENTENCE ||
-                x.messageType === messageTypes?.CONVERSATION ||
-                x.messageType === messageTypes?.COLLECTION) &&
+            return (x.messageType === BRANCH ||
+                x.messageType === COLLECTION ||
+                x.messageType === BRANCH_OPTION ||
+                x.messageType === BRANCH_SUB_SENTENCE ||
+                x.messageType === CONVERSATION) &&
                 x.messageContentId === branchId
                 ? { ...x, selectedOption: branchOptionId }
                 : x ||
@@ -304,22 +333,23 @@ const LiveChat = ({
             branchOptionActionType === messageOptionActions?.CLOSE_TICKET
         ) {
             handleCloseConversation();
-
-            return "";
-        }
-
-        if (branchOptionActionType === messageOptionActions?.OPEN_NEW_TICKET) {
-            handleOpenNewTicket();
             return "";
         }
 
         if (
+            branchOptionActionType === messageOptionActions?.OPEN_NEW_TICKET ||
             branchOptionActionType ===
-            messageOptionActions?.RESTART_CONVERSATION
+                messageOptionActions?.RESTART_CONVERSATION
         ) {
-            restartConversation();
+            handleOpenNewTicket();
             return "";
         }
+
+        if (branchOptionActionType === messageOptionActions?.FORWARD_AGENT) {
+            handleConvoBreaker(AGENT_FOLLOWUP);
+            return "";
+        }
+
         triggerAgentTyping(true);
 
         await socket.emit(
@@ -344,7 +374,7 @@ const LiveChat = ({
     };
 
     const handleSocketError = () => {
-        setErrorMssg("Trying to connect to chat");
+        setErrorMssg("Refresh to connect back");
         setStatus(ERROR);
     };
 
@@ -355,7 +385,12 @@ const LiveChat = ({
         const messageCopy = messages;
         let recentAdminMessage = [...messageCopy]
             .reverse()
-            ?.find((message) => message.senderType === WORKSPACE_AGENT);
+            ?.find(
+                (message) =>
+                    message?.messageActionType !== INPUT_NEEDED &&
+                    message?.senderType === WORKSPACE_AGENT
+            );
+
         if (recentAdminMessage) {
             const { messageType, branchOptions, form, messageActionType } =
                 recentAdminMessage;
@@ -380,6 +415,7 @@ const LiveChat = ({
                     break;
 
                 case BRANCH:
+                case COLLECTION:
                     if (branchOptions?.length > 0) {
                         shouldAllowUserInput = false;
                         userInputType = TEXT;
@@ -417,6 +453,8 @@ const LiveChat = ({
 
     const handleNewMessage = async (request) => {
         const { message, fileAttachments } = request;
+        const newMessageId = generateID();
+
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
             socket.emit(FILL_FORM_RECORD, {
@@ -428,6 +466,18 @@ const LiveChat = ({
                 fileAttachments,
             });
         } else {
+            const messageEntry = {
+                ticketId,
+                senderType: THIRD_USER,
+                messageContent: message,
+                messageContentId: newMessageId,
+                messageId: newMessageId,
+                messageType: DEFAULT,
+                fileAttachments,
+            };
+
+            dispatch(saveTicketsMessages(messageEntry));
+
             socket.emit(SEND_CUSTOMER_MESSAGE, {
                 ticketId,
                 message: message,
@@ -471,17 +521,16 @@ const LiveChat = ({
         }
     };
 
-    const restartConversation = async () => {
+    const sendAgentTicket = async () => {
         try {
             setStatus(LOADING);
             setErrorMssg();
-            const url = apiRoutes?.restartTicket(ticketId);
-            const res = await API.post(url);
+            const url = apiRoutes?.sendAgentTicket;
+            const res = await API.post(url, {
+                ticketId,
+            });
             if (res.status === 201) {
                 setStatus(DATAMODE);
-                const { ticketId } = res.data.data;
-                dispatch(setActiveTicket());
-                getCustomerTickets(ticketId);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -568,6 +617,7 @@ const LiveChat = ({
             .reverse()
             ?.find((message) => message.senderType === THIRD_USER);
         if (
+            allMessagesCopy?.length === 2 &&
             lastCustomerMssg?.messageType === DEFAULT &&
             lastMessage.messageType !== CONVERSATION &&
             lastMessage.messageType !== ACTION_INFO &&
@@ -653,8 +703,8 @@ const LiveChat = ({
             );
         }
     };
-
-    const handleConvoBreaker = (messageType, deliveryDate) => {
+    console.log({ messages });
+    const handleConvoBreaker = (messageType, deliveryDate, customMessageId) => {
         if (messageType) {
             const {
                 actionBranchHeader,
@@ -669,7 +719,7 @@ const LiveChat = ({
             dispatch(
                 saveTicketsMessages({
                     ticketId,
-                    messageId: generateID(),
+                    messageId: customMessageId ? customMessageId : generateID(),
                     // messageRefContent: branchOptionLabel,
                     messageContent: actionBranchMainSentence,
                     messageHeader: actionBranchHeader,
@@ -691,19 +741,27 @@ const LiveChat = ({
         }
 
         if (messageType === FORM_FILLED_COMPLETELY) {
-            socket.emit(SEND_AGENT_TICKET, {
-                ticketId,
-                workspaceId,
-            });
-
+            // socket.emit(SEND_AGENT_TICKET, {
+            //     ticketId,
+            //     workspaceId,
+            // });
+            sendAgentTicket();
             return handleAddEmail();
         }
     };
 
+    const handleScrollChatToBottom = () => {
+        if (isDeviceMobileTablet()) {
+            const messageBody = document.getElementById("messageBody");
+            messageBody.style.scrollBehavior = "smooth";
+            messageBody.scrollTop = messageBody.scrollHeight;
+        }
+    };
+
     const handleReceive = (message) => {
-        const { messageType, deliveryDate } = message;
+        const { messageType, senderType, deliveryDate } = message;
         const { ticketId: newMessageTicketId } = message?.ticket;
-        if (message.senderType === WORKSPACE_AGENT) {
+        if (senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
             dispatch(
                 deleteTicketsMessages({
@@ -717,40 +775,48 @@ const LiveChat = ({
             handleMarkAsRead(message?.messageId);
         }
 
-        if (
-            [FORM_FILLED_COMPLETELY, TICKET_CLOSED_ALERT].includes(messageType)
-        ) {
+        if ([TICKET_CLOSED_ALERT].includes(messageType)) {
             handleConvoBreaker(messageType, deliveryDate);
             return "";
         }
 
-        dispatch(
-            saveTicketsMessages({
-                ...message,
-                messageHeader:
-                    messageType === DOWNTIME_BRANCH
-                        ? messageActionTypes.DOWNTIME_BRANCH.title
-                        : messageType === DOWNTIME_BRANCH_SUB_SENTENCE
-                        ? messageActionTypes.DOWNTIME_BRANCH_SUB_SENTENCE.title
-                        : "",
-                messageType:
-                    messageType === DOWNTIME_BRANCH ||
-                    messageType === DOWNTIME_BRANCH_SUB_SENTENCE
-                        ? ACTION_INFO
-                        : messageType,
-                ticketId: newMessageTicketId,
-                fileAttachments:
-                    message?.fileAttachments?.length > 0
-                        ? message?.fileAttachments
-                        : message?.form?.formElement?.media?.map((media) => ({
-                              fileAttachmentUrl: media?.link,
-                              fileAttachmentType: media?.type,
-                              fileAttachmentName: media?.mediaName,
-                          })),
-                readDate:
-                    ticketId === newMessageTicketId && new Date().toISOString(),
-            })
-        );
+        if (senderType !== THIRD_USER || messageType !== DEFAULT) {
+            dispatch(
+                saveTicketsMessages({
+                    ...message,
+                    messageType:
+                        messageType === DOWNTIME_BRANCH ||
+                        messageType === DOWNTIME_BRANCH_SUB_SENTENCE
+                            ? ACTION_INFO
+                            : messageType,
+                    ticketId: newMessageTicketId,
+                    fileAttachments:
+                        message?.fileAttachments?.length > 0
+                            ? message?.fileAttachments
+                            : message?.form?.formElement?.media?.map(
+                                  (media) => ({
+                                      fileAttachmentUrl: media?.link,
+                                      fileAttachmentType: media?.type,
+                                      fileAttachmentName: media?.mediaName,
+                                  })
+                              ),
+                    readDate:
+                        ticketId === newMessageTicketId &&
+                        new Date().toISOString(),
+                })
+            );
+        }
+
+        if ([FORM_FILLED_COMPLETELY].includes(messageType)) {
+            handleConvoBreaker(
+                messageType,
+                deliveryDate,
+                `${message?.messageId + message?.messageContentId}`
+            );
+            return "";
+        }
+
+        handleScrollChatToBottom();
     };
 
     const handleAgentUnavailable = () => {
@@ -798,6 +864,7 @@ const LiveChat = ({
         return () => {
             socket.off(RECEIVE_MESSAGE);
             socket.off(NEW_TICKET_UPDATE);
+            dispatch(clearThirdUserMessage(ticketId));
             // socket.off(CLOSED_TICKET)
 
             triggerAgentTyping(false);
@@ -846,22 +913,52 @@ const LiveChat = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [ticketsMessages, ticketId, messages]);
 
+    const senderReminderEmail = async () => {
+        try {
+            setStatus(LOADING);
+            setErrorMssg();
+
+            let request = {
+                message: "It seems like you've forgotten your open conversation with us. You can continue by clicking the button below",
+                subject: "We need your input!",
+                ticketId,
+            };
+
+            const url = apiRoutes?.sendTicketReminder;
+            const res = await API.post(url, request);
+            if (res.status === 201) {
+                setStatus(DATAMODE);
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
+
     const handleInputNeeded = () => {
         if (messages?.length > 1) {
-            let lastMessage = messages[messages.length - 1];
-            switch (lastMessage?.messageType) {
-                case FORM_REQUEST:
-                case DEFAULT:
-                    handleConvoBreaker(INPUT_NEEDED);
-                    break;
-                case CONVERSATION:
-                case BRANCH:
-                    if (lastMessage?.branchOptions?.length > 0) {
+            let lastMessage = messages[messages?.length - 1];
+
+            if (
+                lastMessage?.senderType === WORKSPACE_AGENT &&
+                lastMessage?.messageType !== CANNED_RESPONSE
+            ) {
+                switch (lastMessage?.messageType) {
+                    case FORM_REQUEST:
+                    case DEFAULT:
                         handleConvoBreaker(INPUT_NEEDED);
-                    }
-                    break;
-                default:
-                    return "";
+                        break;
+                    case CONVERSATION:
+                    case BRANCH:
+                        if (lastMessage?.branchOptions?.length > 0) {
+                            handleConvoBreaker(INPUT_NEEDED);
+                        }
+                        break;
+                    default:
+                        return "";
+                }
+
+                senderReminderEmail();
             }
         }
     };
@@ -917,7 +1014,10 @@ const LiveChat = ({
                     messages={messages}
                 />
             )}
-            <div className='chat__input__container'>
+            <div
+                className={`chat__input__container ${
+                    showVerifyForm ? "live-chat-input__add-email" : ""
+                }`}>
                 <LiveChatInput
                     ticketId={ticketId}
                     inputType={currentInputType}
@@ -926,6 +1026,8 @@ const LiveChat = ({
                     fetchingInputStatus={fetchingInputStatus}
                     allowUserInput={allowUserInput}
                     triggerAgentTyping={triggerAgentTyping}
+                    showVerifyForm={showVerifyForm}
+                    handleScrollChatToBottom={handleScrollChatToBottom}
                 />
             </div>
         </>

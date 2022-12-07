@@ -4,6 +4,7 @@ import moment from "moment";
 const Countdown = ({ countdownTo, countdownEnded, setCountdownEnded }) => {
     const [hours, setHours] = useState(0);
     const [mins, setMins] = useState(0);
+    const [showCountDown, setShowCountDown] = useState(false);
 
     const then = moment(moment(countdownTo).format("h:mm a"), "h:mm a");
 
@@ -17,13 +18,19 @@ const Countdown = ({ countdownTo, countdownEnded, setCountdownEnded }) => {
 
     const countdown = () => {
         duration = moment.duration(Number(duration) - 1000, "milliseconds");
-        if (duration.hours() === 0 && duration.minutes() <= 0) {
+
+        if (
+            duration.hours() === 0 &&
+            duration.minutes() <= 0 &&
+            duration.seconds() <= 0
+        ) {
             setCountdownEnded(true);
             return setMins(0);
         }
 
-        setHours(duration.hours());
-        setMins(duration.minutes());
+        setHours(duration?.hours());
+        setMins(duration?.minutes());
+        setShowCountDown(true);
     };
 
     useEffect(() => {
@@ -36,13 +43,20 @@ const Countdown = ({ countdownTo, countdownEnded, setCountdownEnded }) => {
 
     return (
         <span className='timer'>
-            {hours > 0
-                ? `${hours > 9 ? hours : `0${hours}`}h:${
-                      mins > 9 ? mins : `0${mins}`
-                  }m`
-                : mins > 9
-                ? `${mins}:00m`
-                : `0${mins}:00m`}
+            {showCountDown ? (
+                <>
+                    {" "}
+                    {hours > 0
+                        ? `${hours > 9 ? hours : `0${hours}`}h:${
+                              mins > 9 ? mins : `0${mins}`
+                          }m`
+                        : mins > 9
+                        ? `${mins + 1}:00m`
+                        : `0${mins + 1}:00m`}
+                </>
+            ) : (
+                `00:00m`
+            )}
         </span>
     );
 };

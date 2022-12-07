@@ -6,7 +6,7 @@
       margin-right: 10px;
       margin-bottom: 4px;
 
-      @include media("<=small-screen"){
+      @include media("<=medium-screen"){
         margin-top: -20px;
       }
     }

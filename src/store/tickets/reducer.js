@@ -1,5 +1,12 @@
 import { getUniqueListBy } from "../../utils/helper";
 import * as types from "./types";
+import {
+    appMessageUserTypes,
+    messageTypes,
+} from "components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
+
+const { THIRD_USER } = appMessageUserTypes;
+const { DEFAULT } = messageTypes;
 
 const initialState = {
     ticketsMessages: [],
@@ -70,6 +77,19 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
             return {
                 ...state,
                 activeTicket: { ...state?.activeTicket, agentTyping: payload },
+            };
+
+        case types.CLEAR_THIRD_USER_MESSAGE:
+            return {
+                ...state,
+                ticketsMessages: state?.ticketsMessages?.filter(
+                    (x) =>
+                        !(
+                            x?.ticketId === payload &&
+                            x?.messageType === DEFAULT &&
+                            x?.senderType === THIRD_USER
+                        )
+                ),
             };
 
         default:

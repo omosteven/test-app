@@ -30,32 +30,34 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
 
     useEffect(() => {
         if (
+            fileAttachmentImageConfig &&
             Object?.entries(fileAttachmentImageConfig)?.length > 0 &&
             width !== 0
         ) {
             cropImage(
                 tablet ? desktopVersion : mobileVersion,
-                fileAttachmentUrl,
+                `https://proxy.cors.sh/${fileAttachmentUrl}`,
                 setOutput
             );
         }
     }, [tablet]);
+
+    const cropOutImage =
+        fileAttachmentImageConfig &&
+        Object?.entries(fileAttachmentImageConfig)?.length > 0;
 
     const renderBasedOnMediaType = () => {
         switch (fileAttachmentType) {
             case IMAGE:
                 return (
                     <img
-                        src={
-                            Object?.entries(fileAttachmentImageConfig)?.length >
-                            0
-                                ? outPut
-                                : fileAttachmentUrl
-                        }
+                        src={cropOutImage ? outPut : fileAttachmentUrl}
                         alt='media'
                         className={`content--media img ${
                             isReceivedMessage ? "received" : "sent"
-                        } ${tablet ? "desktop" : "mobile"}`}
+                        } ${tablet ? "desktop" : "mobile"} ${
+                            !cropOutImage ? "img-contain" : ""
+                        }`}
                         onClick={() => openPreviewModal(attachment)}
                     />
                 );
@@ -98,12 +100,14 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     return (
         <>
             {renderBasedOnMediaType()}
-            {fileAttachmentCaption && fileAttachmentCaption !== "" && (
-                <MessageContent
-                    isReceivedMessage={true}
-                    messageContent={fileAttachmentCaption}
-                />
-            )}
+            {fileAttachmentCaption &&
+                fileAttachmentCaption !== "" &&
+                fileAttachmentCaption !== "null" && (
+                    <MessageContent
+                        isReceivedMessage={true}
+                        messageContent={fileAttachmentCaption}
+                    />
+                )}
         </>
     );
 };

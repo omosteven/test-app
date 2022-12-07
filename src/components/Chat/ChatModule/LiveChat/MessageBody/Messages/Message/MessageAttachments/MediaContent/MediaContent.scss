@@ -26,13 +26,17 @@
             width: 440px;
             height: 246px;
         }
-    }
 
+        &.img-contain {
+            object-fit: contain;
+        }
+    }
     &.video {
         height: auto;
         width: fit-content;
         max-width: 100%;
     }
+    
 }
 
 .content--document {

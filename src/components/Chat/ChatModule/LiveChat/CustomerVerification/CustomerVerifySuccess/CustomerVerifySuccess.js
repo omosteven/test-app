@@ -1,15 +1,16 @@
-import ChatToastNotification from "components/Chat/ChatToastNotification/ChatToastNotification";
+import imageLinks from "assets/images";
 import { ToastContext } from "components/common/Toast/context/ToastContextProvider";
 import { Button } from "components/ui";
-import { useSelector } from "react-redux";
+import { useContext } from "react";
+
+import { ReactSVG } from "react-svg";
+import ToastCustomerVerifySuccess from "./ToastCustomerVerifySuccess/ToastCustomerVerifySuccess";
 
 const CustomerVerifySuccess = ({ closeModal }) => {
-    const {
-        chatSettings: { workspaceSlug },
-    } = useSelector((state) => state.chat);
+    const toastMessage = useContext(ToastContext);
 
     const handleContinue = async () => {
-        window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+        toastMessage(<ToastCustomerVerifySuccess />);
         closeModal();
     };
 
@@ -21,6 +22,13 @@ const CustomerVerifySuccess = ({ closeModal }) => {
                     We have successfully verified your account and your ticket
                     has been saved.
                 </p>
+                <div className='info__section d-flex align-items-center'>
+                    <ReactSVG src={imageLinks.svg.info} className='info-icon' />
+                    <p>
+                        This email address would be used to communicate updates
+                        with you
+                    </p>
+                </div>
                 <Button
                     type='submit'
                     text={"Continue"}
