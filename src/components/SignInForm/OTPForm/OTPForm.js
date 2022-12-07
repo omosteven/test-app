@@ -97,7 +97,7 @@ const OTPForm = ({
                         />
                         <PinInput
                             length={pinLength}
-                            onChange={(otp) =>
+                            onComplete={(otp) =>
                                 updateRequest({ ...request, otp })
                             }
                             type='numeric'
