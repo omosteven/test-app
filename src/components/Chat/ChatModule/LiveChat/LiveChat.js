@@ -69,6 +69,7 @@ const {
     DOWNTIME_BRANCH_SUB_SENTENCE,
     BRANCH_SUB_SENTENCE,
     COLLECTION,
+    CANNED_RESPONSE,
 } = messageTypes;
 
 const { TEXT } = formInputTypes;
@@ -125,7 +126,7 @@ const LiveChat = ({
             if (res.status === 200) {
                 setStatus(DATAMODE);
                 const { data } = res.data;
-                console.log({ data });
+
                 dispatch(
                     deleteTicketsMessages({
                         messageId: SMART_CONVOS,
@@ -702,7 +703,7 @@ const LiveChat = ({
             );
         }
     };
-
+    console.log({ messages });
     const handleConvoBreaker = (messageType, deliveryDate, customMessageId) => {
         if (messageType) {
             const {
@@ -938,7 +939,10 @@ const LiveChat = ({
         if (messages?.length > 1) {
             let lastMessage = messages[messages?.length - 1];
 
-            if (lastMessage?.senderType === WORKSPACE_AGENT) {
+            if (
+                lastMessage?.senderType === WORKSPACE_AGENT &&
+                lastMessage?.messageType !== CANNED_RESPONSE
+            ) {
                 switch (lastMessage?.messageType) {
                     case FORM_REQUEST:
                     case DEFAULT:

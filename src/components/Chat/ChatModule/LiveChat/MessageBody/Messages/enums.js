@@ -51,6 +51,7 @@ export const messageTypes = Object.freeze({
     DOWNTIME_BRANCH_SUB_SENTENCE: "DOWNTIME_BRANCH_SUB_SENTENCE",
     FORM_FILLED: "FORM_FILLED",
     FORM_FILLED_COMPLETELY: "FORM_FILLED_COMPLETELY",
+    CANNED_RESPONSE: "CANNED_RESPONSE",
 });
 
 export const branchOptionsTypes = Object.freeze({
