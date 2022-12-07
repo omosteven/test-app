@@ -244,7 +244,7 @@ const LiveChat = ({
                     });
 
                     sendAgentTicket();
-                    
+
                     handleAddEmail();
                 }
             }
@@ -919,9 +919,8 @@ const LiveChat = ({
             setErrorMssg();
 
             let request = {
-                message: "It seems like you've forgotten your open conversation with us. You can continue by clicking the button below",
-                subject: "We need your input!",
                 ticketId,
+                messageType: "inputNeededRemainder",
             };
 
             const url = apiRoutes?.sendTicketReminder;
