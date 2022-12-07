@@ -27,6 +27,7 @@ const Chat = () => {
     const [showChatMenu, toggleChatMenu] = useState(false);
     const [showTictketActionModal, toggleTicketActionModal] = useState();
     const [status, setStatus] = useState("");
+    const [loading, setLoading] = useState(false);
     const [errorMssg, setErrorMssg] = useState("");
     const dispatch = useDispatch();
     const history = useHistory();
@@ -100,6 +101,7 @@ const Chat = () => {
 
             setStatus(LOADING);
             setErrorMssg();
+            setLoading(true);
 
             const res = await API.get(apiRoutes.userTickets);
             if (res.status === 200) {
@@ -129,10 +131,13 @@ const Chat = () => {
                 } else {
                     openNewTicket ? createNewTicket() : setStatus(NULLMODE);
                 }
+
+                setLoading(false);
             }
         } catch (err) {
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
+            setLoading(false);
         }
     };
 
@@ -265,6 +270,7 @@ const Chat = () => {
                                                         otherClassNames={
                                                             "large"
                                                         }
+                                                        loading={loading}
                                                     />
                                                 </div>
                                             </div>
