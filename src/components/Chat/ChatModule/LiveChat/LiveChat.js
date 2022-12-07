@@ -242,6 +242,8 @@ const LiveChat = ({
                         workspaceId,
                     });
 
+                    sendAgentTicket();
+                    
                     handleAddEmail();
                 }
             }
@@ -268,6 +270,7 @@ const LiveChat = ({
                 ticketId,
                 workspaceId,
             });
+            sendAgentTicket();
             dispatch(
                 saveTicketsMessages({
                     messageId: generateID(),
