@@ -345,11 +345,6 @@ const LiveChat = ({
             return "";
         }
 
-        if (branchOptionActionType === messageOptionActions?.FORWARD_AGENT) {
-            handleConvoBreaker(AGENT_FOLLOWUP);
-            return "";
-        }
-
         triggerAgentTyping(true);
 
         await socket.emit(
@@ -760,7 +755,12 @@ const LiveChat = ({
     };
 
     const handleReceive = (message) => {
-        const { messageType, senderType, deliveryDate } = message;
+        const {
+            messageType,
+            senderType,
+            deliveryDate,
+            branchOptionActionType,
+        } = message;
         console.log({ message });
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (senderType === WORKSPACE_AGENT) {
@@ -815,6 +815,11 @@ const LiveChat = ({
                 deliveryDate,
                 `${message?.messageId + message?.messageContentId}`
             );
+            return "";
+        }
+
+        if (branchOptionActionType === messageOptionActions?.FORWARD_AGENT) {
+            handleConvoBreaker(AGENT_FOLLOWUP);
             return "";
         }
 
@@ -921,10 +926,8 @@ const LiveChat = ({
             setErrorMssg();
 
             let request = {
-                message:
-                    "It seems like you've forgotten your open conversation with us. You can continue by clicking the button below",
-                subject: "We need your input!",
                 ticketId,
+                messageType: "inputNeededRemainder",
             };
 
             const url = apiRoutes?.sendTicketReminder;
