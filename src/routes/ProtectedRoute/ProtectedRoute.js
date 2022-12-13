@@ -6,7 +6,9 @@ import { retriveAccessToken } from "../../storage/sessionStorage";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
     const isAuthenticated =
-        retriveAccessToken() || window.location.pathname === "/direct";
+        retriveAccessToken() ||
+        window.location.pathname === "/direct" ||
+        window.location.search?.includes?.("token");
 
     const {
         chatSettings: { workspaceSlug },
