@@ -135,15 +135,16 @@ const LiveChat = ({
                 );
 
                 const messagesArr = data.map((x, index) => {
-                    let currentMessageType = data[index]?.messageType;
+                    let currentMessageType =
+                        data[data?.length - 1]?.messageType;
 
                     if (currentMessageType === FORM_FILLED_COMPLETELY) {
                         handleConvoBreaker(
                             FORM_FILLED_COMPLETELY,
                             new Date().toISOString(),
                             `${
-                                data[index]?.messageId +
-                                data[index]?.messageContentId
+                                data[data?.length - 1]?.messageId +
+                                data[data?.length - 1]?.messageContentId
                             }`
                         );
                         handleAddEmail();
