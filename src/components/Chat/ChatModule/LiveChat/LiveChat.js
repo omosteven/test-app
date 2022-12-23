@@ -135,15 +135,16 @@ const LiveChat = ({
                 );
 
                 const messagesArr = data.map((x, index) => {
-                    let currentMessageType = data[index]?.messageType;
+                    let currentMessageType =
+                        data[data?.length - 1]?.messageType;
 
                     if (currentMessageType === FORM_FILLED_COMPLETELY) {
                         handleConvoBreaker(
                             FORM_FILLED_COMPLETELY,
                             new Date().toISOString(),
                             `${
-                                data[index]?.messageId +
-                                data[index]?.messageContentId
+                                data[data?.length - 1]?.messageId +
+                                data[data?.length - 1]?.messageContentId
                             }`
                         );
                         handleAddEmail();
@@ -345,11 +346,6 @@ const LiveChat = ({
             return "";
         }
 
-        if (branchOptionActionType === messageOptionActions?.FORWARD_AGENT) {
-            handleConvoBreaker(AGENT_FOLLOWUP);
-            return "";
-        }
-
         triggerAgentTyping(true);
 
         await socket.emit(
@@ -396,6 +392,7 @@ const LiveChat = ({
                 recentAdminMessage;
             switch (messageType) {
                 case DEFAULT:
+                case CANNED_RESPONSE:
                     shouldAllowUserInput = true;
                     userInputType = TEXT;
                     break;
@@ -759,7 +756,13 @@ const LiveChat = ({
     };
 
     const handleReceive = (message) => {
-        const { messageType, senderType, deliveryDate } = message;
+        const {
+            messageType,
+            senderType,
+            deliveryDate,
+            branchOptionActionType,
+        } = message;
+        console.log({ message });
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
@@ -813,6 +816,11 @@ const LiveChat = ({
                 deliveryDate,
                 `${message?.messageId + message?.messageContentId}`
             );
+            return "";
+        }
+
+        if (branchOptionActionType === messageOptionActions?.FORWARD_AGENT) {
+            handleConvoBreaker(AGENT_FOLLOWUP);
             return "";
         }
 
