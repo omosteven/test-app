@@ -25,6 +25,10 @@
 
             .message {
                 padding: 0.75rem 1rem 0.625rem;
+
+                #{$theme__selector} {
+                    padding: 18px 24px;
+                }
             }
 
             @include media("<=medium-screen") {
@@ -36,6 +40,12 @@
                 color: $light__theme_color;
                 background: $primary__theme_color;
                 border-radius: 0.75rem 0.75rem 0.75rem 0;
+
+                #{$theme__selector}{
+                    font-size: 24px;
+                    line-height: 32px;
+                    border-radius: 1rem 1rem 1rem 0;
+                }
             }
 
             &.info__action {
@@ -81,6 +91,14 @@
                 background: $scroll__bar__track_color;
                 border-radius: 0.75rem 0.75rem 0 0.75rem;
                 text-align: left;
+
+                #{$theme__selector} {
+                    font-size: 24px;
+                    line-height: 22px;
+                    color: $light__theme_color;
+                    background: $dark__mode__theme__grey__color;
+                    border-radius: 1rem 1rem 0 1rem; 
+                }
             }
 
             &.grayed__out {

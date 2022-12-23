@@ -12,6 +12,17 @@
     padding: 7px 0.75rem;
     transition: all 0.3s;
     height: fit-content;
+
+    #{$theme__selector} {
+        font-size: 20px;
+        line-height: 24px;
+        color: $dark__mode__text__theme__color;
+        padding: 14px;
+        text-align: center;
+        background: $dark__mode__theme__grey__color;
+        border: 0.125rem solid $dark__mode__theme__grey__color;
+        border-radius: 100px;
+    }
     
     &:hover {
         opacity: 0.5;
@@ -28,6 +39,10 @@
     &.active {
         border-color: $primary__theme_color;
         cursor: default;
+
+        #{$theme__selector} {
+            border-color: $light__blue__theme__color;
+        }
     }
 
 }

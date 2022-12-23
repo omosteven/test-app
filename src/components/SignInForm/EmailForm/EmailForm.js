@@ -95,7 +95,7 @@ const EmailForm = ({ handleInitialRequestUpdate, title, subTitle, userId }) => {
                     placeholder='Enter your email address'
                     name='email'
                     id='email'
-                    inputClass='py-3'
+                    inputClass='py-3 email__input'
                     data-label='Email address'
                     value={email}
                     label='Email'
@@ -108,7 +108,7 @@ const EmailForm = ({ handleInitialRequestUpdate, title, subTitle, userId }) => {
                     type='submit'
                     text={"Continue"}
                     classType='primary'
-                    otherClass='my-3 w-100'
+                    otherClass='my-3 w-100 submit__email'
                     loading={loading}
                 />
             </form>

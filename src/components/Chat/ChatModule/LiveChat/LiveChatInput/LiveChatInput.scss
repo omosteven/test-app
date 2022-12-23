@@ -6,8 +6,15 @@
     padding: 0.375rem 1rem;
     border-top: 0.063rem solid $border__theme_color;
     border-bottom: 0.063rem solid $border__theme_color;
-    border-right: 0.063rem solid $border__theme_color;
     overflow: hidden;
+
+    #{$theme__selector}{
+        padding: 0 1rem;
+        border-top: 0.063rem solid $dark__mode__theme__grey__color;
+        border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
+        background: $dark__mode__theme__grey__color;
+        border-radius: 100px;
+    }
  
     @include media("<=medium-screen") {
         margin-right: 0px;
@@ -27,6 +34,11 @@
             border: 0 !important;
             border-radius: 0 !important;
             resize: none;
+            color: $dark__mode__text__theme__color;
+
+            &:focus {
+                color: $dark__mode__text__theme__color;
+            }
         }
         .select__box {
             margin-top: -2rem;
@@ -57,6 +69,10 @@
                 margin-bottom: 0.5rem;
                 span {
                     display: none;
+                }
+
+                #{$theme__selector} {
+                    margin-bottom: 0.7rem;
                 }
             }
             svg {
@@ -91,6 +107,11 @@
     bottom: 0;
     background-color: $light__theme_color;
     margin-right: 0.375rem;
+
+    #{$theme__selector} {
+        background: $dark__mode__theme__dark__color;
+    }
+
     .form-control {
         background: transparent;
         &::placeholder {
@@ -113,4 +134,9 @@
     position: fixed;
     bottom: 0;
     -webkit-transform: translateZ(0);
+
+    #{$theme__selector} {
+        padding: 20px 10px;
+        background: $dark__mode__theme__dark__color;
+    }
 }

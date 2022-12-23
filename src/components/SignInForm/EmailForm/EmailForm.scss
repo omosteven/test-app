@@ -1,19 +1,61 @@
 @import "assets/scss/master.scss";
 @import "assets/scss/_include-media-lib/include-media";
 
+
+.email__input {
+  #{$theme__selector}{
+    font-size: 1rem;
+    line-height: 24px;
+    color: $dark__mode__text__theme__color;
+    padding: 1rem 18px;
+    background: $dark__mode__theme__dark__color;
+    border: 1px solid $dark__mode__theme__dark__color !important;
+  }
+
+  &:focus {
+    #{$theme__selector}{
+      color: $dark__mode__text__theme__color;
+      background: $dark__mode__theme__dark__color;
+      border: 1px solid $dark__mode__theme__dark__color !important;
+      border-radius: 10px;
+    }
+  }
+}
+
+.submit__email {
+  #{$theme__selector}  {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+
 .info__section {
     svg {
       margin-right: 10px;
       margin-bottom: 4px;
 
+      #{$theme__selector} {
+        path {
+          fill: $yellow__theme__color
+        }
+      }
+
       @include media("<=medium-screen"){
         margin-top: -20px;
       }
     }
+
     p {
       font-size: 14px;
       line-height: 22px;
       color: $black__theme_color;
       margin: 0;
+
+      #{$theme__selector} {
+        font-size: 16px;
+        line-height: 24px;
+        color: $light__theme_color;
+      }
     }
 }

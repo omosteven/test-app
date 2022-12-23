@@ -23,14 +23,14 @@ const CustomerTicketsContainer = ({
 }) => {
     const { width } = useWindowSize();
 
-    const tablet = width > 768;
+    const isWideScreen = width > 768;
 
     useEffect(() => {
-        if (tablet) {
+        if (isWideScreen) {
             toggleChatMenu(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [tablet]);
+    }, [isWideScreen]);
 
     const renderBasedOnStatus = () => {
         switch (status) {

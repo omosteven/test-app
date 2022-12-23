@@ -1,8 +1,14 @@
+import React from "react";
+import { useSelector } from "react-redux";
+import PoweredBy from "components/common/PoweredBy/PoweredBy";
 import { messageTypes } from "../../enums";
 import MessageBranchOption from "./MessageBranchOption/MessageBranchOption";
-import "./MessageOptions.scss";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import ScheduledBranchOption from "./ScheduledBranchOption/ScheduledBranchOption";
+import { useWindowSize } from "utils/hooks";
+import "./MessageOptions.scss";
 
+const { RELAXED } = defaultTemplates;
 const { CONVERSATION } = messageTypes;
 
 const MessageOptions = ({
@@ -14,8 +20,16 @@ const MessageOptions = ({
     messageIndex,
     messagesDepth,
     deliveryDate,
-    lastMessage
+    lastMessage,
 }) => {
+    const { defaultTemplate } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
+
+    const { width } = useWindowSize();
+
+    const isTablet = width <= 768;
+
     return (
         <div className='options__group col-lg-5 col-md-7 col-12'>
             {options?.map((option, index) => {
@@ -52,6 +66,7 @@ const MessageOptions = ({
                     />
                 );
             })}
+            {defaultTemplate === RELAXED && isTablet && <PoweredBy />}
         </div>
     );
 };

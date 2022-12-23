@@ -1,11 +1,15 @@
 import React from "react";
-import { AgentImage } from "../../../../../../ui";
+import { useSelector } from "react-redux";
+import { AgentImage } from "components/ui";
 import { ADD_EMAIL_ADDRESS, AGENT_FOLLOWUP, messageTypes } from "../enums";
 import MessageContent from "../Message/MessageContent/MessageContent";
 import MessageTimeStatus from "../Message/MessageTimeStatus/MessageTimeStatus";
 import ActionMessageContent from "./ActionMessageContent/ActionMessageContent";
 import ActionResponseTime from "./ActionMessageContent/ActionResponseTime/ActionResponseTime";
 import ActionMessageOptions from "./ActionMessageOptions/ActionMessageOptions";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+
+const { WORK_MODE } = defaultTemplates;
 
 const ActionMessage = ({
     data,
@@ -17,6 +21,10 @@ const ActionMessage = ({
     messagesDepth,
     openPreviewModal,
 }) => {
+    const { defaultTemplate } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
+
     const {
         messageRefContent,
         messageId,
@@ -48,7 +56,10 @@ const ActionMessage = ({
         <div
             id={messageId ? messageId : ""}
             className={`message__group received`}>
-            <AgentImage src={displayPicture} alt={firstName} />
+            {defaultTemplate === WORK_MODE && (
+                <AgentImage src={displayPicture} alt={firstName} />
+            )}
+
             <div className={`message__group--content `}>
                 {(messageRefContent || fileAttachments) && (
                     <MessageContent

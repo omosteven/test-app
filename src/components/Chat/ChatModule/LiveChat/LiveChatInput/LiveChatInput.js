@@ -1,4 +1,5 @@
-import { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { useSelector } from "react-redux";
 import { ReactSVG } from "react-svg";
 import imageLinks from "../../../../../assets/images";
 import { SocketContext } from "../../../../../lib/socket/context/socket";
@@ -20,10 +21,12 @@ import {
 } from "../../../../../utils/helper";
 import { formInputTypes } from "../MessageBody/Messages/enums";
 import { IMAGE } from "./UploadIcons/enum";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import "./LiveChatInput.scss";
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
+const { WORK_MODE } = defaultTemplates;
 
 const LiveChatInput = ({
     handleNewMessage,
@@ -34,6 +37,9 @@ const LiveChatInput = ({
     inputType,
     currentFormElement,
 }) => {
+    const { defaultTemplate } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
 
@@ -490,7 +496,7 @@ const LiveChatInput = ({
                         </span>
                     )}
                 </form>
-                <PoweredBy />
+                {defaultTemplate === WORK_MODE && <PoweredBy />}
             </div>
         </div>
     );

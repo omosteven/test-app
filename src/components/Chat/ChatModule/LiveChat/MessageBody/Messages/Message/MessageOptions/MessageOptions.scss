@@ -1,5 +1,24 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
 .options__group {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+
+    @include media("<=medium-screen") {
+        #{$theme__selector}{
+            display: flex;
+            flex-direction: column;
+            padding: 40px 45px 19px;
+            gap: 16px;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 0;
+            background: #191F24;
+            z-index: 4;
+        }
+    }
+   
 }

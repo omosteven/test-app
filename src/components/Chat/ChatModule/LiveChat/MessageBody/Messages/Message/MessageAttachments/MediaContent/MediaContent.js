@@ -26,7 +26,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
 
     const { width } = useWindowSize();
 
-    const tablet = width > 768;
+    const isWideScreen = width > 768;
 
     useEffect(() => {
         if (
@@ -35,12 +35,12 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
             width !== 0
         ) {
             cropImage(
-                tablet ? desktopVersion : mobileVersion,
+                isWideScreen ? desktopVersion : mobileVersion,
                 `https://proxy.cors.sh/${fileAttachmentUrl}`,
                 setOutput
             );
         }
-    }, [tablet]);
+    }, [isWideScreen]);
 
     const cropOutImage =
         fileAttachmentImageConfig &&
@@ -55,7 +55,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
                         alt='media'
                         className={`content--media img ${
                             isReceivedMessage ? "received" : "sent"
-                        } ${tablet ? "desktop" : "mobile"} ${
+                        } ${isWideScreen ? "desktop" : "mobile"} ${
                             !cropOutImage ? "img-contain" : ""
                         }`}
                         onClick={() => openPreviewModal(attachment)}

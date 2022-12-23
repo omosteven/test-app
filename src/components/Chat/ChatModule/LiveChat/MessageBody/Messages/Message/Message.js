@@ -1,11 +1,15 @@
 import React from "react";
-import { AgentImage } from "../../../../../../ui";
+import { useSelector } from "react-redux";
+import { AgentImage } from "components/ui";
 import MessageOptions from "./MessageOptions/MessageOptions";
 import MessageContent from "./MessageContent/MessageContent";
 import MessageTimeStatus from "./MessageTimeStatus/MessageTimeStatus";
 import { messageTypes, appMessageUserTypes } from "../enums";
 import MessageAttachments from "./MessageAttachments/MessageAttachments";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import "./Message.scss";
+
+const { WORK_MODE, RELAXED } = defaultTemplates;
 
 const Message = ({
     data,
@@ -17,6 +21,10 @@ const Message = ({
     openPreviewModal,
     lastMessage,
 }) => {
+    const { defaultTemplate } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
+
     const {
         senderType,
         messageType,
@@ -45,7 +53,7 @@ const Message = ({
             className={`message__group ${
                 isReceivedMessage ? "received" : "sent"
             }`}>
-            {isReceivedMessage && (
+            {isReceivedMessage && defaultTemplate === WORK_MODE && (
                 <AgentImage src={displayPicture} alt={firstName} />
             )}
 
@@ -63,18 +71,41 @@ const Message = ({
                     fileAttachments={fileAttachments}
                     openPreviewModal={openPreviewModal}
                 />
-                {parsedBranchOptions?.length > 0 && (
-                    <MessageOptions
-                        selectedOption={selectedOption}
-                        options={parsedBranchOptions}
-                        messageIndex={messageIndex}
-                        messagesDepth={messagesDepth}
-                        messageType={messageType}
-                        handleMessageOptionSelect={handleMessageOptionSelect}
-                        handleOptConversation={handleOptConversation}
-                        deliveryDate={deliveryDate}
-                        lastMessage={lastMessage}
-                    />
+                {parsedBranchOptions?.length > 0 &&
+                defaultTemplate === RELAXED ? (
+                    messageIndex === messagesDepth ? (
+                        <MessageOptions
+                            selectedOption={selectedOption}
+                            options={parsedBranchOptions}
+                            messageIndex={messageIndex}
+                            messagesDepth={messagesDepth}
+                            messageType={messageType}
+                            handleMessageOptionSelect={
+                                handleMessageOptionSelect
+                            }
+                            handleOptConversation={handleOptConversation}
+                            deliveryDate={deliveryDate}
+                            lastMessage={lastMessage}
+                        />
+                    ) : (
+                        <></>
+                    )
+                ) : (
+                    defaultTemplate === WORK_MODE && (
+                        <MessageOptions
+                            selectedOption={selectedOption}
+                            options={parsedBranchOptions}
+                            messageIndex={messageIndex}
+                            messagesDepth={messagesDepth}
+                            messageType={messageType}
+                            handleMessageOptionSelect={
+                                handleMessageOptionSelect
+                            }
+                            handleOptConversation={handleOptConversation}
+                            deliveryDate={deliveryDate}
+                            lastMessage={lastMessage}
+                        />
+                    )
                 )}
                 {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && (
                     <>
