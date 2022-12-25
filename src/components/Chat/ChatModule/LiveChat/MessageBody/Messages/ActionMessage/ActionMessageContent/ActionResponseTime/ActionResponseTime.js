@@ -10,7 +10,10 @@ const ActionResponseTime = ({ averageResponseTime }) => {
     return (
         <>
             <div className='action-response-time'>
-                <ReactSVG src={imageLinks?.svg?.clock} />{" "}
+                <ReactSVG
+                    src={imageLinks?.svg?.clock}
+                    className='response__time__clock'
+                />{" "}
                 <span>
                     Replies usually under{" "}
                     {!averageResponseTime ? (

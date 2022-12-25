@@ -37,6 +37,7 @@ const ActionMessage = ({
         messageActionData,
         fileAttachments,
         branchOptions,
+        ticketId,
     } = data;
     const { displayPicture, firstName } = agent || {};
 
@@ -52,6 +53,9 @@ const ActionMessage = ({
         averageResponseTime,
     } = messageActionData || {};
 
+    const showMessageRefContent =
+        defaultTemplate === WORK_MODE && messageRefContent;
+
     return (
         <div
             id={messageId ? messageId : ""}
@@ -61,7 +65,7 @@ const ActionMessage = ({
             )}
 
             <div className={`message__group--content `}>
-                {(messageRefContent || fileAttachments) && (
+                {(showMessageRefContent || fileAttachments) && (
                     <MessageContent
                         isReceivedMessage={false}
                         messageContent={messageRefContent}
@@ -73,11 +77,13 @@ const ActionMessage = ({
 
                 <ActionMessageContent
                     messageContent={messageContent}
+                    messageId={messageId}
                     messageActionType={messageActionType}
                     handleRating={handleRating}
                     handleVerifyAction={handleVerifyAction}
                     messageHeader={messageHeader}
                     requestRatings={requestRatings}
+                    ticketId={ticketId}
                 />
 
                 {displayAverageResponseTime &&

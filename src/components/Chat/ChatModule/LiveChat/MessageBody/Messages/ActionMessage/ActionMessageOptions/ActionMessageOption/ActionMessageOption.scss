@@ -1,3 +1,20 @@
+@import "assets/scss/master";
+
 .action-message-option {
     width: fit-content;
+    
+    #{$template__selector} {
+        font-size: 20px;
+        line-height: 24px;
+        padding: 14px;
+        text-align: center;
+        border-radius: 100px;
+        width: 100%;
+    }
+
+    #{$theme__selector} {
+        color: $dark__mode__text__theme__color;
+        background: $dark__mode__theme__grey__color;
+        border: 0.125rem solid $dark__mode__theme__grey__color;
+    }
 }

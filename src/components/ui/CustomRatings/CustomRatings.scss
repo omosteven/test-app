@@ -1,0 +1,10 @@
+@import "assets/scss/master";
+
+.custom__rating {
+
+    .empty-icons {
+        #{$theme__selector} {
+            color:  rgba(253, 211, 104, 0.2) !important;
+        }
+    }
+}

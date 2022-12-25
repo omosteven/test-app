@@ -6,9 +6,9 @@
     padding: 0.188rem 0;
     align-items: center;
     background-color: $light__theme_color;
+    width: 100%;
 
     #{$theme__selector} {
-        width: 100%;
         background-color: $dark__mode__theme__dark__color;
     }
 }

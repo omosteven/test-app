@@ -1,11 +1,15 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import API from "../../../lib/api";
 import apiRoutes from "../../../lib/api/apiRoutes";
 import { getErrorMessage } from "../../../utils/helper";
-import Modal from "../../common/Modal/Modal";
 import { ErrorDialog } from "../../ui";
 import ConfirmPrompt from "../../ui/ConfirmPrompt/ConfirmPrompt";
-import "./ConfirmCloseChatModal.scss";
+import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
+import PopupModal from "components/common/Modal/PopupModal/PopupModal";
+
+const { DARK_MODE_DEFAULT } = defaultThemes;
+const { RELAXED } = defaultTemplates;
 
 const ConfirmCloseChatModal = ({
     show,
@@ -15,6 +19,9 @@ const ConfirmCloseChatModal = ({
 }) => {
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
+    const { defaultTemplate, defaultTheme } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
 
     const closeTicket = async () => {
         try {
@@ -32,13 +39,16 @@ const ConfirmCloseChatModal = ({
             setLoading(false);
         }
     };
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
+
     return (
-        <Modal
-            {...{
-                show,
-                toggle,
-            }}
-            contentClassName='confirm__close__modal__content'>
+        <PopupModal
+            show={show}
+            toggle={toggle}
+            isRelaxedTemplate={isRelaxedTemplate}
+            isDarkModeTheme={isDarkModeTheme}>
             <div>
                 <ErrorDialog
                     show={Boolean(errorMsg)}
@@ -50,9 +60,11 @@ const ConfirmCloseChatModal = ({
                     handleConfirmation={closeTicket}
                     subTitle={`Are you sure you want to close this chat? If you do, your ticket would be marked as closed.`}
                     loading={loading}
+                    isRelaxedTemplate={isRelaxedTemplate}
+                    isDarkModeTheme={isDarkModeTheme}
                 />
             </div>
-        </Modal>
+        </PopupModal>
     );
 };
 

@@ -1,7 +1,14 @@
 import React from "react";
 import { Modal as BootstrapModal, ModalHeader, ModalBody } from "reactstrap";
 
-const Modal = ({ show, toggle, title, children, contentClassName }) => {
+const Modal = ({
+    show,
+    toggle,
+    title,
+    children,
+    contentClassName,
+    backdropClassName,
+}) => {
     return (
         <>
             <BootstrapModal
@@ -9,7 +16,8 @@ const Modal = ({ show, toggle, title, children, contentClassName }) => {
                 className='modal-dialog-centered'
                 isOpen={show}
                 toggle={toggle}
-                contentClassName={contentClassName}>
+                contentClassName={contentClassName}
+                backdropClassName={backdropClassName}>
                 {title && <ModalHeader toggle={toggle}>{title}</ModalHeader>}
                 <ModalBody>{children}</ModalBody>
             </BootstrapModal>

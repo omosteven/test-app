@@ -1,25 +1,28 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
-
 .chat__input--container {
     padding: 0.375rem 1rem;
     border-top: 0.063rem solid $border__theme_color;
     border-bottom: 0.063rem solid $border__theme_color;
     overflow: hidden;
 
-    #{$theme__selector}{
+    #{$template__selector} {
         padding: 0 1rem;
+        border-radius: 100px;
+    }
+
+    #{$theme__selector}{
         border-top: 0.063rem solid $dark__mode__theme__grey__color;
         border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
         background: $dark__mode__theme__grey__color;
-        border-radius: 100px;
     }
  
     @include media("<=medium-screen") {
         margin-right: 0px;
         border-right: none;
     }
+
     .chat__input--group {
         display: flex;
         align-items: flex-end;
@@ -71,7 +74,7 @@
                     display: none;
                 }
 
-                #{$theme__selector} {
+                #{$template__selector} {
                     margin-bottom: 0.7rem;
                 }
             }
@@ -118,6 +121,7 @@
             color:$option__fade_out;
         }
     }
+
     @include media("<=medium-screen") {
         margin-right: 0;
     }
@@ -135,8 +139,11 @@
     bottom: 0;
     -webkit-transform: translateZ(0);
 
-    #{$theme__selector} {
+    #{$template__selector} { 
         padding: 20px 10px;
+    }
+
+    #{$theme__selector} {
         background: $dark__mode__theme__dark__color;
     }
 }

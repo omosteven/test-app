@@ -1,0 +1,19 @@
+@import "assets/scss/master";
+
+.popup__modal__content {
+    width: fit-content !important;
+
+    &.dark__mode__modal__content {
+        background: $dark__mode__theme__dark__color;
+    }
+
+    &.relaxed__template__modal__content {
+        width: 350px !important;
+        border-radius: 20px !important;
+        border: none;
+    }
+}
+
+.dark__mode__modal__backdrop {
+    background: rgba(31, 39, 45, 0.9) !important;
+}

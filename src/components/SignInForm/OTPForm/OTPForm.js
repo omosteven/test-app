@@ -8,10 +8,7 @@ import apiRoutes from "../../../lib/api/apiRoutes";
 import { ResendOTP } from "./ResendOTP/ResendOTP";
 import pushToDashboard from "../actions";
 import { getDevicePushToken } from "../../../lib/firebase/firebase";
-import { defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import "./OTPForm.scss";
-
-const { WHITE_MODE_DEFAULT } = defaultThemes;
 
 const OTPForm = ({
     initialStepRequest,
@@ -21,16 +18,12 @@ const OTPForm = ({
     userId,
     isDirectUser,
 }) => {
-    const { workspaceSlug, defaultTheme } = useSelector(
-        (state) => state?.chat?.chatSettings
-    );
+    const { workspaceSlug } = useSelector((state) => state?.chat?.chatSettings);
     const { email, sessionId } = initialStepRequest;
     const [errorMsg, setErrorMsg] = useState();
     const [loading, setLoading] = useState(false);
     const [request, updateRequest] = useState();
     const [deviceToken, setDeviceToken] = useState();
-
-    const isWhiteTheme = defaultTheme === WHITE_MODE_DEFAULT;
 
     const handleSubmit = async (e) => {
         try {
@@ -105,15 +98,6 @@ const OTPForm = ({
                             }
                             type='numeric'
                             inputMode='number'
-                            inputStyle={{
-                                border: isWhiteTheme
-                                    ? "1px solid #DEE1E5"
-                                    : "1px solid #191F24",
-                                color: isWhiteTheme ? "#11142D" : "#D5D7D8",
-                                background: isWhiteTheme ? "" : "#191F24",
-                                borderRadius: isWhiteTheme ? "" : "4px",
-                                padding: isWhiteTheme ? "" : "18px",
-                            }}
                             autoSelect={true}
                             regexCriteria={/^[ A-Za-z0-9_@./#&+-]*$/}
                         />

@@ -7,7 +7,7 @@
     gap: 0.5rem;
 
     @include media("<=medium-screen") {
-        #{$theme__selector}{
+        #{$template__selector} {
             display: flex;
             flex-direction: column;
             padding: 40px 45px 19px;
@@ -16,9 +16,8 @@
             width: 100%;
             left: 0;
             bottom: 0;
-            background: #191F24;
             z-index: 4;
+            background: $dark__mode__theme__dark__color;
         }
     }
-   
 }

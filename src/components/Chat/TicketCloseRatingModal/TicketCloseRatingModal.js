@@ -1,11 +1,17 @@
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Button, ErrorDialog } from "components/ui";
 import CustomRatings from "components/ui/CustomRatings/CustomRatings";
 import API from "lib/api";
 import apiRoutes from "lib/api/apiRoutes";
-import { useState } from "react";
 import { getErrorMessage } from "utils/helper";
 import Modal from "../../common/Modal/Modal";
+import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import "./TicketCloseRatingModal.scss";
+import PopupModal from "components/common/Modal/PopupModal/PopupModal";
+
+const { DARK_MODE_DEFAULT } = defaultThemes;
+const { RELAXED } = defaultTemplates;
 
 const TicketCloseRatingModal = ({
     show,
@@ -16,6 +22,9 @@ const TicketCloseRatingModal = ({
     const [loading, setLoading] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
     const [ratingValue, setRatingValue] = useState(0);
+    const { defaultTemplate, defaultTheme } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
 
     const rateTicket = async () => {
         try {
@@ -35,21 +44,34 @@ const TicketCloseRatingModal = ({
             setLoading(false);
         }
     };
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
+
     return (
-        <Modal
-            {...{
-                show,
-                toggle,
-            }}
-            contentClassName='ticket-closure-modal'>
-            <div>
+        <PopupModal
+            show={show}
+            toggle={toggle}
+            isRelaxedTemplate={isRelaxedTemplate}
+            isDarkModeTheme={isDarkModeTheme}>
+            <div
+                className={`ticket-closure-modal  ${
+                    isRelaxedTemplate
+                        ? "relaxed__template__ticket-closure-modal"
+                        : ""
+                }`}>
                 <ErrorDialog
                     show={Boolean(errorMsg)}
                     message={errorMsg}
                     hide={() => setErrorMsg()}
                 />
 
-                <p className='ticket-closure-modal__text'>
+                <p
+                    className={`ticket-closure-modal__text  ${
+                        isRelaxedTemplate
+                            ? "relaxed__template__modal__text"
+                            : ""
+                    } ${isDarkModeTheme ? "dark__mode__modal__text" : ""}`}>
                     Kindly give a few minutes of your time to rate your
                     experience. Thank you.
                 </p>
@@ -59,7 +81,14 @@ const TicketCloseRatingModal = ({
                         handleRating={(value) => setRatingValue(value)}
                     />
                 </div>
-                <div id='btnActionGroup'>
+                <div
+                    className={`btn__action__group ${
+                        isRelaxedTemplate
+                            ? "relaxed__template__btn__action__group"
+                            : ""
+                    } ${
+                        isDarkModeTheme ? "dark__mode__btn__action__group" : ""
+                    }`}>
                     <Button
                         type='button'
                         text={`Continue`}
@@ -77,7 +106,7 @@ const TicketCloseRatingModal = ({
                     />
                 </div>
             </div>
-        </Modal>
+        </PopupModal>
     );
 };
 
