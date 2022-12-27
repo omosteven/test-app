@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import imageLinks from "assets/images";
-import { ReactSVG } from "react-svg";
-import Countdown from "./Countdown/Countdown";
-import { convertSecondsToISOString } from "utils/helper";
+import { useSelector } from "react-redux";
 import { INPUT_NEEDED } from "../../../enums";
+import CountdownTimer from "./CountdownTimer/CountdownTimer";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import "./ScheduledBranchOption.scss";
+
+const { WORK_MODE, RELAXED } = defaultTemplates;
 
 const ScheduledBranchOption = ({
     data,
@@ -16,6 +17,9 @@ const ScheduledBranchOption = ({
     deliveryDate,
     lastMessage,
 }) => {
+    const { defaultTemplate } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
     const { messageActionType } = lastMessage || {};
 
     const [countdownEnded, setCountdownEnded] = useState(false);
@@ -29,13 +33,13 @@ const ScheduledBranchOption = ({
         new Date(deliveryDate).getTime() / 1000 +
         parseInt(scheduleDuration || 0);
     const startCountdown = Date.now() / 1000 > countdownTo;
-    const disable = countdownEnded ? countdownEnded : startCountdown;
+    const enable = countdownEnded ? countdownEnded : startCountdown;
 
     return (
         <div>
             <div
                 className={`scheduled__branch__option ${
-                    disable ? "active" : "inactive"
+                    enable && !shouldBeDisabled ? "active" : "inactive"
                 } ${
                     selectedOption
                         ? isSelected
@@ -45,22 +49,25 @@ const ScheduledBranchOption = ({
                 }`}
                 onClick={() =>
                     selectedOption ? null : handleMessageOptionSelect()
-                }
-                disabled={disable ? disable : shouldBeDisabled}>
+                }>
                 {branchOptionLabel}
+                {!enable && defaultTemplate === RELAXED && (
+                    <div className='option__pause'>
+                        <span>This option is paused for</span>{" "}
+                        <CountdownTimer
+                            countdownTo={countdownTo}
+                            setCountdownEnded={setCountdownEnded}
+                            countdownEnded={countdownEnded}
+                        />
+                    </div>
+                )}
             </div>
-            {!disable && (
-                <div className='countdown__timer'>
-                    <ReactSVG
-                        src={imageLinks?.svg?.clock}
-                        className='countdown__clock'
-                    />
-                    <Countdown
-                        countdownTo={convertSecondsToISOString(countdownTo)}
-                        setCountdownEnded={setCountdownEnded}
-                        countdownEnded={countdownEnded}
-                    />
-                </div>
+            {!enable && defaultTemplate === WORK_MODE && (
+                <CountdownTimer
+                    countdownTo={countdownTo}
+                    setCountdownEnded={setCountdownEnded}
+                    countdownEnded={countdownEnded}
+                />
             )}
         </div>
     );

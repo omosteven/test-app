@@ -11,14 +11,21 @@
     display: flex;
     font-family: $primary_font_family--lighter;
     align-items: center;
+    
     @include media("<=medium-screen") {
         height: 1rem;
         color: $light__gray__theme_color;
     }
+
     span {
         line-height: 0.625rem;
         letter-spacing: 0.009rem;
+
+        #{$theme__selector} {
+            color: $dark__mode__text__theme__color;
+        }
     }
+    
     .status__circle {
         width: 0.5rem;
         height: 0.5rem;

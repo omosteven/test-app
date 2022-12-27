@@ -4,6 +4,7 @@ import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
 import imageLinks from "assets/images";
 import { Info } from "components/ui";
 import BraillePatternDots from "./BraillePatternDots/BraillePatternDots";
+import "./ChatSettingsToggler.scss";
 
 const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
     const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
@@ -33,7 +34,10 @@ const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
                 </Info>
             </DropdownToggle>
 
-            <DropdownMenu tag='ul' right>
+            <DropdownMenu
+                tag='ul'
+                className='chat__settings__dropdown__menu'
+                right>
                 <li className='dropdown-item' onClick={handleCloseTicket}>
                     <div className='dropdown--item--group'>
                         <ReactSVG src={imageLinks?.svg?.leaveIcon} />

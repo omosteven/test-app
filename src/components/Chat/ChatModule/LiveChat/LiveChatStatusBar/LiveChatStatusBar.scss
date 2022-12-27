@@ -24,6 +24,23 @@
     border-radius: 0.5rem;
     color: #ff000096;
     cursor: pointer;
+
+    #{$template__selector} {
+        padding: 4px 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 18px;
+        letter-spacing: -0.2px;
+    }
+    
+    #{$theme__selector} {
+        border: 1px solid #F77150;
+        color: #F77150;
+    }
 }
 
 .connected {

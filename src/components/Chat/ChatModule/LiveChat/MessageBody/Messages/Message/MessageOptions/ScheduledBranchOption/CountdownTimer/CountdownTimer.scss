@@ -1,0 +1,27 @@
+@import "assets/scss/master";
+
+.countdown__timer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: baseline;
+    gap: 0.177rem;
+
+
+    .countdown__clock {
+        path {
+            fill: $primary__theme_color;
+        }
+    }
+
+    .timer {
+        font-weight: 600;
+        font-size: 0.75rem;
+        line-height: 0.75rem;
+        color: $primary__theme_color;
+
+        #{$template__selector} {
+            font-size: 14px;
+            line-height: 12px;
+        }
+    }
+}

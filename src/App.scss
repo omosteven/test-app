@@ -1,0 +1,13 @@
+@import "assets/scss/master";
+
+.fetching__error {
+    #{$theme__selector} {
+        color: $dark__mode__text__theme__color;
+    }
+
+    &__retry {
+        color: $light__blue__theme__color;
+        margin-left: 10px;
+        cursor: pointer;
+    }
+}

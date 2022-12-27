@@ -48,6 +48,8 @@ const imageLinks = {
             "https://res.cloudinary.com/metacare/image/upload/v1660640291/icons/InfoIcon_c4osdm.svg",
         clock: "https://res.cloudinary.com/metacare/image/upload/v1662667949/icons/clock_kxlqsk.svg",
         error: "https://res.cloudinary.com/metacare/image/upload/v1643030939/icons/icon_xdmgjv.svg",
+        redRetry:
+            "https://res.cloudinary.com/metacare/image/upload/v1672090364/icons/fluent_filter-28-regular_sf5jku.svg",
     },
 };
 

@@ -1,14 +1,20 @@
 import { ReactSVG } from "react-svg";
 import assets from "../../../assets/images";
 
-export const AgentImage = ({ active, src, alt }) => {
+export const AgentImage = ({
+    active,
+    src,
+    alt,
+    width = "20px",
+    height = "20px",
+}) => {
     return (
         <div className='position-relative'>
             <img
                 src={src}
                 alt={alt}
-                width='20px'
-                height='20px'
+                width={width}
+                height={height}
                 className='rounded-circle'
             />
             {active && (

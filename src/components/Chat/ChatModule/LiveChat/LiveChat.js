@@ -370,7 +370,7 @@ const LiveChat = ({
     };
 
     const handleSocketError = () => {
-        setErrorMssg("Refresh to connect back");
+        setErrorMssg("Tap to Refresh");
         setStatus(ERROR);
     };
 
@@ -1011,6 +1011,8 @@ const LiveChat = ({
                             handleOptConversation={handleOptConversation}
                             handleRateConversation={handleRateConversation}
                             handleVerifyAction={handleVerifyAction}
+                            setActiveConvo={setActiveConvo}
+                            requestAllMessages={requestAllMessages}
                         />
                     </div>
                 </div>

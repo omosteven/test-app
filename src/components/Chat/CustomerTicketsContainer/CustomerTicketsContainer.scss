@@ -1,5 +1,5 @@
 @import "assets/scss/master";
-
+@import "assets/scss/_include-media-lib/include-media";
 
 #authTickets {
     &.show-mobile-menu {
@@ -10,6 +10,11 @@
         bottom: 0;
         width: 100%;
         left: 0;
+
+        #{$theme__selector} {
+            background: $dark__mode__theme__background__color;
+        }
+        
         .customer__tickets--container,
         .mCustomScrollBox,
         .customer__ticket {
@@ -30,12 +35,26 @@
             height: 60%;
             margin: 0;
             margin-bottom: 2rem;
+
+            @include media("<=medium-screen") { 
+                #{$template__selector} {
+                    padding-top: 40px;
+                }
+            }
+
             .customer__ticket {
                 padding: 1.125rem 2.063rem;
                 flex-shrink: 0;
                 display: flex;
-                flex-direction: column-reverse;
+                gap: 12px;
+                align-items: center;
                 border: 0;
+
+                .ticket__details {
+                    display: flex;
+                    flex-direction: column-reverse;
+                }
+
                 .agent__name {
                     font-size: 1.25rem;
                     font-family: $primary_font_family--medium;
@@ -43,11 +62,29 @@
                 }
                 &:not(:last-child) {
                     border-bottom: 0.063rem solid $border__theme_color;
+
+                    #{$theme__selector} {
+                        border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
+                    }
+                }
+
+                @include media("<=medium-screen") { 
+                    border-bottom: 0.063rem solid $border__theme_color;
+
+                    #{$theme__selector} {
+                        border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
+                    }
                 }
             }
         }
         .customer__tickets--container .mCSB_container {
             flex-direction: column;
+
+            @include media("<=medium-screen") { 
+                #{$template__selector} {
+                    gap: 1rem;
+                }
+            }
         }
     }
 }
@@ -66,6 +103,7 @@
     &:last-child {
         border-right: 0.063rem solid $border__theme_color;
     }
+
     &::before {
         content: "";
         position: absolute;
@@ -101,12 +139,35 @@
         color: $text__default_color;
         margin-bottom: 0.313rem;
         text-transform: capitalize;
+
+        #{$template__selector} {
+            font-weight: 500;
+            font-size: 20px;
+            line-height: 28px;
+        }
+        
+        #{$theme__selector} {
+            color: $light__theme_color;
+        }
     }
+
     .agent__pic--small {
         img {
             width: 2.5rem;
             height: 2.5rem;
             border-radius: 50%;
+        }
+    }
+
+    @include media("<=medium-screen") { 
+        #{$template__selector} {
+            padding: 12px 16px !important;
+            background: #2D333A;
+            border-radius: 16px;
+
+            &::before {
+                display: none;
+            }
         }
     }
 }

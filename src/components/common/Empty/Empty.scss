@@ -15,6 +15,13 @@
     &.with-margin {
         margin-top: 6rem;
     }
+
+    svg {
+        path {
+            fill: $dark__mode__text__theme__color;
+        }
+    }
+    
     p {
         font-family: $primary_font_family;
         font-size: 1rem;
@@ -22,5 +29,9 @@
         margin-top: 1rem;
         margin-bottom: 0;
         white-space: pre-wrap;
+
+        #{$theme__selector} {
+            color: $dark__mode__text__theme__color;
+        }
     }
 }

@@ -7,9 +7,18 @@
     width: 100%;
     background-color: $light__theme_color;
     z-index: 1;
+    
+    #{$theme__selector} {
+        background-color: $dark__mode__theme__background__color
+    }
+
     @include media("<=medium-screen") {
         top: 3.5rem;
         position: fixed;
+
+        #{$template__selector} {
+            display: none;
+        }
     }
     
     .agent-ticket--status {
@@ -28,9 +37,15 @@
         gap: 0.625rem;
         margin-left: auto;
 
-        .info__box {
+        .ticket__status__wrapper {
+            display: block;
+
             @include media("<=medium-screen") {
                 display: none !important;
+            }
+
+            #{$theme__selector} {
+                border: 0.063rem solid $dark__mode__theme__grey__color;
             }
         }
     }
@@ -43,10 +58,25 @@
     align-items: center;
     border-bottom: 0.063rem solid $border__theme_color;
     
+    #{$theme__selector} {
+        border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
+    }
+
     .ticket-header__icon {
         width: 2rem;
         height: 1.875rem;
         cursor: pointer;
+
+        #{$theme__selector} {
+            border: 0.063rem solid $dark__mode__theme__grey__color;
+
+            svg {
+                cursor: pointer;
+                path {
+                    stroke: $dark__mode__text__theme__color;
+                }
+            }
+        }
     }
 
     @include media("<=medium-screen") {
@@ -61,6 +91,11 @@
         margin: 0;
         text-transform: capitalize;
         font-family: $primary_font_family--medium;
+
+        #{$theme__selector} {
+            color: $dark__mode__text__theme__color;
+        }
+
         @include media("<=medium-screen") {
             font-size: 1.125rem;
             margin-bottom: -0.125rem;

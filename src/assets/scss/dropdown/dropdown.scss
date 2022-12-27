@@ -15,10 +15,20 @@
     gap: 1rem;
     svg {
       margin-bottom: 3px;
+
+      #{$theme__selector} {
+        path {
+          stroke: $dark__mode__text__theme__color 
+        }
+      }
     }
     span {
       font-size: 16px;
       color: $muted__theme_color_2;
+
+      #{$theme__selector} {
+          color:$dark__mode__text__theme__color
+      }
     }
   }
 }

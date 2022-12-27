@@ -16,6 +16,10 @@
         height: 100vh;
         padding-top: 40%;
         padding-bottom: 5%;
+
+        #{$template__selector} {
+            padding-top: 25%;
+        }
     }
 
     @include media("<=small-screen") {
@@ -24,5 +28,9 @@
         height: 100vh;
         padding-top: 65%;
         padding-bottom: 0%;
+
+        #{$template__selector} {
+            padding-top: 25%;
+        }
     }
 }

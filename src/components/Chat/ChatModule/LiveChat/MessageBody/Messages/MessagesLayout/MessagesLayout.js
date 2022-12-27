@@ -32,6 +32,8 @@ const MessagesLayout = ({
     openPreviewModal,
     handleRateConversation,
     handleVerifyAction,
+    setActiveConvo,
+    requestAllMessages,
 }) => {
     const lastMessage = messages[messages.length - 1];
     return (
@@ -77,6 +79,8 @@ const MessagesLayout = ({
                                 }
                                 handleOptConversation={handleOptConversation}
                                 openPreviewModal={openPreviewModal}
+                                setActiveConvo={setActiveConvo}
+                                requestAllMessages={requestAllMessages}
                             />
                         )}
                     </motion.li>

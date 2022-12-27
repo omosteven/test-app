@@ -13,6 +13,7 @@ import SignInForm from "./components/SignInForm/SignInForm";
 import Chat from "./components/Chat/Chat";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
 import { defaultThemes, defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import "./App.scss";
 
 const { DARK_MODE_DEFAULT, WHITE_MODE_DEFAULT } = defaultThemes;
 const { RELAXED, WORK_MODE } = defaultTemplates;
@@ -62,15 +63,11 @@ const App = () => {
 
     if (fetchingError)
         return (
-            <div>
+            <div className='fetching__error'>
                 {fetchingError}{" "}
                 <span
                     onClick={() => fetchChatSetting()}
-                    style={{
-                        color: "blue",
-                        marginLeft: "10px",
-                        cursor: "pointer",
-                    }}>
+                    className='fetching__error__retry'>
                     Retry ?
                 </span>
             </div>

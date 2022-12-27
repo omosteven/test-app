@@ -2,7 +2,10 @@ import { useSelector } from "react-redux";
 import CustomerTicketsContainer from "../../CustomerTicketsContainer/CustomerTicketsContainer";
 import ChatSettingsToggler from "./ChatSettingsToggler/ChatSettingsToggler";
 import ChatToggler from "./ChatToggler/ChatToggler";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import "./ChatHeader.scss";
+
+const { RELAXED } = defaultTemplates;
 
 const ChatHeader = ({
     status,
@@ -19,8 +22,10 @@ const ChatHeader = ({
     toggleChatMenu,
 }) => {
     const {
-        chatSettings: { companyLogo },
+        chatSettings: { companyLogo, workspaceSlug, defaultTemplate },
     } = useSelector((state) => state.chat);
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
 
     return (
         <header id='header'>
@@ -34,7 +39,12 @@ const ChatHeader = ({
                 )}
 
                 <div className='logo'>
-                    <img src={companyLogo} alt='Metacare' layout='fill' />
+                    <img src={companyLogo} alt={workspaceSlug} layout='fill' />{" "}
+                    {isRelaxedTemplate && (
+                        <span className='workspace__agent__name'>
+                            {workspaceSlug}
+                        </span>
+                    )}
                 </div>
 
                 {!showVerifyForm && (

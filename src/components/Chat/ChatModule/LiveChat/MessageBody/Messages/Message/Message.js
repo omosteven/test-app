@@ -7,6 +7,7 @@ import MessageTimeStatus from "./MessageTimeStatus/MessageTimeStatus";
 import { messageTypes, appMessageUserTypes } from "../enums";
 import MessageAttachments from "./MessageAttachments/MessageAttachments";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import { INPUT_NEEDED } from "../enums";
 import "./Message.scss";
 
 const { WORK_MODE, RELAXED } = defaultTemplates;
@@ -20,6 +21,8 @@ const Message = ({
     messagesDepth,
     openPreviewModal,
     lastMessage,
+    setActiveConvo,
+    requestAllMessages,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -47,6 +50,7 @@ const Message = ({
     const isReceivedMessage =
         senderType === appMessageUserTypes.WORKSPACE_AGENT;
     const hasAttachment = fileAttachments?.length > 0;
+
     return (
         <div
             id={messageId ? messageId : ""}
@@ -70,9 +74,15 @@ const Message = ({
                     messageContent={messageContent}
                     fileAttachments={fileAttachments}
                     openPreviewModal={openPreviewModal}
+                    messageType={messageType}
+                    messageIndex={messageIndex}
+                    messagesDepth={messagesDepth}
+                    setActiveConvo={setActiveConvo}
+                    requestAllMessages={requestAllMessages}
                 />
                 {parsedBranchOptions?.length > 0 &&
                 defaultTemplate === RELAXED ? (
+                    lastMessage?.messageActionType === INPUT_NEEDED ||
                     messageIndex === messagesDepth ? (
                         <MessageOptions
                             selectedOption={selectedOption}

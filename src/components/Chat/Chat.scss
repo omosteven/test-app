@@ -33,6 +33,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    #{$theme__selector} {
+        background: none;
+    }
 }
 
 .empty__group {
