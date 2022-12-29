@@ -36,10 +36,6 @@ const Chat = () => {
 
     const { activeTicket } = useSelector((state) => state.tickets);
 
-    const {
-        chatSettings: { workspaceSlug },
-    } = useSelector((state) => state.chat);
-
     const selectedTicket = activeTicket;
     const [customerTickets, setCustomerTickets] = useState([]);
 
@@ -48,6 +44,8 @@ const Chat = () => {
     let params = queryString.parse(window.location.search);
 
     const isAuthCodeAvailable = params?.code ? true : false;
+
+    const isAuthTokenAvailable = params?.token ? true : false;
 
     // const [selectedTicket, setSelectedTicket] = useState();
 
@@ -67,6 +65,13 @@ const Chat = () => {
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
         }
+    };
+
+    const loginWithEmailLink = async () => {
+        const tickedId = params?.ticketId;
+        const authToken = params?.token;
+        setCustomerTicketId(tickedId);
+        await sessionStorage.setItem("accessToken", authToken);
     };
 
     const getCustomerAuthToken = async () => {
@@ -188,7 +193,11 @@ const Chat = () => {
     };
 
     const callHandler = () => {
-        isAuthCodeAvailable
+        isAuthTokenAvailable
+            ? !customerTicketId
+                ? loginWithEmailLink()
+                : getCustomerTickets(customerTicketId)
+            : isAuthCodeAvailable
             ? customerTicketId
                 ? getCustomerTickets(customerTicketId)
                 : getCustomerAuthToken()
@@ -208,10 +217,17 @@ const Chat = () => {
     };
 
     useEffect(() => {
-        if (isAuthCodeAvailable && params?.connectionStatus !== "connected") {
-            history.push(
-                `/direct?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&code=${params?.code}&connectionStatus=connected`
-            );
+        if (
+            (isAuthCodeAvailable || isAuthTokenAvailable) &&
+            params?.connectionStatus !== "connected"
+        ) {
+            isAuthCodeAvailable
+                ? history.push(
+                      `/direct?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&code=${params?.code}&connectionStatus=connected`
+                  )
+                : history.push(
+                      `/chat?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&token=${params?.token}&connectionStatus=connected`
+                  );
 
             setTimeout(() => {
                 window.location.reload();
@@ -258,7 +274,11 @@ const Chat = () => {
                                 <div className='empty__chat--interface'>
                                     <div className='empty__group'>
                                         <Empty
-                                            message={`No conversation opened yet, click on any conversation on the sidebar \n to continue or start a new conversation`}
+                                            message={
+                                                loading
+                                                    ? `Please  wait while we are retrieving your conversations`
+                                                    : `No conversation opened yet, click on any conversation on the sidebar \n to continue or start a new conversation`
+                                            }
                                         />
                                         <div className='d-sm-none w-100'>
                                             <div className='row justify-content-center'>
