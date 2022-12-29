@@ -416,28 +416,28 @@ const LiveChatInput = ({
                 }`}
                 title={!allowUserInput ? "Not Allowed" : "Type a message"}>
                 <form onSubmit={handleSubmit} id='chatInput'>
-                    <div className='chat__input--container'>
-                        {uploads?.length > 0 && (
-                            <UploadPreview
-                                upload={uploads}
-                                status={status}
-                                handleRemoveFile={handleRemoveFile}
-                                handleRetry={(file) => handleRetryUpload(file)}
-                                maximize={(
+                    {uploads?.length > 0 && (
+                        <UploadPreview
+                            upload={uploads}
+                            status={status}
+                            handleRemoveFile={handleRemoveFile}
+                            handleRetry={(file) => handleRetryUpload(file)}
+                            maximize={(
+                                fileAttachmentType,
+                                fileAttachmentName,
+                                fileAttachmentUrl
+                            ) => {
+                                setSelectedMedia({
                                     fileAttachmentType,
                                     fileAttachmentName,
-                                    fileAttachmentUrl
-                                ) => {
-                                    setSelectedMedia({
-                                        fileAttachmentType,
-                                        fileAttachmentName,
-                                        fileAttachmentUrl,
-                                    });
-                                    toggleModal(true);
-                                }}
-                                disableClick={status !== DATAMODE}
-                            />
-                        )}
+                                    fileAttachmentUrl,
+                                });
+                                toggleModal(true);
+                            }}
+                            disableClick={status !== DATAMODE}
+                        />
+                    )}
+                    <div className='chat__input--container'>
                         <div className='chat__input--group'>
                             <div className='chat__input--group--inputs'>
                                 {currentFormElement ? (

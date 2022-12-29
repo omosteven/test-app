@@ -78,6 +78,13 @@
                     margin-bottom: 0.7rem;
                 }
             }
+
+            @include media("<=small-screen") {
+                #{$template__selector} {
+                    margin-bottom: 0.5rem;
+                }
+            }
+
             svg {
                 margin-right: 1rem;
                 @include media("<=medium-screen") {

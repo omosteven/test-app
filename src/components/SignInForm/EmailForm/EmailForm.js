@@ -112,11 +112,11 @@ const EmailForm = ({ handleInitialRequestUpdate, title, subTitle, userId }) => {
                     loading={loading}
                 />
             </form>
-            <div className='info__section d-flex align-items-center'>
-                <ReactSVG src={imageLinks.svg.info} className='info-icon' />
+            <div className='info__section'>
+                <ReactSVG src={imageLinks.svg.info} />
                 <p>
                     This email address would be used to communicate updates with
-                    you
+                    you.
                 </p>
             </div>
         </div>

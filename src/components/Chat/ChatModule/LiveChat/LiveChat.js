@@ -57,7 +57,6 @@ const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
-
 const {
     DEFAULT,
     BRANCH,
@@ -70,6 +69,7 @@ const {
     BRANCH_SUB_SENTENCE,
     COLLECTION,
     CANNED_RESPONSE,
+    SUCCESS,
 } = messageTypes;
 
 const { TEXT } = formInputTypes;
@@ -401,6 +401,7 @@ const LiveChat = ({
                 case CONVERSATION:
                 case DOWNTIME_BRANCH:
                 case DOWNTIME_BRANCH_SUB_SENTENCE:
+                case SUCCESS:
                     if (messageActionType === INPUT_NEEDED) {
                         shouldAllowUserInput = true;
                         userInputType = TEXT;

@@ -47,7 +47,7 @@ const ActionMessageContent = ({
                             {showCautionIcon && (
                                 <ReactSVG
                                     src={imageLinks?.svg?.attention}
-                                    className='action__caution'
+                                    className='action__attention'
                                 />
                             )}
                             <h6>{messageHeader}</h6>

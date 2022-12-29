@@ -98,7 +98,7 @@
                         align-items: center;
                         gap: 0.625rem;
 
-                        .action__caution {
+                        .action__attention {
                             svg {
                                 margin-top: -0.188rem;
     
@@ -143,14 +143,41 @@
                 }
             }
 
-            &.add__email {
-                color: $text__default_color;
-                background: $light__theme_color;
-                // border: 0.063rem solid $primary__theme_color;
-                border-radius: 12px;
-                padding: 6px 12px;
-                width: fit-content;
-                cursor: pointer;
+            &.success__message {
+                display: flex;
+                border-radius: 16px 16px 16px 0px;
+
+                #{$theme__selector} {
+                    background: $dark__mode__theme__grey__color;
+                }
+
+                .icon__container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 18.33px;
+                    background: rgba(0, 102, 245, 0.2);
+                    border-radius: 1rem 0 0 0;
+                }
+
+                .success__message__content {
+                    padding: 18px 1rem;
+
+                    .success__message__title {
+                        font-weight: 500;
+                        font-size: 20px;
+                        line-height: 28px;
+                        margin: 0;
+                        color: $light__theme_color;
+                    }
+
+                    .success__message__text {
+                        font-size: 18px;
+                        line-height: 24px;
+                        margin: 10px 0 0;
+                        color: $light__theme_color;
+                    }
+                }
             }
 
             &.sent {

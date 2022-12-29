@@ -1,6 +1,7 @@
 import Iframe from "components/ui/Iframe/Iframe";
 import { Modal } from "../../../../ui/Modal/Modal";
 import { IMAGE, FILE, VIDEO } from "../LiveChatInput/UploadIcons/enum";
+import Modald from "components/common/Modal/Modal";
 import "./ModalPreview.scss";
 
 const ModalPreview = ({
@@ -23,9 +24,9 @@ const ModalPreview = ({
             case FILE:
                 return (
                     <Iframe
-                    src={`https://docs.google.com/gview?url=${preview}&embedded=true`}
-                    title={fileName}
-                />
+                        src={`https://docs.google.com/gview?url=${preview}&embedded=true`}
+                        title={fileName}
+                    />
                 );
             case VIDEO:
                 return (
@@ -45,11 +46,18 @@ const ModalPreview = ({
     };
 
     return (
-        <Modal show={showModal} close={toggleModal} fullscreen={true}>
+        <>
+            {/* <Modal show={showModal} close={toggleModal} fullscreen={true}>
             <div className='modal__preview--container'>
                 {renderBasedOnPreviewType()}
             </div>
-        </Modal>
+        </Modal> */}
+            <Modald show={showModal} toggle={toggleModal} title='dsds'>
+                <div className='modal__preview--container'>
+                    {renderBasedOnPreviewType()}
+                </div>
+            </Modald>
+        </>
     );
 };
 

@@ -1,7 +1,9 @@
+import React from "react";
 import { motion } from "framer-motion";
 import ActionMessage from "../ActionMessage/ActionMessage";
 import { messageTypes } from "../enums";
 import Message from "../Message/Message";
+import SuccessMessage from "../SuccessMessage/SuccessMessage";
 // import { messageTypes } from "../MessageBody/Messages/enums";
 import "./MessagesLayout.scss";
 
@@ -23,6 +25,8 @@ const variants = {
         transition,
     },
 };
+
+const { ACTION_INFO, SUCCESS } = messageTypes;
 
 const MessagesLayout = ({
     messages,
@@ -53,7 +57,7 @@ const MessagesLayout = ({
                             ...transition,
                         }}
                         layout>
-                        {messageType === messageTypes?.ACTION_INFO ? (
+                        {messageType === ACTION_INFO ? (
                             <ActionMessage
                                 data={message}
                                 agent={agent}
@@ -67,6 +71,8 @@ const MessagesLayout = ({
                                 handleOptConversation={handleOptConversation}
                                 openPreviewModal={openPreviewModal}
                             />
+                        ) : messageType === SUCCESS ? (
+                            <SuccessMessage data={message} />
                         ) : (
                             <Message
                                 messageIndex={i + 1}

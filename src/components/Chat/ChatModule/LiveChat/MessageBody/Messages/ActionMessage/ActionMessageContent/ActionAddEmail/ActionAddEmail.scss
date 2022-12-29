@@ -1,0 +1,40 @@
+@import "assets/scss/master";
+
+.action__add__email {
+    #{$template__selector} {
+        display: flex;
+        flex-direction: column;
+        padding: 40px 45px 19px;
+        gap: 16px;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        bottom: 0;
+        z-index: 2;
+        background: #191F24;
+    }
+
+    .add__email {
+        color: $text__default_color;
+        background: $light__theme_color;
+        border-radius: 12px;
+        padding: 6px 12px;
+        width: fit-content;
+        cursor: pointer;
+
+        #{$template__selector} {
+            font-size: 20px;
+            line-height: 24px;
+            padding: 14px;
+            text-align: center;
+            border-radius: 100px;
+            width: 100%;
+        }
+    
+        #{$theme__selector} {
+            color: $dark__mode__text__theme__color;
+            background: $dark__mode__theme__grey__color;
+            border: 0.125rem solid $dark__mode__theme__grey__color;
+        }
+    }
+}

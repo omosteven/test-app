@@ -6,7 +6,7 @@ import { Button } from "components/ui";
 const NewTicketButton = ({ handleClick, otherClassNames, loading }) => {
     return (
         <>
-            {!loading ? (
+            {!loading && (
                 <Button
                     icon={
                         <ReactSVG src={imageLinks.svg.add} className='icon' />
@@ -17,8 +17,6 @@ const NewTicketButton = ({ handleClick, otherClassNames, loading }) => {
                     }`}
                     onClick={handleClick}
                 />
-            ) : (
-                ""
             )}
         </>
     );

@@ -52,6 +52,7 @@ export const messageTypes = Object.freeze({
     FORM_FILLED: "FORM_FILLED",
     FORM_FILLED_COMPLETELY: "FORM_FILLED_COMPLETELY",
     CANNED_RESPONSE: "CANNED_RESPONSE",
+    SUCCESS: "SUCCESS",
 });
 
 export const branchOptionsTypes = Object.freeze({

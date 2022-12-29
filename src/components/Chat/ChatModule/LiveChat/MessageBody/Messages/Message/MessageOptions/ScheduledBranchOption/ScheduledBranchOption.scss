@@ -53,7 +53,7 @@
     }
 
     &.__fade_out {
-        color: $option__fade_out;
+        color: $option__fade_out !important;
         pointer-events: none;
     }
 

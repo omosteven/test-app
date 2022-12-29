@@ -1,6 +1,6 @@
+import React from "react";
 import EmailForm from "components/SignInForm/EmailForm/EmailForm";
 import OTPForm from "components/SignInForm/OTPForm/OTPForm";
-
 import { useState } from "react";
 import CustomerVerifySuccess from "./CustomerVerifySuccess/CustomerVerifySuccess";
 import "./CustomerVerification.scss";
@@ -31,17 +31,17 @@ const CustomerVerification = ({ customer, handleVerifyAction, messages }) => {
     const handleSuccess = () => {
         setVerifyStage(verifystages.success);
 
-        let { messageId, ticketId } = messages?.find(
-            (ticketMessage) =>
-                ticketMessage?.messageActionType === ADD_EMAIL_ADDRESS
-        );
+        // let { messageId, ticketId } = messages?.find(
+        //     (ticketMessage) =>
+        //         ticketMessage?.messageActionType === ADD_EMAIL_ADDRESS
+        // );
 
-        dispatch(
-            deleteTicketsMessages({
-                messageId,
-                ticketId,
-            })
-        );
+        // dispatch(
+        //     deleteTicketsMessages({
+        //         messageId,
+        //         ticketId,
+        //     })
+        // );
     };
 
     const renderBasedOnStage = () => {
@@ -71,7 +71,10 @@ const CustomerVerification = ({ customer, handleVerifyAction, messages }) => {
 
             case success:
                 return (
-                    <CustomerVerifySuccess closeModal={handleVerifyAction} />
+                    <CustomerVerifySuccess
+                        closeModal={handleVerifyAction}
+                        messages={messages}
+                    />
                 );
 
             default:
