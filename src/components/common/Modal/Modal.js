@@ -6,6 +6,7 @@ const Modal = ({
     toggle,
     title,
     children,
+    className = "modal-dialog-centered",
     contentClassName,
     backdropClassName,
 }) => {
@@ -13,7 +14,7 @@ const Modal = ({
         <>
             <BootstrapModal
                 fade={false}
-                className='modal-dialog-centered'
+                className={className}
                 isOpen={show}
                 toggle={toggle}
                 contentClassName={contentClassName}

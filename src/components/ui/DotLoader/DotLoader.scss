@@ -1,0 +1,36 @@
+@import "assets/scss/master";
+
+.dot__loader {
+    animation: 1s bulge infinite ease-out;
+    padding: 12px 16px;
+    background: $primary__theme_color;
+    border-radius: 16px;
+
+    span {
+        width: 10px;
+        height: 10px;
+        float: left;
+        margin: 0 0.313rem;
+        background-color: $light__theme_color;
+        display: block;
+        border-radius: 50%;
+        opacity: 0.4;
+        @for $i from 1 through 3 {
+            &:nth-of-type(#{$i}) {
+                animation: 1s blink infinite ($i * 0.3333s);
+            }
+        }
+    }
+}
+
+@keyframes blink {
+    50% {
+        opacity: 1;
+    }
+}
+
+@keyframes bulge {
+    50% {
+        transform: scale(1.05);
+    }
+}

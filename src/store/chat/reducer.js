@@ -1,4 +1,8 @@
-import { SET_CONVERSATION_BREAKERS, UPDATE_CHAT_SETTINGS } from "./types";
+import {
+    SET_CONVERSATION_BREAKERS,
+    UPDATE_CHAT_SETTINGS,
+    CHANGE_THEME,
+} from "./types";
 
 const initialState = {
     chatSettings: {
@@ -13,6 +17,12 @@ const ChatReducer = (state = initialState, { type, payload }) => {
 
         case SET_CONVERSATION_BREAKERS:
             return { ...state, conversationBreakers: payload };
+
+        case CHANGE_THEME:
+            return {
+                ...state,
+                chatSettings: { ...state?.chatSettings, defaultTheme: payload },
+            };
 
         default:
             return state;

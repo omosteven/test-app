@@ -147,6 +147,7 @@ const LiveChat = ({
                                 data[data?.length - 1]?.messageContentId
                             }`
                         );
+
                         handleAddEmail();
                     }
 
@@ -683,8 +684,7 @@ const LiveChat = ({
             dispatch(
                 saveTicketsMessages({
                     ticketId,
-                    messageId: generateID(),
-                    // messageRefContent: branchOptionLabel,
+                    messageId: ADD_EMAIL_ADDRESS,
                     messageContent: actionBranchMainSentence,
                     messageHeader: actionBranchHeader,
                     messageType: ACTION_INFO,

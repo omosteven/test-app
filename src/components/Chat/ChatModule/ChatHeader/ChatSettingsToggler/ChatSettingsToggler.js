@@ -1,51 +1,62 @@
-import React from "react";
-import { ReactSVG } from "react-svg";
-import { Dropdown, DropdownToggle, DropdownMenu } from "reactstrap";
-import imageLinks from "assets/images";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Info } from "components/ui";
 import BraillePatternDots from "./BraillePatternDots/BraillePatternDots";
-import "./ChatSettingsToggler.scss";
+import TogglerDropdown from "./TogglerDropdown/TogglerDropdown";
+import TogglerModal from "./TogglerModal/TogglerModal";
+import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
+import { changeTheme } from "store/chat/actions";
+
+const { WORK_MODE } = defaultTemplates;
+const { DARK_MODE_DEFAULT, WHITE_MODE_DEFAULT } = defaultThemes;
 
 const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
-    const [isDropdownOpen, setIsDropdownOpen] = React.useState(false);
-    const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+    const [showModal, toggleModal] = useState(false);
+    const { defaultTemplate, defaultTheme } = useSelector(
+        (state) => state.chat.chatSettings
+    );
+    const dispatch = useDispatch();
 
-    // const handleLogOut = async () => {
-    //     let params = queryString.parse(window.location.search);
-    //     const slugCC = params?.workspaceSlug;
-    //     await sessionStorage.clear();
-    //     window.location.replace(`/?workspaceSlug=${slugCC}`);
-    //     await store.dispatch({ type: SIGNOUT_REQUEST });
+    const handleToggleModal = () => toggleModal(!showModal);
 
-    //     // history.push(`/?workspaceSlug=${workspaceSlug}`);
-    // };
+    const handleChangeTheme = () => {
+        const theme =
+            defaultTheme === DARK_MODE_DEFAULT
+                ? WHITE_MODE_DEFAULT
+                : DARK_MODE_DEFAULT;
+
+        dispatch(changeTheme(theme));
+    };
+
+    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
 
     return (
-        <Dropdown isOpen={isDropdownOpen} toggle={toggleDropdown}>
-            <DropdownToggle
-                tag='span'
-                data-toggle='dropdown'
-                aria-expanded={isDropdownOpen}>
+        <>
+            {defaultTemplate === isWorkModeTemplate ? (
+                <TogglerDropdown
+                    isMobile={isMobile}
+                    handleCloseTicket={handleCloseTicket}
+                />
+            ) : (
                 <Info otherClass={"ticket-header__icon"}>
                     <BraillePatternDots
-                        onClick={toggleDropdown}
+                        onClick={handleToggleModal}
                         isMobile={isMobile}
                     />
                 </Info>
-            </DropdownToggle>
+            )}
 
-            <DropdownMenu
-                tag='ul'
-                className='chat__settings__dropdown__menu'
-                right>
-                <li className='dropdown-item' onClick={handleCloseTicket}>
-                    <div className='dropdown--item--group'>
-                        <ReactSVG src={imageLinks?.svg?.leaveIcon} />
-                        <span>Leave Chat</span>
-                    </div>
-                </li>
-            </DropdownMenu>
-        </Dropdown>
+            {showModal && (
+                <TogglerModal
+                    showModal={showModal}
+                    toggleModal={handleToggleModal}
+                    handleChangeTheme={handleChangeTheme}
+                    handleCloseTicket={handleCloseTicket}
+                    isDarkModeTheme={isDarkModeTheme}
+                />
+            )}
+        </>
     );
 };
 

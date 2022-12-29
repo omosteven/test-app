@@ -19,9 +19,12 @@ import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/N
 import { pushAuthUser } from "store/auth/actions";
 import TicketCloseModal from "./TicketCloseModal/TicketCloseModal";
 import { setConversationBreakers } from "store/chat/actions";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import { DotLoader } from "components/ui";
 import "./Chat.scss";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
+const { RELAXED } = defaultTemplates;
 
 const Chat = () => {
     const [showChatMenu, toggleChatMenu] = useState(false);
@@ -50,6 +53,9 @@ const Chat = () => {
     // const [selectedTicket, setSelectedTicket] = useState();
 
     const [customerTicketId, setCustomerTicketId] = useState();
+    const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
 
     const fetchConvoBreakers = async () => {
         try {
@@ -273,28 +279,41 @@ const Chat = () => {
                             ) : (
                                 <div className='empty__chat--interface'>
                                     <div className='empty__group'>
-                                        <Empty
-                                            message={
-                                                loading
-                                                    ? `Please  wait while we are retrieving your conversations`
-                                                    : `No conversation opened yet, click on any conversation on the sidebar \n to continue or start a new conversation`
-                                            }
-                                        />
-                                        <div className='d-sm-none w-100'>
-                                            <div className='row justify-content-center'>
-                                                <div className='col-md-10'>
-                                                    <NewTicketButton
-                                                        handleClick={
-                                                            createNewTicket
-                                                        }
-                                                        otherClassNames={
-                                                            "large"
-                                                        }
-                                                        loading={loading}
-                                                    />
+                                        {loading && isRelaxedTemplate ? (
+                                            <>
+                                                <DotLoader />
+                                                <p className='preparing__tickets'>
+                                                    Preparing your tickets
+                                                </p>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Empty
+                                                    message={
+                                                        loading
+                                                            ? `Please wait while we are retrieving your conversations`
+                                                            : `No conversation opened yet, click on any conversation on the sidebar \n to continue or start a new conversation`
+                                                    }
+                                                />
+                                                <div className='d-sm-none w-100'>
+                                                    <div className='row justify-content-center'>
+                                                        <div className='col-md-10'>
+                                                            <NewTicketButton
+                                                                handleClick={
+                                                                    createNewTicket
+                                                                }
+                                                                otherClassNames={
+                                                                    "large"
+                                                                }
+                                                                loading={
+                                                                    loading
+                                                                }
+                                                            />
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </>
+                                        )}
                                     </div>
                                 </div>
                             )}

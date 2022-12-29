@@ -1,7 +1,7 @@
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 
-const BraillePatternDots = ({ isMobile }) => {
+const BraillePatternDots = ({ isMobile, onClick }) => {
     return (
         <ReactSVG
             src={
@@ -9,6 +9,7 @@ const BraillePatternDots = ({ isMobile }) => {
                     ? imageLinks?.svg?.verticalGrey
                     : imageLinks?.svg?.horizontalEllipsis
             }
+            onClick={onClick}
         />
     );
 };
