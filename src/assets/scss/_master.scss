@@ -49,14 +49,20 @@ $dark__mode__theme__dark__color: #191F24;
 $dark__mode__text__theme__color: #D5D7D8;
 $option__change__theme__color: #838589;
 $light__blue__theme__color: #0066F5;
-$template__selector: ".relaxed-mode &";
-$theme__selector: ".dark-mode-default &";
+$white__mode__theme__grey__color: #F6F5F8;
+$white__mode__option__background: #E6E6ED;
+$relaxed__mode__template__selector: ".relaxed-mode &";
+$dark__mode__theme__selector: ".dark-mode-default &";
+$white__mode__theme__selector: ".white-mode-default &";
 
-// #{$template__selector} {
+// #{$relaxed__mode__template__selector} {
 
 // }
 
-// #{$theme__selector} {
+// #{$dark__mode__theme__selector} {
     
 // }
 
+// #{$white__mode__theme__selector} {
+
+// }

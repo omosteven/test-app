@@ -1,7 +1,7 @@
 @import "assets/scss/master";
 
 .toggler__dropdown {
-    #{$theme__selector} {
+    #{$dark__mode__theme__selector} {
         background: $dark__mode__theme__background__color;
         border: 1px solid $dark__mode__theme__grey__color;
     }

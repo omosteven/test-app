@@ -1,7 +1,7 @@
 @import "assets/scss/master";
 
 .action__add__email {
-    #{$template__selector} {
+    #{$relaxed__mode__template__selector} {
         display: flex;
         flex-direction: column;
         padding: 40px 45px 19px;
@@ -11,7 +11,7 @@
         left: 0;
         bottom: 18px;
         z-index: 2;
-        background: #191F24;
+        background: $dark__mode__theme__dark__color;
     }
 
     .add__email {
@@ -22,7 +22,7 @@
         width: fit-content;
         cursor: pointer;
 
-        #{$template__selector} {
+        #{$relaxed__mode__template__selector} {
             font-size: 20px;
             line-height: 24px;
             padding: 14px;
@@ -31,7 +31,7 @@
             width: 100%;
         }
     
-        #{$theme__selector} {
+        #{$dark__mode__theme__selector} {
             color: $dark__mode__text__theme__color;
             background: $dark__mode__theme__grey__color;
             border: 0.125rem solid $dark__mode__theme__grey__color;

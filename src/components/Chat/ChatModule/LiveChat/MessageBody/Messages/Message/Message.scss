@@ -26,7 +26,7 @@
             .message {
                 padding: 0.75rem 1rem 0.625rem;
 
-                #{$template__selector} {
+                #{$relaxed__mode__template__selector} {
                     padding: 18px 24px;
                 }
             }
@@ -35,7 +35,7 @@
                 font-size: 1rem;
                 max-width: 80%;
 
-                #{$template__selector} {
+                #{$relaxed__mode__template__selector} {
                     max-width: 100%;
                 }
             }
@@ -45,7 +45,7 @@
                 background: $primary__theme_color;
                 border-radius: 0.75rem 0.75rem 0.75rem 0;
 
-                #{$template__selector}{
+                #{$relaxed__mode__template__selector}{
                     font-size: 24px;
                     line-height: 32px;
                     border-radius: 1rem 1rem 1rem 0;
@@ -58,40 +58,44 @@
                 border: 0.063rem solid $primary__theme_color;
                 border-radius: 0.75rem 0.75rem 0.75rem 0;
 
-                #{$template__selector} {
+                #{$relaxed__mode__template__selector} {
                     border-radius: 1rem 1rem 1rem 0;
                     padding: 18px 24px;
                 }
 
-                #{$theme__selector} {
+                #{$dark__mode__theme__selector} {
                     border: none;
                     background: $dark__mode__theme__grey__color;
+                }
+
+                #{$white__mode__theme__selector} {
+                    background: $white__mode__theme__grey__color;
                 }
 
                 .message {
                   padding-top: 0.5rem;
 
-                  #{$template__selector} {
+                  #{$relaxed__mode__template__selector} {
                     padding: 0 0 0;
                   }
 
                     .action__message {
-                        #{$template__selector} {
+                        #{$relaxed__mode__template__selector} {
                             font-size: 18px;
                             line-height: 24px;
                         }
 
-                        #{$theme__selector} {
+                        #{$dark__mode__theme__selector} {
                             color: $light__theme_color;
                         }
 
                         &.action__message__bold {
-                            #{$template__selector} {
+                            #{$relaxed__mode__template__selector} {
                                 font-size: 24px;
                                 line-height: 22px;
                             }
     
-                            #{$theme__selector} {
+                            #{$dark__mode__theme__selector} {
                                 color: $light__theme_color;
                             }
                         }
@@ -104,20 +108,20 @@
                     justify-content: space-between;
                     padding: 0.75rem 1rem 0;
 
-                    #{$template__selector} {
+                    #{$relaxed__mode__template__selector} {
                         padding: 0;
                     }
 
                     .action__header__text__container {
                         display: flex;
-                        align-items: center;
+                        align-items: baseline;
                         gap: 0.625rem;
 
                         .action__attention {
                             svg {
                                 margin-top: -0.188rem;
     
-                                #{$template__selector} {
+                                #{$relaxed__mode__template__selector} {
                                     height: 32px;
                                     width: 32px;
                                 }
@@ -135,14 +139,13 @@
                             color: $text__default_color;
                             margin: 0 0 0.5rem;
     
-                            #{$template__selector} {
+                            #{$relaxed__mode__template__selector} {
                                 font-weight: 500;
                                 font-size: 24px;
                                 line-height: 32px;
-                               
                             }
     
-                            #{$theme__selector} {
+                            #{$dark__mode__theme__selector} {
                                 color: $light__theme_color;
                             }
                         }
@@ -162,8 +165,12 @@
                 display: flex;
                 border-radius: 16px 16px 16px 0px;
 
-                #{$theme__selector} {
+                #{$dark__mode__theme__selector} {
                     background: $dark__mode__theme__grey__color;
+                }
+
+                #{$white__mode__theme__selector} {
+                    background: $white__mode__theme__grey__color;
                 }
 
                 .icon__container {
@@ -201,15 +208,20 @@
                 border-radius: 0.75rem 0.75rem 0 0.75rem;
                 text-align: left;
 
-                #{$template__selector} {
+                #{$relaxed__mode__template__selector} {
                     font-size: 24px;
                     line-height: 22px;
                     border-radius: 1rem 1rem 0 1rem; 
                 }
 
-                #{$theme__selector} {
+                #{$dark__mode__theme__selector} {
                     color: $light__theme_color;
                     background: $dark__mode__theme__grey__color;
+                }
+
+                #{$white__mode__theme__selector} {
+                    color: $dark__mode__theme__grey__color;
+                    background: $white__mode__theme__grey__color;
                 }
             }
 

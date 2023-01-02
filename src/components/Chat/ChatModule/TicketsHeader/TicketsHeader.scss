@@ -8,7 +8,7 @@
     background-color: $light__theme_color;
     z-index: 1;
     
-    #{$theme__selector} {
+    #{$dark__mode__theme__selector} {
         background-color: $dark__mode__theme__background__color
     }
 
@@ -16,7 +16,7 @@
         top: 3.5rem;
         position: fixed;
 
-        #{$template__selector} {
+        #{$relaxed__mode__template__selector} {
             display: none;
         }
     }
@@ -44,7 +44,7 @@
                 display: none !important;
             }
 
-            #{$theme__selector} {
+            #{$dark__mode__theme__selector} {
                 border: 0.063rem solid $dark__mode__theme__grey__color;
             }
         }
@@ -58,7 +58,7 @@
     align-items: center;
     border-bottom: 0.063rem solid $border__theme_color;
     
-    #{$theme__selector} {
+    #{$dark__mode__theme__selector} {
         border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
     }
 
@@ -67,13 +67,17 @@
         height: 1.875rem;
         cursor: pointer;
 
-        #{$theme__selector} {
-            border: 0.063rem solid $dark__mode__theme__grey__color;
-
+        #{$relaxed__mode__template__selector} {
             svg {
                 width: 20px;
                 cursor: pointer;
-                
+            }
+        }
+
+        #{$dark__mode__theme__selector} {
+            border: 0.063rem solid $dark__mode__theme__grey__color;
+
+            svg {
                 path {
                     stroke: $dark__mode__text__theme__color;
                 }
@@ -94,7 +98,7 @@
         text-transform: capitalize;
         font-family: $primary_font_family--medium;
 
-        #{$theme__selector} {
+        #{$dark__mode__theme__selector} {
             color: $dark__mode__text__theme__color;
         }
 

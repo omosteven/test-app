@@ -6,7 +6,12 @@ import { Info } from "components/ui";
 import BraillePatternDots from "../BraillePatternDots/BraillePatternDots";
 import "./TogglerDropdown.scss";
 
-const TogglerDropdown = ({ isMobile, handleCloseTicket }) => {
+const TogglerDropdown = ({
+    isMobile,
+    handleCloseTicket,
+    handleChangeTheme,
+    isDarkModeTheme,
+}) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
@@ -34,6 +39,17 @@ const TogglerDropdown = ({ isMobile, handleCloseTicket }) => {
                 </Info>
             </DropdownToggle>
             <DropdownMenu tag='ul' className='toggler__dropdown' right>
+                <li className='dropdown-item' onClick={handleChangeTheme}>
+                    <div className='dropdown--item--group'>
+                        <ReactSVG
+                            src={imageLinks.svg.themeSun}
+                            className='dropdown--item__sun__icon'
+                        />
+                        <span>
+                            {isDarkModeTheme ? "Light Mode" : "Dark Mode"}
+                        </span>
+                    </div>
+                </li>
                 <li className='dropdown-item' onClick={handleCloseTicket}>
                     <div className='dropdown--item--group'>
                         <ReactSVG src={imageLinks?.svg?.leaveIcon} />

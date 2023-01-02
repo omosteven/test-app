@@ -12,13 +12,13 @@
         line-height: 142%;
         color: $black__theme_color;
 
-        #{$template__selector} {
+        #{$relaxed__mode__template__selector} {
             font-weight: 600;
             font-size: 32px;
             line-height: 40px;
         }
 
-        #{$theme__selector} {  
+        #{$dark__mode__theme__selector} {  
             color: $light__theme_color;
         }
     }
@@ -29,12 +29,12 @@
         line-height: 1.625rem;
         color: $muted__theme_color_2;
 
-        #{$template__selector} {
+        #{$relaxed__mode__template__selector} {
             font-size: 1rem;
             line-height: 24px;
         }
 
-        #{$theme__selector}{ 
+        #{$dark__mode__theme__selector}{ 
             color: $dark__mode__text__theme__color; 
         }
     }

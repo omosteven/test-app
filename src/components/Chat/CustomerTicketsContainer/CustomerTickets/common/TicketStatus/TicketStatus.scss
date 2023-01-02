@@ -21,7 +21,7 @@
         line-height: 0.625rem;
         letter-spacing: 0.009rem;
 
-        #{$theme__selector} {
+        #{$dark__mode__theme__selector} {
             color: $dark__mode__text__theme__color;
         }
     }

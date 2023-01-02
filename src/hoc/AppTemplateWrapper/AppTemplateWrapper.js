@@ -11,13 +11,18 @@ const AppTemplateWrapper = ({ children }) => {
         (state) => state?.chat?.chatSettings
     );
 
+    // const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    // const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
+
     return (
         <div
             className={`${
+                // isWorkModeTemplate? "" :
                 defaultTheme === WHITE_MODE_DEFAULT
                     ? "white-mode-default"
                     : "dark-mode-default"
-            } ${defaultTemplate === WORK_MODE ? "work-mode" : "relaxed-mode"}`}>
+            } ${isWorkModeTemplate ? "work-mode" : "relaxed-mode"}`}>
             {children}
         </div>
     );

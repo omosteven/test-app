@@ -10,7 +10,7 @@
     padding: 7px 12px;
     transition: all 0.3s;
 
-    #{$template__selector} {
+    #{$relaxed__mode__template__selector} {
         font-size: 20px;
         line-height: 24px;
         padding: 14px;
@@ -18,7 +18,7 @@
         border-radius: 100px;
     }
 
-    #{$theme__selector} {
+    #{$dark__mode__theme__selector} {
         color: $dark__mode__text__theme__color;
         background: $dark__mode__theme__grey__color;
         border: 0.125rem solid $dark__mode__theme__grey__color;
@@ -28,7 +28,7 @@
         border: 1px solid $border_highlight_color;
         color: $text__default_color;
 
-        #{$theme__selector} {
+        #{$dark__mode__theme__selector} {
             color: $dark__mode__text__theme__color;
             border: 0.125rem solid $dark__mode__theme__grey__color;
         }
@@ -39,7 +39,7 @@
         color: $option__fade_out;
         pointer-events: none;
 
-        #{$theme__selector} {
+        #{$dark__mode__theme__selector} {
             border: 0.125rem solid $dark__mode__theme__grey__color;
         }
     }
@@ -61,7 +61,7 @@
         color: $text__default_color;
         border: 0.125rem solid $primary__theme_color !important;
 
-        #{$theme__selector} {
+        #{$dark__mode__theme__selector} {
             color: $dark__mode__text__theme__color;
             background: $dark__mode__theme__grey__color;
         }

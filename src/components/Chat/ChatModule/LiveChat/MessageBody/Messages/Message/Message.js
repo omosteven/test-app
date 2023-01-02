@@ -89,6 +89,7 @@ const Message = ({
                     messagesDepth={messagesDepth}
                     setActiveConvo={setActiveConvo}
                     requestAllMessages={requestAllMessages}
+                    lastMessage={lastMessage}
                 />
                 {parsedBranchOptions?.length > 0 && isRelaxedTemplate ? (
                     showMessageOptions ? (

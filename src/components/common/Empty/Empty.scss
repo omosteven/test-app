@@ -30,7 +30,7 @@
         margin-bottom: 0;
         white-space: pre-wrap;
 
-        #{$theme__selector} {
+        #{$dark__mode__theme__selector} {
             color: $dark__mode__text__theme__color;
             font-size: 18px;
             line-height: 26px;

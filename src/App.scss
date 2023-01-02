@@ -1,8 +1,12 @@
 @import "assets/scss/master";
 
 .fetching__error {
-    #{$theme__selector} {
+    #{$dark__mode__theme__selector} {
         color: $dark__mode__text__theme__color;
+    }
+
+    #{$white__mode__theme__selector} {
+        color: $dark__mode__theme__grey__color;
     }
 
     &__retry {

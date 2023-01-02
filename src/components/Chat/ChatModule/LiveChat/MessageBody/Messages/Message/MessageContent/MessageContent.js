@@ -5,7 +5,7 @@ import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import ChangeOptionChoice from "./ChangeOptionChoice/ChangeOptionChoice";
 import ChangeOptionChoiceModal from "./ChangeOptionChoice/ChangeOptionChoiceModal/ChangeOptionChoiceModal";
 
-const { BRANCH_OPTION } = messageTypes;
+const { BRANCH_OPTION, FORM_REQUEST, ACTION_INFO, DEFAULT } = messageTypes;
 const { RELAXED } = defaultTemplates;
 
 const MessageContent = ({
@@ -17,6 +17,7 @@ const MessageContent = ({
     messagesDepth,
     setActiveConvo,
     requestAllMessages,
+    lastMessage,
 }) => {
     const [showModal, toggleModal] = useState(false);
     const { defaultTemplate } = useSelector(
@@ -28,6 +29,12 @@ const MessageContent = ({
     };
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const showChangeOptionChoice =
+        messageType === BRANCH_OPTION &&
+        isRelaxedTemplate &&
+        (lastMessage?.messageType !== ACTION_INFO ||
+            lastMessage?.messageType !== FORM_REQUEST ||
+            lastMessage?.messageType !== DEFAULT);
 
     return (
         <>
@@ -46,13 +53,9 @@ const MessageContent = ({
                     <div className='message'>{messageContent}</div>
                 )}
             </div>
-            {messageType === BRANCH_OPTION &&
-                isRelaxedTemplate &&
-                messageIndex === messagesDepth && (
-                    <ChangeOptionChoice
-                        onClick={handleChangeOptionChoiceModal}
-                    />
-                )}
+            {showChangeOptionChoice && (
+                <ChangeOptionChoice onClick={handleChangeOptionChoiceModal} />
+            )}
             {showModal && isRelaxedTemplate && (
                 <ChangeOptionChoiceModal
                     show={showModal}

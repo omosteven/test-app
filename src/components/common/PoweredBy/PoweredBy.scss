@@ -8,7 +8,7 @@
     background-color: $light__theme_color;
     width: 100%;
 
-    #{$theme__selector} {
+    #{$dark__mode__theme__selector} {
         background-color: $dark__mode__theme__dark__color;
     }
 }

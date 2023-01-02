@@ -25,7 +25,7 @@
     color: #ff000096;
     cursor: pointer;
 
-    #{$template__selector} {
+    #{$relaxed__mode__template__selector} {
         padding: 4px 10px;
         display: flex;
         align-items: center;
@@ -37,7 +37,7 @@
         letter-spacing: -0.2px;
     }
     
-    #{$theme__selector} {
+    #{$dark__mode__theme__selector} {
         border: 1px solid #F77150;
         color: #F77150;
         background: $dark__mode__theme__background__color;

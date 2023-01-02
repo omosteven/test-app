@@ -33,10 +33,12 @@ const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
 
     return (
         <>
-            {defaultTemplate === isWorkModeTemplate ? (
+            {isWorkModeTemplate ? (
                 <TogglerDropdown
                     isMobile={isMobile}
                     handleCloseTicket={handleCloseTicket}
+                    handleChangeTheme={handleChangeTheme}
+                    isDarkModeTheme={isDarkModeTheme}
                 />
             ) : (
                 <Info otherClass={"ticket-header__icon"}>

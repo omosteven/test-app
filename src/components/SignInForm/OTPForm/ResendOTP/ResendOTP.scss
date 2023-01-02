@@ -3,7 +3,7 @@
 .resend__otp__text {
     color: $text__default_color;
 
-    #{$theme__selector} { 
+    #{$dark__mode__theme__selector} { 
         color: $light__theme_color;
     }
 
@@ -11,7 +11,7 @@
         color: $light__blue__theme__color;
         cursor: pointer;
 
-        #{$theme__selector} { 
+        #{$dark__mode__theme__selector} { 
             color: $yellow__theme__color;
         }
     }
