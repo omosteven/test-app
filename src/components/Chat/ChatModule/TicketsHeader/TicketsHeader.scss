@@ -71,7 +71,9 @@
             border: 0.063rem solid $dark__mode__theme__grey__color;
 
             svg {
+                width: 20px;
                 cursor: pointer;
+                
                 path {
                     stroke: $dark__mode__text__theme__color;
                 }

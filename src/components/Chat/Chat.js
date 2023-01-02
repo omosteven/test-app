@@ -22,9 +22,10 @@ import { setConversationBreakers } from "store/chat/actions";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { DotLoader } from "components/ui";
 import "./Chat.scss";
+import PoweredBy from "components/common/PoweredBy/PoweredBy";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
-const { RELAXED } = defaultTemplates;
+const { RELAXED, WORK_MODE } = defaultTemplates;
 
 const Chat = () => {
     const [showChatMenu, toggleChatMenu] = useState(false);
@@ -56,6 +57,7 @@ const Chat = () => {
     const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
 
     const fetchConvoBreakers = async () => {
         try {
@@ -262,6 +264,12 @@ const Chat = () => {
                                     showChatMenu,
                                     toggleChatMenu,
                                 }}
+                                showActions={
+                                    selectedTicket?.ticketId === undefined ||
+                                    loading
+                                        ? false
+                                        : !showChatMenu || !showVerifyForm
+                                }
                             />
                             {selectedTicket?.ticketId ? (
                                 <ChatModule
@@ -292,7 +300,7 @@ const Chat = () => {
                                                     message={
                                                         loading
                                                             ? `Please wait while we are retrieving your conversations`
-                                                            : `No conversation opened yet, click on any conversation on the sidebar \n to continue or start a new conversation`
+                                                            : `No conversation opened yet, click on the\n button to start a new conversation.`
                                                     }
                                                 />
                                                 <div className='d-sm-none w-100'>

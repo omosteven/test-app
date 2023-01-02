@@ -32,6 +32,9 @@
 
         #{$theme__selector} {
             color: $dark__mode__text__theme__color;
+            font-size: 18px;
+            line-height: 26px;
+            white-space: inherit;
         }
     }
 }

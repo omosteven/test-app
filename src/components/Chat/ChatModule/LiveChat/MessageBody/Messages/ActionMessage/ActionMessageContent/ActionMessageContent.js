@@ -38,19 +38,22 @@ const ActionMessageContent = ({
     const showCautionIcon =
         (defaultTemplate === RELAXED && messageActionType === INPUT_NEEDED) ||
         defaultTemplate === WORK_MODE;
+
     return (
         <>
             <div className='message__content info__action'>
                 {messageHeader && (
                     <div className='action__header'>
-                        <div className='action__header__text'>
+                        <div className='action__header__text__container'>
                             {showCautionIcon && (
                                 <ReactSVG
                                     src={imageLinks?.svg?.attention}
                                     className='action__attention'
                                 />
                             )}
-                            <h6>{messageHeader}</h6>
+                            <h6 className='action__header__text'>
+                                {messageHeader}
+                            </h6>
                         </div>
                         {defaultTemplate === RELAXED &&
                             messageActionType === INPUT_NEEDED && (
@@ -63,7 +66,12 @@ const ActionMessageContent = ({
                     </div>
                 )}
                 <div className='message'>
-                    <div className='action__message'>{messageContent}</div>
+                    <div
+                        className={`action__message ${
+                            !messageHeader ? "action__message__bold" : ""
+                        }`}>
+                        {messageContent}
+                    </div>
                     {requestRatings && (
                         <CustomRatings {...{ rating, handleRating }} />
                     )}

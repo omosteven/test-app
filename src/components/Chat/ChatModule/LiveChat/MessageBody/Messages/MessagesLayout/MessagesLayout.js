@@ -39,7 +39,6 @@ const MessagesLayout = ({
     setActiveConvo,
     requestAllMessages,
 }) => {
-    const lastMessage = messages[messages.length - 1];
     return (
         <ol className='message-thread'>
             {messages.map((message, i) => {
@@ -78,7 +77,7 @@ const MessagesLayout = ({
                                 messageIndex={i + 1}
                                 messagesDepth={messages?.length}
                                 data={message}
-                                lastMessage={lastMessage}
+                                messages={messages}
                                 agent={agent}
                                 handleMessageOptionSelect={
                                     handleMessageOptionSelect

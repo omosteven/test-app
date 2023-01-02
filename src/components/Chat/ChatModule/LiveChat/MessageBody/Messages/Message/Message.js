@@ -11,6 +11,7 @@ import { INPUT_NEEDED } from "../enums";
 import "./Message.scss";
 
 const { WORK_MODE, RELAXED } = defaultTemplates;
+const { BRANCH_SUB_SENTENCE, FORM_REQUEST } = messageTypes;
 
 const Message = ({
     data,
@@ -20,13 +21,15 @@ const Message = ({
     messageIndex,
     messagesDepth,
     openPreviewModal,
-    lastMessage,
+    messages,
     setActiveConvo,
     requestAllMessages,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
+    const lastMessage = messages[messages.length - 1];
+    const immediatePreviousMessage = messages[messages.length - 2];
 
     const {
         senderType,
@@ -50,6 +53,13 @@ const Message = ({
     const isReceivedMessage =
         senderType === appMessageUserTypes.WORKSPACE_AGENT;
     const hasAttachment = fileAttachments?.length > 0;
+    const showMessageOptions =
+        (lastMessage?.messageActionType === INPUT_NEEDED &&
+            immediatePreviousMessage?.messageType !== FORM_REQUEST) ||
+        messageIndex === messagesDepth;
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
 
     return (
         <div
@@ -57,7 +67,7 @@ const Message = ({
             className={`message__group ${
                 isReceivedMessage ? "received" : "sent"
             }`}>
-            {isReceivedMessage && defaultTemplate === WORK_MODE && (
+            {isReceivedMessage && isWorkModeTemplate && (
                 <AgentImage src={displayPicture} alt={firstName} />
             )}
 
@@ -80,10 +90,8 @@ const Message = ({
                     setActiveConvo={setActiveConvo}
                     requestAllMessages={requestAllMessages}
                 />
-                {parsedBranchOptions?.length > 0 &&
-                defaultTemplate === RELAXED ? (
-                    lastMessage?.messageActionType === INPUT_NEEDED ||
-                    messageIndex === messagesDepth ? (
+                {parsedBranchOptions?.length > 0 && isRelaxedTemplate ? (
+                    showMessageOptions ? (
                         <MessageOptions
                             selectedOption={selectedOption}
                             options={parsedBranchOptions}
@@ -101,7 +109,7 @@ const Message = ({
                         <></>
                     )
                 ) : (
-                    defaultTemplate === WORK_MODE && (
+                    isWorkModeTemplate && (
                         <MessageOptions
                             selectedOption={selectedOption}
                             options={parsedBranchOptions}
@@ -117,15 +125,16 @@ const Message = ({
                         />
                     )
                 )}
-                {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && (
-                    <>
-                        {isReceivedMessage ? (
-                            <MessageTimeStatus date={readDate} />
-                        ) : (
-                            <MessageTimeStatus date={deliveryDate} />
-                        )}
-                    </>
-                )}
+                {messageType !== BRANCH_SUB_SENTENCE ||
+                    (!isRelaxedTemplate && (
+                        <>
+                            {isReceivedMessage ? (
+                                <MessageTimeStatus date={readDate} />
+                            ) : (
+                                <MessageTimeStatus date={deliveryDate} />
+                            )}
+                        </>
+                    ))}
             </div>
         </div>
     );

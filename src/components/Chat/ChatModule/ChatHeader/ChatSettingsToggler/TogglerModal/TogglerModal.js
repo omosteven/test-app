@@ -36,14 +36,22 @@ const TogglerModal = ({
                         isDarkModeTheme ? "dark__mode__settings__item" : ""
                     }`}
                     onClick={handleChangeTheme}>
-                    {isDarkModeTheme ? "Light Mode" : "Dark Mode"}
+                    <span>{isDarkModeTheme ? "Light Mode" : "Dark Mode"}</span>
+                    <ReactSVG
+                        src={imageLinks.svg.themeSun}
+                        className='settings__item__sun__icon'
+                    />
                 </li>
                 <li
                     className={`settings__item ${
                         isDarkModeTheme ? "dark__mode__settings__item" : ""
                     }`}
                     onClick={handleCloseTicket}>
-                    Close Chat
+                    <span>Close Chat</span>
+                    <ReactSVG
+                        src={imageLinks.svg.cancelX}
+                        className='settings__item__cancel__icon'
+                    />
                 </li>
             </ul>
         </Modal>

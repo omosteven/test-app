@@ -49,7 +49,7 @@
             height: 3.5rem;
 
             #{$template__selector} {
-                padding: 0 23.5px;
+                padding: 0 16px 0 23.5px;
             }
             
             .logo {
@@ -145,6 +145,8 @@
             border-color: $dark__mode__text__theme__color;
     
             svg {
+                width: 20px;
+                
                 path {
                     fill: $dark__mode__text__theme__color;
                 }

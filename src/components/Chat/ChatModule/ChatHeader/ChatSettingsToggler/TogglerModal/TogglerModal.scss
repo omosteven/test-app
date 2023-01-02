@@ -1,10 +1,15 @@
 @import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
 
 .settings__toggle__modal__content {
     width: 350px !important;
     border: none !important;
     border-radius: 20px;
     padding: 12px 20px;
+
+    @include media("<=small-screen") {
+        width: 100% !important;
+    }
 
     &.dark__mode__settings__toggle {
         background: $dark__mode__theme__dark__color;
@@ -45,12 +50,30 @@
             list-style: none;
             padding: 24px;
             width: 100%;
-            text-align: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
-            
+            display: flex;
+            justify-content: space-between;
+
             &.dark__mode__settings__item {
                 color: $light__theme_color;
+            }
+
+            .settings__item__sun__icon {
+
+            }
+
+            .settings__item__cancel__icon {
+                svg {
+                    width: 19px;
+                    height: 19px;
+
+                    // #{$theme__selector} {
+                        path {
+                            stroke: $light__theme_color;
+                        }
+                    // }
+                }
             }
         }
     }

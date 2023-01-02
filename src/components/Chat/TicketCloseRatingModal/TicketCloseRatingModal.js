@@ -5,10 +5,9 @@ import CustomRatings from "components/ui/CustomRatings/CustomRatings";
 import API from "lib/api";
 import apiRoutes from "lib/api/apiRoutes";
 import { getErrorMessage } from "utils/helper";
-import Modal from "../../common/Modal/Modal";
 import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
-import "./TicketCloseRatingModal.scss";
 import PopupModal from "components/common/Modal/PopupModal/PopupModal";
+import "./TicketCloseRatingModal.scss";
 
 const { DARK_MODE_DEFAULT } = defaultThemes;
 const { RELAXED } = defaultTemplates;

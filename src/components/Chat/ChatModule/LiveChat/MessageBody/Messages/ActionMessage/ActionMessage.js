@@ -9,7 +9,7 @@ import ActionResponseTime from "./ActionMessageContent/ActionResponseTime/Action
 import ActionMessageOptions from "./ActionMessageOptions/ActionMessageOptions";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 
-const { WORK_MODE } = defaultTemplates;
+const { WORK_MODE, RELAXED } = defaultTemplates;
 
 const ActionMessage = ({
     data,
@@ -55,6 +55,7 @@ const ActionMessage = ({
 
     const showMessageRefContent =
         defaultTemplate === WORK_MODE && messageRefContent;
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
 
     return (
         <div
@@ -109,11 +110,12 @@ const ActionMessage = ({
                         />
                     )}
 
-                {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && (
-                    <>
-                        <MessageTimeStatus date={deliveryDate} />
-                    </>
-                )}
+                {messageType !== messageTypes?.BRANCH_SUB_SENTENCE ||
+                    (!isRelaxedTemplate && (
+                        <>
+                            <MessageTimeStatus date={deliveryDate} />
+                        </>
+                    ))}
             </div>
         </div>
     );

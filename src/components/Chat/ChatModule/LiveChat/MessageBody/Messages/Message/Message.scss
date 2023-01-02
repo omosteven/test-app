@@ -21,7 +21,7 @@
             max-width: 50%;
             font-size: 0.938rem;
             letter-spacing: 0.003rem;
-            margin-bottom: 0.625rem;
+            margin-bottom: 0.625rem;            
 
             .message {
                 padding: 0.75rem 1rem 0.625rem;
@@ -34,6 +34,10 @@
             @include media("<=medium-screen") {
                 font-size: 1rem;
                 max-width: 80%;
+
+                #{$template__selector} {
+                    max-width: 100%;
+                }
             }
 
             &.received {
@@ -68,7 +72,7 @@
                   padding-top: 0.5rem;
 
                   #{$template__selector} {
-                    padding: 0.5rem 0 0;
+                    padding: 0 0 0;
                   }
 
                     .action__message {
@@ -79,6 +83,17 @@
 
                         #{$theme__selector} {
                             color: $light__theme_color;
+                        }
+
+                        &.action__message__bold {
+                            #{$template__selector} {
+                                font-size: 24px;
+                                line-height: 22px;
+                            }
+    
+                            #{$theme__selector} {
+                                color: $light__theme_color;
+                            }
                         }
                     }
                 }
@@ -93,7 +108,7 @@
                         padding: 0;
                     }
 
-                    .action__header__text {
+                    .action__header__text__container {
                         display: flex;
                         align-items: center;
                         gap: 0.625rem;
@@ -114,11 +129,11 @@
                         }
                         
     
-                        h6 {
+                        .action__header__text {
                             font-family: $primary_font_family--medium;
                             font-size: 0.938rem;
                             color: $text__default_color;
-                            margin: 0;
+                            margin: 0 0 0.5rem;
     
                             #{$template__selector} {
                                 font-weight: 500;

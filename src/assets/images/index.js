@@ -50,6 +50,10 @@ const imageLinks = {
         error: "https://res.cloudinary.com/metacare/image/upload/v1643030939/icons/icon_xdmgjv.svg",
         redRetry:
             "https://res.cloudinary.com/metacare/image/upload/v1672180300/icons/Vector_ys03lu.svg",
+        themeSun:
+            "https://res.cloudinary.com/metacare/image/upload/v1672644783/icons/fi-rr-sun_keqywy.svg",
+        bookmark:
+            "https://res.cloudinary.com/metacare/image/upload/v1672644783/icons/fi-rr-bookmark_dyezj3.svg",
     },
 };
 
