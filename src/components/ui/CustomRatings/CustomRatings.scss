@@ -1,10 +1,17 @@
 @import "assets/scss/master";
 
 .custom__rating {
+    &.relaxed__template__ratings {
+        .star-svg {
+            width: 30px;
+            height: 28px;
+        }
+    }
 
     .empty-icons {
         #{$dark__mode__theme__selector} {
             color:  rgba(253, 211, 104, 0.2) !important;
         }
     }
+    
 }

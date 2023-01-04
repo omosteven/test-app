@@ -1,5 +1,6 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
+@import "assets/scss/animate/animate.scss";
 
 .options__group {
     display: flex;
@@ -20,10 +21,24 @@
             bottom: 18px;
             z-index: 2;
             background: $dark__mode__theme__dark__color;
+            animation: slide-in 0.8s normal forwards ease;
+
+            @keyframes slide-in {
+                0% {
+                    transform: translateY(50px);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
         }
         
         #{$white__mode__theme__selector} {
             background: $white__mode__theme__grey__color;
         }
+
+
+
+
     }
 }

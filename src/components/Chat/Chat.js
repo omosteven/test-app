@@ -265,10 +265,13 @@ const Chat = () => {
                                     toggleChatMenu,
                                 }}
                                 showActions={
-                                    selectedTicket?.ticketId === undefined ||
-                                    loading
+                                    loading || showVerifyForm
                                         ? false
-                                        : !showChatMenu || !showVerifyForm
+                                        : !showChatMenu
+                                        ? true
+                                        : selectedTicket?.ticketId === undefined
+                                        ? true
+                                        : false
                                 }
                             />
                             {selectedTicket?.ticketId ? (

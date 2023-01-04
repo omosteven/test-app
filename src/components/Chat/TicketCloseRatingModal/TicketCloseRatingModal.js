@@ -78,6 +78,11 @@ const TicketCloseRatingModal = ({
                     <CustomRatings
                         rating={ratingValue}
                         handleRating={(value) => setRatingValue(value)}
+                        otherClass={`${
+                            isRelaxedTemplate
+                                ? "relaxed__template__ratings"
+                                : ""
+                        }`}
                     />
                 </div>
                 <div

@@ -41,7 +41,9 @@ const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
                     isDarkModeTheme={isDarkModeTheme}
                 />
             ) : (
-                <Info otherClass={"ticket-header__icon"}>
+                <Info
+                    otherClass={"ticket-header__icon"}
+                    onClick={handleToggleModal}>
                     <BraillePatternDots
                         onClick={handleToggleModal}
                         isMobile={isMobile}

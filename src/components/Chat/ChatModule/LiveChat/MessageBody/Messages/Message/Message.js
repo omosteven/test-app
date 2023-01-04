@@ -12,6 +12,7 @@ import "./Message.scss";
 
 const { WORK_MODE, RELAXED } = defaultTemplates;
 const { BRANCH_SUB_SENTENCE, FORM_REQUEST } = messageTypes;
+const { WORKSPACE_AGENT } = appMessageUserTypes;
 
 const Message = ({
     data,
@@ -50,11 +51,20 @@ const Message = ({
 
     const { displayPicture, firstName } = agent || {};
 
-    const isReceivedMessage =
-        senderType === appMessageUserTypes.WORKSPACE_AGENT;
+    const isReceivedMessage = senderType === WORKSPACE_AGENT;
     const hasAttachment = fileAttachments?.length > 0;
+
+    const messageCopy = messages;
+    const recentAdminMessage = [...messageCopy]
+        .reverse()
+        ?.find(
+            (message) =>
+                message?.messageActionType !== INPUT_NEEDED &&
+                message?.senderType === WORKSPACE_AGENT
+        );
     const showMessageOptions =
         (lastMessage?.messageActionType === INPUT_NEEDED &&
+            recentAdminMessage?.messageId === messageId &&
             immediatePreviousMessage?.messageType !== FORM_REQUEST) ||
         messageIndex === messagesDepth;
 
@@ -89,6 +99,8 @@ const Message = ({
                     messagesDepth={messagesDepth}
                     setActiveConvo={setActiveConvo}
                     requestAllMessages={requestAllMessages}
+                    messageId={messageId}
+                    messages={messages}
                     lastMessage={lastMessage}
                 />
                 {parsedBranchOptions?.length > 0 && isRelaxedTemplate ? (

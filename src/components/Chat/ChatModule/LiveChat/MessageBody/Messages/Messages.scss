@@ -1,3 +1,6 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
 .d-content {
     display: contents;
 }
@@ -7,4 +10,10 @@
     height: 6.25rem;
     display: block;
     width: 100%;
+
+    @include media("<=medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            margin-top: 15rem;
+        }
+    }
 }

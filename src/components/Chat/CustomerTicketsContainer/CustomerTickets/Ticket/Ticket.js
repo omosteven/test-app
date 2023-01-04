@@ -116,7 +116,10 @@ const Ticket = ({
                     ) : (
                         isRelaxedTemplate &&
                         isTablet && (
-                            <span>I think I might have an issue...</span>
+                            // active
+                            <span className='ticket__last__message'>
+                                I think I might have an issuedffdf fdfdff f...
+                            </span>
                         )
                     )}
 
@@ -130,6 +133,10 @@ const Ticket = ({
                     )}
                 </div>
                 <h6 className='agent__name'>{`${firstName} ${lastName}`}</h6>
+            </div>
+            <div className='ticket__metadata'>
+                <span className='ticket__timestamp'>10mins</span>
+                <span className='new__ticket__message'>1</span>
             </div>
         </div>
     );

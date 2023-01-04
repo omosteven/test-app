@@ -31,7 +31,9 @@ const TogglerDropdown = ({
                 tag='span'
                 data-toggle='dropdown'
                 aria-expanded={isDropdownOpen}>
-                <Info otherClass={"ticket-header__icon"}>
+                <Info
+                    otherClass={"ticket-header__icon"}
+                    onClick={toggleDropdown}>
                     <BraillePatternDots
                         onClick={toggleDropdown}
                         isMobile={isMobile}
