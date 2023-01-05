@@ -58,7 +58,7 @@ const MessageContent = ({
                 ${otherClassNames ? otherClassNames : ""}
             `}
                 onClick={() =>
-                    isRelaxedTemplate && messageIndex === messagesDepth
+                    showChangeOptionChoice
                         ? handleChangeOptionChoiceModal()
                         : ""
                 }>

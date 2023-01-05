@@ -1,11 +1,16 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import ActionMessage from "../ActionMessage/ActionMessage";
 import { messageTypes } from "../enums";
 import Message from "../Message/Message";
 import SuccessMessage from "../SuccessMessage/SuccessMessage";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import { useWindowSize } from "utils/hooks";
 // import { messageTypes } from "../MessageBody/Messages/enums";
 import "./MessagesLayout.scss";
+
+const { RELAXED } = defaultTemplates;
 
 const transition = {
     type: "spring",
@@ -39,6 +44,12 @@ const MessagesLayout = ({
     setActiveConvo,
     requestAllMessages,
 }) => {
+    const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
+    const { width } = useWindowSize();
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isTablet = width <= 768;
+
     return (
         <ol className='message-thread'>
             {messages.map((message, i) => {
@@ -49,12 +60,16 @@ const MessagesLayout = ({
                         key={message?.messageId}
                         initial='initial'
                         animate='enter'
-                        variants={variants}
-                        transition={{
-                            duration: 1.5,
-                            delay: 0.5,
-                            ...transition,
-                        }}
+                        variants={isRelaxedTemplate && isTablet ? {} : variants}
+                        transition={
+                            isRelaxedTemplate && isTablet
+                                ? {}
+                                : {
+                                      duration: 1.5,
+                                      delay: 0.5,
+                                      ...transition,
+                                  }
+                        }
                         layout>
                         {messageType === ACTION_INFO ? (
                             <ActionMessage

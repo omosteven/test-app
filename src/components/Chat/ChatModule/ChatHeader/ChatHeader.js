@@ -33,7 +33,6 @@ const ChatHeader = ({
     const { width } = useWindowSize();
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-
     const isTablet = width <= 768;
 
     return (

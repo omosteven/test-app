@@ -46,7 +46,10 @@ const TogglerModal = ({
                     className={`settings__item ${
                         isDarkModeTheme ? "dark__mode__settings__item" : ""
                     }`}
-                    onClick={handleCloseTicket}>
+                    onClick={() => {
+                        handleCloseTicket();
+                        toggleModal();
+                    }}>
                     <span>Close Chat</span>
                     <ReactSVG
                         src={imageLinks.svg.cancelX}
