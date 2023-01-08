@@ -58,6 +58,12 @@
                 border: 0.063rem solid $primary__theme_color;
                 border-radius: 0.75rem 0.75rem 0.75rem 0;
 
+                @include media(">medium-screen") {
+                    #{$relaxed__mode__template__selector} {
+                        background: $dark__mode__desktop__chat__theme__color !important;
+                    }
+                }
+
                 #{$relaxed__mode__template__selector} {
                     border-radius: 1rem 1rem 1rem 0;
                     padding: 18px 24px;
@@ -109,6 +115,7 @@
                     padding: 0.75rem 1rem 0;
 
                     #{$relaxed__mode__template__selector} {
+                        align-items: flex-start;
                         padding: 0;
                     }
 
@@ -212,6 +219,12 @@
                     font-size: 24px;
                     line-height: 22px;
                     border-radius: 1rem 1rem 0 1rem; 
+                }
+
+                @include media(">medium-screen") {
+                    #{$relaxed__mode__template__selector} {
+                        background: $dark__mode__desktop__chat__theme__color !important;
+                    }
                 }
 
                 #{$dark__mode__theme__selector} {

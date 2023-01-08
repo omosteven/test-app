@@ -23,6 +23,9 @@
             #{$relaxed__mode__template__selector} {
                 border-radius: 0.25rem;
                 padding: 18px;
+                width: 80px !important;
+                height: 80px !important;
+
             }
 
             #{$dark__mode__theme__selector} { 
@@ -42,6 +45,11 @@
                 height: 40px !important;
                 &:not(:last-child) {
                     margin-right: 0px !important;
+                }
+
+                #{$relaxed__mode__template__selector} {
+                    width: 60px !important;
+                    height: 60px !important;
                 }
             }
         }

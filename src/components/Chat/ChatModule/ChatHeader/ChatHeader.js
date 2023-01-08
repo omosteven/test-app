@@ -34,6 +34,7 @@ const ChatHeader = ({
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isTablet = width <= 768;
+    const isNotTablet = width > 768;
 
     return (
         <header id='header'>
@@ -78,7 +79,10 @@ const ChatHeader = ({
                         />
 
                         {showActions && (
-                            <div className='show-only-on-mobile'>
+                            <div
+                                className={`show-only-on-mobile ${
+                                    isNotTablet ? "show-on-desktop" : ""
+                                }`}>
                                 <ChatSettingsToggler
                                     isMobile={true}
                                     handleCloseTicket={handleCloseTicket}

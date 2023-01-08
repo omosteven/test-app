@@ -47,6 +47,7 @@ $dark__mode__theme__background__color: #1f272d;
 $dark__mode__theme__grey__color: #2D333A;
 $dark__mode__theme__dark__color: #191F24;
 $dark__mode__text__theme__color: #D5D7D8;
+$dark__mode__desktop__chat__theme__color: #47515C;
 $option__change__theme__color: #838589;
 $light__blue__theme__color: #0066F5;
 $white__mode__theme__grey__color: #F6F5F8;
@@ -55,3 +56,6 @@ $relaxed__mode__template__selector: ".relaxed-mode &";
 $dark__mode__theme__selector: ".dark-mode-default &";
 $white__mode__theme__selector: ".white-mode-default &";
 
+// #{$relaxed__mode__template__selector} {
+    
+// }

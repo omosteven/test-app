@@ -6,7 +6,6 @@ import { messageTypes } from "../enums";
 import Message from "../Message/Message";
 import SuccessMessage from "../SuccessMessage/SuccessMessage";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
-import { useWindowSize } from "utils/hooks";
 // import { messageTypes } from "../MessageBody/Messages/enums";
 import "./MessagesLayout.scss";
 
@@ -45,10 +44,8 @@ const MessagesLayout = ({
     requestAllMessages,
 }) => {
     const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
-    const { width } = useWindowSize();
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isTablet = width <= 768;
 
     return (
         <ol className='message-thread'>
@@ -60,9 +57,9 @@ const MessagesLayout = ({
                         key={message?.messageId}
                         initial='initial'
                         animate='enter'
-                        variants={isRelaxedTemplate && isTablet ? {} : variants}
+                        variants={isRelaxedTemplate ? {} : variants}
                         transition={
-                            isRelaxedTemplate && isTablet
+                            isRelaxedTemplate
                                 ? {}
                                 : {
                                       duration: 1.5,

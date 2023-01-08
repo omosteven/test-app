@@ -1,5 +1,10 @@
 @import "assets/scss/master";
 
+.dark__desktop {
+    #{$relaxed__mode__template__selector} {
+       background: $dark__mode__theme__background__color;
+    }
+
 .chat__container {
     height: 100vh;
     display: flex;
@@ -8,8 +13,12 @@
     border-width: 0 0.063rem 0 0.063rem;
     overflow: hidden;
 
+    #{$relaxed__mode__template__selector} {
+        border: none !important;
+    }
+
     #{$dark__mode__theme__selector} {
-        border: 0.063rem solid $dark__mode__theme__background__color;
+        border: 0.063rem solid $dark__mode__theme__grey__color;
     }
 
     .empty__chat--interface,
@@ -57,4 +66,5 @@
         margin: 24px 0 0;
         color: $light__theme_color;
     }
+}
 }

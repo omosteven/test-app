@@ -4,9 +4,15 @@
 
 .email__input {
   #{$relaxed__mode__template__selector} {
-    font-size: 1rem;
-    line-height: 24px;
-    padding: 1rem 18px;
+    padding: 23px 24px;
+  }
+
+  @include media("<=medium-screen"){
+    #{$relaxed__mode__template__selector} {
+      font-size: 1rem;
+      line-height: 24px;
+      padding: 1rem 18px;
+    }
   }
 
   #{$dark__mode__theme__selector}{

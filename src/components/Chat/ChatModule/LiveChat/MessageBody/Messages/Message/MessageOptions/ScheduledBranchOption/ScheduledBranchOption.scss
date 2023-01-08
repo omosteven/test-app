@@ -1,4 +1,5 @@
 @import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
 
 .scheduled__branch__option {
     border-radius: 14px;
@@ -10,12 +11,25 @@
     padding: 7px 12px;
     transition: all 0.3s;
 
-    #{$relaxed__mode__template__selector} {
-        font-size: 20px;
-        line-height: 24px;
-        padding: 14px;
-        text-align: center;
-        border-radius: 100px;
+    @include media(">medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            padding: 10px;
+            width: 250.5px;
+            font-size: 20px;
+            line-height: 24px;
+            text-align: center;
+            border-radius: 100px;
+        }
+    }
+
+    @include media("<=medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            font-size: 20px;
+            line-height: 24px;
+            padding: 14px;
+            text-align: center;
+            border-radius: 100px;
+        }
     }
 
     #{$dark__mode__theme__selector} {

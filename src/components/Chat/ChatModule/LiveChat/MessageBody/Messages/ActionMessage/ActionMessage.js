@@ -95,7 +95,8 @@ const ActionMessage = ({
                     )}
 
                 {parsedBranchOptions?.length > 0 &&
-                    messageActionType !== ADD_EMAIL_ADDRESS && (
+                    messageActionType !== ADD_EMAIL_ADDRESS &&
+                    messageIndex === messagesDepth && (
                         <ActionMessageOptions
                             actionBranchOptions={parsedBranchOptions}
                             selectedOption={selectedActionOption}

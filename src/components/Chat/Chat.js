@@ -21,8 +21,9 @@ import TicketCloseModal from "./TicketCloseModal/TicketCloseModal";
 import { setConversationBreakers } from "store/chat/actions";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { DotLoader } from "components/ui";
-import "./Chat.scss";
 import PoweredBy from "components/common/PoweredBy/PoweredBy";
+import { useWindowSize } from "utils/hooks";
+import "./Chat.scss";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 const { RELAXED, WORK_MODE } = defaultTemplates;
@@ -58,6 +59,10 @@ const Chat = () => {
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+
+    const {width} = useWindowSize()
+
+    const isNotTablet = width > 768
 
     const fetchConvoBreakers = async () => {
         try {
@@ -246,7 +251,7 @@ const Chat = () => {
     return (
         <>
             <SocketContext.Provider value={socket}>
-                <div className='row justify-content-center h-100'>
+                <div className={`row justify-content-center h-100 ${isNotTablet ? 'dark__desktop' : ''}`}>
                     <div className='col-md-10 col-12'>
                         <div className='chat__container'>
                             <ChatHeader

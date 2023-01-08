@@ -11,6 +11,11 @@
     z-index: 3;
     border-bottom: 0.063rem solid $border__theme_color;
 
+    #{$relaxed__mode__template__selector} { 
+        border-bottom: none !important;
+        background-color: $dark__mode__theme__background__color;
+    }
+
     #{$dark__mode__theme__selector} {
         background: $dark__mode__theme__background__color;
         border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
@@ -52,6 +57,12 @@
         align-items: center;
         height: 100%;
         padding: 0 2rem;
+
+        #{$relaxed__mode__template__selector} {
+            background: $dark__mode__theme__dark__color;
+            border-radius: 100px;
+            padding: 11px 2rem;
+        }
 
         @include media("<=medium-screen") {
             padding: 0 1rem;
@@ -117,12 +128,18 @@
               max-width: 100px;
               height: 32px;
               object-fit: contain;
-          
+
               #{$relaxed__mode__template__selector} {
-                max-width: 26px;
-                height: 26px;
+                max-width: 36px;
+                height: 36px;
               }
-            
+
+              @include media("<=medium-screen") {
+                #{$relaxed__mode__template__selector} {
+                    max-width: 26px;
+                    height: 26px;
+                  }
+              }
             }
           
             .workspace__agent__name {
@@ -139,7 +156,21 @@
                 color: $dark__mode__theme__grey__color;
               }
             }
-          }
+        }
+
+        .ticket-header__icon {
+            display: block;
+            cursor: pointer;
+    
+            #{$relaxed__mode__template__selector} {
+                border: none;
+                padding: 0;
+    
+                svg {
+                    width: 20px;
+                }
+            }
+        }
     }
 }
 
@@ -147,6 +178,15 @@
     display: none;
     @include media("<=medium-screen") {
         display: block;
+    }
+
+    &.show-on-desktop {
+        @include media(">medium-screen") {
+            #{$relaxed__mode__template__selector} {
+                display: block;
+                margin-left: 30px;
+            }
+        }
     }
 
     .ticket-header__icon {
@@ -172,3 +212,4 @@
         }
     }
 }
+

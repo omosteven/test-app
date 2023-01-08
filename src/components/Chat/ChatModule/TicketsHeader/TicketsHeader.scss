@@ -7,6 +7,10 @@
     width: 100%;
     background-color: $light__theme_color;
     z-index: 1;
+
+    #{$relaxed__mode__template__selector} {
+        display: none;
+    }
     
     #{$dark__mode__theme__selector} {
         background-color: $dark__mode__theme__background__color
@@ -15,10 +19,6 @@
     @include media("<=medium-screen") {
         top: 3.5rem;
         position: fixed;
-
-        #{$relaxed__mode__template__selector} {
-            display: none;
-        }
     }
     
     .agent-ticket--status {

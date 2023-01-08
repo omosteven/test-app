@@ -147,7 +147,7 @@ const LiveChat = ({
                                 data[data?.length - 1]?.messageContentId
                             }`
                         );
-
+console.log({ticket})
                         handleAddEmail();
                     }
 

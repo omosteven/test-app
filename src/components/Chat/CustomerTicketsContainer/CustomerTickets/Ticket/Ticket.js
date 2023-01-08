@@ -108,14 +108,13 @@ const Ticket = ({
             )}
             <div className='ticket__details'>
                 <div className='d-flex align-items-center w-100'>
-                    {isWorkModeTemplate || !isTablet ? (
+                    {isWorkModeTemplate ? (
                         <TicketStatus
                             ticketPhase={ticketPhase}
                             ticketId={ticketId}
                         />
                     ) : (
-                        isRelaxedTemplate &&
-                        isTablet && (
+                        isRelaxedTemplate && (
                             // active
                             <span className='ticket__last__message'>
                                 I think I might have an issuedffdf fdfdff f...
@@ -123,7 +122,7 @@ const Ticket = ({
                         )
                     )}
 
-                    {!isTablet && (
+                    {isWorkModeTemplate && (
                         <div className='close__ticket' onClick={closeTicket}>
                             <ReactSVG
                                 src={imageLinks?.svg?.crossIconGrey}
@@ -134,7 +133,7 @@ const Ticket = ({
                 </div>
                 <h6 className='agent__name'>{`${firstName} ${lastName}`}</h6>
             </div>
-            {isRelaxedTemplate && isTablet && (
+            {isRelaxedTemplate && (
                 <div className='ticket__metadata'>
                     <span className='ticket__timestamp'>10mins</span>
                     <span className='new__ticket__message'>1</span>
