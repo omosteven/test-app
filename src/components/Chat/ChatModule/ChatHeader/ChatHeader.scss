@@ -11,9 +11,45 @@
     z-index: 3;
     border-bottom: 0.063rem solid $border__theme_color;
 
+    #{$relaxed__mode__template__selector} { 
+        border-bottom: none !important;
+        background-color: $dark__mode__theme__background__color;
+    }
+
+    #{$dark__mode__theme__selector} {
+        background: $dark__mode__theme__background__color;
+        border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
+    }
+
     @include media("<=medium-screen") {
         min-height: 3.5rem;
         position: fixed;
+
+        #{$relaxed__mode__template__selector} {
+            margin: 0px 3.2%;
+            border-radius: 100px;
+            border: none;
+            width: 93.5%;
+        }
+        
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__grey__color;
+            border-bottom: none;
+        }
+
+        #{$white__mode__theme__selector} {
+            background: $white__mode__theme__grey__color;
+            border-bottom: none;
+        }
+    }
+
+    @include media("<=small-screen") {
+        #{$relaxed__mode__template__selector} {
+            margin: 0 20px;
+            border-radius: 100px;
+            border: none;
+            width: 89%;
+        }
     }
 
     .chat__header {
@@ -21,12 +57,33 @@
         align-items: center;
         height: 100%;
         padding: 0 2rem;
+
+        #{$relaxed__mode__template__selector} {
+            background: $dark__mode__theme__dark__color;
+            border-radius: 100px;
+            padding: 11px 2rem;
+        }
+
+        @include media("<=medium-screen") {
+            padding: 0 1rem;
+            height: 3.5rem;
+
+            #{$relaxed__mode__template__selector} {
+                padding: 0 16px 0 23.5px;
+            }
+            
+            .logo {
+                margin: auto;
+            }
+        }
+
         #authTickets {
             display: contents;
             @include media("<=medium-screen") {
                 display: none;
             }
         }
+        
         .chat__toggler {
             display: none;
 
@@ -34,6 +91,10 @@
                 font-weight: 400;
                 font-size: 0.875rem;
                 color: $muted__theme_color_2;
+
+                #{$dark__mode__theme__selector} {
+                    color: $dark__mode__text__theme__color;
+                }
             }
 
             @include media("<=medium-screen") {
@@ -46,13 +107,68 @@
                     margin-top: 0.063rem;
                 }
             }
+
+            #{$dark__mode__theme__selector} {
+                svg {
+                    path {
+                        fill: $dark__mode__text__theme__color;
+                    }
+                }
+            }
         }
 
-        @include media("<=medium-screen") {
-            padding: 0 1rem;
-            height: 3.5rem;
-            .logo {
-                margin: auto;
+        .logo {
+            #{$relaxed__mode__template__selector} {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+            }
+          
+            img {
+              max-width: 100px;
+              height: 32px;
+              object-fit: contain;
+
+              #{$relaxed__mode__template__selector} {
+                max-width: 36px;
+                height: 36px;
+              }
+
+              @include media("<=medium-screen") {
+                #{$relaxed__mode__template__selector} {
+                    max-width: 26px;
+                    height: 26px;
+                  }
+              }
+            }
+          
+            .workspace__agent__name {
+              font-weight: 600;
+              font-size: 18px;
+              line-height: 26px;
+              text-transform: capitalize;
+
+              #{$dark__mode__theme__selector} {
+                color: $dark__mode__text__theme__color;
+              }
+
+              #{$white__mode__theme__selector} {
+                color: $dark__mode__theme__grey__color;
+              }
+            }
+        }
+
+        .ticket-header__icon {
+            display: block;
+            cursor: pointer;
+    
+            #{$relaxed__mode__template__selector} {
+                border: none;
+                padding: 0;
+    
+                svg {
+                    width: 20px;
+                }
             }
         }
     }
@@ -63,4 +179,37 @@
     @include media("<=medium-screen") {
         display: block;
     }
+
+    &.show-on-desktop {
+        @include media(">medium-screen") {
+            #{$relaxed__mode__template__selector} {
+                display: block;
+                margin-left: 30px;
+            }
+        }
+    }
+
+    .ticket-header__icon {
+        cursor: pointer;
+
+        #{$relaxed__mode__template__selector} {
+            border: none;
+            padding: 0;
+
+            svg {
+                width: 20px;
+            }
+        }
+
+        #{$dark__mode__theme__selector} {
+            border-color: $dark__mode__text__theme__color;
+    
+            svg {
+                path {
+                    fill: $dark__mode__text__theme__color;
+                }
+            }
+        }
+    }
 }
+

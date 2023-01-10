@@ -1,9 +1,15 @@
+import React from "react";
+import { useSelector } from "react-redux";
 import { motion } from "framer-motion";
 import ActionMessage from "../ActionMessage/ActionMessage";
 import { messageTypes } from "../enums";
 import Message from "../Message/Message";
+import SuccessMessage from "../SuccessMessage/SuccessMessage";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 // import { messageTypes } from "../MessageBody/Messages/enums";
 import "./MessagesLayout.scss";
+
+const { RELAXED } = defaultTemplates;
 
 const transition = {
     type: "spring",
@@ -24,6 +30,8 @@ const variants = {
     },
 };
 
+const { ACTION_INFO, SUCCESS } = messageTypes;
+
 const MessagesLayout = ({
     messages,
     agent,
@@ -32,8 +40,13 @@ const MessagesLayout = ({
     openPreviewModal,
     handleRateConversation,
     handleVerifyAction,
+    setActiveConvo,
+    requestAllMessages,
 }) => {
-    const lastMessage = messages[messages.length - 1];
+    const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+
     return (
         <ol className='message-thread'>
             {messages.map((message, i) => {
@@ -44,14 +57,18 @@ const MessagesLayout = ({
                         key={message?.messageId}
                         initial='initial'
                         animate='enter'
-                        variants={variants}
-                        transition={{
-                            duration: 1.5,
-                            delay: 0.5,
-                            ...transition,
-                        }}
+                        variants={isRelaxedTemplate ? {} : variants}
+                        transition={
+                            isRelaxedTemplate
+                                ? {}
+                                : {
+                                      duration: 1.5,
+                                      delay: 0.5,
+                                      ...transition,
+                                  }
+                        }
                         layout>
-                        {messageType === messageTypes?.ACTION_INFO ? (
+                        {messageType === ACTION_INFO ? (
                             <ActionMessage
                                 data={message}
                                 agent={agent}
@@ -65,18 +82,22 @@ const MessagesLayout = ({
                                 handleOptConversation={handleOptConversation}
                                 openPreviewModal={openPreviewModal}
                             />
+                        ) : messageType === SUCCESS ? (
+                            <SuccessMessage data={message} />
                         ) : (
                             <Message
                                 messageIndex={i + 1}
                                 messagesDepth={messages?.length}
                                 data={message}
-                                lastMessage={lastMessage}
+                                messages={messages}
                                 agent={agent}
                                 handleMessageOptionSelect={
                                     handleMessageOptionSelect
                                 }
                                 handleOptConversation={handleOptConversation}
                                 openPreviewModal={openPreviewModal}
+                                setActiveConvo={setActiveConvo}
+                                requestAllMessages={requestAllMessages}
                             />
                         )}
                     </motion.li>

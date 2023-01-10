@@ -18,15 +18,11 @@ const OTPForm = ({
     userId,
     isDirectUser,
 }) => {
-    const {
-        chatSettings: { workspaceSlug },
-    } = useSelector((state) => state.chat);
+    const { workspaceSlug } = useSelector((state) => state?.chat?.chatSettings);
     const { email, sessionId } = initialStepRequest;
-
     const [errorMsg, setErrorMsg] = useState();
     const [loading, setLoading] = useState(false);
     const [request, updateRequest] = useState();
-
     const [deviceToken, setDeviceToken] = useState();
 
     const handleSubmit = async (e) => {
@@ -102,11 +98,6 @@ const OTPForm = ({
                             }
                             type='numeric'
                             inputMode='number'
-                            inputStyle={{
-                                border: "1px solid #DEE1E5",
-                                color: "#11142D",
-                            }}
-                            // inputFocusStyle={{ border: "1px solid #6837EF" }}
                             autoSelect={true}
                             regexCriteria={/^[ A-Za-z0-9_@./#&+-]*$/}
                         />

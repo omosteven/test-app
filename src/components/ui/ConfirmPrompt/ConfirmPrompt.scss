@@ -1,8 +1,29 @@
+@import "assets/scss/master";
+
 .confirm__action {
     text-align: center;
     padding: 24px 0;
     width: 300px;
-    p {
+
+    &.relaxed__template__confirm__action {
+        padding: 40px;
+        width: 100%;
+    }
+
+    .confirm__action__title {
+        &.relaxed__template__action__title {
+            font-weight: 600;
+            font-size: 35px;
+            line-height: 32px;
+            text-align: center;
+        }
+
+        &.dark__mode__action__title {
+            color: $light__theme_color;
+        }
+    }
+
+    .confirm__action__sub__title {
         font-size: 16px;
         letter-spacing: 0.15px;
         color: #060213;
@@ -11,5 +32,18 @@
         width: 80%;
         margin: auto;
         margin-bottom: 10px;
+
+
+        &.relaxed__template__action__sub__title {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: 28px;
+            text-align: center;
+            width: 100%;
+        }
+        
+        &.dark__mode__action__sub__title {
+            color: $light__theme_color;
+        }
     }
 }

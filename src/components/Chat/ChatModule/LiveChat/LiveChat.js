@@ -57,7 +57,6 @@ const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
-
 const {
     DEFAULT,
     BRANCH,
@@ -70,6 +69,7 @@ const {
     BRANCH_SUB_SENTENCE,
     COLLECTION,
     CANNED_RESPONSE,
+    SUCCESS,
 } = messageTypes;
 
 const { TEXT } = formInputTypes;
@@ -147,6 +147,7 @@ const LiveChat = ({
                                 data[data?.length - 1]?.messageContentId
                             }`
                         );
+console.log({ticket})
                         handleAddEmail();
                     }
 
@@ -370,7 +371,7 @@ const LiveChat = ({
     };
 
     const handleSocketError = () => {
-        setErrorMssg("Refresh to connect back");
+        setErrorMssg("Tap to Refresh");
         setStatus(ERROR);
     };
 
@@ -401,6 +402,7 @@ const LiveChat = ({
                 case CONVERSATION:
                 case DOWNTIME_BRANCH:
                 case DOWNTIME_BRANCH_SUB_SENTENCE:
+                case SUCCESS:
                     if (messageActionType === INPUT_NEEDED) {
                         shouldAllowUserInput = true;
                         userInputType = TEXT;
@@ -682,8 +684,7 @@ const LiveChat = ({
             dispatch(
                 saveTicketsMessages({
                     ticketId,
-                    messageId: generateID(),
-                    // messageRefContent: branchOptionLabel,
+                    messageId: ADD_EMAIL_ADDRESS,
                     messageContent: actionBranchMainSentence,
                     messageHeader: actionBranchHeader,
                     messageType: ACTION_INFO,
@@ -1011,6 +1012,8 @@ const LiveChat = ({
                             handleOptConversation={handleOptConversation}
                             handleRateConversation={handleRateConversation}
                             handleVerifyAction={handleVerifyAction}
+                            setActiveConvo={setActiveConvo}
+                            requestAllMessages={requestAllMessages}
                         />
                     </div>
                 </div>

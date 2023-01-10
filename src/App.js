@@ -6,14 +6,17 @@ import { getErrorMessage } from "./utils/helper";
 import API from "./lib/api";
 import apiRoutes from "./lib/api/apiRoutes";
 import FullPageLoader from "./components/common/FullPageLoader/FullPageLoader";
-import {
-    updateChatSettings,
-} from "./store/chat/actions";
+import { updateChatSettings } from "./store/chat/actions";
 import store from "./store/store";
 import PublicRoute from "./routes/PublicRoute/PublicRoute";
 import SignInForm from "./components/SignInForm/SignInForm";
 import Chat from "./components/Chat/Chat";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
+import { defaultThemes, defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import "./App.scss";
+
+const { DARK_MODE_DEFAULT, WHITE_MODE_DEFAULT } = defaultThemes;
+const { RELAXED, WORK_MODE } = defaultTemplates;
 
 const App = () => {
     const [fetching, sayFetching] = useState(true);
@@ -32,7 +35,14 @@ const App = () => {
                 const { data } = res.data;
                 const { chatThemeColor } = data;
                 const root = document.documentElement;
-                store.dispatch(updateChatSettings({ ...data, workspaceSlug }));
+                store.dispatch(
+                    updateChatSettings({
+                        ...data,
+                        workspaceSlug,
+                        defaultTheme: DARK_MODE_DEFAULT,
+                        defaultTemplate: RELAXED,
+                    })
+                );
                 root.style.setProperty(
                     "--default-primary-color",
                     chatThemeColor
@@ -53,15 +63,11 @@ const App = () => {
 
     if (fetchingError)
         return (
-            <div>
+            <div className='fetching__error'>
                 {fetchingError}{" "}
                 <span
                     onClick={() => fetchChatSetting()}
-                    style={{
-                        color: "blue",
-                        marginLeft: "10px",
-                        cursor: "pointer",
-                    }}>
+                    className='fetching__error__retry'>
                     Retry ?
                 </span>
             </div>

@@ -1,0 +1,91 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+.action__add__email {
+    @include media(">medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 40px 45px 19px;
+            gap: 16px;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: -5.625rem;
+            z-index: 2;
+            background: $dark__mode__theme__dark__color;
+            animation: slide-in 0.8s normal forwards ease;
+
+            @keyframes slide-in {
+                0% {
+                    transform: translateY(150px);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
+
+    @include media("<=medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            display: flex;
+            flex-direction: column;
+            padding: 40px 45px 19px;
+            gap: 16px;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 18px;
+            z-index: 2;
+            background: $dark__mode__theme__dark__color;
+            animation: slide-in 0.8s normal forwards ease;
+
+            @keyframes slide-in {
+                0% {
+                    transform: translateY(150px);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
+
+    .add__email {
+        color: $text__default_color;
+        background: $light__theme_color;
+        border-radius: 12px;
+        padding: 6px 12px;
+        width: fit-content;
+        cursor: pointer;
+
+        @include media(">medium-screen") {
+            #{$relaxed__mode__template__selector} {
+                padding: 10px;
+                width: 250.5px;
+                font-size: 20px;
+                line-height: 24px;
+                text-align: center;
+                border-radius: 100px;
+            }
+        }
+
+        @include media("<=medium-screen") {
+            #{$relaxed__mode__template__selector} {
+                font-size: 20px;
+                line-height: 24px;
+                padding: 14px;
+                text-align: center;
+                border-radius: 100px;
+                width: 100%;
+            }
+        }
+    
+        #{$dark__mode__theme__selector} {
+            color: $dark__mode__text__theme__color;
+            background: $dark__mode__theme__grey__color;
+            border: 0.125rem solid $dark__mode__theme__grey__color;
+        }
+    }
+}

@@ -1,18 +1,28 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
-
 .chat__input--container {
     padding: 0.375rem 1rem;
     border-top: 0.063rem solid $border__theme_color;
     border-bottom: 0.063rem solid $border__theme_color;
-    border-right: 0.063rem solid $border__theme_color;
     overflow: hidden;
+
+    #{$relaxed__mode__template__selector} {
+        padding: 0 1rem;
+        border-radius: 100px;
+    }
+
+    #{$dark__mode__theme__selector}{
+        border-top: 0.063rem solid $dark__mode__theme__grey__color;
+        border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
+        background: $dark__mode__theme__grey__color;
+    }
  
     @include media("<=medium-screen") {
         margin-right: 0px;
         border-right: none;
     }
+
     .chat__input--group {
         display: flex;
         align-items: flex-end;
@@ -27,6 +37,11 @@
             border: 0 !important;
             border-radius: 0 !important;
             resize: none;
+            color: $dark__mode__text__theme__color;
+
+            &:focus {
+                color: $dark__mode__text__theme__color;
+            }
         }
         .select__box {
             margin-top: -2rem;
@@ -49,6 +64,18 @@
             align-items: center;
             padding: 0;
             margin-left: auto;
+
+            #{$relaxed__mode__template__selector} {
+                padding: 0px !important;
+                height: 2rem;
+                width: 2rem;
+                border-radius: 50%;
+                margin-bottom: 0.7rem;
+                span {
+                    display: none;
+                }
+            }
+
             @include media("<=medium-screen") {
                 padding: 0px !important;
                 height: 2rem;
@@ -58,9 +85,26 @@
                 span {
                     display: none;
                 }
+
+                #{$relaxed__mode__template__selector} {
+                    margin-bottom: 0.7rem;
+                }
             }
+
+            @include media("<=small-screen") {
+                #{$relaxed__mode__template__selector} {
+                    margin-bottom: 0.5rem;
+                }
+            }
+
             svg {
                 margin-right: 1rem;
+
+                #{$relaxed__mode__template__selector} {
+                    width: 60%;
+                    margin: 0;
+                }
+
                 @include media("<=medium-screen") {
                     width: 60%;
                     margin: 0;
@@ -91,14 +135,20 @@
     bottom: 0;
     background-color: $light__theme_color;
     margin-right: 0.375rem;
+
+    #{$dark__mode__theme__selector} {
+        background: $dark__mode__theme__dark__color;
+    }
+
     .form-control {
         background: transparent;
         &::placeholder {
             color:$option__fade_out;
         }
     }
+
     @include media("<=medium-screen") {
-        margin-right: 0;
+        margin-right: 0 !important;
     }
 }
 
@@ -106,6 +156,10 @@
     #chatInput {
         background: $gray__out__theme_color;
         margin-right: 0.375rem;
+
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__dark__color;
+        }
     }
 }
 
@@ -113,4 +167,20 @@
     position: fixed;
     bottom: 0;
     -webkit-transform: translateZ(0);
+
+    @include media(">medium-screen") {
+        #{$relaxed__mode__template__selector} { 
+            background: $dark__mode__theme__dark__color !important;
+            border-radius: 0px 0px 20px 20px;
+        }
+    }
+    
+    #{$relaxed__mode__template__selector} { 
+        padding: 20px 10px 0;
+        background: $dark__mode__theme__dark__color !important;
+    }
+
+    #{$dark__mode__theme__selector} {
+        background: $dark__mode__theme__background__color;
+    }
 }

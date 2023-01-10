@@ -1,4 +1,5 @@
 @import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
 
 .scheduled__branch__option {
     border-radius: 14px;
@@ -10,15 +11,51 @@
     padding: 7px 12px;
     transition: all 0.3s;
 
+    @include media(">medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            padding: 10px;
+            width: 250.5px;
+            font-size: 20px;
+            line-height: 24px;
+            text-align: center;
+            border-radius: 100px;
+        }
+    }
+
+    @include media("<=medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            font-size: 20px;
+            line-height: 24px;
+            padding: 14px;
+            text-align: center;
+            border-radius: 100px;
+        }
+    }
+
+    #{$dark__mode__theme__selector} {
+        color: $dark__mode__text__theme__color;
+        background: $dark__mode__theme__grey__color;
+        border: 0.125rem solid $dark__mode__theme__grey__color;
+    }
+
     &.active {
         border: 1px solid $border_highlight_color;
         color: $text__default_color;
+
+        #{$dark__mode__theme__selector} {
+            color: $dark__mode__text__theme__color;
+            border: 0.125rem solid $dark__mode__theme__grey__color;
+        }
     }
 
     &.inactive {
         border: 1px dashed $border_highlight_color;
         color: $option__fade_out;
         pointer-events: none;
+
+        #{$dark__mode__theme__selector} {
+            border: 0.125rem solid $dark__mode__theme__grey__color;
+        }
     }
 
     &:hover {
@@ -30,32 +67,28 @@
     }
 
     &.__fade_out {
-        color: $option__fade_out;
+        color: $option__fade_out !important;
         pointer-events: none;
     }
+
     &.selected {
-        border-color: $primary__theme_color;
-    }
-}
+        color: $text__default_color;
+        border: 0.125rem solid $primary__theme_color !important;
 
-.countdown__timer {
-    display: flex;
-    justify-content: flex-end;
-    align-items: baseline;
-    gap: 0.177rem;
-
-
-    .countdown__clock {
-        path {
-            fill: $primary__theme_color;
+        #{$dark__mode__theme__selector} {
+            color: $dark__mode__text__theme__color;
+            background: $dark__mode__theme__grey__color;
         }
     }
 
-    .timer {
-        font-weight: 600;
-        font-size: 0.75rem;
-        line-height: 0.75rem;
+    .option__pause {
+        display: flex;
+        justify-content: center;
+        margin-top: 5px;
         color: $primary__theme_color;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 12px;
+        gap: 5px;
     }
-
 }

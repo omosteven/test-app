@@ -24,6 +24,24 @@
     border-radius: 0.5rem;
     color: #ff000096;
     cursor: pointer;
+
+    #{$relaxed__mode__template__selector} {
+        padding: 4px 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 14px;
+        line-height: 18px;
+        letter-spacing: -0.2px;
+    }
+    
+    #{$dark__mode__theme__selector} {
+        border: 1px solid #F77150;
+        color: #F77150;
+        background: $dark__mode__theme__background__color;
+    }
 }
 
 .connected {
@@ -33,4 +51,16 @@
     font-size: 0.813rem;
     border-radius: 0.5rem;
     background: $scroll__bar__track_color;
+
+    #{$relaxed__mode__template__selector} {
+        font-size: 13px;
+        line-height: 24px;
+        padding: 4px 10px;
+        display: flex;
+        align-items: center;
+        color: $light__theme_color;
+        background: $dark__mode__connected__background;
+        border: 1px solid $primary__theme_color;
+        border-radius: 8px;
+    }
 }

@@ -11,6 +11,8 @@ const MessageBody = ({
     handleRateConversation,
     handleVerifyAction,
     messages,
+    setActiveConvo,
+    requestAllMessages,
 }) => {
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
     const { ticketId, agent } = ticket;
@@ -57,6 +59,8 @@ const MessageBody = ({
                 openPreviewModal={openPreviewModal}
                 handleRateConversation={handleRateConversation}
                 handleVerifyAction={handleVerifyAction}
+                setActiveConvo={setActiveConvo}
+                requestAllMessages={requestAllMessages}
             />
             {showModal && (
                 <ModalPreview

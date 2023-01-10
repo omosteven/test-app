@@ -1,4 +1,62 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
 .action-message-options {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.5rem;
+
+    @include media(">medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 40px 45px 19px;
+            gap: 16px;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: -5.625rem;
+            z-index: 2;
+            background: $dark__mode__theme__dark__color;
+            animation: slide-in 0.8s normal forwards ease;
+
+            @keyframes slide-in {
+                0% {
+                    transform: translateY(150px);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+        }
+    }
+
+    @include media("<=medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            display: flex;
+            flex-direction: column;
+            padding: 40px 45px 19px;
+            gap: 16px;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            bottom: 18px;
+            z-index: 2;
+            background: $dark__mode__theme__dark__color;
+            animation: slide-in 0.8s normal forwards ease;
+
+            @keyframes slide-in {
+                0% {
+                    transform: translateY(150px);
+                }
+                100% {
+                    transform: translateY(0);
+                }
+            }
+        }
+        
+        #{$white__mode__theme__selector} {
+            background: $white__mode__theme__grey__color;
+        }
+    }
 }

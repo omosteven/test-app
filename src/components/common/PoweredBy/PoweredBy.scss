@@ -1,4 +1,5 @@
 @import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
 
 .powered__by {
     display: flex;
@@ -6,4 +7,13 @@
     padding: 0.188rem 0;
     align-items: center;
     background-color: $light__theme_color;
+    width: 100%;
+
+    #{$relaxed__mode__template__selector} {
+        background-color: $dark__mode__theme__dark__color !important;
+    }
+
+    #{$dark__mode__theme__selector} {
+        background-color: $dark__mode__theme__background__color;
+    }
 }

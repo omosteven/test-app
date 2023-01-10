@@ -5,17 +5,27 @@
 .message-body {
     padding: 1.5rem;
     padding-top: 4rem;
-    height: 70vh;
-    overflow: scroll;
+    overflow: auto;
     &::-webkit-scrollbar {
         scrollbar-width: 0.625rem;
     }
+
+    @include media(">medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            height: 74vh;
+        }
+    }
+
     @include media("<=medium-screen") {
         padding-left: 1rem;
         padding-right: 1rem;
         height: 100vh;
         padding-top: 40%;
         padding-bottom: 5%;
+
+        #{$relaxed__mode__template__selector} {
+            padding-top: 25%;
+        }
     }
 
     @include media("<=small-screen") {
@@ -24,5 +34,9 @@
         height: 100vh;
         padding-top: 65%;
         padding-bottom: 0%;
+
+        #{$relaxed__mode__template__selector} {
+            padding-top: 25%;
+        }
     }
 }

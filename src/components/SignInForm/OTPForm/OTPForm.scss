@@ -1,5 +1,6 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
+
 .otp__form {
     .pincode-input-container {
         padding: 0.625rem 0;
@@ -15,6 +16,24 @@
             border-radius: 0.625rem;
             font-weight: 600;
             margin-left: 0;
+            border: 1px solid #DEE1E5  !important;
+            color: #11142D;
+            background: #ffffff !important;
+
+            #{$relaxed__mode__template__selector} {
+                border-radius: 0.25rem;
+                padding: 18px;
+                width: 80px !important;
+                height: 80px !important;
+
+            }
+
+            #{$dark__mode__theme__selector} { 
+                border: 1px solid #191F24 !important;
+                color: #D5D7D8;
+                background: #191F24 !important;
+            }
+            
             &:focus {
                 border: 1px solid $primary__theme_color !important;
             }
@@ -26,6 +45,11 @@
                 height: 40px !important;
                 &:not(:last-child) {
                     margin-right: 0px !important;
+                }
+
+                #{$relaxed__mode__template__selector} {
+                    width: 60px !important;
+                    height: 60px !important;
                 }
             }
         }

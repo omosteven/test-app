@@ -8,18 +8,19 @@ import { appMessageUserTypes } from "./enums";
 import MessagesLayout from "./MessagesLayout/MessagesLayout";
 import "./Messages.scss";
 
-const Messages = (props) => {
-    const {
-        agent,
-        ticketId,
-        forcedAgentTyping,
-        handleMessageOptionSelect,
-        handleOptConversation,
-        openPreviewModal,
-        handleRateConversation,
-        handleVerifyAction,
-        messages,
-    } = props;
+const Messages = ({
+    agent,
+    ticketId,
+    forcedAgentTyping,
+    handleMessageOptionSelect,
+    handleOptConversation,
+    openPreviewModal,
+    handleRateConversation,
+    handleVerifyAction,
+    messages,
+    setActiveConvo,
+    requestAllMessages,
+}) => {
     const { activeTicket } = useSelector((state) => state.tickets);
 
     const { agentTyping } = activeTicket || {};
@@ -57,6 +58,8 @@ const Messages = (props) => {
                         openPreviewModal={openPreviewModal}
                         handleRateConversation={handleRateConversation}
                         handleVerifyAction={handleVerifyAction}
+                        setActiveConvo={setActiveConvo}
+                        requestAllMessages={requestAllMessages}
                     />
                 ) : (
                     ""

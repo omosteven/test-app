@@ -8,17 +8,51 @@
     &.active, &:active{
       background-color: #ececef;
     }
+
+    &:hover {
+      #{$dark__mode__theme__selector} {
+        background-color: $dark__mode__theme__dark__color !important;
+      }
+    }
   }
   .dropdown--item--group {
     display: flex;
     align-items: center;
     gap: 1rem;
+
+    .dropdown--item__sun__icon {
+      svg {
+        width: 15px;
+        height: 15px;
+
+        g {
+          path {
+            stroke: $muted__theme_color_2;
+
+            #{$dark__mode__theme__selector} {
+              stroke: $light__theme_color;
+            }
+          }
+        }
+      }
+    }
+
     svg {
       margin-bottom: 3px;
+
+      #{$dark__mode__theme__selector} {
+        path {
+          stroke: $dark__mode__text__theme__color;
+        }
+      }
     }
     span {
       font-size: 16px;
       color: $muted__theme_color_2;
+
+      #{$dark__mode__theme__selector} {
+          color:$dark__mode__text__theme__color;
+      }
     }
   }
 }

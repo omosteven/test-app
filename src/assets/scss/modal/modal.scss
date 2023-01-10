@@ -48,10 +48,43 @@ body.modal-open {
 
 
 
-#btnActionGroup {
+.btn__action__group {
     display: flex;
     justify-content: center;
     gap: 10px;
+
+    &.relaxed__template__btn__action__group {
+        margin-top: 40px;
+        align-items: center;
+        flex-direction: column;
+        gap: 1rem;
+
+        .btn {
+            &-primary, &-bordered{
+                width: 100%;
+                font-size: 14px;
+                border-radius: 10px;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 24px;
+                height: 60px;
+            }
+        }
+    }
+
+    &.dark__mode__btn__action__group {
+        .btn {
+            &-primary, &-bordered{
+                color: $light__theme_color;
+            }
+
+            &-bordered {
+                background: $dark__mode__theme__grey__color;
+                border: none;
+            }
+        }
+    }
+
     .btn {
         &-primary, &-bordered{
             padding: 0 1rem;
@@ -63,6 +96,19 @@ body.modal-open {
         }
         &-bordered {
             border: 1px solid #F25A68;
+        }
+    }
+}
+
+.dark__mode__modal__backdrop {
+    background: rgba(31, 39, 45, 0.9) !important;
+    border-radius: 0 !important;
+
+    .modal-header {
+        border-bottom: none;
+
+        .btn-close {
+            background: url('data:image/svg+xml;utf8,%3Csvg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath fill-rule="evenodd" clip-rule="evenodd" d="M14.3526 11.9992L23.1477 20.8023C23.7983 21.4535 23.7978 22.5087 23.1466 23.1593C22.4955 23.8099 21.4402 23.8094 20.7896 23.1582L11.9938 14.3545L3.17765 23.1576C2.52629 23.808 1.47101 23.8072 0.820623 23.1558C0.170233 22.5045 0.171018 21.4492 0.822375 20.7988L9.63786 11.9964L0.826093 3.17668C0.175514 2.52551 0.175991 1.47023 0.827159 0.819654C1.47833 0.169074 2.5336 0.169552 3.18418 0.82072L11.9966 9.64114L20.7899 0.860937C21.4413 0.210547 22.4965 0.211331 23.1469 0.862689C23.7973 1.51405 23.7965 2.56932 23.1452 3.21971L14.3526 11.9992Z" fill="white"/%3E%3C/svg%3E') center/1em auto no-repeat;
         }
     }
 }

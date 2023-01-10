@@ -1,3 +1,4 @@
+@import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
 .customer__tickets--container {
@@ -24,4 +25,8 @@
     display: -webkit-flex;
     display: flex;
     flex-wrap: nowrap;
+
+    #{$relaxed__mode__template__selector} {
+        gap: 12px;
+    }
 }

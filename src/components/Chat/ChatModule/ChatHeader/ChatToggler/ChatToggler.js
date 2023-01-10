@@ -1,12 +1,21 @@
-import React from 'react';
-import { ReactSVG } from 'react-svg';
-import imageLinks from '../../../../../assets/images';
+import React from "react";
+import { useSelector } from "react-redux";
+import { ReactSVG } from "react-svg";
+import imageLinks from "../../../../../assets/images";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 
-const ChatToggler = ({...restProps}) => {
+const { WORK_MODE } = defaultTemplates;
+const ChatToggler = ({ ...restProps }) => {
+    const { defaultTemplate } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
+
+    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+
     return (
-        <div className="chat__toggler" {...restProps}>
+        <div className='chat__toggler' {...restProps}>
             <ReactSVG src={imageLinks?.svg?.leftArrow} />
-            <span>Chat</span>
+            {isWorkModeTemplate && <span>Chat</span>}
         </div>
     );
 };

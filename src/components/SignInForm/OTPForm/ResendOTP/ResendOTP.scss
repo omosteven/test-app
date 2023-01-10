@@ -1,0 +1,18 @@
+@import "assets/scss/master";
+
+.resend__otp__text {
+    color: $text__default_color;
+
+    #{$dark__mode__theme__selector} { 
+        color: $light__theme_color;
+    }
+
+    .resend__otp__action {
+        color: $light__blue__theme__color;
+        cursor: pointer;
+
+        #{$dark__mode__theme__selector} { 
+            color: $yellow__theme__color;
+        }
+    }
+}

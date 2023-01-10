@@ -1,0 +1,9 @@
+@import "assets/scss/master";
+
+.change__option__choice {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 22px;
+    color: $option__change__theme__color;
+    cursor: pointer;
+}

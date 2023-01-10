@@ -1,7 +1,8 @@
+import React from "react";
 import { messageTypes } from "../../enums";
 import MessageBranchOption from "./MessageBranchOption/MessageBranchOption";
-import "./MessageOptions.scss";
 import ScheduledBranchOption from "./ScheduledBranchOption/ScheduledBranchOption";
+import "./MessageOptions.scss";
 
 const { CONVERSATION } = messageTypes;
 
@@ -14,7 +15,7 @@ const MessageOptions = ({
     messageIndex,
     messagesDepth,
     deliveryDate,
-    lastMessage
+    lastMessage,
 }) => {
     return (
         <div className='options__group col-lg-5 col-md-7 col-12'>

@@ -1,5 +1,5 @@
 @import "assets/scss/master";
-
+@import "assets/scss/_include-media-lib/include-media";
 
 #authTickets {
     &.show-mobile-menu {
@@ -10,6 +10,11 @@
         bottom: 0;
         width: 100%;
         left: 0;
+
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__background__color;
+        }
+        
         .customer__tickets--container,
         .mCustomScrollBox,
         .customer__ticket {
@@ -30,24 +35,88 @@
             height: 60%;
             margin: 0;
             margin-bottom: 2rem;
+
+            @include media("<=medium-screen") { 
+                #{$relaxed__mode__template__selector} {
+                    padding-top: 40px;
+                }
+            }
+
             .customer__ticket {
                 padding: 1.125rem 2.063rem;
                 flex-shrink: 0;
                 display: flex;
-                flex-direction: column-reverse;
+                gap: 12px;
+                align-items: center;
                 border: 0;
+
+                #{$relaxed__mode__template__selector} {
+                    justify-content: space-between;
+                }
+
+                .ticket__details {
+                    display: flex;
+                    flex-direction: column-reverse;
+
+                    #{$relaxed__mode__template__selector} {
+                        width: 66%;
+                    }
+
+                    .ticket__last__message {
+                        #{$relaxed__mode__template__selector} {
+                            font-size: 18px;
+                            line-height: 26px;
+                            width: 100%;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                        }
+
+                        #{$dark__mode__theme__selector} {
+                            color: $option__change__theme__color;
+                        }
+
+                        &.active {
+                            #{$dark__mode__theme__selector} {
+                                color: $light__theme_color;
+                            }
+                        }
+                    }
+                }
+
                 .agent__name {
                     font-size: 1.25rem;
                     font-family: $primary_font_family--medium;
                     margin-left: 0;
                 }
+
                 &:not(:last-child) {
                     border-bottom: 0.063rem solid $border__theme_color;
+
+                    #{$dark__mode__theme__selector} {
+                        border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
+                    }
+                }
+
+                @include media("<=medium-screen") { 
+                    border-bottom: 0.063rem solid $border__theme_color;
+
+                    #{$dark__mode__theme__selector} {
+                        border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
+                    }
                 }
             }
         }
         .customer__tickets--container .mCSB_container {
             flex-direction: column;
+
+            @include media("<=medium-screen") { 
+                #{$relaxed__mode__template__selector} {
+                    gap: 1rem;
+                    width: 90% !important;
+                    margin: auto;
+                }
+            }
         }
     }
 }
@@ -63,9 +132,27 @@
     -webkit-flex-shrink: 0;
     flex-shrink: 0;
 
+    #{$relaxed__mode__template__selector} {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        background: #24282E;
+        border-radius: 10px;
+        padding: 6px 16px;
+    }
+
+    #{$dark__mode__theme__selector} {
+        border-left: 0.063rem solid $dark__mode__theme__grey__color;
+    }
+
     &:last-child {
         border-right: 0.063rem solid $border__theme_color;
+
+        #{$dark__mode__theme__selector} {
+            border-right: 0.063rem solid $dark__mode__theme__grey__color;
+        }
     }
+
     &::before {
         content: "";
         position: absolute;
@@ -78,9 +165,18 @@
         transition: all 1s;
     }
     &.active {
+        #{$relaxed__mode__template__selector} {
+            border: 1px solid $primary__theme_color;
+
+            &::before {
+                display: none;
+            }
+        }
+
         &::before {
             width: 100%;
         }
+
         .close__ticket {
             display: block !important;
         }
@@ -94,19 +190,108 @@
             opacity: 0.6;
         }
     }
+    .ticket__details {
+        #{$relaxed__mode__template__selector} {
+            display: flex;
+            flex-direction: column-reverse;
+        }
 
-    .agent__name {
-        font-size: 1rem;
-        margin-left: 1.125rem;
-        color: $text__default_color;
-        margin-bottom: 0.313rem;
-        text-transform: capitalize;
+        .ticket__last__message {
+            #{$relaxed__mode__template__selector} {
+                font-size: 18px;
+                line-height: 26px;
+                width: 135px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+            }
+
+            @include media("<=medium-screen") {
+                #{$relaxed__mode__template__selector} {
+                    width: 100%;
+                }
+            }
+
+            #{$dark__mode__theme__selector} {
+                color: $option__change__theme__color;
+            }
+
+            &.active {
+                #{$dark__mode__theme__selector} {
+                    color: $light__theme_color;
+                }
+            }
+        }
+
+        .agent__name {
+            font-size: 1rem;
+            margin-left: 1.125rem;
+            color: $text__default_color;
+            margin-bottom: 0.313rem;
+            text-transform: capitalize;
+
+            #{$relaxed__mode__template__selector} {
+                font-weight: 500;
+                font-size: 20px;
+                line-height: 28px;
+                margin: 0;
+            }
+            
+            #{$dark__mode__theme__selector} {
+                color: $light__theme_color;
+            }
+        }
     }
+
     .agent__pic--small {
         img {
             width: 2.5rem;
             height: 2.5rem;
             border-radius: 50%;
+        }
+    }
+
+    .ticket__metadata {
+        #{$relaxed__mode__template__selector} {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ticket__timestamp {
+            #{$relaxed__mode__template__selector} {
+                font-size: 14px;
+                line-height: 22px;
+                color: $option__change__theme__color;
+            }
+        }
+
+        .new__ticket__message {
+            #{$relaxed__mode__template__selector} {
+                font-weight: 500;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                text-align: right;
+                color: $light__theme_color;
+                padding: 2px 10px;
+                background: $primary__theme_color;
+                border-radius: 6px;
+                width: fit-content;
+            }
+        }
+    }
+
+    @include media("<=medium-screen") { 
+        #{$relaxed__mode__template__selector} {
+            padding: 12px 16px !important;
+            background: #2D333A;
+            border-radius: 16px;
+
+            &::before {
+                display: none;
+            }
         }
     }
 }

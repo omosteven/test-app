@@ -1,11 +1,15 @@
 import React from "react";
-import { AgentImage } from "../../../../../../ui";
+import { useSelector } from "react-redux";
+import { AgentImage } from "components/ui";
 import { ADD_EMAIL_ADDRESS, AGENT_FOLLOWUP, messageTypes } from "../enums";
 import MessageContent from "../Message/MessageContent/MessageContent";
 import MessageTimeStatus from "../Message/MessageTimeStatus/MessageTimeStatus";
 import ActionMessageContent from "./ActionMessageContent/ActionMessageContent";
 import ActionResponseTime from "./ActionMessageContent/ActionResponseTime/ActionResponseTime";
 import ActionMessageOptions from "./ActionMessageOptions/ActionMessageOptions";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+
+const { WORK_MODE, RELAXED } = defaultTemplates;
 
 const ActionMessage = ({
     data,
@@ -17,6 +21,10 @@ const ActionMessage = ({
     messagesDepth,
     openPreviewModal,
 }) => {
+    const { defaultTemplate } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
+
     const {
         messageRefContent,
         messageId,
@@ -29,6 +37,7 @@ const ActionMessage = ({
         messageActionData,
         fileAttachments,
         branchOptions,
+        ticketId,
     } = data;
     const { displayPicture, firstName } = agent || {};
 
@@ -44,13 +53,20 @@ const ActionMessage = ({
         averageResponseTime,
     } = messageActionData || {};
 
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const showMessageRefContent = isWorkModeTemplate && messageRefContent;
+
     return (
         <div
             id={messageId ? messageId : ""}
             className={`message__group received`}>
-            <AgentImage src={displayPicture} alt={firstName} />
+            {isWorkModeTemplate && (
+                <AgentImage src={displayPicture} alt={firstName} />
+            )}
+
             <div className={`message__group--content `}>
-                {(messageRefContent || fileAttachments) && (
+                {(showMessageRefContent || fileAttachments) && (
                     <MessageContent
                         isReceivedMessage={false}
                         messageContent={messageRefContent}
@@ -62,11 +78,13 @@ const ActionMessage = ({
 
                 <ActionMessageContent
                     messageContent={messageContent}
+                    messageId={messageId}
                     messageActionType={messageActionType}
                     handleRating={handleRating}
                     handleVerifyAction={handleVerifyAction}
                     messageHeader={messageHeader}
                     requestRatings={requestRatings}
+                    ticketId={ticketId}
                 />
 
                 {displayAverageResponseTime &&
@@ -77,7 +95,10 @@ const ActionMessage = ({
                     )}
 
                 {parsedBranchOptions?.length > 0 &&
-                    messageActionType !== ADD_EMAIL_ADDRESS && (
+                    messageActionType !== ADD_EMAIL_ADDRESS &&
+                    (isRelaxedTemplate
+                        ? messageIndex === messagesDepth
+                        : isWorkModeTemplate && true) && (
                         <ActionMessageOptions
                             actionBranchOptions={parsedBranchOptions}
                             selectedOption={selectedActionOption}
@@ -92,11 +113,12 @@ const ActionMessage = ({
                         />
                     )}
 
-                {messageType !== messageTypes?.BRANCH_SUB_SENTENCE && (
-                    <>
-                        <MessageTimeStatus date={deliveryDate} />
-                    </>
-                )}
+                {messageType !== messageTypes?.BRANCH_SUB_SENTENCE ||
+                    (!isRelaxedTemplate && (
+                        <>
+                            <MessageTimeStatus date={deliveryDate} />
+                        </>
+                    ))}
             </div>
         </div>
     );

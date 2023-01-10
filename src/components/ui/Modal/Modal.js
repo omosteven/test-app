@@ -8,6 +8,8 @@ export const Modal = ({
     size,
     toggle,
     fullscreen = false,
+    contentClassName,
+    backdropClassName,
     children,
 }) => (
     <ReactstrapModal
@@ -18,7 +20,9 @@ export const Modal = ({
         zIndex={""}
         onClosed={close}
         fullscreen={fullscreen}
-        scrollable={false}>
+        scrollable={false}
+        contentClassName={contentClassName}
+        backdropClassName={backdropClassName}>
         <ModalHeader toggle={close} />
         <ModalBody>{children}</ModalBody>
     </ReactstrapModal>

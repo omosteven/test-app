@@ -1,15 +1,12 @@
+import React from "react";
 import EmailForm from "components/SignInForm/EmailForm/EmailForm";
 import OTPForm from "components/SignInForm/OTPForm/OTPForm";
-
 import { useState } from "react";
 import CustomerVerifySuccess from "./CustomerVerifySuccess/CustomerVerifySuccess";
-import "./CustomerVerification.scss";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import FadeIn from "components/ui/FadeIn";
-import { deleteTicketsMessages } from "store/tickets/actions";
-import { ADD_EMAIL_ADDRESS } from "../MessageBody/Messages/enums";
-import { useDispatch } from "react-redux";
+import "./CustomerVerification.scss";
 
 export const verifystages = {
     initial: "INPUT_EMAIL",
@@ -26,22 +23,8 @@ const CustomerVerification = ({ customer, handleVerifyAction, messages }) => {
         setVerifyStage(verifystages.final);
     };
 
-    const dispatch = useDispatch();
-
     const handleSuccess = () => {
         setVerifyStage(verifystages.success);
-
-        let { messageId, ticketId } = messages?.find(
-            (ticketMessage) =>
-                ticketMessage?.messageActionType === ADD_EMAIL_ADDRESS
-        );
-
-        dispatch(
-            deleteTicketsMessages({
-                messageId,
-                ticketId,
-            })
-        );
     };
 
     const renderBasedOnStage = () => {
@@ -71,7 +54,10 @@ const CustomerVerification = ({ customer, handleVerifyAction, messages }) => {
 
             case success:
                 return (
-                    <CustomerVerifySuccess closeModal={handleVerifyAction} />
+                    <CustomerVerifySuccess
+                        closeModal={handleVerifyAction}
+                        messages={messages}
+                    />
                 );
 
             default:
