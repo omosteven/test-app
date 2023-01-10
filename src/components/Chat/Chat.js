@@ -19,14 +19,14 @@ import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/N
 import { pushAuthUser } from "store/auth/actions";
 import TicketCloseModal from "./TicketCloseModal/TicketCloseModal";
 import { setConversationBreakers } from "store/chat/actions";
-import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import { DotLoader } from "components/ui";
 import PoweredBy from "components/common/PoweredBy/PoweredBy";
-import { useWindowSize } from "utils/hooks";
 import "./Chat.scss";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 const { RELAXED, WORK_MODE } = defaultTemplates;
+const { DARK_MODE_DEFAULT } = defaultThemes;
 
 const Chat = () => {
     const [showChatMenu, toggleChatMenu] = useState(false);
@@ -55,14 +55,13 @@ const Chat = () => {
     // const [selectedTicket, setSelectedTicket] = useState();
 
     const [customerTicketId, setCustomerTicketId] = useState();
-    const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
+    const { defaultTemplate, defaultTheme } = useSelector(
+        (state) => state.chat.chatSettings
+    );
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORK_MODE;
-
-    const {width} = useWindowSize()
-
-    const isNotTablet = width > 768
+    const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
 
     const fetchConvoBreakers = async () => {
         try {
@@ -100,6 +99,7 @@ const Chat = () => {
             );
 
             if (res.status === 200) {
+                console.log({ res });
                 setCustomerTicketId(tickedId);
                 await sessionStorage.setItem(
                     "accessToken",
@@ -156,6 +156,7 @@ const Chat = () => {
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
             setLoading(false);
+            window.stop();
         }
     };
 
@@ -251,7 +252,10 @@ const Chat = () => {
     return (
         <>
             <SocketContext.Provider value={socket}>
-                <div className={`row justify-content-center h-100 ${isNotTablet ? 'dark__desktop' : ''}`}>
+                <div
+                    className={`row justify-content-center h-100 ${
+                        isDarkModeTheme ? "dark__desktop" : ""
+                    }`}>
                     <div className='col-md-10 col-12'>
                         <div className='chat__container'>
                             <ChatHeader

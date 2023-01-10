@@ -3,11 +3,41 @@
 
 .customer-verification {
     height: 100%;
+
+    @include media(">medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            background: $dark__mode__theme__grey__color;
+            border-radius: 20px;
+            height: 37.5rem;
+            margin-top: 24px;
+        }
+    }
+
+    @include media("<=medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            background: $dark__mode__theme__grey__color;
+            border-radius: 20px 20px 0 0;
+            border-radius: 20px;
+            height: 37.5rem;
+            margin: 0 20px 0 20px;
+        }
+    }
+
     .customer-verify__icon {
         text-align: right;
         margin-top: 42px;
         margin-right: 139px;
         margin-bottom: 60px;
+
+        @include media(">medium-screen") {
+            #{$relaxed__mode__template__selector} {
+                padding-top: 20px;
+                display: flex;
+                width: fit-content;
+                margin: 0 20px 0 auto; 
+            }
+        }
+
         .verify-icon {
             cursor: pointer;
         }
@@ -17,6 +47,10 @@
             text-align: right;
             padding: 21px;
             margin-right: 0px;
+
+                #{$relaxed__mode__template__selector} {
+                    margin-top: 5rem;
+                }
         }
     }
     .customer-verify__form {
@@ -26,6 +60,18 @@
         width: 600px;
         margin-left: auto;
         margin-right: auto;
+
+        @include media(">medium-screen") {
+            #{$relaxed__mode__template__selector} {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+                height: 80%;
+            }
+        }
         @include media("<=medium-screen") {
             width: 100%;
             padding: 21px;

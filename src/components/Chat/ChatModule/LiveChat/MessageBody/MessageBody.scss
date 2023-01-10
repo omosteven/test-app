@@ -5,7 +5,7 @@
 .message-body {
     padding: 1.5rem;
     padding-top: 4rem;
-    overflow: scroll;
+    overflow: auto;
     &::-webkit-scrollbar {
         scrollbar-width: 0.625rem;
     }

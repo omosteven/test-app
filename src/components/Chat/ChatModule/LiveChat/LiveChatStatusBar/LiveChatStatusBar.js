@@ -5,6 +5,7 @@ import { validateEmail } from "utils/helper";
 import { dataQueryStatus } from "../../../../../utils/formatHandlers";
 import SmallLoader from "../../../../ui/SmallLoader/SmallLoader";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import { useWindowSize } from "utils/hooks";
 import "./LiveChatStatusBar.scss";
 
 const { IDLE, LOADING, ERROR, DATAMODE } = dataQueryStatus;
@@ -16,6 +17,7 @@ const LiveChatStatusBar = ({ status, errorMssg }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
+    const { width } = useWindowSize();
 
     // const {
     //     user: { email },
@@ -27,6 +29,7 @@ const LiveChatStatusBar = ({ status, errorMssg }) => {
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isNotTablet = width > 768;
 
     const renderBasedOnStatus = () => {
         switch (status) {
@@ -49,7 +52,7 @@ const LiveChatStatusBar = ({ status, errorMssg }) => {
             case DATAMODE:
                 return (
                     <>
-                        {isWorkModeTemplate && (
+                        {(isWorkModeTemplate || isNotTablet) && (
                             <span className='connected'>
                                 {validateEmail(user?.email)
                                     ? user?.email

@@ -18,5 +18,9 @@
     display: none;
     @include media("<=medium-screen") {
         display: block;
+
+        #{$relaxed__mode__template__selector} {
+            display: none;
+        }   
     }
 }

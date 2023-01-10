@@ -53,15 +53,15 @@ const ActionMessage = ({
         averageResponseTime,
     } = messageActionData || {};
 
-    const showMessageRefContent =
-        defaultTemplate === WORK_MODE && messageRefContent;
     const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const showMessageRefContent = isWorkModeTemplate && messageRefContent;
 
     return (
         <div
             id={messageId ? messageId : ""}
             className={`message__group received`}>
-            {defaultTemplate === WORK_MODE && (
+            {isWorkModeTemplate && (
                 <AgentImage src={displayPicture} alt={firstName} />
             )}
 
@@ -96,7 +96,9 @@ const ActionMessage = ({
 
                 {parsedBranchOptions?.length > 0 &&
                     messageActionType !== ADD_EMAIL_ADDRESS &&
-                    messageIndex === messagesDepth && (
+                    (isRelaxedTemplate
+                        ? messageIndex === messagesDepth
+                        : isWorkModeTemplate && true) && (
                         <ActionMessageOptions
                             actionBranchOptions={parsedBranchOptions}
                             selectedOption={selectedActionOption}

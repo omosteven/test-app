@@ -4,9 +4,12 @@ import ChatSettingsToggler from "./ChatSettingsToggler/ChatSettingsToggler";
 import ChatToggler from "./ChatToggler/ChatToggler";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { useWindowSize } from "utils/hooks";
+import ErrorView from "components/common/ErrorView/ErrorView";
+import { dataQueryStatus } from "utils/formatHandlers";
 import "./ChatHeader.scss";
 
 const { RELAXED } = defaultTemplates;
+const { LOADING, NULLMODE, DATAMODE, ERROR } = dataQueryStatus;
 
 const ChatHeader = ({
     status,
@@ -36,6 +39,33 @@ const ChatHeader = ({
     const isTablet = width <= 768;
     const isNotTablet = width > 768;
 
+    const renderBasedOnStatus = () => {
+        switch (status) {
+            case DATAMODE:
+            case NULLMODE:
+            case LOADING:
+                return (
+                    <>
+                        {isRelaxedTemplate && isTablet && (
+                            <span className='workspace__agent__name'>
+                                {agent
+                                    ? `${agent?.firstName} ${agent?.lastName}`
+                                    : workspaceSlug}
+                            </span>
+                        )}
+                    </>
+                );
+
+            case ERROR:
+                return (
+                    <ErrorView retry={getCustomerTickets} message={errorMssg} />
+                );
+
+            default:
+                return "";
+        }
+    };
+
     return (
         <header id='header'>
             <div className='chat__header'>
@@ -49,13 +79,7 @@ const ChatHeader = ({
 
                 <div className='logo'>
                     <img src={companyLogo} alt={workspaceSlug} layout='fill' />{" "}
-                    {isRelaxedTemplate && isTablet && (
-                        <span className='workspace__agent__name'>
-                            {agent
-                                ? `${agent?.firstName} ${agent?.lastName}`
-                                : workspaceSlug}
-                        </span>
-                    )}
+                    {isTablet && renderBasedOnStatus()}
                 </div>
 
                 {!showVerifyForm && (

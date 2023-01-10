@@ -6,13 +6,12 @@
         #{$relaxed__mode__template__selector} {
             display: flex;
             flex-wrap: wrap;
-            justify-content: center;
             padding: 40px 45px 19px;
             gap: 16px;
             position: absolute;
             width: 100%;
             left: 0;
-            bottom: -90px;
+            bottom: -5.625rem;
             z-index: 2;
             background: $dark__mode__theme__dark__color;
             animation: slide-in 0.8s normal forwards ease;
