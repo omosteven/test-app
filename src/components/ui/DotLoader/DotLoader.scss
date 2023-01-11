@@ -3,8 +3,11 @@
 .dot__loader {
     animation: 1s bulge infinite ease-out;
     padding: 12px 16px;
-    background: $primary__theme_color;
     border-radius: 16px;
+
+    &.dot__loader__background {
+        background: $primary__theme_color;
+    }
 
     span {
         width: 10px;
@@ -19,6 +22,10 @@
             &:nth-of-type(#{$i}) {
                 animation: 1s blink infinite ($i * 0.3333s);
             }
+        }
+
+        #{$white__mode__theme__selector} {
+            background-color: $dark__mode__theme__background__color;
         }
     }
 }

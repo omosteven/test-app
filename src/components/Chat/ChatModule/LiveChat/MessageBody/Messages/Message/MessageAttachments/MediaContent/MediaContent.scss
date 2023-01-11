@@ -17,10 +17,6 @@
         object-fit: cover;
         border: 1px solid $primary__theme_color;
 
-        #{$relaxed__mode__template__selector} {
-            border: none;
-        }
-
         &.mobile {
             width: 275px;
             height: 160px;

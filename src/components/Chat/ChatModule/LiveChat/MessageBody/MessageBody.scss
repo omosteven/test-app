@@ -6,8 +6,21 @@
     padding: 1.5rem;
     padding-top: 4rem;
     overflow: auto;
+    height: 75vh;
     &::-webkit-scrollbar {
         scrollbar-width: 0.625rem;
+    }
+
+    @include media(">xtra-large-screen") {
+        #{$relaxed__mode__template__selector} {
+            height: 90vh !important;
+        }
+    }
+
+    @include media(">large-screen") {
+        #{$relaxed__mode__template__selector} {
+            height: 83vh !important;
+        }
     }
 
     @include media(">medium-screen") {

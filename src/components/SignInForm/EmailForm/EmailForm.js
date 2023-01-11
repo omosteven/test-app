@@ -115,7 +115,7 @@ const EmailForm = ({ handleInitialRequestUpdate, title, subTitle, userId }) => {
             <div className='info__section'>
                 <ReactSVG src={imageLinks.svg.info} />
                 <p>
-                    This email address would be used to communicate updates with
+                    This email address will be used to communicate updates with
                     you.
                 </p>
             </div>

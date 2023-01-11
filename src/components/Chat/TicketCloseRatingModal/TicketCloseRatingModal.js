@@ -104,7 +104,6 @@ const TicketCloseRatingModal = ({
                         type='button'
                         text='Close'
                         classType='bordered'
-                        // otherClass="my-2 w-100"
                         onClick={toggle}
                         disabled={loading}
                     />

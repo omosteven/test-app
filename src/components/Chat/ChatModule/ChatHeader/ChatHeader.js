@@ -6,9 +6,10 @@ import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { useWindowSize } from "utils/hooks";
 import ErrorView from "components/common/ErrorView/ErrorView";
 import { dataQueryStatus } from "utils/formatHandlers";
+import CompanyChatLogo from "./CompanyChatLogo/CompanyChatLogo";
 import "./ChatHeader.scss";
 
-const { RELAXED } = defaultTemplates;
+const { RELAXED, WORK_MODE } = defaultTemplates;
 const { LOADING, NULLMODE, DATAMODE, ERROR } = dataQueryStatus;
 
 const ChatHeader = ({
@@ -27,7 +28,12 @@ const ChatHeader = ({
     showActions,
 }) => {
     const {
-        chatSettings: { companyLogo, workspaceSlug, defaultTemplate },
+        chatSettings: {
+            companyLogo,
+            workspaceSlug,
+            defaultTemplate,
+            emailLogoUrl,
+        },
     } = useSelector((state) => state.chat);
     const {
         activeTicket: { agent },
@@ -36,22 +42,45 @@ const ChatHeader = ({
     const { width } = useWindowSize();
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
     const isTablet = width <= 768;
     const isNotTablet = width > 768;
 
     const renderBasedOnStatus = () => {
         switch (status) {
+            case LOADING:
+                return (
+                    <CompanyChatLogo
+                        src={emailLogoUrl}
+                        alt={workspaceSlug}
+                        className='workspace__email__logo'
+                    />
+                );
             case DATAMODE:
             case NULLMODE:
-            case LOADING:
                 return (
                     <>
                         {isRelaxedTemplate && isTablet && (
-                            <span className='workspace__agent__name'>
-                                {agent
-                                    ? `${agent?.firstName} ${agent?.lastName}`
-                                    : workspaceSlug}
-                            </span>
+                            <>
+                                {agent && !showChatMenu ? (
+                                    <>
+                                        <CompanyChatLogo
+                                            src={companyLogo}
+                                            alt={workspaceSlug}
+                                            className='company__logo'
+                                        />{" "}
+                                        <span className='workspace__agent__name'>
+                                            {agent?.firstName} {agent?.lastName}
+                                        </span>
+                                    </>
+                                ) : (
+                                    <CompanyChatLogo
+                                        src={emailLogoUrl}
+                                        alt={workspaceSlug}
+                                        className='workspace__email__logo'
+                                    />
+                                )}
+                            </>
                         )}
                     </>
                 );
@@ -67,56 +96,65 @@ const ChatHeader = ({
     };
 
     return (
-        <header id='header'>
-            <div className='chat__header'>
-                {showActions && (
-                    <ChatToggler
-                        onClick={() =>
-                            toggleChatMenu((prevState) => !prevState)
-                        }
-                    />
-                )}
-
-                <div className='logo'>
-                    <img src={companyLogo} alt={workspaceSlug} layout='fill' />{" "}
-                    {isTablet && renderBasedOnStatus()}
-                </div>
-
-                {!showVerifyForm && (
-                    <>
-                        <CustomerTicketsContainer
-                            closeTicket={handleTicketModalAction}
-                            handleTicketSelect={(data) => {
-                                handleTicketSelect(data);
-                                toggleChatMenu(false);
-                            }}
-                            {...{
-                                status,
-                                errorMssg,
-                                customerTickets,
-                                selectedTicket,
-                                createNewTicket,
-                                getCustomerTickets,
-                                showChatMenu,
-                                toggleChatMenu,
-                            }}
+        <div id='header__wrapper'>
+            <header id='header'>
+                <div className='chat__header'>
+                    {showActions && (
+                        <ChatToggler
+                            onClick={() =>
+                                toggleChatMenu((prevState) => !prevState)
+                            }
                         />
+                    )}
 
-                        {showActions && (
-                            <div
-                                className={`show-only-on-mobile ${
-                                    isNotTablet ? "show-on-desktop" : ""
-                                }`}>
-                                <ChatSettingsToggler
-                                    isMobile={true}
-                                    handleCloseTicket={handleCloseTicket}
-                                />
-                            </div>
+                    <div className='logo'>
+                        {isWorkModeTemplate || isNotTablet ? (
+                            <CompanyChatLogo
+                                src={companyLogo}
+                                alt={workspaceSlug}
+                                className='company__logo'
+                            />
+                        ) : (
+                            isTablet && renderBasedOnStatus()
                         )}
-                    </>
-                )}
-            </div>
-        </header>
+                    </div>
+
+                    {!showVerifyForm && (
+                        <>
+                            <CustomerTicketsContainer
+                                closeTicket={handleTicketModalAction}
+                                handleTicketSelect={(data) => {
+                                    handleTicketSelect(data);
+                                    toggleChatMenu(false);
+                                }}
+                                {...{
+                                    status,
+                                    errorMssg,
+                                    customerTickets,
+                                    selectedTicket,
+                                    createNewTicket,
+                                    getCustomerTickets,
+                                    showChatMenu,
+                                    toggleChatMenu,
+                                }}
+                            />
+
+                            {showActions && (
+                                <div
+                                    className={`show-only-on-mobile ${
+                                        isNotTablet ? "show-on-desktop" : ""
+                                    }`}>
+                                    <ChatSettingsToggler
+                                        isMobile={true}
+                                        handleCloseTicket={handleCloseTicket}
+                                    />
+                                </div>
+                            )}
+                        </>
+                    )}
+                </div>
+            </header>
+        </div>
     );
 };
 

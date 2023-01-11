@@ -49,6 +49,7 @@ const TogglerModal = ({
                     onClick={() => {
                         handleCloseTicket();
                         toggleModal();
+
                     }}>
                     <span>Close Chat</span>
                     <ReactSVG

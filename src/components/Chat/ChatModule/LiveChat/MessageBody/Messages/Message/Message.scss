@@ -45,10 +45,12 @@
                 background: $primary__theme_color;
                 border-radius: 0.75rem 0.75rem 0.75rem 0;
 
-                #{$relaxed__mode__template__selector}{
-                    font-size: 24px;
-                    line-height: 32px;
-                    border-radius: 1rem 1rem 1rem 0;
+                @include media("<=medium-screen") {
+                    #{$relaxed__mode__template__selector} {
+                        font-size: 24px;
+                        line-height: 32px;
+                        border-radius: 1rem 1rem 1rem 0;
+                    }
                 }
             }
 
@@ -61,12 +63,15 @@
                 @include media(">medium-screen") {
                     #{$relaxed__mode__template__selector} {
                         background: $dark__mode__desktop__chat__theme__color !important;
+                        padding: 16px 24px;
                     }
                 }
 
-                #{$relaxed__mode__template__selector} {
-                    border-radius: 1rem 1rem 1rem 0;
-                    padding: 18px 24px;
+                @include media("<=medium-screen") {
+                    #{$relaxed__mode__template__selector} {
+                        border-radius: 1rem 1rem 1rem 0;
+                        padding: 18px 24px;
+                    }
                 }
 
                 #{$dark__mode__theme__selector} {
@@ -86,9 +91,11 @@
                   }
 
                     .action__message {
-                        #{$relaxed__mode__template__selector} {
-                            font-size: 18px;
-                            line-height: 24px;
+                        @include media("<=medium-screen") {
+                            #{$relaxed__mode__template__selector} {
+                                font-size: 18px;
+                                line-height: 24px;
+                            }
                         }
 
                         #{$dark__mode__theme__selector} {
@@ -96,13 +103,26 @@
                         }
 
                         &.action__message__bold {
-                            #{$relaxed__mode__template__selector} {
-                                font-size: 24px;
-                                line-height: 22px;
+                            @include media("<=medium-screen") {
+                                #{$relaxed__mode__template__selector} {
+                                    font-size: 24px;
+                                    line-height: 22px;
+                                }
                             }
     
                             #{$dark__mode__theme__selector} {
                                 color: $light__theme_color;
+                            }
+                        }
+                    }
+
+                    .template__ratings {
+                        @include media("<=medium-screen") {
+                            #{$relaxed__mode__template__selector} {
+                                .star-svg {
+                                    width: 30px;
+                                    height: 35px;
+                                }
                             }
                         }
                     }
@@ -129,8 +149,15 @@
                                 margin-top: -0.188rem;
     
                                 #{$relaxed__mode__template__selector} {
-                                    height: 32px;
-                                    width: 32px;
+                                    height: 22px;
+                                    width: 22px;
+                                }
+
+                                @include media("<=medium-screen") {
+                                    #{$relaxed__mode__template__selector} {
+                                        height: 32px;
+                                        width: 32px;
+                                    }
                                 }
     
                                 path {
@@ -146,10 +173,12 @@
                             color: $text__default_color;
                             margin: 0 0 0.5rem;
     
-                            #{$relaxed__mode__template__selector} {
-                                font-weight: 500;
-                                font-size: 24px;
-                                line-height: 32px;
+                            @include media("<=medium-screen") {
+                                #{$relaxed__mode__template__selector} {
+                                    font-weight: 500;
+                                    font-size: 24px;
+                                    line-height: 32px;
+                                }
                             }
     
                             #{$dark__mode__theme__selector} {
@@ -160,9 +189,19 @@
 
                     .remove__action {
                         svg {
-                            height: 18px;
-                            width: 18px;
-                            cursor: pointer;
+                            #{$relaxed__mode__template__selector} {
+                                height: 12px;
+                                width: 12px;
+                                cursor: pointer;
+                            }
+
+                            @include media("<=medium-screen") {
+                                #{$relaxed__mode__template__selector} {
+                                    height: 18px;
+                                    width: 18px;
+                                }
+                            }
+                            
                         }
                     }
                 }
@@ -187,24 +226,54 @@
                     padding: 18.33px;
                     background: rgba(0, 102, 245, 0.2);
                     border-radius: 1rem 0 0 0;
+
+                        svg {
+                            #{$relaxed__mode__template__selector} {
+                                height: 22px;
+                                width: 22px;
+                            }
+
+                            @include media("<=medium-screen") {
+                                #{$relaxed__mode__template__selector} {
+                                    height: 32px;
+                                    width: 32px;
+                                }
+                            }
+                        }
                 }
 
                 .success__message__content {
                     padding: 18px 1rem;
 
                     .success__message__title {
-                        font-weight: 500;
-                        font-size: 20px;
-                        line-height: 28px;
-                        margin: 0;
-                        color: $light__theme_color;
+                        font-size: 0.938rem;
+                        color: $text__default_color;
+                        margin: 0 0 0.5rem;
+
+                        @include media("<=medium-screen") {
+                            #{$relaxed__mode__template__selector} {
+                                font-weight: 500;
+                                font-size: 20px;
+                                line-height: 28px;
+                                margin: 0;
+                                color: $light__theme_color;
+                            }
+                        }
                     }
 
                     .success__message__text {
-                        font-size: 18px;
-                        line-height: 24px;
-                        margin: 10px 0 0;
-                        color: $light__theme_color;
+                        font-size: 0.938rem;
+                        letter-spacing: 0.003rem;
+
+                        @include media("<=medium-screen") {
+                            #{$relaxed__mode__template__selector} {
+                                font-size: 18px;
+                                line-height: 24px;
+                                margin: 10px 0 0;
+                                color: $light__theme_color;
+                            }
+                        }
+                        
                     }
                 }
             }
@@ -215,10 +284,12 @@
                 border-radius: 0.75rem 0.75rem 0 0.75rem;
                 text-align: left;
 
-                #{$relaxed__mode__template__selector} {
-                    font-size: 24px;
-                    line-height: 22px;
-                    border-radius: 1rem 1rem 0 1rem; 
+                @include media("<=medium-screen") {
+                    #{$relaxed__mode__template__selector} {
+                        font-size: 24px;
+                        line-height: 22px;
+                        border-radius: 1rem 1rem 0 1rem; 
+                    }
                 }
 
                 @include media(">medium-screen") {
