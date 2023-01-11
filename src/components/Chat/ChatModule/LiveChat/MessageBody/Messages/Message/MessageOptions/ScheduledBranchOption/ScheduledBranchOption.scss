@@ -37,6 +37,12 @@
         border: 0.125rem solid $dark__mode__theme__grey__color;
     }
 
+    #{$white__mode__theme__selector} {
+        color: $muted__theme_color_2;
+        background: $white__mode__option__background;
+        border: 0.125rem solid $white__mode__option__background;
+    }
+
     &.active {
         border: 1px solid $border_highlight_color;
         color: $text__default_color;
@@ -44,6 +50,11 @@
         #{$dark__mode__theme__selector} {
             color: $dark__mode__text__theme__color;
             border: 0.125rem solid $dark__mode__theme__grey__color;
+        }
+
+        #{$white__mode__theme__selector} {
+            color: $muted__theme_color_2;
+            border: 0.125rem solid $white__mode__option__background;
         }
     }
 
@@ -54,6 +65,10 @@
 
         #{$dark__mode__theme__selector} {
             border: 0.125rem solid $dark__mode__theme__grey__color;
+        }
+
+        #{$white__mode__theme__selector} {
+            border: 0.125rem solid $white__mode__option__background;
         }
     }
 

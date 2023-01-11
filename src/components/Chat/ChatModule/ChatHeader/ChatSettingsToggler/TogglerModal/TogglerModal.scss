@@ -24,15 +24,32 @@
             font-weight: 600;
             font-size: 18px;
             line-height: 26px;
-            color: $dark__mode__text__theme__color;
+
+            &.dark__mode__toggle__header {
+                color: $dark__mode__text__theme__color;
+            }
+
+            &.white__mode__toggle__header {
+                color: $dark__mode__desktop__chat__theme__color;
+            }
         }
 
         .toggle__settings__modal {
             cursor: pointer;
 
-            svg {
-                path {
-                    stroke:  $light__theme_color;
+            &.dark__mode__toggle__settings {
+                svg {
+                    path {
+                        stroke:  $light__theme_color;
+                    }
+                }
+            }
+
+            &.white__mode__toggle__settings {
+                svg {
+                    path {
+                        stroke:  $dark__mode__theme__grey__color;
+                    }
                 }
             }
         }
@@ -50,29 +67,66 @@
             list-style: none;
             padding: 24px;
             width: 100%;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             cursor: pointer;
             display: flex;
             justify-content: space-between;
 
             &.dark__mode__settings__item {
                 color: $light__theme_color;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            &.white__mode__settings__item  {
+                color: $dark__mode__theme__grey__color;
+                border-bottom: 1px solid $dark__mode__theme__grey__color;
             }
 
             .settings__item__sun__icon {
-
+                &.dark__mode__settings__item__sun__icon {
+                    svg {
+                
+                        g {
+                          path {
+                            stroke: $light__theme_color;
+                          }
+                        }
+                      }
+                }
+    
+                &.white__mode__settings__item__sun__icon {
+                    svg {
+                
+                        g {
+                          path {
+                            stroke: $dark__mode__theme__grey__color;
+                          }
+                        }
+                      }
+                }
             }
 
             .settings__item__cancel__icon {
                 svg {
                     width: 19px;
                     height: 19px;
+                }
 
-                    // #{$dark__mode__theme__selector} {
+                &.dark__mode__settings__item__cancel__icon {
+                   svg {
+                    
                         path {
                             stroke: $light__theme_color;
                         }
-                    // }
+                }
+                }
+    
+                &.white__mode__settings__item__cancel__icon {
+                    svg {
+                    
+                        path {
+                            stroke: $dark__mode__theme__grey__color;
+                        }
+                }
                 }
             }
         }

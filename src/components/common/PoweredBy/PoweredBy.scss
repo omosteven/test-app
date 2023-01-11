@@ -9,11 +9,15 @@
     background-color: $light__theme_color;
     width: 100%;
 
+    #{$dark__mode__theme__selector} {
+        background-color: $dark__mode__theme__background__color;
+    }
+
     #{$relaxed__mode__template__selector} {
         background-color: $dark__mode__theme__dark__color !important;
     }
 
-    #{$dark__mode__theme__selector} {
-        background-color: $dark__mode__theme__background__color;
+    #{$white__mode__theme__selector} {
+        background: $white__mode__input__background !important;
     }
 }

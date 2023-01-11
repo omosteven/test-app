@@ -91,27 +91,43 @@
                   }
 
                     .action__message {
+                        #{$dark__mode__theme__selector} {
+                            color: $light__theme_color;
+                        }
+
+                        #{$white__mode__theme__selector} {
+                            color: $light__theme_color;
+                        }
+
                         @include media("<=medium-screen") {
                             #{$relaxed__mode__template__selector} {
                                 font-size: 18px;
                                 line-height: 24px;
                             }
-                        }
 
-                        #{$dark__mode__theme__selector} {
-                            color: $light__theme_color;
+                            #{$white__mode__theme__selector} {
+                                color: $dark__mode__theme__grey__color;
+                            }
                         }
 
                         &.action__message__bold {
+                            #{$dark__mode__theme__selector} {
+                                color: $light__theme_color;
+                            }
+
+                            #{$white__mode__theme__selector} {
+                                color: $light__theme_color;
+                            }
+                            
                             @include media("<=medium-screen") {
                                 #{$relaxed__mode__template__selector} {
                                     font-size: 24px;
                                     line-height: 22px;
                                 }
-                            }
-    
-                            #{$dark__mode__theme__selector} {
-                                color: $light__theme_color;
+
+                                #{$white__mode__theme__selector} {
+                                    color: $dark__mode__theme__grey__color;
+                                }
                             }
                         }
                     }
@@ -172,6 +188,14 @@
                             font-size: 0.938rem;
                             color: $text__default_color;
                             margin: 0 0 0.5rem;
+
+                            #{$dark__mode__theme__selector} {
+                                color: $light__theme_color;
+                            }
+
+                            #{$white__mode__theme__selector} {
+                                color: $light__theme_color;
+                            }
     
                             @include media("<=medium-screen") {
                                 #{$relaxed__mode__template__selector} {
@@ -179,10 +203,10 @@
                                     font-size: 24px;
                                     line-height: 32px;
                                 }
-                            }
-    
-                            #{$dark__mode__theme__selector} {
-                                color: $light__theme_color;
+
+                                #{$white__mode__theme__selector} {
+                                    color: $dark__mode__theme__grey__color;
+                                }
                             }
                         }
                     }

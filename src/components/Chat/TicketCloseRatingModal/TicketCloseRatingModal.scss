@@ -10,6 +10,13 @@
         width: 100% !important;
     }
 
+    &__rating__wrapper {
+        #{$relaxed__mode__template__selector} {
+            display: flex;
+            flex-direction: column-reverse;
+        }
+    }
+
     &__rating {
         margin-bottom: 18px;
         margin-left: auto !important;

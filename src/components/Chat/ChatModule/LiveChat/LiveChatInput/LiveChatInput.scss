@@ -17,6 +17,12 @@
         border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
         background: $dark__mode__theme__grey__color;
     }
+
+    #{$white__mode__theme__selector} {
+        border-top: 0.063rem solid $light__theme_color;
+        border-bottom: 0.063rem solid $light__theme_color;
+        background: $light__theme_color;
+    }
  
     @include media("<=medium-screen") {
         margin-right: 0px;
@@ -39,8 +45,16 @@
             resize: none;
             color: $dark__mode__text__theme__color;
 
+            #{$white__mode__theme__selector} {
+                color: $muted__theme_color_2;
+            }
+
             &:focus {
                 color: $dark__mode__text__theme__color;
+
+                #{$white__mode__theme__selector} {
+                    color: $muted__theme_color_2;
+                }
             }
         }
         .select__box {
@@ -140,6 +154,10 @@
         background: $dark__mode__theme__dark__color;
     }
 
+    #{$white__mode__theme__selector} {
+        background: $white__mode__input__background;
+    }
+
     .form-control {
         background: transparent;
         &::placeholder {
@@ -160,6 +178,10 @@
         #{$dark__mode__theme__selector} {
             background: $dark__mode__theme__dark__color;
         }
+
+        #{$white__mode__theme__selector} {
+            background: $white__mode__input__background;
+        }
     }
 }
 
@@ -168,19 +190,27 @@
     bottom: 0;
     -webkit-transform: translateZ(0);
 
+    #{$dark__mode__theme__selector} {
+        background: $dark__mode__theme__background__color;
+    }
+
+    #{$relaxed__mode__template__selector} { 
+        padding: 20px 10px 0;
+        background: $dark__mode__theme__dark__color;
+    }
+
+    #{$white__mode__theme__selector} {
+        background: $white__mode__input__background;
+    }
+
     @include media(">medium-screen") {
         #{$relaxed__mode__template__selector} { 
             background: $dark__mode__theme__dark__color !important;
             border-radius: 0px 0px 20px 20px;
         }
-    }
-    
-    #{$relaxed__mode__template__selector} { 
-        padding: 20px 10px 0;
-        background: $dark__mode__theme__dark__color !important;
-    }
 
-    #{$dark__mode__theme__selector} {
-        background: $dark__mode__theme__background__color;
+        #{$white__mode__theme__selector} {
+            background: $white__mode__input__background !important;
+        }
     }
 }

@@ -120,13 +120,37 @@
         display: flex;
         gap: 12px;
         align-items: center;
-        background: #24282E;
         border-radius: 10px;
         padding: 6px 16px;
     }
-
+    
     #{$dark__mode__theme__selector} {
         border-left: 0.063rem solid $dark__mode__theme__grey__color;
+        background: #24282E;
+    }
+
+    #{$white__mode__theme__selector} {
+
+    }
+
+    @include media("<=medium-screen") { 
+        #{$relaxed__mode__template__selector} {
+            padding: 12px 16px !important;
+            background: $dark__mode__theme__grey__color;
+            border-radius: 16px;
+
+            &::before {
+                display: none;
+            }
+        }
+
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__grey__color;
+        }
+
+        #{$white__mode__theme__selector} {
+            background-color: $white__mode__theme__grey__color;
+        }
     }
 
     &:last-child {
@@ -211,6 +235,10 @@
                 white-space: nowrap;
             }
 
+            #{$dark__mode__theme__selector} {
+                color: $option__change__theme__color;
+            }
+
             @include media("<=medium-screen") {
                 #{$relaxed__mode__template__selector} {
                     font-size: 18px;
@@ -220,15 +248,26 @@
                     overflow: hidden;
                     white-space: nowrap;
                 }
-            }
+    
+                #{$white__mode__theme__selector} {
+                    color: $option__change__theme__color;
+                    opacity: 0.7;
+                }
 
-            #{$dark__mode__theme__selector} {
-                color: $option__change__theme__color;
+                &.active {
+                    #{$white__mode__theme__selector} {
+                        color: $option__change__theme__color;
+                    }
+                }
             }
 
             &.active {
                 #{$dark__mode__theme__selector} {
                     color: $light__theme_color;
+                }
+
+                #{$white__mode__theme__selector} {
+                    // color: $option__change__theme__color;
                 }
             }
         }
@@ -251,6 +290,10 @@
                 #{$relaxed__mode__template__selector} {
                     font-size: 20px;
                     line-height: 28px;  
+                }
+
+                #{$white__mode__theme__selector} {
+                    color: $dark__mode__theme__grey__color;
                 }
             }
             
@@ -316,18 +359,6 @@
                     font-size: 14px;
                     padding: 2px 10px;
                 }
-            }
-        }
-    }
-
-    @include media("<=medium-screen") { 
-        #{$relaxed__mode__template__selector} {
-            padding: 12px 16px !important;
-            background: #2D333A;
-            border-radius: 16px;
-
-            &::before {
-                display: none;
             }
         }
     }
