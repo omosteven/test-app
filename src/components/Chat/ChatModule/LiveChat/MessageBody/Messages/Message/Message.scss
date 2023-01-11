@@ -118,7 +118,7 @@
                             #{$white__mode__theme__selector} {
                                 color: $light__theme_color;
                             }
-                            
+
                             @include media("<=medium-screen") {
                                 #{$relaxed__mode__template__selector} {
                                     font-size: 24px;
@@ -219,10 +219,22 @@
                                 cursor: pointer;
                             }
 
+                            path {
+                                #{$white__mode__theme__selector} {
+                                    stroke: $light__theme_color;
+                                }
+                            }
+
                             @include media("<=medium-screen") {
                                 #{$relaxed__mode__template__selector} {
                                     height: 18px;
                                     width: 18px;
+                                }
+
+                                path {
+                                    #{$white__mode__theme__selector} {
+                                        stroke: $muted__theme_color_2;
+                                    }
                                 }
                             }
                             
@@ -308,11 +320,23 @@
                 border-radius: 0.75rem 0.75rem 0 0.75rem;
                 text-align: left;
 
+                #{$dark__mode__theme__selector} {
+                    color: $light__theme_color;
+                    background: $dark__mode__theme__grey__color;
+                }
+
+                
+
                 @include media("<=medium-screen") {
                     #{$relaxed__mode__template__selector} {
                         font-size: 24px;
                         line-height: 22px;
                         border-radius: 1rem 1rem 0 1rem; 
+                    }
+
+                    #{$white__mode__theme__selector} {
+                        color: $dark__mode__theme__grey__color;
+                        background: $white__mode__theme__grey__color;
                     }
                 }
 
@@ -320,16 +344,10 @@
                     #{$relaxed__mode__template__selector} {
                         background: $dark__mode__desktop__chat__theme__color !important;
                     }
-                }
 
-                #{$dark__mode__theme__selector} {
-                    color: $light__theme_color;
-                    background: $dark__mode__theme__grey__color;
-                }
-
-                #{$white__mode__theme__selector} {
-                    color: $dark__mode__theme__grey__color;
-                    background: $white__mode__theme__grey__color;
+                    #{$white__mode__theme__selector} {
+                        color: $light__theme_color;
+                    }
                 }
             }
 

@@ -126,11 +126,11 @@
     
     #{$dark__mode__theme__selector} {
         border-left: 0.063rem solid $dark__mode__theme__grey__color;
-        background: #24282E;
+        background: $dark__mode__desktop__ticket__background;
     }
 
     #{$white__mode__theme__selector} {
-
+        background: $white__mode__option__background;
     }
 
     @include media("<=medium-screen") { 

@@ -41,6 +41,10 @@
             background: $dark__mode__theme__background__color;
             border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
         }
+        
+        #{$white__mode__theme__selector} {
+            background: none;
+        }
 
         @include media("<=medium-screen") {
             min-height: 3.5rem;
