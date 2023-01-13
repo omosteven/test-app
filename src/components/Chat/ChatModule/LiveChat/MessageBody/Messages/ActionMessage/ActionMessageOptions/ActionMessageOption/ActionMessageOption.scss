@@ -23,6 +23,7 @@
             border-radius: 100px;
             width: 100%;
         }
+
     }
 
     #{$dark__mode__theme__selector} {
@@ -33,7 +34,7 @@
 
     #{$white__mode__theme__selector} {
         color: $muted__theme_color_2;
-        background: $white__mode__option__background;
+        background: #EDEEEF;
         border: 0.125rem solid $white__mode__option__background;
     }
 }

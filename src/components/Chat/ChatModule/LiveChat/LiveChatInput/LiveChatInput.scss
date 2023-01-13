@@ -155,7 +155,7 @@
     }
 
     #{$white__mode__theme__selector} {
-        background: $white__mode__input__background;
+        background: $white__mode__background;
     }
 
     .form-control {
@@ -180,7 +180,7 @@
         }
 
         #{$white__mode__theme__selector} {
-            background: $white__mode__input__background;
+            background: $white__mode__background;
         }
     }
 }
@@ -200,7 +200,7 @@
     }
 
     #{$white__mode__theme__selector} {
-        background: $white__mode__input__background;
+        background: $white__mode__background;
     }
 
     @include media(">medium-screen") {
@@ -210,7 +210,7 @@
         }
 
         #{$white__mode__theme__selector} {
-            background: $white__mode__input__background !important;
+            background: $white__mode__background !important;
         }
     }
 }

@@ -1,5 +1,9 @@
 @import "assets/scss/master";
 
 .dark-mode-default {
-    background: $dark__mode__theme__background__color;
+    background-color: $dark__mode__theme__background__color;
+}
+
+.white-mode-default {
+    background-color: $light__theme_color;
 }

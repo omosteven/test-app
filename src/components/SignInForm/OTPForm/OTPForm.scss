@@ -30,9 +30,15 @@
             }
 
             #{$dark__mode__theme__selector} { 
-                border: 1px solid #191F24 !important;
+                border: 1px solid $dark__mode__theme__dark__color !important;
                 color: #D5D7D8;
-                background: #191F24 !important;
+                background: $dark__mode__theme__dark__color !important;
+            }
+
+            #{$white__mode__theme__selector} {
+                border: 1px solid $white__mode__background !important;
+                color: $dark__theme_color;
+                background-color: $white__mode__background !important;
             }
             
             &:focus {

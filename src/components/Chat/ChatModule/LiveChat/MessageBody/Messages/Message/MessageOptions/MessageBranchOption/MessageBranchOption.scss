@@ -32,6 +32,7 @@
             text-align: center;
             border-radius: 100px;
         }
+
     }
 
     #{$dark__mode__theme__selector} {
@@ -42,7 +43,7 @@
 
     #{$white__mode__theme__selector} {
         color: $muted__theme_color_2;
-        background: $white__mode__option__background;
+        background: #EDEEEF;
         border: 0.125rem solid $white__mode__option__background;
     }
     
@@ -61,5 +62,9 @@
     &.active {
         border-color: $primary__theme_color;
         cursor: default;
+
+        #{$white__mode__theme__selector} {
+            background: $light__theme_color;
+        }
     }
 }

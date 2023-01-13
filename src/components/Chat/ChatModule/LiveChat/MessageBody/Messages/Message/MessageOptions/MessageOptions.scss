@@ -32,9 +32,9 @@
             }
         }
 
-        // #{$white__mode__theme__selector} {
-        //     background: $white__mode__input__background;
-        // }
+        #{$white__mode__theme__selector} {
+            background: $white__mode__options__background;
+        }
     }
 
     @include media("<=medium-screen") {
@@ -63,7 +63,7 @@
         }
         
         #{$white__mode__theme__selector} {
-            background: $white__mode__theme__grey__color;
+            background: $white__mode__options__background;
         }
     }
 }

@@ -29,6 +29,10 @@
             text-align: center;
             border-radius: 100px;
         }
+
+        #{$white__mode__theme__selector} {
+            background: #EDEEEF;
+        }
     }
 
     #{$dark__mode__theme__selector} {

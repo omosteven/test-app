@@ -65,6 +65,10 @@
                         background: $dark__mode__desktop__chat__theme__color !important;
                         padding: 16px 24px;
                     }
+
+                    #{$white__mode__theme__selector} {
+                        background: $white__mode__background !important;
+                    }
                 }
 
                 @include media("<=medium-screen") {
@@ -96,7 +100,7 @@
                         }
 
                         #{$white__mode__theme__selector} {
-                            color: $light__theme_color;
+                            color: $text__default_color;
                         }
 
                         @include media("<=medium-screen") {
@@ -116,7 +120,7 @@
                             }
 
                             #{$white__mode__theme__selector} {
-                                color: $light__theme_color;
+                                color: $text__default_color;
                             }
 
                             @include media("<=medium-screen") {
@@ -194,7 +198,7 @@
                             }
 
                             #{$white__mode__theme__selector} {
-                                color: $light__theme_color;
+                                color: $text__default_color;
                             }
     
                             @include media("<=medium-screen") {
@@ -252,7 +256,7 @@
                 }
 
                 #{$white__mode__theme__selector} {
-                    background: $white__mode__theme__grey__color;
+                    background: $white__mode__background;
                 }
 
                 .icon__container {
@@ -346,7 +350,8 @@
                     }
 
                     #{$white__mode__theme__selector} {
-                        color: $light__theme_color;
+                        color: $black__theme_color;
+                        background: $white__mode__background !important;
                     }
                 }
             }

@@ -34,7 +34,7 @@ const CustomerTicketsContainer = ({
 
     useEffect(() => {
         if (isNotTablet) {
-            toggleChatMenu(false);
+            toggleChatMenu?.(false);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isNotTablet]);

@@ -63,4 +63,10 @@
         border: 1px solid $primary__theme_color;
         border-radius: 8px;
     }
+
+    #{$white__mode__theme__selector} {
+        color: $text__default_color;
+        background: $light__theme_color;
+        border: 1px solid #E7EBEF;
+    }
 }

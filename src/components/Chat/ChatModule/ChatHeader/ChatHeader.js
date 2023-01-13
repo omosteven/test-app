@@ -91,10 +91,16 @@ const ChatHeader = ({
                 );
 
             default:
-                return "";
+                return (
+                    <CompanyChatLogo
+                    src={emailLogoUrl}
+                    alt={workspaceSlug}
+                    className='workspace__email__logo'
+                />
+                );
         }
     };
-
+console.log(agent && !showChatMenu,emailLogoUrl)
     return (
         <div id='header__wrapper'>
             <header id='header'>
@@ -102,7 +108,7 @@ const ChatHeader = ({
                     {showActions && (
                         <ChatToggler
                             onClick={() =>
-                                toggleChatMenu((prevState) => !prevState)
+                                toggleChatMenu?.((prevState) => !prevState)
                             }
                         />
                     )}
@@ -125,7 +131,7 @@ const ChatHeader = ({
                                 closeTicket={handleTicketModalAction}
                                 handleTicketSelect={(data) => {
                                     handleTicketSelect(data);
-                                    toggleChatMenu(false);
+                                    toggleChatMenu?.(false);
                                 }}
                                 {...{
                                     status,
