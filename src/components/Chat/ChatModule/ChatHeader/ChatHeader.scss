@@ -1,179 +1,217 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
-#header {
-    background-color: $light__theme_color;
-    position: sticky;
-    width: 100%;
-    display: block;
-    min-height: 4.875rem;
-    top: 0;
-    z-index: 3;
-    border-bottom: 0.063rem solid $border__theme_color;
-
-    #{$relaxed__mode__template__selector} { 
-        border-bottom: none !important;
-        background-color: $dark__mode__theme__background__color;
-    }
-
-    #{$dark__mode__theme__selector} {
-        background: $dark__mode__theme__background__color;
-        border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
-    }
+#header__wrapper{
 
     @include media("<=medium-screen") {
-        min-height: 3.5rem;
-        position: fixed;
-
-        #{$relaxed__mode__template__selector} {
-            margin: 0px 3.2%;
-            border-radius: 100px;
-            border: none;
-            width: 93.5%;
+        #{$relaxed__mode__template__selector} { 
+            display: block;
+            position: fixed;
+            width: 100%;
+            height: 120px;
+            z-index: 3;
         }
-        
+
         #{$dark__mode__theme__selector} {
-            background: $dark__mode__theme__grey__color;
-            border-bottom: none;
+            background: $dark__mode__theme__background__color;
         }
 
         #{$white__mode__theme__selector} {
-            background: $white__mode__theme__grey__color;
-            border-bottom: none;
+            background: $light__theme_color;
         }
     }
+    
+    #header {
+        background-color: $light__theme_color;
+        position: sticky;
+        width: 100%;
+        display: block;
+        min-height: 4.875rem;
+        top: 0;
+        z-index: 3;
+        border-bottom: 0.063rem solid $border__theme_color;
 
-    @include media("<=small-screen") {
-        #{$relaxed__mode__template__selector} {
-            margin: 0 20px;
-            border-radius: 100px;
-            border: none;
-            width: 89%;
+        #{$relaxed__mode__template__selector} { 
+            margin-top: 24px;
+            border-bottom: none !important;
+            background-color: $dark__mode__theme__background__color;
         }
-    }
 
-    .chat__header {
-        display: flex;
-        align-items: center;
-        height: 100%;
-        padding: 0 2rem;
-
-        #{$relaxed__mode__template__selector} {
-            background: $dark__mode__theme__dark__color;
-            border-radius: 100px;
-            padding: 11px 2rem;
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__background__color;
+            border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
+        }
+        
+        #{$white__mode__theme__selector} {
+            background: none;
         }
 
         @include media("<=medium-screen") {
-            padding: 0 1rem;
-            height: 3.5rem;
+            min-height: 3.5rem;
+            position: fixed;
 
             #{$relaxed__mode__template__selector} {
-                padding: 0 16px 0 23.5px;
+                margin: 40.5px 3.2% 0;
+                border-radius: 100px;
+                border: none;
+                width: 93.5%;
+                z-index: 2;
+                background: none;
+                border-bottom: none;
             }
             
-            .logo {
-                margin: auto;
+            #{$white__mode__theme__selector} {
+                background: $white__mode__theme__grey__color;
+                border-bottom: none;
             }
         }
 
-        #authTickets {
-            display: contents;
+        @include media("<=small-screen") {
+            #{$relaxed__mode__template__selector} {
+                margin: 40.5px 9px 0;
+                width: 94%;
+            }
+        }
+
+        .chat__header {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            padding: 0 2rem;
+
+            #{$relaxed__mode__template__selector} {
+                border-radius: 100px;
+                padding: 11px 2rem;
+            }
+
+            #{$white__mode__theme__selector} {
+                background: $white__mode__theme__grey__color;
+            }
+            
+            #{$dark__mode__theme__selector} {
+                background: $dark__mode__theme__dark__color;
+            }
+
             @include media("<=medium-screen") {
-                display: none;
-            }
-        }
-        
-        .chat__toggler {
-            display: none;
+                padding: 0 1rem;
+                height: 3.5rem;
 
-            span {
-                font-weight: 400;
-                font-size: 0.875rem;
-                color: $muted__theme_color_2;
+                #{$relaxed__mode__template__selector} {
+                    padding: 0 16px 0 23.5px;
+                }
+                
+                .logo {
+                    margin: auto;
+                }
+            }
+
+            #authTickets {
+                display: contents;
+                @include media("<=medium-screen") {
+                    display: none;
+                }
+            }
+            
+            .chat__toggler {
+                display: none;
+
+                span {
+                    font-weight: 400;
+                    font-size: 0.875rem;
+                    color: $muted__theme_color_2;
+
+                    #{$dark__mode__theme__selector} {
+                        color: $dark__mode__text__theme__color;
+                    }
+                }
+
+                @include media("<=medium-screen") {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    gap: 0.25rem;
+                    height: 0.75rem;
+                    span {
+                        margin-top: 0.063rem;
+                    }
+                }
 
                 #{$dark__mode__theme__selector} {
-                    color: $dark__mode__text__theme__color;
-                }
-            }
-
-            @include media("<=medium-screen") {
-                display: flex;
-                align-items: center;
-                cursor: pointer;
-                gap: 0.25rem;
-                height: 0.75rem;
-                span {
-                    margin-top: 0.063rem;
-                }
-            }
-
-            #{$dark__mode__theme__selector} {
-                svg {
-                    path {
-                        fill: $dark__mode__text__theme__color;
+                    svg {
+                        path {
+                            fill: $dark__mode__text__theme__color;
+                        }
                     }
                 }
             }
-        }
 
-        .logo {
-            #{$relaxed__mode__template__selector} {
-              display: flex;
-              align-items: center;
-              gap: 8px;
-            }
-          
-            img {
-              max-width: 100px;
-              height: 32px;
-              object-fit: contain;
-
-              #{$relaxed__mode__template__selector} {
-                max-width: 36px;
-                height: 36px;
-              }
-
-              @include media("<=medium-screen") {
+            .logo {
                 #{$relaxed__mode__template__selector} {
-                    max-width: 26px;
-                    height: 26px;
-                  }
-              }
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                }
+            
+                .company__logo {
+                    max-width: 100px;
+                    height: 32px;
+                    object-fit: contain;
+
+                    #{$relaxed__mode__template__selector} {
+                        max-width: 36px;
+                        height: 36px;
+                        border-radius: 100%;
+                    }
+
+                    @include media("<=medium-screen") {
+                        #{$relaxed__mode__template__selector} {
+                            max-width: 26px;
+                            height: 26px;
+                        }
+                    }
+                }
+
+                .workspace__email__logo {
+                    @include media("<=medium-screen") {
+                        #{$relaxed__mode__template__selector} {
+                            height: 19px;
+                            width: 109px;
+                        }
+                    }
+                }
+                
+                .workspace__agent__name {
+                    font-weight: 600;
+                    font-size: 18px;
+                    line-height: 26px;
+                    text-transform: capitalize;
+
+                    #{$dark__mode__theme__selector} {
+                        color: $dark__mode__text__theme__color;
+                    }
+
+                    #{$white__mode__theme__selector} {
+                        color: $dark__mode__theme__grey__color;
+                    }
+                }
             }
-          
-            .workspace__agent__name {
-              font-weight: 600;
-              font-size: 18px;
-              line-height: 26px;
-              text-transform: capitalize;
 
-              #{$dark__mode__theme__selector} {
-                color: $dark__mode__text__theme__color;
-              }
-
-              #{$white__mode__theme__selector} {
-                color: $dark__mode__theme__grey__color;
-              }
-            }
-        }
-
-        .ticket-header__icon {
-            display: block;
-            cursor: pointer;
-    
-            #{$relaxed__mode__template__selector} {
-                border: none;
-                padding: 0;
-    
-                svg {
-                    width: 20px;
+            .ticket-header__icon {
+                display: block;
+                cursor: pointer;
+        
+                #{$relaxed__mode__template__selector} {
+                    border: none;
+                    padding: 0;
+        
+                    svg {
+                        width: 20px;
+                    }
                 }
             }
         }
     }
 }
-
 .show-only-on-mobile {
     display: none;
     @include media("<=medium-screen") {
@@ -212,4 +250,3 @@
         }
     }
 }
-

@@ -47,6 +47,21 @@
         color: $light__theme_color;
         width: fit-content;
         margin-left: auto;
+
+        #{$relaxed__mode__template__selector} {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 18px;
+        }
+
+        @include media("<=medium-screen") {
+            #{$relaxed__mode__template__selector} {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 24px;
+            }
+        }
+
         .icon {
             margin-right: 8px;
         }

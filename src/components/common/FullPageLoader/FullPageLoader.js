@@ -13,10 +13,10 @@ const FullPageLoader = () => {
 
     return (
         <div className='full__page_loader'>
-            {defaultTemplate === isWorkModeTemplate ? (
+            {isWorkModeTemplate ? (
                 <span id='metaInfinite'>metacare</span>
             ) : (
-                <DotLoader />
+                <DotLoader background={false}/>
             )}
         </div>
     );

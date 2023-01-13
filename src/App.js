@@ -39,7 +39,7 @@ const App = () => {
                     updateChatSettings({
                         ...data,
                         workspaceSlug,
-                        defaultTheme: DARK_MODE_DEFAULT,
+                        defaultTheme: WHITE_MODE_DEFAULT,
                         defaultTemplate: RELAXED,
                     })
                 );

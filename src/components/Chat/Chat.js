@@ -99,7 +99,6 @@ const Chat = () => {
             );
 
             if (res.status === 200) {
-                console.log({ res });
                 setCustomerTicketId(tickedId);
                 await sessionStorage.setItem(
                     "accessToken",
@@ -164,11 +163,13 @@ const Chat = () => {
         toggleTicketActionModal(true);
     };
 
-    const handleTicketCloseSuccess = () => {
+    const handleTicketCloseSuccess = async () => {
         dispatch(setActiveTicket());
 
         getCustomerTickets(null, false);
         toggleTicketActionModal(false);
+
+        await toggleChatMenu(true)
     };
 
     const createNewTicket = async () => {
@@ -312,10 +313,10 @@ const Chat = () => {
                                                     message={
                                                         loading
                                                             ? `Please wait while we are retrieving your conversations`
-                                                            : `No conversation opened yet, click on the\n button to start a new conversation.`
+                                                            : `No conversation opened yet.`
                                                     }
                                                 />
-                                                <div className='d-sm-none w-100'>
+                                                <div className='d-md-none w-100'>
                                                     <div className='row justify-content-center'>
                                                         <div className='col-md-10'>
                                                             <NewTicketButton

@@ -10,7 +10,7 @@ import { changeTheme } from "store/chat/actions";
 const { WORK_MODE } = defaultTemplates;
 const { DARK_MODE_DEFAULT, WHITE_MODE_DEFAULT } = defaultThemes;
 
-const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
+const ChatSettingsToggler = ({ isMobile, handleCloseTicket, }) => {
     const [showModal, toggleModal] = useState(false);
     const { defaultTemplate, defaultTheme } = useSelector(
         (state) => state.chat.chatSettings

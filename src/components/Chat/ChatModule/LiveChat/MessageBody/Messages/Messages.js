@@ -66,6 +66,7 @@ const Messages = ({
                 )}
             </AnimatePresence>
 
+            {/* <AnimatePresence> */}
             {agentIsTyping ? (
                 <TypingMessageIndicator
                     {...{
@@ -76,6 +77,7 @@ const Messages = ({
             ) : (
                 ""
             )}
+             {/* </AnimatePresence> */}
             <div id='dummy'></div>
         </div>
     );

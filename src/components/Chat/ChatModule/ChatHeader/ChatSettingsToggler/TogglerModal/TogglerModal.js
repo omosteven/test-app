@@ -23,37 +23,46 @@ const TogglerModal = ({
                 isDarkModeTheme ? "dark__mode__modal__backdrop" : ""
             }`}>
             <div className='settings__toggle__header'>
-                <span>View Options</span>{" "}
+                <span className={`${
+                isDarkModeTheme ? "dark__mode__toggle__header" : "white__mode__toggle__header"
+            }`}>View Options</span>{" "}
                 <ReactSVG
                     src={imageLinks.svg.cancelX}
                     onClick={toggleModal}
-                    className='toggle__settings__modal'
+                    className={`toggle__settings__modal ${
+                        isDarkModeTheme ? "dark__mode__toggle__settings" : "white__mode__toggle__settings"
+                    }`}
                 />
             </div>
             <ul className='settings__items'>
                 <li
                     className={`settings__item ${
-                        isDarkModeTheme ? "dark__mode__settings__item" : ""
+                        isDarkModeTheme ? "dark__mode__settings__item" : "white__mode__settings__item"
                     }`}
                     onClick={handleChangeTheme}>
                     <span>{isDarkModeTheme ? "Light Mode" : "Dark Mode"}</span>
                     <ReactSVG
                         src={imageLinks.svg.themeSun}
-                        className='settings__item__sun__icon'
+                        className={`settings__item__sun__icon  ${
+                            isDarkModeTheme ? "dark__mode__settings__item__sun__icon" : "white__mode__settings__item__sun__icon"
+                        }`}
                     />
                 </li>
                 <li
                     className={`settings__item ${
-                        isDarkModeTheme ? "dark__mode__settings__item" : ""
+                        isDarkModeTheme ? "dark__mode__settings__item" : "white__mode__settings__item"
                     }`}
                     onClick={() => {
                         handleCloseTicket();
                         toggleModal();
+
                     }}>
                     <span>Close Chat</span>
                     <ReactSVG
                         src={imageLinks.svg.cancelX}
-                        className='settings__item__cancel__icon'
+                        className={`settings__item__cancel__icon ${
+                            isDarkModeTheme ? "dark__mode__settings__item__cancel__icon" : "white__mode__settings__item__cancel__icon"
+                        }`}
                     />
                 </li>
             </ul>

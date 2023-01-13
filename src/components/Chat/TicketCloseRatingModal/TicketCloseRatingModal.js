@@ -64,26 +64,27 @@ const TicketCloseRatingModal = ({
                     message={errorMsg}
                     hide={() => setErrorMsg()}
                 />
-
-                <p
-                    className={`ticket-closure-modal__text  ${
-                        isRelaxedTemplate
-                            ? "relaxed__template__modal__text"
-                            : ""
-                    } ${isDarkModeTheme ? "dark__mode__modal__text" : ""}`}>
-                    Kindly give a few minutes of your time to rate your
-                    experience. Thank you.
-                </p>
-                <div className='ticket-closure-modal__rating'>
-                    <CustomRatings
-                        rating={ratingValue}
-                        handleRating={(value) => setRatingValue(value)}
-                        otherClass={`${
+                <div className="ticket-closure-modal__rating__wrapper">
+                    <p
+                        className={`ticket-closure-modal__text  ${
                             isRelaxedTemplate
-                                ? "relaxed__template__ratings"
+                                ? "relaxed__template__modal__text"
                                 : ""
-                        }`}
-                    />
+                        } ${isDarkModeTheme ? "dark__mode__modal__text" : ""}`}>
+                        Kindly give a few minutes of your time to rate your
+                        experience. Thank you.
+                    </p>
+                    <div className='ticket-closure-modal__rating'>
+                        <CustomRatings
+                            rating={ratingValue}
+                            handleRating={(value) => setRatingValue(value)}
+                            otherClass={`${
+                                isRelaxedTemplate
+                                    ? "relaxed__template__ratings"
+                                    : ""
+                            }`}
+                        />
+                    </div>
                 </div>
                 <div
                     className={`btn__action__group ${
@@ -95,16 +96,15 @@ const TicketCloseRatingModal = ({
                     }`}>
                     <Button
                         type='button'
-                        text={`Continue`}
+                        text={` ${isRelaxedTemplate ? "Rate" : "Continue"}`}
                         classType='primary'
                         onClick={rateTicket}
                         loading={loading}
                     />
                     <Button
                         type='button'
-                        text='Close'
+                        text={` ${isRelaxedTemplate ? "Skip" : "Close"}`}
                         classType='bordered'
-                        // otherClass="my-2 w-100"
                         onClick={toggle}
                         disabled={loading}
                     />
