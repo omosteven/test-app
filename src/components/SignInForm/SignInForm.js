@@ -48,13 +48,13 @@ const SignInForm = () => {
     const isRelaxedTemplate = defaultTemplate === RELAXED;
 
     const isTablet = width <= 768;
-console.log(isRelaxedTemplate, defaultTemplate ,isTablet)
+
     return (
         <FadeIn location={signInStage}>
+            {isRelaxedTemplate && isTablet && (
+                <ChatHeader showActions={false} />
+            )}
             <div className='row justify-content-center align-items-center form-area'>
-                {isRelaxedTemplate && isTablet && (
-                    <ChatHeader showActions={false} />
-                )}
                 <div
                     className='col-lg-4 col-md-5 col-sm-8 col-12'
                     key={signInStage}>
