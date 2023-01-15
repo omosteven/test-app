@@ -112,7 +112,11 @@ const Chat = () => {
         }
     };
 
-    const getCustomerTickets = async (ticketId, openNewTicket = true) => {
+    const getCustomerTickets = async (
+        ticketId,
+        openNewTicket = true,
+        openChatMenu = false
+    ) => {
         try {
             dispatch(setActiveTicket(null));
 
@@ -144,7 +148,7 @@ const Chat = () => {
                     }
 
                     setStatus(DATAMODE);
-                    toggleChatMenu(false);
+                    toggleChatMenu(openChatMenu ? true : false);
                 } else {
                     openNewTicket ? createNewTicket() : setStatus(NULLMODE);
                 }
@@ -163,13 +167,11 @@ const Chat = () => {
         toggleTicketActionModal(true);
     };
 
-    const handleTicketCloseSuccess = async () => {
+    const handleTicketCloseSuccess = () => {
         dispatch(setActiveTicket());
 
-        getCustomerTickets(null, false);
+        getCustomerTickets(null, false, true);
         toggleTicketActionModal(false);
-
-        await toggleChatMenu(true)
     };
 
     const createNewTicket = async () => {

@@ -12,7 +12,7 @@
             left: 8.5%;
             transform: translate(-50%, 0);
             width: 83%;
-            bottom: 19px;
+            bottom: 0;
             z-index: 2;
             background: $dark__mode__theme__dark__color;
             animation: slide-in 0.8s normal forwards ease;
@@ -42,7 +42,7 @@
             position: fixed;
             width: 100%;
             left: 0;
-            bottom: 18px;
+            bottom: 0;
             z-index: 2;
             background: $dark__mode__theme__dark__color;
             animation: slide-in 0.8s normal forwards ease;
