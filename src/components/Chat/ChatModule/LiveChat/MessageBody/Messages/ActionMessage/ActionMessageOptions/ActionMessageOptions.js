@@ -1,5 +1,11 @@
+import React from "react";
+import { useSelector } from "react-redux";
 import ActionMessageOption from "./ActionMessageOption/ActionMessageOption";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import PoweredBy from "components/common/PoweredBy/PoweredBy";
 import "./ActionMessageOptions.scss";
+
+const { RELAXED } = defaultTemplates;
 
 const ActionMessageOptions = ({
     actionBranchOptions,
@@ -10,6 +16,12 @@ const ActionMessageOptions = ({
     deliveryDate,
     messageActionBranchId,
 }) => {
+    const { defaultTemplate } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+
     return (
         <div className='action-message-options'>
             {actionBranchOptions?.map((actionBranchOption, key) => (
@@ -37,6 +49,8 @@ const ActionMessageOptions = ({
                     deliveryDate={deliveryDate}
                 />
             ))}
+
+            {isRelaxedTemplate && <PoweredBy />}
         </div>
     );
 };

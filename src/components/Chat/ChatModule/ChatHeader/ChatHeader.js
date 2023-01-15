@@ -28,12 +28,7 @@ const ChatHeader = ({
     showActions,
 }) => {
     const {
-        chatSettings: {
-            companyLogo,
-            workspaceSlug,
-            defaultTemplate,
-            emailLogoUrl,
-        },
+        chatSettings: { companyLogo, workspaceSlug, defaultTemplate },
     } = useSelector((state) => state.chat);
     const {
         activeTicket: { agent },
@@ -51,9 +46,10 @@ const ChatHeader = ({
             case LOADING:
                 return (
                     <CompanyChatLogo
-                        src={emailLogoUrl}
+                        src={companyLogo}
                         alt={workspaceSlug}
-                        className='workspace__email__logo'
+                        className='company__logo'
+                        name={workspaceSlug}
                     />
                 );
             case DATAMODE:
@@ -68,16 +64,15 @@ const ChatHeader = ({
                                             src={companyLogo}
                                             alt={workspaceSlug}
                                             className='company__logo'
-                                        />{" "}
-                                        <span className='workspace__agent__name'>
-                                            {agent?.firstName} {agent?.lastName}
-                                        </span>
+                                            name={`${agent?.firstName} ${agent?.lastName}`}
+                                        />
                                     </>
                                 ) : (
                                     <CompanyChatLogo
-                                        src={emailLogoUrl}
+                                        src={companyLogo}
                                         alt={workspaceSlug}
-                                        className='workspace__email__logo'
+                                        className='company__logo'
+                                        name={workspaceSlug}
                                     />
                                 )}
                             </>
@@ -93,14 +88,15 @@ const ChatHeader = ({
             default:
                 return (
                     <CompanyChatLogo
-                    src={emailLogoUrl}
-                    alt={workspaceSlug}
-                    className='workspace__email__logo'
-                />
+                        src={companyLogo}
+                        alt={workspaceSlug}
+                        className='company__logo'
+                        name={workspaceSlug}
+                    />
                 );
         }
     };
-console.log(agent && !showChatMenu,emailLogoUrl)
+
     return (
         <div id='header__wrapper'>
             <header id='header'>

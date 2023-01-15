@@ -51,7 +51,7 @@
             position: fixed;
 
             #{$relaxed__mode__template__selector} {
-                margin: 40.5px 3.2% 0;
+                margin: 31px 3.2% 0;
                 border-radius: 100px;
                 border: none;
                 width: 93.5%;
@@ -68,7 +68,7 @@
 
         @include media("<=small-screen") {
             #{$relaxed__mode__template__selector} {
-                margin: 40.5px 9px 0;
+                margin: 31px 9px 0;
                 width: 94%;
             }
         }
@@ -171,15 +171,6 @@
                     }
                 }
 
-                .workspace__email__logo {
-                    @include media("<=medium-screen") {
-                        #{$relaxed__mode__template__selector} {
-                            height: 19px;
-                            width: 109px;
-                        }
-                    }
-                }
-                
                 .workspace__agent__name {
                     font-weight: 600;
                     font-size: 18px;
