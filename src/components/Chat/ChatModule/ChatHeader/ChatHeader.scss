@@ -29,7 +29,6 @@
         min-height: 4.875rem;
         top: 0;
         z-index: 3;
-        border-bottom: 0.063rem solid $border__theme_color;
 
         #{$relaxed__mode__template__selector} { 
             margin-top: 12px;
@@ -38,7 +37,7 @@
         }
 
         #{$dark__mode__theme__selector} {
-            background: $dark__mode__theme__background__color;
+            background-color: $dark__mode__theme__background__color;
             border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
         }
         
@@ -80,6 +79,7 @@
             padding: 0 2rem;
 
             #{$relaxed__mode__template__selector} {
+                background: $dark__mode__theme__dark__color;
                 border-radius: 100px;
                 padding: 11px 2rem;
             }
@@ -87,10 +87,6 @@
             #{$white__mode__theme__selector} {
                 background: $light__theme_color;
                 border: 1px solid $white__mode__border__color;
-            }
-            
-            #{$dark__mode__theme__selector} {
-                background: $dark__mode__theme__dark__color;
             }
 
             @include media("<=medium-screen") {
@@ -154,21 +150,14 @@
                 }
             
                 .company__logo {
-                    max-width: 100px;
-                    height: 32px;
+                    width: 36px;
+                    height: 34.45px;
+                    border-radius: 100%;
                     object-fit: contain;
 
-                    #{$relaxed__mode__template__selector} {
-                        max-width: 36px;
-                        height: 36px;
-                        border-radius: 100%;
-                    }
-
                     @include media("<=medium-screen") {
-                        #{$relaxed__mode__template__selector} {
                             max-width: 26px;
-                            height: 26px;
-                        }
+                            height: 25px;
                     }
                 }
 

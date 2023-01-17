@@ -41,7 +41,8 @@
 
     #{$white__mode__theme__selector} {
         color: $muted__theme_color_2;
-        background: #EDEEEF;
+        background: $white__mode__option__background;
+        border: none;
     }
     
     &:hover {

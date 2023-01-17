@@ -52,7 +52,7 @@
 
             @include media("<=medium-screen") { 
                 #{$relaxed__mode__template__selector} {
-                    padding-top: 40px;
+                    padding-top: 20px;
                 }
             }
 
