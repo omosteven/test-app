@@ -41,6 +41,7 @@ const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
                     isMobile={isMobile}
                     handleCloseTicket={handleCloseTicket}
                     handleChangeTheme={handleChangeTheme}
+                    isWorkModeTemplate={isWorkModeTemplate}
                     isDarkModeTheme={isDarkModeTheme}
                 />
             ) : (
