@@ -334,6 +334,10 @@ const Chat = () => {
                                                                 loading={
                                                                     loading
                                                                 }
+                                                                openNewTicket={
+                                                                    status ===
+                                                                    LOADING
+                                                                }
                                                             />
                                                         </div>
                                                     </div>
