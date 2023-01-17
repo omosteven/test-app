@@ -19,7 +19,7 @@
 
     @include media(">large-screen") {
         #{$relaxed__mode__template__selector} {
-            height: 83vh !important;
+            height: 78vh !important;
         }
     }
 
