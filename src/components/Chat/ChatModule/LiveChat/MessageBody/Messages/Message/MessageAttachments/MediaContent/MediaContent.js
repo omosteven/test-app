@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
     IMAGE,
     FILE,
@@ -9,7 +10,10 @@ import imageLinks from "assets/images";
 import { getFileFormat, truncate, cropImage } from "utils/helper";
 import MessageContent from "../../MessageContent/MessageContent";
 import { useWindowSize } from "utils/hooks";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import "./MediaContent.scss";
+
+const { RELAXED } = defaultTemplates;
 
 const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     const {
@@ -21,11 +25,11 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     } = attachment || {};
 
     const { desktopVersion, mobileVersion } = fileAttachmentImageConfig || {};
-
     const [outPut, setOutput] = useState("");
-
+    const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
     const { width } = useWindowSize();
 
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWideScreen = width > 768;
 
     useEffect(() => {
@@ -56,7 +60,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
                         className={`content--media img ${
                             isReceivedMessage ? "received" : "sent"
                         } ${isWideScreen ? "desktop" : "mobile"} ${
-                            !cropOutImage ? "img-contain" : ""
+                            !cropOutImage ? "img-orientation" : ""
                         }`}
                         onClick={() => openPreviewModal(attachment)}
                     />

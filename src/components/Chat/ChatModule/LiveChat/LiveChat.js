@@ -147,7 +147,7 @@ const LiveChat = ({
                                 data[data?.length - 1]?.messageContentId
                             }`
                         );
-console.log({ticket})
+                        console.log({ ticket });
                         handleAddEmail();
                     }
 
@@ -615,8 +615,10 @@ console.log({ticket})
         let lastCustomerMssg = [...allMessagesCopy]
             .reverse()
             ?.find((message) => message.senderType === THIRD_USER);
+
         if (
             allMessagesCopy?.length === 2 &&
+            lastCustomerMssg !== undefined &&
             lastCustomerMssg?.messageType === DEFAULT &&
             lastMessage.messageType !== CONVERSATION &&
             lastMessage.messageType !== ACTION_INFO &&

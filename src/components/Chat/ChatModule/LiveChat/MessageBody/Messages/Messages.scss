@@ -11,6 +11,10 @@
     display: block;
     width: 100%;
 
+    #{$relaxed__mode__template__selector} {
+        margin-top: 6rem;
+    }
+
     @include media("<=medium-screen") {
         #{$relaxed__mode__template__selector} {
             margin-top: 15rem;

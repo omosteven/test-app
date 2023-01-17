@@ -12,7 +12,7 @@ import "./OTPForm.scss";
 
 const OTPForm = ({
     initialStepRequest,
-    pinLength = 6,
+    pinLength = 4,
     redirectUser = true,
     handleSuccess,
     userId,
