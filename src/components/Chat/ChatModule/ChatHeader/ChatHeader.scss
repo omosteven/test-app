@@ -85,7 +85,8 @@
             }
 
             #{$white__mode__theme__selector} {
-                background: $white__mode__theme__grey__color;
+                background: $light__theme_color;
+                border: 1px solid $white__mode__border__color;
             }
             
             #{$dark__mode__theme__selector} {
