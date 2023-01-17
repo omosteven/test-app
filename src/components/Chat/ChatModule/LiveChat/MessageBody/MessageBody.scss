@@ -23,11 +23,11 @@
         }
     }
 
-    @include media(">medium-screen") {
-        #{$relaxed__mode__template__selector} {
-            height: 74vh;
-        }
-    }
+    // @include media(">medium-screen") {
+    //     #{$relaxed__mode__template__selector} {
+    //         height: 74vh;
+    //     }
+    // }
 
     @include media("<=medium-screen") {
         padding-left: 1rem;

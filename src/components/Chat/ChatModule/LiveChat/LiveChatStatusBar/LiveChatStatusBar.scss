@@ -52,6 +52,11 @@
     border-radius: 0.5rem;
     background: $scroll__bar__track_color;
 
+    #{$dark__mode__theme__selector} {
+        background: $dark__mode__connected__background;
+        color: $light__theme_color;
+    }
+
     #{$relaxed__mode__template__selector} {
         font-size: 13px;
         line-height: 24px;
@@ -67,6 +72,6 @@
     #{$white__mode__theme__selector} {
         color: $text__default_color;
         background: $light__theme_color;
-        border: 1px solid #E7EBEF;
+        border: 1px solid $white__mode__border__color;
     }
 }

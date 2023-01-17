@@ -30,7 +30,7 @@
         }
 
         #{$white__mode__theme__selector} {
-            background: #EDEEEF;
+            background: $white__mode__option__background;
         }
     }
 
@@ -43,7 +43,7 @@
     #{$white__mode__theme__selector} {
         color: $muted__theme_color_2;
         background: $white__mode__option__background;
-        border: 0.125rem solid $white__mode__option__background;
+        border: none;
     }
 
     &.active {
@@ -57,7 +57,7 @@
 
         #{$white__mode__theme__selector} {
             color: $muted__theme_color_2;
-            border: 0.125rem solid $white__mode__option__background;
+            border: none;
         }
     }
 
@@ -71,7 +71,7 @@
         }
 
         #{$white__mode__theme__selector} {
-            border: 0.125rem solid $white__mode__option__background;
+            border: none;
         }
     }
 
