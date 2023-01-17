@@ -20,6 +20,11 @@
     align-items: center;
     gap: 1rem;
 
+    #{$relaxed__mode__template__selector} {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+
     .dropdown--item__sun__icon {
       svg {
         width: 15px;

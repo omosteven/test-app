@@ -5,11 +5,10 @@
     width: fit-content;
 
     #{$relaxed__mode__template__selector} {
-        padding: 10px;
-        width: 250.5px;
+        padding: 10px 37.25px;
+        width: fit-content;
         font-size: 16px;
         line-height: 24px;
-        text-align: center;
         border-radius: 100px;
     }
     
@@ -18,10 +17,9 @@
             width: 100%;
             font-size: 20px;
             line-height: 24px;
-            padding: 14px;
+            padding: 14px 37.25px;
             text-align: center;
             border-radius: 100px;
-            width: 100%;
         }
 
     }

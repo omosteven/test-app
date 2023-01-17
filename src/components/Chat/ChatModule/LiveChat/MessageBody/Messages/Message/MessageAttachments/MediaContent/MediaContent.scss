@@ -17,6 +17,10 @@
         object-fit: cover;
         border: 1px solid $primary__theme_color;
 
+        #{$relaxed__mode__template__selector} {
+            border: none;
+        }
+
         &.mobile {
             width: 275px;
             height: 160px;
@@ -27,8 +31,12 @@
             height: 246px;
         }
 
-        &.img-contain {
+        &.img-orientation {
             object-fit: contain;
+
+            #{$relaxed__mode__template__selector} {
+                object-fit: cover;
+            }
         }
     }
     &.video {

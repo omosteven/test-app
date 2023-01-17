@@ -10,6 +10,7 @@ const TogglerDropdown = ({
     isMobile,
     handleCloseTicket,
     handleChangeTheme,
+    isWorkModeTemplate,
     isDarkModeTheme,
 }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -54,8 +55,16 @@ const TogglerDropdown = ({
                 </li>
                 <li className='dropdown-item' onClick={handleCloseTicket}>
                     <div className='dropdown--item--group'>
-                        <ReactSVG src={imageLinks?.svg?.leaveIcon} />
-                        <span>Leave Chat</span>
+                        <ReactSVG
+                            src={
+                                isWorkModeTemplate
+                                    ? imageLinks?.svg?.leaveIcon
+                                    : imageLinks?.svg?.cancelX
+                            }
+                        />
+                        <span>
+                            {isWorkModeTemplate ? "Leave Chat" : "Close Chat"}
+                        </span>
                     </div>
                 </li>
             </DropdownMenu>

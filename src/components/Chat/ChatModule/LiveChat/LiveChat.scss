@@ -9,11 +9,12 @@
         #{$relaxed__mode__template__selector} {
             background-color: $dark__mode__theme__grey__color;
             border-radius: 20px 20px 0px 0px;
-            margin-top: 24px;
+            margin-top: 9px;
         }       
 
         #{$white__mode__theme__selector} {
             background-color: $light__theme_color;
+            border: 1px solid $white__mode__border__color;
         }
     }
 }

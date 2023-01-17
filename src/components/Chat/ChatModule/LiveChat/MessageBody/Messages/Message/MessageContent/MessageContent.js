@@ -14,8 +14,6 @@ const MessageContent = ({
     messageContent,
     otherClassNames,
     messageType,
-    messageIndex,
-    messagesDepth,
     setActiveConvo,
     requestAllMessages,
     messages,
@@ -33,13 +31,16 @@ const MessageContent = ({
     };
 
     const messageCopy = messages;
-    const recentThirdUserMessage = [...messageCopy]
-        .reverse()
-        ?.find(
-            (message) =>
-                message?.messageType === BRANCH_OPTION &&
-                message?.senderType === THIRD_USER
-        );
+
+    const recentThirdUserMessage =
+        messageCopy &&
+        [...messageCopy]
+            .reverse()
+            ?.find(
+                (message) =>
+                    message?.messageType === BRANCH_OPTION &&
+                    message?.senderType === THIRD_USER
+            );
 
     const showChangeOptionChoice =
         messageType === BRANCH_OPTION &&

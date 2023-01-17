@@ -130,7 +130,7 @@
     }
 
     #{$white__mode__theme__selector} {
-        background: $white__mode__option__background;
+        background: $white__mode__background;
     }
 
     @include media("<=medium-screen") { 

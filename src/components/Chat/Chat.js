@@ -22,6 +22,7 @@ import { setConversationBreakers } from "store/chat/actions";
 import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import { DotLoader } from "components/ui";
 import PoweredBy from "components/common/PoweredBy/PoweredBy";
+import { useWindowSize } from "utils/hooks";
 import "./Chat.scss";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
@@ -36,6 +37,7 @@ const Chat = () => {
     const [errorMssg, setErrorMssg] = useState("");
     const dispatch = useDispatch();
     const history = useHistory();
+    const { width } = useWindowSize();
 
     const toastMessage = useContext(ToastContext);
 
@@ -62,6 +64,7 @@ const Chat = () => {
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORK_MODE;
     const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
+    const isTablet = width <= 768;
 
     const fetchConvoBreakers = async () => {
         try {
@@ -170,7 +173,7 @@ const Chat = () => {
     const handleTicketCloseSuccess = () => {
         dispatch(setActiveTicket());
 
-        getCustomerTickets(null, false, true);
+        getCustomerTickets(null, false, isTablet ? true : false);
         toggleTicketActionModal(false);
     };
 
@@ -330,6 +333,10 @@ const Chat = () => {
                                                                 }
                                                                 loading={
                                                                     loading
+                                                                }
+                                                                openNewTicket={
+                                                                    status ===
+                                                                    LOADING
                                                                 }
                                                             />
                                                         </div>
