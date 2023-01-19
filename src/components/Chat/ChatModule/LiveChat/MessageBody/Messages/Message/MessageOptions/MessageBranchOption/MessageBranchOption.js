@@ -1,3 +1,4 @@
+import SmallLoader from "components/ui/SmallLoader/SmallLoader";
 import React from "react";
 import { INPUT_NEEDED } from "../../../enums";
 import "./MessageBranchOption.scss";
@@ -10,6 +11,7 @@ const MessageBranchOption = ({
     messageIndex,
     messagesDepth,
     lastMessage,
+    mssgOptionLoading,
 }) => {
     const { messageActionType } = lastMessage || {};
 
@@ -34,7 +36,10 @@ const MessageBranchOption = ({
                 selectedOption ? null : handleMessageOptionSelect()
             }
             disabled={shouldBeDisabled}>
-            {branchOptionLabel}
+            <span>{branchOptionLabel}</span>
+            {mssgOptionLoading && isSelected && (
+                <SmallLoader otherClassName='branch__option--loader' />
+            )}
         </div>
     );
 };

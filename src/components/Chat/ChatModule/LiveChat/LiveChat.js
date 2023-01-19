@@ -51,6 +51,7 @@ import {
 } from "../../../../store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
+import Favicon from "react-favicon";
 import "./LiveChat.scss";
 
 const NO_ACTION = "NO_ACTION";
@@ -86,18 +87,20 @@ const LiveChat = ({
     const [activeConvo, setActiveConvo] = useState(false);
     const [errorMssg, setErrorMssg] = useState("");
     const [forcedAgentTyping, triggerAgentTyping] = useState();
-
     const [allowUserInput, setAllowUserInput] = useState(false);
     const [currentInputType, setCurrentInputType] = useState(TEXT);
     const [currentFormElement, setCurrentFormElement] = useState();
+    const [mssgOptionLoading, setMssgOptionLoading] = useState(false);
 
     const [fetchingInputStatus, setFetchingInputStatus] = useState(true);
+    const [reminderCount, setReminderCount] = useState(null);
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
 
     const { conversationBreakers } = useSelector((state) => state.chat);
+    const [delayInputNeeded, setDelayInputNeeded] = useState(false);
 
     const {
-        chatSettings: { workspaceId },
+        chatSettings: { workspaceId, companyLogo },
     } = useSelector((state) => state.chat);
 
     const { ticketId, agent, ticketPhase, customer } = ticket;
@@ -259,7 +262,7 @@ const LiveChat = ({
 
     const handleOptConversation = async (convo) => {
         // triggerAgentTyping(true);
-
+        setMssgOptionLoading(true);
         const { conversationId, branchOptionId, branchOptionLabel } = convo;
         dispatch(
             updateTicketMessageStatus({
@@ -308,6 +311,7 @@ const LiveChat = ({
         } = messageOption;
         setStatus(DATAMODE);
         setErrorMssg();
+        setMssgOptionLoading(true);
         // return ""branchOptionActionType
 
         let newMessageList = await messages.map((x) => {
@@ -453,6 +457,7 @@ const LiveChat = ({
     const handleNewMessage = async (request) => {
         const { message, fileAttachments } = request;
         const newMessageId = generateID();
+        setMssgOptionLoading(false);
 
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
@@ -872,6 +877,7 @@ const LiveChat = ({
         // socket.on(CLOSED_TICKET, handleTicketClosure);
 
         socket.on("connect_error", handleSocketError);
+
         return () => {
             socket.off(RECEIVE_MESSAGE);
             socket.off(NEW_TICKET_UPDATE);
@@ -948,7 +954,6 @@ const LiveChat = ({
     const handleInputNeeded = () => {
         if (messages?.length > 1) {
             let lastMessage = messages[messages?.length - 1];
-
             if (
                 lastMessage?.senderType === WORKSPACE_AGENT &&
                 lastMessage?.messageType !== CANNED_RESPONSE
@@ -959,6 +964,7 @@ const LiveChat = ({
                         handleConvoBreaker(INPUT_NEEDED);
                         break;
                     case CONVERSATION:
+                    case COLLECTION:
                     case BRANCH:
                         if (lastMessage?.branchOptions?.length > 0) {
                             handleConvoBreaker(INPUT_NEEDED);
@@ -968,20 +974,73 @@ const LiveChat = ({
                         return "";
                 }
 
+                setReminderCount((prev) => prev + 1);
+
                 senderReminderEmail();
             }
         }
     };
 
+    const getLastMssgScheduledOptionTime = () => {
+        if (messages?.length > 1) {
+            let lastMessage = messages[messages?.length - 1];
+            let lastMessageMaxOptionTime = 0;
+
+            if (
+                lastMessage?.senderType === WORKSPACE_AGENT &&
+                lastMessage?.messageType !== CANNED_RESPONSE
+            ) {
+                if (lastMessage?.branchOptions?.length > 0) {
+                    lastMessage?.branchOptions?.map(({ scheduleDuration }) => {
+                        if (scheduleDuration) {
+                            if (
+                                Number.parseFloat(scheduleDuration) >
+                                lastMessageMaxOptionTime
+                            ) {
+                                lastMessageMaxOptionTime =
+                                    Number.parseFloat(scheduleDuration);
+                            }
+                        }
+                    });
+
+                    var countdownTo = new Date(lastMessage?.deliveryDate);
+
+                    countdownTo.setSeconds(
+                        countdownTo.getSeconds() +
+                            parseInt(lastMessageMaxOptionTime || 0)
+                    );
+
+                    const isScheduleEnded = new Date() > countdownTo;
+
+                    setDelayInputNeeded(!isScheduleEnded);
+                }
+            }
+        }
+    };
+
     useEffect(() => {
-        let timer = setInterval(() => {
+        setInterval(() => {
+            getLastMssgScheduledOptionTime();
+        }, 1000);
+    }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
+
+    const inputNeededTimer = () => {
+        return setInterval(() => {
             handleInputNeeded();
         }, 120000);
+    };
+
+    useEffect(() => {
+        let timer = "";
+
+        if (!delayInputNeeded) {
+            timer = inputNeededTimer();
+        }
 
         return () => {
             clearInterval(timer);
         };
-    }, [ticketsMessages, ticketId, messages]);
+    }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
     return (
         <>
@@ -1016,6 +1075,7 @@ const LiveChat = ({
                             handleVerifyAction={handleVerifyAction}
                             setActiveConvo={setActiveConvo}
                             requestAllMessages={requestAllMessages}
+                            mssgOptionLoading={mssgOptionLoading}
                         />
                     </div>
                 </div>
@@ -1040,7 +1100,16 @@ const LiveChat = ({
                     triggerAgentTyping={triggerAgentTyping}
                     showVerifyForm={showVerifyForm}
                     handleScrollChatToBottom={handleScrollChatToBottom}
-                />
+                />{" "}
+                {/* {reminderCount !== null && (
+                    <Favicon
+                        url={`https://proxy.cors.sh/${companyLogo}`}
+                        animated={true}
+                        alertCount={undefined}
+                        // key={reminderCount}
+                        // keepIconLink={() => reminderCount === null}
+                    />
+                )} */}
             </div>
         </>
     );

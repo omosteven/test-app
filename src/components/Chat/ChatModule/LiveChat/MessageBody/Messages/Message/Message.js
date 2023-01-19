@@ -25,6 +25,7 @@ const Message = ({
     messages,
     setActiveConvo,
     requestAllMessages,
+    mssgOptionLoading
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -115,6 +116,7 @@ const Message = ({
                             handleOptConversation={handleOptConversation}
                             deliveryDate={deliveryDate}
                             lastMessage={lastMessage}
+                            mssgOptionLoading={mssgOptionLoading}
                         />
                     ) : (
                         <></>

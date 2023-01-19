@@ -1,0 +1,49 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+.uploaded-files {
+    overflow-y: scroll;
+    height: 5rem;
+    .uploaded-file {
+        margin-top: 1rem;
+        #{$relaxed__mode__template__selector} {
+            padding: 0 1rem;
+            border-radius: 100px;
+        }
+
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__grey__color;
+        }
+
+        #{$white__mode__theme__selector} {
+            background: $light__theme_color;
+        }
+
+        padding: 10px 16px;
+        height: 58px;
+
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid #0066f5;
+        border-radius: 100px;
+
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        div {
+            display: flex;
+            gap: 16px;
+        }
+        span {
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 26px;
+            color: $dark__mode__text__theme__color;
+        }
+        &__icon {
+            cursor: pointer;
+        }
+    }
+}

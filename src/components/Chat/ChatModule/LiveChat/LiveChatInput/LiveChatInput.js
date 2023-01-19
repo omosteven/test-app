@@ -20,11 +20,15 @@ import {
     isDeviceMobileTablet,
 } from "../../../../../utils/helper";
 import { formInputTypes } from "../MessageBody/Messages/enums";
-import { IMAGE } from "./UploadIcons/enum";
+import { IMAGE, VIDEO, FILE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
+import UploadedFiles from "./UploadIcons/UploadedFiles/UploadedFiles";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
+
+const { RELAXED } = defaultTemplates;
 
 const LiveChatInput = ({
     handleNewMessage,
@@ -48,6 +52,7 @@ const LiveChatInput = ({
             },
         ],
     });
+
     const [uploads, updateUploads] = useState([]);
     const [selectedMedia, setSelectedMedia] = useState({});
     const [errors, setErrors] = useState({});
@@ -402,6 +407,19 @@ const LiveChatInput = ({
             ? status === LOADING || status === ""
             : isDisabled || request?.message === "";
 
+    const { defaultTemplate } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+
+    const { formElementType } = currentFormElement || {};
+
+    const isFormElementUploadable =
+        formElementType === IMAGE ||
+        formElementType === VIDEO ||
+        formElementType === FILE;
+
     return (
         <div className='chat__input__container' ref={inputContainerRef}>
             <div
@@ -412,32 +430,80 @@ const LiveChatInput = ({
                 title={!allowUserInput ? "Not Allowed" : "Type a message"}>
                 <form onSubmit={handleSubmit} id='chatInput'>
                     {uploads?.length > 0 && (
-                        <UploadPreview
-                            upload={uploads}
-                            status={status}
-                            handleRemoveFile={handleRemoveFile}
-                            handleRetry={(file) => handleRetryUpload(file)}
-                            maximize={(
-                                fileAttachmentType,
-                                fileAttachmentName,
-                                fileAttachmentUrl
-                            ) => {
-                                setSelectedMedia({
-                                    fileAttachmentType,
-                                    fileAttachmentName,
-                                    fileAttachmentUrl,
-                                });
-                                toggleModal(true);
-                            }}
-                            disableClick={status !== DATAMODE}
-                        />
+                        <>
+                            {isRelaxedTemplate &&
+                            currentFormElement?.formElementType === "IMAGE" ? (
+                                <UploadedFiles
+                                    uploads={uploads}
+                                    status={status}
+                                    handleRemoveFile={handleRemoveFile}
+                                    handleRetry={(file) =>
+                                        handleRetryUpload(file)
+                                    }
+                                    maximize={(
+                                        fileAttachmentType,
+                                        fileAttachmentName,
+                                        fileAttachmentUrl
+                                    ) => {
+                                        setSelectedMedia({
+                                            fileAttachmentType,
+                                            fileAttachmentName,
+                                            fileAttachmentUrl,
+                                        });
+                                        toggleModal(true);
+                                    }}
+                                    disableClick={status !== DATAMODE}
+                                />
+                            ) : (
+                                <UploadPreview
+                                    upload={uploads}
+                                    status={status}
+                                    handleRemoveFile={handleRemoveFile}
+                                    handleRetry={(file) =>
+                                        handleRetryUpload(file)
+                                    }
+                                    maximize={(
+                                        fileAttachmentType,
+                                        fileAttachmentName,
+                                        fileAttachmentUrl
+                                    ) => {
+                                        setSelectedMedia({
+                                            fileAttachmentType,
+                                            fileAttachmentName,
+                                            fileAttachmentUrl,
+                                        });
+                                        toggleModal(true);
+                                    }}
+                                    disableClick={status !== DATAMODE}
+                                />
+                            )}
+                        </>
                     )}
+
                     <div className='chat__input--container'>
                         <div className='chat__input--group'>
-                            <div className='chat__input--group--inputs'>
-                                {currentFormElement ? (
-                                    currentFormElement?.formElementType ===
-                                        IMAGE && (
+                            {isRelaxedTemplate && isFormElementUploadable ? (
+                                <>
+                                    {uploads?.length === 0 && (
+                                        <UploadIcons
+                                            upload={uploads}
+                                            updateUpload={updateUploads}
+                                            isDisabled={isDisabled}
+                                            setErrors={setErrors}
+                                            showModal={showModal}
+                                            toggleModal={toggleModal}
+                                            handleUpload={handleUpload}
+                                            selectedMedia={selectedMedia}
+                                            currentFormElement={
+                                                currentFormElement
+                                            }
+                                            label={"Upload File"}
+                                        />
+                                    )}
+                                </>
+                            ) : (
+                                <>
+                                    <div className='chat__input--group--inputs'>
                                         <UploadIcons
                                             upload={uploads}
                                             updateUpload={updateUploads}
@@ -451,44 +517,49 @@ const LiveChatInput = ({
                                                 currentFormElement
                                             }
                                         />
-                                    )
-                                ) : (
-                                    <UploadIcons
-                                        upload={uploads}
-                                        updateUpload={updateUploads}
-                                        isDisabled={isDisabled}
-                                        setErrors={setErrors}
-                                        showModal={showModal}
-                                        toggleModal={toggleModal}
-                                        handleUpload={handleUpload}
-                                        selectedMedia={selectedMedia}
-                                        currentFormElement={currentFormElement}
+                                        {renderBasedOnInputType()}
+                                    </div>
+                                    <Button
+                                        type='submit'
+                                        text={"Send"}
+                                        icon={
+                                            <ReactSVG
+                                                src={imageLinks?.svg?.send}
+                                            />
+                                        }
+                                        classType='default'
+                                        otherClass={`send__button ${
+                                            !btnDisabled ? "active" : ""
+                                        }`}
+                                        disabled={
+                                            btnDisabled || fetchingInputStatus
+                                        }
                                     />
-                                )}
-                                {renderBasedOnInputType()}
-                            </div>
-                            <div>
-                                <Button
-                                    type='submit'
-                                    text={"Send"}
-                                    icon={
-                                        <ReactSVG src={imageLinks?.svg?.send} />
-                                    }
-                                    classType='default'
-                                    otherClass={`send__button ${
-                                        !btnDisabled ? "active" : ""
-                                    }`}
-                                    disabled={
-                                        btnDisabled || fetchingInputStatus
-                                    }
-                                />
-                            </div>
+                                </>
+                            )}
                         </div>
                     </div>
+
                     {(errors?.file || errorMssg) && (
                         <span className='file__error'>
                             {errors?.file || errorMssg}
                         </span>
+                    )}
+
+                    {isRelaxedTemplate && isFormElementUploadable && (
+                        <Button
+                            type='submit'
+                            text={"Submit"}
+                            classType='primary'
+                            otherClass={`chat__input__file__button ${
+                                !btnDisabled ? "active" : ""
+                            }`}
+                            disabled={
+                                btnDisabled ||
+                                fetchingInputStatus ||
+                                status === LOADING
+                            }
+                        />
                     )}
                 </form>
                 <PoweredBy />

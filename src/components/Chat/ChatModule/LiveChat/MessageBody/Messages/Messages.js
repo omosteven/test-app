@@ -20,6 +20,7 @@ const Messages = ({
     messages,
     setActiveConvo,
     requestAllMessages,
+    mssgOptionLoading,
 }) => {
     const { activeTicket } = useSelector((state) => state.tickets);
 
@@ -60,6 +61,7 @@ const Messages = ({
                         handleVerifyAction={handleVerifyAction}
                         setActiveConvo={setActiveConvo}
                         requestAllMessages={requestAllMessages}
+                        mssgOptionLoading={mssgOptionLoading}
                     />
                 ) : (
                     ""
@@ -77,7 +79,7 @@ const Messages = ({
             ) : (
                 ""
             )}
-             {/* </AnimatePresence> */}
+            {/* </AnimatePresence> */}
             <div id='dummy'></div>
         </div>
     );

@@ -9,9 +9,12 @@ const AttachmentInput = ({
     disabled,
     file,
     multiple,
+    label,
 }) => {
     return (
-        <label htmlFor={id}>
+        <label
+            htmlFor={id}
+            className={`${label ? "upload--icons__label" : ""}`}>
             <ReactSVG src={src} className={disabled ? "disabled" : ""} />
             <input
                 type='file'
@@ -24,6 +27,7 @@ const AttachmentInput = ({
                 key={file}
                 multiple={multiple}
             />
+            <span>{label}</span>
         </label>
     );
 };
