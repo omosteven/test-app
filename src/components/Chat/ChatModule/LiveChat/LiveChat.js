@@ -619,8 +619,10 @@ const LiveChat = ({
         let lastCustomerMssg = [...allMessagesCopy]
             .reverse()
             ?.find((message) => message.senderType === THIRD_USER);
+
         if (
             allMessagesCopy?.length === 2 &&
+            lastCustomerMssg !== undefined &&
             lastCustomerMssg?.messageType === DEFAULT &&
             lastMessage.messageType !== CONVERSATION &&
             lastMessage.messageType !== ACTION_INFO &&

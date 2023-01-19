@@ -6,15 +6,17 @@ import TogglerDropdown from "./TogglerDropdown/TogglerDropdown";
 import TogglerModal from "./TogglerModal/TogglerModal";
 import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import { changeTheme } from "store/chat/actions";
+import { useWindowSize } from "utils/hooks";
 
 const { WORK_MODE } = defaultTemplates;
 const { DARK_MODE_DEFAULT, WHITE_MODE_DEFAULT } = defaultThemes;
 
-const ChatSettingsToggler = ({ isMobile, handleCloseTicket, }) => {
+const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
     const [showModal, toggleModal] = useState(false);
     const { defaultTemplate, defaultTheme } = useSelector(
         (state) => state.chat.chatSettings
     );
+    const { width } = useWindowSize();
     const dispatch = useDispatch();
 
     const handleToggleModal = () => toggleModal(!showModal);
@@ -30,14 +32,16 @@ const ChatSettingsToggler = ({ isMobile, handleCloseTicket, }) => {
 
     const isWorkModeTemplate = defaultTemplate === WORK_MODE;
     const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
+    const isNotTablet = width > 768;
 
     return (
         <>
-            {isWorkModeTemplate ? (
+            {isWorkModeTemplate || isNotTablet ? (
                 <TogglerDropdown
                     isMobile={isMobile}
                     handleCloseTicket={handleCloseTicket}
                     handleChangeTheme={handleChangeTheme}
+                    isWorkModeTemplate={isWorkModeTemplate}
                     isDarkModeTheme={isDarkModeTheme}
                 />
             ) : (

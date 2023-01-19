@@ -19,15 +19,15 @@
 
     @include media(">large-screen") {
         #{$relaxed__mode__template__selector} {
-            height: 83vh !important;
+            height: 78vh !important;
         }
     }
 
-    @include media(">medium-screen") {
-        #{$relaxed__mode__template__selector} {
-            height: 74vh;
-        }
-    }
+    // @include media(">medium-screen") {
+    //     #{$relaxed__mode__template__selector} {
+    //         height: 74vh;
+    //     }
+    // }
 
     @include media("<=medium-screen") {
         padding-left: 1rem;

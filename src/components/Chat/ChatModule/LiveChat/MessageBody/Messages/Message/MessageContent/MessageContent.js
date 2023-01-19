@@ -5,7 +5,8 @@ import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import ChangeOptionChoice from "./ChangeOptionChoice/ChangeOptionChoice";
 import ChangeOptionChoiceModal from "./ChangeOptionChoice/ChangeOptionChoiceModal/ChangeOptionChoiceModal";
 
-const { BRANCH_OPTION, FORM_REQUEST, ACTION_INFO, DEFAULT } = messageTypes;
+const { BRANCH_OPTION, FORM_REQUEST, ACTION_INFO, DEFAULT, CONVERSATION } =
+    messageTypes;
 const { THIRD_USER } = appMessageUserTypes;
 const { RELAXED } = defaultTemplates;
 
@@ -14,8 +15,6 @@ const MessageContent = ({
     messageContent,
     otherClassNames,
     messageType,
-    messageIndex,
-    messagesDepth,
     setActiveConvo,
     requestAllMessages,
     messages,
@@ -33,17 +32,23 @@ const MessageContent = ({
     };
 
     const messageCopy = messages;
-    const recentThirdUserMessage = [...messageCopy]
-        .reverse()
-        ?.find(
-            (message) =>
-                message?.messageType === BRANCH_OPTION &&
-                message?.senderType === THIRD_USER
-        );
 
+    const recentThirdUserMessage =
+        messageCopy &&
+        [...messageCopy]
+            .reverse()
+            ?.find(
+                (message) =>
+                    (messageType === BRANCH_OPTION ||
+                        messageType === CONVERSATION) &&
+                    message?.senderType === THIRD_USER
+            );
+
+    // it works
     const showChangeOptionChoice =
-        messageType === BRANCH_OPTION &&
         isRelaxedTemplate &&
+        !isReceivedMessage &&
+        (messageType === BRANCH_OPTION || messageType === CONVERSATION) &&
         recentThirdUserMessage?.messageId === messageId &&
         (lastMessage?.messageType !== ACTION_INFO ||
             lastMessage?.messageType !== FORM_REQUEST ||

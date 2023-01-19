@@ -30,6 +30,10 @@
                 }
             }
         }
+
+        #{$white__mode__theme__selector} {
+            background: $white__mode__options__background;
+        }
     }
 
     @include media("<=medium-screen") {

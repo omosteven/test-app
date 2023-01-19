@@ -3,10 +3,15 @@ import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import { Button } from "components/ui";
 
-const NewTicketButton = ({ handleClick, otherClassNames, loading }) => {
+const NewTicketButton = ({
+    handleClick,
+    otherClassNames,
+    loading,
+    openNewTicket,
+}) => {
     return (
         <>
-            {!loading && (
+            {(!loading || openNewTicket) && (
                 <Button
                     icon={
                         <ReactSVG src={imageLinks.svg.add} className='icon' />
@@ -16,6 +21,7 @@ const NewTicketButton = ({ handleClick, otherClassNames, loading }) => {
                         otherClassNames ? otherClassNames : ""
                     }`}
                     onClick={handleClick}
+                    loading={openNewTicket}
                 />
             )}
         </>
