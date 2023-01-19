@@ -54,10 +54,6 @@
           fill: $yellow__theme__color
         }
       }
-
-      @include media("<=medium-screen"){
-        margin-top: -20px;
-      }
     }
 
     p {

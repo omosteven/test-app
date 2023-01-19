@@ -6,14 +6,13 @@ const Countdown = ({ countdownTo, countdownEnded, setCountdownEnded }) => {
     const [mins, setMins] = useState(0);
     const [showCountDown, setShowCountDown] = useState(false);
 
-    const then = moment(moment(countdownTo).format("h:mm a"), "h:mm a");
+    const then = moment(moment(countdownTo)).utc();
 
-    const now = moment();
+    const now = moment().utc();
     const diff = moment(
         new Date(then.toISOString()).getTime() -
             new Date(now.toISOString()).getTime()
     );
-
     let duration = moment.duration(Number(diff), "milliseconds");
 
     const countdown = () => {

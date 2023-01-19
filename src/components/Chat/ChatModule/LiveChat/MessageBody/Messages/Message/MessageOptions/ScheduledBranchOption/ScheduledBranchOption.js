@@ -20,6 +20,9 @@ const ScheduledBranchOption = ({
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+
     const { messageActionType } = lastMessage || {};
 
     const [countdownEnded, setCountdownEnded] = useState(false);
@@ -51,7 +54,7 @@ const ScheduledBranchOption = ({
                     selectedOption ? null : handleMessageOptionSelect()
                 }>
                 {branchOptionLabel}
-                {!enable && defaultTemplate === RELAXED && (
+                {!enable && isRelaxedTemplate && (
                     <div className='option__pause'>
                         <span>This option is paused for</span>{" "}
                         <CountdownTimer
@@ -62,7 +65,7 @@ const ScheduledBranchOption = ({
                     </div>
                 )}
             </div>
-            {!enable && defaultTemplate === WORK_MODE && (
+            {!enable && isWorkModeTemplate && (
                 <CountdownTimer
                     countdownTo={countdownTo}
                     setCountdownEnded={setCountdownEnded}

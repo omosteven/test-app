@@ -51,6 +51,7 @@ import {
 } from "../../../../store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
+import Favicon from "react-favicon";
 import "./LiveChat.scss";
 
 const NO_ACTION = "NO_ACTION";
@@ -86,20 +87,20 @@ const LiveChat = ({
     const [activeConvo, setActiveConvo] = useState(false);
     const [errorMssg, setErrorMssg] = useState("");
     const [forcedAgentTyping, triggerAgentTyping] = useState();
-
     const [allowUserInput, setAllowUserInput] = useState(false);
     const [currentInputType, setCurrentInputType] = useState(TEXT);
     const [currentFormElement, setCurrentFormElement] = useState();
     const [mssgOptionLoading, setMssgOptionLoading] = useState(false);
 
     const [fetchingInputStatus, setFetchingInputStatus] = useState(true);
+    const [reminderCount, setReminderCount] = useState(null);
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
 
     const { conversationBreakers } = useSelector((state) => state.chat);
     const [delayInputNeeded, setDelayInputNeeded] = useState(false);
 
     const {
-        chatSettings: { workspaceId },
+        chatSettings: { workspaceId, companyLogo },
     } = useSelector((state) => state.chat);
 
     const { ticketId, agent, ticketPhase, customer } = ticket;
@@ -876,6 +877,7 @@ const LiveChat = ({
         // socket.on(CLOSED_TICKET, handleTicketClosure);
 
         socket.on("connect_error", handleSocketError);
+
         return () => {
             socket.off(RECEIVE_MESSAGE);
             socket.off(NEW_TICKET_UPDATE);
@@ -971,6 +973,8 @@ const LiveChat = ({
                     default:
                         return "";
                 }
+
+                setReminderCount((prev) => prev + 1);
 
                 senderReminderEmail();
             }
@@ -1096,7 +1100,16 @@ const LiveChat = ({
                     triggerAgentTyping={triggerAgentTyping}
                     showVerifyForm={showVerifyForm}
                     handleScrollChatToBottom={handleScrollChatToBottom}
-                />
+                />{" "}
+                {/* {reminderCount !== null && (
+                    <Favicon
+                        url={`https://proxy.cors.sh/${companyLogo}`}
+                        animated={true}
+                        alertCount={undefined}
+                        // key={reminderCount}
+                        // keepIconLink={() => reminderCount === null}
+                    />
+                )} */}
             </div>
         </>
     );
