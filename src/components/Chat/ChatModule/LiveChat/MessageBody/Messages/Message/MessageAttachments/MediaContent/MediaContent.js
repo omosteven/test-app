@@ -25,6 +25,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     const { width } = useWindowSize();
 
     const isWideScreen = width > 768;
+    const isTablet = width < 768;
 
     useEffect(() => {
         if (
@@ -38,7 +39,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
                 setOutput
             );
         }
-    }, [isWideScreen]);
+    }, [isTablet]);
 
     const cropOutImage =
         fileAttachmentImageConfig &&
