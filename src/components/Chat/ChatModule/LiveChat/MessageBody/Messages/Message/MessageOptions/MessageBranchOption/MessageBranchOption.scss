@@ -13,6 +13,7 @@
     padding: 7px 0.75rem;
     transition: all 0.3s;
     height: fit-content;
+    display: flex;
 
     #{$relaxed__mode__template__selector} {
         padding: 10px;
@@ -32,7 +33,6 @@
             text-align: center;
             border-radius: 100px;
         }
-
     }
 
     #{$dark__mode__theme__selector} {
@@ -43,10 +43,10 @@
 
     #{$white__mode__theme__selector} {
         color: $muted__theme_color_2;
-        background: #EDEEEF;
+        background: #edeeef;
         border: 0.125rem solid $white__mode__option__background;
     }
-    
+
     &:hover {
         opacity: 0.5;
     }
@@ -66,5 +66,8 @@
         #{$white__mode__theme__selector} {
             background: $light__theme_color;
         }
+    }
+    &--loader {
+        margin-left: 1rem !important;
     }
 }

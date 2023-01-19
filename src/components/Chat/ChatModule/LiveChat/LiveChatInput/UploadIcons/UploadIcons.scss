@@ -1,16 +1,52 @@
+// @import "assets/scss/_include-media-lib/include-media";
+
+// .upload {
+//     margin-bottom: 0.938rem;
+    
+//     &--icons {
+//         display: flex;
+//         align-items: center;
+//         gap: 0.92rem;
+    
+//         svg {
+//             cursor: pointer;
+    
+//             @include media("<=medium-screen") {
+//                 height: 0.917rem;
+//                 width: 0.917rem;
+//             }
+//         }
+//     }
+// }
+
+
+
 @import "assets/scss/_include-media-lib/include-media";
 
 .upload {
     margin-bottom: 0.938rem;
-    
+    span {
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 26px;
+        display: flex;
+        align-items: center;
+        color: #d5d7d8;
+    }
     &--icons {
         display: flex;
         align-items: center;
         gap: 0.92rem;
-    
+        &__label {
+            display: flex;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            gap: 19px;
+            cursor: pointer;
+        }
         svg {
             cursor: pointer;
-    
+
             @include media("<=medium-screen") {
                 height: 0.917rem;
                 width: 0.917rem;
@@ -18,4 +54,3 @@
         }
     }
 }
-

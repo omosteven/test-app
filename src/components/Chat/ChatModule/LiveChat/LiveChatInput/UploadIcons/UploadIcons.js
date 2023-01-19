@@ -14,6 +14,7 @@ const UploadIcons = ({
     handleUpload,
     selectedMedia,
     currentFormElement,
+    label,
 }) => {
     const getFileFormat = (fileType) => {
         if (fileType?.startsWith("image/")) {
@@ -86,6 +87,7 @@ const UploadIcons = ({
                     disabled={isDisabled}
                     file={upload}
                     multiple={currentFormElement === undefined}
+                    label={label}
                 />
             </div>
             {showModal && (

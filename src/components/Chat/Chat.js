@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import API from "../../lib/api";
 import apiRoutes from "../../lib/api/apiRoutes";
 import { onMessageListener } from "../../lib/firebase/firebase";
-import { socket, SocketContext } from "../../lib/socket/context/socket";
+import {
+    reconnectSocket,
+    socket,
+    SocketContext,
+} from "../../lib/socket/context/socket";
 import { retriveAccessToken } from "../../storage/sessionStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
@@ -46,12 +50,15 @@ const Chat = () => {
 
     const [showVerifyForm, setShowVerifyForm] = useState(false);
 
+    const [socketConnection, setSocketConnection] = useState(socket);
+
     let params = queryString.parse(window.location.search);
 
     const isAuthCodeAvailable = params?.code ? true : false;
 
     const isAuthTokenAvailable = params?.token ? true : false;
 
+    const userToken = retriveAccessToken();
     // const [selectedTicket, setSelectedTicket] = useState();
 
     const [customerTicketId, setCustomerTicketId] = useState();
@@ -233,28 +240,34 @@ const Chat = () => {
         toggleTicketActionModal(true);
     };
 
-    useEffect(() => {
-        if (
-            (isAuthCodeAvailable || isAuthTokenAvailable) &&
-            params?.connectionStatus !== "connected"
-        ) {
-            isAuthCodeAvailable
-                ? history.push(
-                      `/direct?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&code=${params?.code}&connectionStatus=connected`
-                  )
-                : history.push(
-                      `/chat?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&token=${params?.token}&connectionStatus=connected`
-                  );
+    // useEffect(() => {
+    //     if (
+    //         (isAuthCodeAvailable || isAuthTokenAvailable) &&
+    //         params?.connectionStatus !== "connected"
+    //     ) {
+    //         isAuthCodeAvailable
+    //             ? history.push(
+    //                   `/direct?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&code=${params?.code}&connectionStatus=connected`
+    //               )
+    //             : history.push(
+    //                   `/chat?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&token=${params?.token}&connectionStatus=connected`
+    //               );
+    //         setTimeout(() => {
+    //             window.location.reload();
+    //         }, 1000);
+    //     }
+    // }, []);
 
-            setTimeout(() => {
-                window.location.reload();
-            }, 1000);
+    useEffect(() => {
+        if (userToken) {
+            const socketReconnection = reconnectSocket(userToken);
+            setSocketConnection(socketReconnection);
         }
-    }, []);
+    }, [socket, userToken]);
 
     return (
         <>
-            <SocketContext.Provider value={socket}>
+            <SocketContext.Provider value={socketConnection}>
                 <div
                     className={`row justify-content-center h-100 ${
                         isDarkModeTheme ? "dark__desktop" : ""

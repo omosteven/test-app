@@ -42,6 +42,7 @@ const MessagesLayout = ({
     handleVerifyAction,
     setActiveConvo,
     requestAllMessages,
+    mssgOptionLoading,
 }) => {
     const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
 
@@ -98,6 +99,7 @@ const MessagesLayout = ({
                                 openPreviewModal={openPreviewModal}
                                 setActiveConvo={setActiveConvo}
                                 requestAllMessages={requestAllMessages}
+                                mssgOptionLoading={mssgOptionLoading}
                             />
                         )}
                     </motion.li>

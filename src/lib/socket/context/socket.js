@@ -16,3 +16,15 @@ export const socket = io.connect(config.apiGateway.SOCKET_BASE_URL, {
 });
 
 export const SocketContext = React.createContext();
+
+export const reconnectSocket = (authToken) => {
+    return io.connect(config.apiGateway.SOCKET_BASE_URL, {
+        extraHeaders: {
+            authorization: authToken,
+        },
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+        reconnectionAttempts: 5,
+    });
+};

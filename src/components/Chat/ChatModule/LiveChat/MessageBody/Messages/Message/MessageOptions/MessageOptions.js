@@ -20,6 +20,7 @@ const MessageOptions = ({
     messagesDepth,
     deliveryDate,
     lastMessage,
+    mssgOptionLoading,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -55,6 +56,7 @@ const MessageOptions = ({
                         branchOptionId={option?.branchOptionId}
                         selectedOption={selectedOption}
                         lastMessage={lastMessage}
+                        mssgOptionLoading={mssgOptionLoading}
                         handleMessageOptionSelect={() =>
                             messageType === CONVERSATION
                                 ? handleOptConversation(option)

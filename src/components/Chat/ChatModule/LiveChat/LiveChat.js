@@ -90,11 +90,13 @@ const LiveChat = ({
     const [allowUserInput, setAllowUserInput] = useState(false);
     const [currentInputType, setCurrentInputType] = useState(TEXT);
     const [currentFormElement, setCurrentFormElement] = useState();
+    const [mssgOptionLoading, setMssgOptionLoading] = useState(false);
 
     const [fetchingInputStatus, setFetchingInputStatus] = useState(true);
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
 
     const { conversationBreakers } = useSelector((state) => state.chat);
+    const [delayInputNeeded, setDelayInputNeeded] = useState(false);
 
     const {
         chatSettings: { workspaceId },
@@ -147,7 +149,7 @@ const LiveChat = ({
                                 data[data?.length - 1]?.messageContentId
                             }`
                         );
-console.log({ticket})
+                        console.log({ ticket });
                         handleAddEmail();
                     }
 
@@ -259,7 +261,7 @@ console.log({ticket})
 
     const handleOptConversation = async (convo) => {
         // triggerAgentTyping(true);
-
+        setMssgOptionLoading(true);
         const { conversationId, branchOptionId, branchOptionLabel } = convo;
         dispatch(
             updateTicketMessageStatus({
@@ -308,6 +310,7 @@ console.log({ticket})
         } = messageOption;
         setStatus(DATAMODE);
         setErrorMssg();
+        setMssgOptionLoading(true);
         // return ""branchOptionActionType
 
         let newMessageList = await messages.map((x) => {
@@ -453,6 +456,7 @@ console.log({ticket})
     const handleNewMessage = async (request) => {
         const { message, fileAttachments } = request;
         const newMessageId = generateID();
+        setMssgOptionLoading(false);
 
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
@@ -946,7 +950,6 @@ console.log({ticket})
     const handleInputNeeded = () => {
         if (messages?.length > 1) {
             let lastMessage = messages[messages?.length - 1];
-
             if (
                 lastMessage?.senderType === WORKSPACE_AGENT &&
                 lastMessage?.messageType !== CANNED_RESPONSE
@@ -957,6 +960,7 @@ console.log({ticket})
                         handleConvoBreaker(INPUT_NEEDED);
                         break;
                     case CONVERSATION:
+                    case COLLECTION:
                     case BRANCH:
                         if (lastMessage?.branchOptions?.length > 0) {
                             handleConvoBreaker(INPUT_NEEDED);
@@ -971,15 +975,66 @@ console.log({ticket})
         }
     };
 
+    const getLastMssgScheduledOptionTime = () => {
+        if (messages?.length > 1) {
+            let lastMessage = messages[messages?.length - 1];
+            let lastMessageMaxOptionTime = 0;
+
+            if (
+                lastMessage?.senderType === WORKSPACE_AGENT &&
+                lastMessage?.messageType !== CANNED_RESPONSE
+            ) {
+                if (lastMessage?.branchOptions?.length > 0) {
+                    lastMessage?.branchOptions?.map(({ scheduleDuration }) => {
+                        if (scheduleDuration) {
+                            if (
+                                Number.parseFloat(scheduleDuration) >
+                                lastMessageMaxOptionTime
+                            ) {
+                                lastMessageMaxOptionTime =
+                                    Number.parseFloat(scheduleDuration);
+                            }
+                        }
+                    });
+
+                    var countdownTo = new Date(lastMessage?.deliveryDate);
+
+                    countdownTo.setSeconds(
+                        countdownTo.getSeconds() +
+                            parseInt(lastMessageMaxOptionTime || 0)
+                    );
+
+                    const isScheduleEnded = new Date() > countdownTo;
+
+                    setDelayInputNeeded(!isScheduleEnded);
+                }
+            }
+        }
+    };
+
     useEffect(() => {
-        let timer = setInterval(() => {
+        setInterval(() => {
+            getLastMssgScheduledOptionTime();
+        }, 1000);
+    }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
+
+    const inputNeededTimer = () => {
+        return setInterval(() => {
             handleInputNeeded();
         }, 120000);
+    };
+
+    useEffect(() => {
+        let timer = "";
+
+        if (!delayInputNeeded) {
+            timer = inputNeededTimer();
+        }
 
         return () => {
             clearInterval(timer);
         };
-    }, [ticketsMessages, ticketId, messages]);
+    }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
     return (
         <>
@@ -1014,6 +1069,7 @@ console.log({ticket})
                             handleVerifyAction={handleVerifyAction}
                             setActiveConvo={setActiveConvo}
                             requestAllMessages={requestAllMessages}
+                            mssgOptionLoading={mssgOptionLoading}
                         />
                     </div>
                 </div>
