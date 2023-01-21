@@ -24,26 +24,24 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     const [outPut, setOutput] = useState("");
     const { width } = useWindowSize();
 
-    const isWideScreen = width > 768;
     const isTablet = width < 768;
-
-    useEffect(() => {
-        if (
-            fileAttachmentImageConfig &&
-            Object?.entries(fileAttachmentImageConfig)?.length > 0 &&
-            width !== 0
-        ) {
-            cropImage(
-                isWideScreen ? desktopVersion : mobileVersion,
-                fileAttachmentUrl,
-                setOutput
-            );
-        }
-    }, [isTablet]);
 
     const cropOutImage =
         fileAttachmentImageConfig &&
         Object?.entries(fileAttachmentImageConfig)?.length > 0;
+
+    useEffect(() => {
+        if (
+            fileAttachmentImageConfig &&
+            Object?.entries(fileAttachmentImageConfig)?.length > 0
+        ) {
+            cropImage(
+                isTablet ? mobileVersion : desktopVersion,
+                fileAttachmentUrl,
+                setOutput
+            );
+        }
+    }, [isTablet, cropOutImage]);
 
     const renderBasedOnMediaType = () => {
         switch (fileAttachmentType) {
@@ -54,7 +52,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
                         alt='media'
                         className={`content--media img ${
                             isReceivedMessage ? "received" : "sent"
-                        } ${isWideScreen ? "desktop" : "mobile"} ${
+                        } ${isTablet ? "mobile" : "desktop"} ${
                             !cropOutImage ? "img-orientation" : ""
                         }`}
                         onClick={() => openPreviewModal(attachment)}

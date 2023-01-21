@@ -82,6 +82,7 @@ const MessagesLayout = ({
                                 }
                                 handleOptConversation={handleOptConversation}
                                 openPreviewModal={openPreviewModal}
+                                mssgOptionLoading={mssgOptionLoading}
                             />
                         ) : messageType === SUCCESS ? (
                             <SuccessMessage data={message} />

@@ -8803,12 +8803,10 @@ react-fast-compare@^3.0.1, react-fast-compare@^3.1.1:
   resolved "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-3.2.0.tgz"
   integrity sha512-rtGImPZ0YyLrscKI9xTpV8psd6I8VAtjKCzQDlzyDvqJA8XOW78TXYQwNRNd8g8JZnDu8q9Fu/1v4HPAVwVdHA==
 
-react-favicon@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/react-favicon/-/react-favicon-1.0.1.tgz#0524bede1cfbdf4e57b262aa52ae9513b27445b1"
-  integrity sha512-tbMjIfIE5cLj4BpnkJznQ1U7Dmvdp3iN02AyzXTSzfhxAGFjuf7tMBmapMRSdK7v1zX6+CktuOG1CT1jlrjPXw==
-  dependencies:
-    prop-types "^15.8.1"
+react-favicon-notification@^1.0.28:
+  version "1.0.28"
+  resolved "https://registry.yarnpkg.com/react-favicon-notification/-/react-favicon-notification-1.0.28.tgz#e891afa48e0c69a6c1bac8750ab878d980279bc6"
+  integrity sha512-XnAFvNuAyPpSAKG1RaKC46Bv930D3Ve3lFOyyXGLEfCUDuy+TugP8l5Te/Wa15qoIuT837Nd3fUhxj1u6j3srw==
 
 react-helmet@^6.1.0:
   version "6.1.0"

@@ -6,14 +6,17 @@ import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import store from "./store/store";
 import AppTemplateWrapper from "hoc/AppTemplateWrapper/AppTemplateWrapper";
+import FaviconNotificationContextProvider from "react-favicon-notification";
 import "./assets/scss/_index.scss";
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
-            <AppTemplateWrapper>
-                <App />
-            </AppTemplateWrapper>
+            <FaviconNotificationContextProvider>
+                <AppTemplateWrapper>
+                    <App />
+                </AppTemplateWrapper>
+            </FaviconNotificationContextProvider>
         </Provider>
     </React.StrictMode>,
     document.getElementById("root")

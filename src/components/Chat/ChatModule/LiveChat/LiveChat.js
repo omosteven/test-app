@@ -51,7 +51,8 @@ import {
 } from "../../../../store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
-import Favicon from "react-favicon";
+import { useFaviconNotification } from "react-favicon-notification";
+
 import "./LiveChat.scss";
 
 const NO_ACTION = "NO_ACTION";
@@ -93,14 +94,15 @@ const LiveChat = ({
     const [mssgOptionLoading, setMssgOptionLoading] = useState(false);
 
     const [fetchingInputStatus, setFetchingInputStatus] = useState(true);
-    const [reminderCount, setReminderCount] = useState(null);
+    const [config, setConfig] = useFaviconNotification();
+
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
 
     const { conversationBreakers } = useSelector((state) => state.chat);
     const [delayInputNeeded, setDelayInputNeeded] = useState(false);
 
     const {
-        chatSettings: { workspaceId, companyLogo },
+        chatSettings: { workspaceId },
     } = useSelector((state) => state.chat);
 
     const { ticketId, agent, ticketPhase, customer } = ticket;
@@ -117,6 +119,16 @@ const LiveChat = ({
         return conversationBreakers?.find(
             (x) => x.actionBranchType === actionBranchType
         );
+    };
+
+    const showNotificationIcon = (show) => {
+        setConfig({
+            ...config,
+            innerCircle: true,
+            fontColor: "red",
+            radius: 6,
+            show,
+        });
     };
 
     const requestAllMessages = async () => {
@@ -150,7 +162,6 @@ const LiveChat = ({
                                 data[data?.length - 1]?.messageContentId
                             }`
                         );
-                        console.log({ ticket });
                         handleAddEmail();
                     }
 
@@ -708,7 +719,7 @@ const LiveChat = ({
             );
         }
     };
-    console.log({ messages });
+
     const handleConvoBreaker = (messageType, deliveryDate, customMessageId) => {
         if (messageType) {
             const {
@@ -770,7 +781,7 @@ const LiveChat = ({
             deliveryDate,
             branchOptionActionType,
         } = message;
-        console.log({ message });
+
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
@@ -974,7 +985,9 @@ const LiveChat = ({
                         return "";
                 }
 
-                setReminderCount((prev) => prev + 1);
+                if (document.hidden) {
+                    showNotificationIcon(true);
+                }
 
                 senderReminderEmail();
             }
@@ -1025,6 +1038,12 @@ const LiveChat = ({
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
     const inputNeededTimer = () => {
+        document.onvisibilitychange = () => {
+            if (document.visibilityState === "visible") {
+                showNotificationIcon(false);
+            }
+        };
+
         return setInterval(() => {
             handleInputNeeded();
         }, 120000);

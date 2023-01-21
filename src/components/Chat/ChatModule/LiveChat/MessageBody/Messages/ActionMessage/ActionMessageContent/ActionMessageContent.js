@@ -36,7 +36,7 @@ const ActionMessageContent = ({
     };
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE
+    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
 
     const showCautionIcon =
         (isRelaxedTemplate && messageActionType === INPUT_NEEDED) ||
@@ -76,8 +76,9 @@ const ActionMessageContent = ({
                         {messageContent}
                     </div>
                     {requestRatings && (
-                        <CustomRatings {...{ rating, handleRating }} 
-                        otherClass='template__ratings'
+                        <CustomRatings
+                            {...{ rating, handleRating }}
+                            otherClass='template__ratings'
                         />
                     )}
                 </div>
