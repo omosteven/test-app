@@ -353,6 +353,12 @@ const LiveChat = ({
 
         triggerAgentTyping(true);
 
+        console.log('sent this', {
+            ticketId,
+            branchId,
+            branchOptionId,
+            message: branchOptionLabel,
+        });
         await socket.emit(
             SEND_BRANCH_OPTION,
             {
@@ -1100,6 +1106,7 @@ const LiveChat = ({
                     triggerAgentTyping={triggerAgentTyping}
                     showVerifyForm={showVerifyForm}
                     handleScrollChatToBottom={handleScrollChatToBottom}
+                    disableInput={status === LOADING}
                 />{" "}
                 {/* {reminderCount !== null && (
                     <Favicon

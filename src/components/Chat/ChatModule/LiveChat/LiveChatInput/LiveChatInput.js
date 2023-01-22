@@ -24,6 +24,8 @@ import { IMAGE, VIDEO, FILE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
 import UploadedFiles from "./UploadIcons/UploadedFiles/UploadedFiles";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import DatePickerUI from "components/ui/DatePickerUI/DatePickerUI";
+import RelaxedDatePicker from "components/ui/InputTypes/DatePicker/RelaxedDatePicker";
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
@@ -38,6 +40,7 @@ const LiveChatInput = ({
     allowUserInput,
     inputType,
     currentFormElement,
+    disableInput,
 }) => {
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
@@ -340,10 +343,12 @@ const LiveChatInput = ({
                         // onClick={() => handleScrollChatToBottom()}
                         hideLabel={true}
                         ref={inputRef}
-                        disabled={isDisabled}
                         maxLength={maxLength?.ruleConstraint}
                         // pattern={pattern}
                         max={max?.ruleConstraint}
+                        disabled={
+                            isDisabled || inputType === IMAGE || disableInput
+                        }
                     />
                 );
 
@@ -353,6 +358,7 @@ const LiveChatInput = ({
                         onChange={(date) =>
                             updateRequest({ ...request, message: date })
                         }
+                        disabled={disableInput}
                     />
                 );
 
@@ -370,6 +376,7 @@ const LiveChatInput = ({
                         }
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
+                        isDisabled={disableInput}
                         // onClick={() => handleScrollChatToBottom()}
                     />
                 );
@@ -385,7 +392,9 @@ const LiveChatInput = ({
                         label='Chat'
                         ref={inputRef}
                         hideLabel={true}
-                        disabled={isDisabled || inputType === IMAGE}
+                        disabled={
+                            isDisabled || inputType === IMAGE || disableInput
+                        }
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
                         // onClick={() => handleScrollChatToBottom()}
@@ -485,20 +494,23 @@ const LiveChatInput = ({
                             {isRelaxedTemplate && isFormElementUploadable ? (
                                 <>
                                     {uploads?.length === 0 && (
-                                        <UploadIcons
-                                            upload={uploads}
-                                            updateUpload={updateUploads}
-                                            isDisabled={isDisabled}
-                                            setErrors={setErrors}
-                                            showModal={showModal}
-                                            toggleModal={toggleModal}
-                                            handleUpload={handleUpload}
-                                            selectedMedia={selectedMedia}
-                                            currentFormElement={
-                                                currentFormElement
-                                            }
-                                            label={"Upload File"}
-                                        />
+                                        <>
+                                            <RelaxedDatePicker />
+                                        </>
+                                        // <UploadIcons
+                                        //     upload={uploads}
+                                        //     updateUpload={updateUploads}
+                                        //     isDisabled={isDisabled}
+                                        //     setErrors={setErrors}
+                                        //     showModal={showModal}
+                                        //     toggleModal={toggleModal}
+                                        //     handleUpload={handleUpload}
+                                        //     selectedMedia={selectedMedia}
+                                        //     currentFormElement={
+                                        //         currentFormElement
+                                        //     }
+                                        //     label={"Upload File"}
+                                        // />
                                     )}
                                 </>
                             ) : (
