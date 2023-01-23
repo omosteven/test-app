@@ -31,7 +31,7 @@ const ChatHeader = ({
         chatSettings: { companyLogo, workspaceSlug, defaultTemplate },
     } = useSelector((state) => state.chat);
     const {
-        activeTicket: { agent },
+        activeTicket: { agent, ticketId },
     } = useSelector((state) => state.tickets);
 
     const { width } = useWindowSize();
@@ -149,6 +149,7 @@ const ChatHeader = ({
                                     <ChatSettingsToggler
                                         isMobile={true}
                                         handleCloseTicket={handleCloseTicket}
+                                        canCloseTicket={ticketId !== undefined}
                                     />
                                 </div>
                             )}

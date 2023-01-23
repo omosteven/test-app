@@ -465,7 +465,11 @@ const LiveChat = ({
     };
 
     const handleNewMessage = async (request) => {
-        const { message, fileAttachments } = request;
+        let { message, fileAttachments } = request;
+        message = message?.replace?.(/[^\w ]/g, "");
+        if (messages?.length === 0) {
+            triggerAgentTyping(true);
+        }
         const newMessageId = generateID();
         setMssgOptionLoading(false);
         if (currentFormElement) {
@@ -1120,7 +1124,7 @@ const LiveChat = ({
                     currentFormElement={currentFormElement}
                     handleNewMessage={handleNewMessage}
                     fetchingInputStatus={fetchingInputStatus}
-                    allowUserInput={allowUserInput}
+                    allowUserInput={allowUserInput && status !== LOADING}
                     triggerAgentTyping={triggerAgentTyping}
                     showVerifyForm={showVerifyForm}
                     handleScrollChatToBottom={handleScrollChatToBottom}
