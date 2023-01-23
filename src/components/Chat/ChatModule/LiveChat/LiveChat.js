@@ -51,7 +51,6 @@ import {
 } from "../../../../store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
-import Favicon from "react-favicon";
 import "./LiveChat.scss";
 
 const NO_ACTION = "NO_ACTION";
@@ -150,7 +149,6 @@ const LiveChat = ({
                                 data[data?.length - 1]?.messageContentId
                             }`
                         );
-                        console.log({ ticket });
                         handleAddEmail();
                     }
 
@@ -295,7 +293,6 @@ const LiveChat = ({
                 message: branchOptionLabel,
             });
         }
-
         handleIssueDiscovery(convo);
     };
 
@@ -351,7 +348,7 @@ const LiveChat = ({
             return "";
         }
 
-        triggerAgentTyping(true);
+        // triggerAgentTyping(true);
 
         await socket.emit(
             SEND_BRANCH_OPTION,
@@ -458,7 +455,6 @@ const LiveChat = ({
         const { message, fileAttachments } = request;
         const newMessageId = generateID();
         setMssgOptionLoading(false);
-
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
             socket.emit(FILL_FORM_RECORD, {
@@ -708,7 +704,7 @@ const LiveChat = ({
             );
         }
     };
-    console.log({ messages });
+
     const handleConvoBreaker = (messageType, deliveryDate, customMessageId) => {
         if (messageType) {
             const {
@@ -770,7 +766,11 @@ const LiveChat = ({
             deliveryDate,
             branchOptionActionType,
         } = message;
-        console.log({ message });
+        if (messageType === BRANCH_OPTION) {
+            triggerAgentTyping(true);
+        } else {
+            triggerAgentTyping(false);
+        }
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
@@ -833,6 +833,8 @@ const LiveChat = ({
         }
 
         handleScrollChatToBottom();
+
+        triggerAgentTyping(false);
     };
 
     const handleAgentUnavailable = () => {
