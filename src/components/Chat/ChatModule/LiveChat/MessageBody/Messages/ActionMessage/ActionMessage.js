@@ -20,6 +20,7 @@ const ActionMessage = ({
     messageIndex,
     messagesDepth,
     openPreviewModal,
+    mssgOptionLoading,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -110,6 +111,7 @@ const ActionMessage = ({
                             }
                             deliveryDate={deliveryDate}
                             messageActionBranchId={actionBranchId}
+                            mssgOptionLoading={mssgOptionLoading}
                         />
                     )}
 

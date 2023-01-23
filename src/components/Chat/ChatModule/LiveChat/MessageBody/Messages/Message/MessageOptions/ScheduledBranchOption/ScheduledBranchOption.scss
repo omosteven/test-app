@@ -92,6 +92,13 @@
         color: $text__default_color;
         border: 0.125rem solid $primary__theme_color !important;
 
+        #{$relaxed__mode__template__selector} {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
         #{$dark__mode__theme__selector} {
             color: $dark__mode__text__theme__color;
             background: $dark__mode__theme__grey__color;
