@@ -46,6 +46,7 @@ const MessageOptions = ({
                                 : handleMessageOptionSelect(option)
                         }
                         deliveryDate={deliveryDate}
+                        mssgOptionLoading={mssgOptionLoading}
                     />
                 ) : (
                     <MessageBranchOption

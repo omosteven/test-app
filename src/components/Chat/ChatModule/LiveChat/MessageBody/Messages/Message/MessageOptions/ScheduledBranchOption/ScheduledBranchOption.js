@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { INPUT_NEEDED } from "../../../enums";
 import CountdownTimer from "./CountdownTimer/CountdownTimer";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import SmallLoader from "components/ui/SmallLoader/SmallLoader";
 import "./ScheduledBranchOption.scss";
 
 const { WORK_MODE, RELAXED } = defaultTemplates;
@@ -16,6 +17,7 @@ const ScheduledBranchOption = ({
     messagesDepth,
     deliveryDate,
     lastMessage,
+    mssgOptionLoading,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -63,6 +65,9 @@ const ScheduledBranchOption = ({
                             countdownEnded={countdownEnded}
                         />
                     </div>
+                )}
+                {mssgOptionLoading && isSelected && (
+                    <SmallLoader otherClassName='branch__option--loader' />
                 )}
             </div>
             {!enable && isWorkModeTemplate && (

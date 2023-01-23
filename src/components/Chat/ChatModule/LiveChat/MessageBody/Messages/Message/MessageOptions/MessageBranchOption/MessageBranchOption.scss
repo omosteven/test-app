@@ -25,12 +25,16 @@
 
     @include media("<=medium-screen") {
         #{$relaxed__mode__template__selector} {
+            display: block;
             width: 100%;
             font-size: 20px;
             line-height: 24px;
             padding: 14px 37.25px;
             text-align: center;
             border-radius: 100px;
+            justify-content: center;
+            gap: 20px;
+            align-items: center;
         }
     }
 
@@ -68,5 +72,9 @@
     }
     &--loader {
         margin-left: 1rem !important;
+
+        @include media("<=medium-screen") {
+            margin: 0;
+        }
     }
 }
