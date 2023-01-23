@@ -28,7 +28,7 @@ const ChatHeader = ({
     showActions,
 }) => {
     const {
-        chatSettings: { companyLogo, workspaceSlug, defaultTemplate },
+        chatSettings: { companyLogo, teamName, defaultTemplate },
     } = useSelector((state) => state.chat);
     const {
         activeTicket: { agent },
@@ -47,9 +47,9 @@ const ChatHeader = ({
                 return (
                     <CompanyChatLogo
                         src={companyLogo}
-                        alt={workspaceSlug}
+                        alt={teamName}
                         className='company__logo'
-                        name={workspaceSlug}
+                        name={teamName}
                     />
                 );
             case DATAMODE:
@@ -62,7 +62,7 @@ const ChatHeader = ({
                                     <>
                                         <CompanyChatLogo
                                             src={companyLogo}
-                                            alt={workspaceSlug}
+                                            alt={teamName}
                                             className='company__logo'
                                             name={`${agent?.firstName} ${agent?.lastName}`}
                                         />
@@ -70,9 +70,9 @@ const ChatHeader = ({
                                 ) : (
                                     <CompanyChatLogo
                                         src={companyLogo}
-                                        alt={workspaceSlug}
+                                        alt={teamName}
                                         className='company__logo'
-                                        name={workspaceSlug}
+                                        name={teamName}
                                     />
                                 )}
                             </>
@@ -89,9 +89,9 @@ const ChatHeader = ({
                 return (
                     <CompanyChatLogo
                         src={companyLogo}
-                        alt={workspaceSlug}
+                        alt={teamName}
                         className='company__logo'
-                        name={workspaceSlug}
+                        name={teamName}
                     />
                 );
         }
@@ -113,7 +113,7 @@ const ChatHeader = ({
                         {isWorkModeTemplate || isNotTablet ? (
                             <CompanyChatLogo
                                 src={companyLogo}
-                                alt={workspaceSlug}
+                                alt={teamName}
                                 className='company__logo'
                             />
                         ) : (
