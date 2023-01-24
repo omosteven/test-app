@@ -424,10 +424,10 @@ const LiveChatInput = ({
 
     const { formElementType } = currentFormElement || {};
 
-    const isFormElementUploadable =
-        formElementType === IMAGE ||
-        formElementType === VIDEO ||
-        formElementType === FILE;
+    const isFormElementUploadable =true;
+        // formElementType === IMAGE ||
+        // formElementType === VIDEO ||
+        // formElementType === FILE;
 
     return (
         <div className='chat__input__container' ref={inputContainerRef}>

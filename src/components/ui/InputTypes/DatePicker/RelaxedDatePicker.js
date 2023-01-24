@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { ReactSVG } from "react-svg";
+import CustomDatePicker from "./DatePicker";
 import "./RelaxedDatePicker.scss";
 
 const RelaxedDatePicker = ({ onChange, ...rest }) => {
@@ -33,13 +34,14 @@ const RelaxedDatePicker = ({ onChange, ...rest }) => {
                 </span>
             </div>
             <div className='relaxed-date-picker__date_segment'>
-                <DatePicker
+                {/* <input type='date' i/> */}
+                <CustomDatePicker
                     open={true}
-                    onChange={(date) => {
-                        setSelectedDate(date);
-                        let dateString = moment(date).format("L");
-                        onChange(dateString);
-                    }}
+                    // onChange={(date) => {
+                    //     setSelectedDate(date);
+                    //     let dateString = moment(date).format("L");
+                    //     onChange(dateString);
+                    // }}
                     // className='form-control'
                     className='relaxed-date-picker__date'
                     placeholderText='Choose a date'
