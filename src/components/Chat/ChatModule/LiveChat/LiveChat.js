@@ -467,9 +467,11 @@ const LiveChat = ({
     const handleNewMessage = async (request) => {
         let { message, fileAttachments } = request;
         message = message?.replace?.(/[^\w ]/g, "");
-        if (messages?.length === 0) {
+
+        if (messages?.length === 1) {
             triggerAgentTyping(true);
         }
+
         const newMessageId = generateID();
         setMssgOptionLoading(false);
         if (currentFormElement) {
@@ -558,7 +560,6 @@ const LiveChat = ({
     const fetchConvoSuggestions = async (message) => {
         try {
             const { messageContent } = message;
-            triggerAgentTyping(true);
 
             const url = apiRoutes?.investigateMesage;
             const res = await API.get(url, {
@@ -680,6 +681,8 @@ const LiveChat = ({
                     deliveryDate: new Date().toISOString(),
                 })
             );
+
+            setMssgOptionLoading(false);
         }
     };
 
@@ -783,7 +786,8 @@ const LiveChat = ({
             deliveryDate,
             branchOptionActionType,
         } = message;
-        if (messageType === BRANCH_OPTION) {
+
+        if (senderType === THIRD_USER && messageType !== DEFAULT) {
             triggerAgentTyping(true);
         } else {
             triggerAgentTyping(false);
@@ -852,7 +856,7 @@ const LiveChat = ({
 
         handleScrollChatToBottom();
 
-        triggerAgentTyping(false);
+        // triggerAgentTyping(false);
     };
 
     const handleAgentUnavailable = () => {
