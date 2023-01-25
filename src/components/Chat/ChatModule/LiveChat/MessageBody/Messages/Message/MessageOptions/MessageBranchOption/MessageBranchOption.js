@@ -36,7 +36,14 @@ const MessageBranchOption = ({
                 selectedOption ? null : handleMessageOptionSelect()
             }
             disabled={shouldBeDisabled}>
-            <span>{branchOptionLabel}</span>
+            <span
+                className={
+                    mssgOptionLoading && isSelected
+                        ? "branch__option--hide-on-mobile"
+                        : ""
+                }>
+                {branchOptionLabel}
+            </span>
             {mssgOptionLoading && isSelected && (
                 <SmallLoader otherClassName='branch__option--loader' />
             )}

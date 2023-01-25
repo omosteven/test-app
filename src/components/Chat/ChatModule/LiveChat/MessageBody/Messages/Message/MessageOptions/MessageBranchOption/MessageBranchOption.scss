@@ -70,11 +70,18 @@
             background: $light__theme_color;
         }
     }
+
+    &--hide-on-mobile {
+        @include media("<=medium-screen") {
+            display: none;
+        }
+    }
     &--loader {
         margin-left: 1rem !important;
-
         @include media("<=medium-screen") {
             margin: 0;
+            margin-left: auto !important;
+            margin-right: auto !important;
         }
     }
 }
