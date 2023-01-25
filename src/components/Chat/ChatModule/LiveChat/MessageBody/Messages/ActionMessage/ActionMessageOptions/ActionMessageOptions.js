@@ -52,7 +52,9 @@ const ActionMessageOptions = ({
                 />
             ))}
 
-            {isRelaxedTemplate && <PoweredBy />}
+            {isRelaxedTemplate && (
+                <PoweredBy otherClassName='white__background' />
+            )}
         </div>
     );
 };
