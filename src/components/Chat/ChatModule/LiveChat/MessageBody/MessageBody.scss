@@ -1,7 +1,6 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
-
 .message-body {
     padding: 1.5rem;
     padding-top: 4rem;
@@ -49,7 +48,7 @@
         padding-bottom: 0%;
 
         #{$relaxed__mode__template__selector} {
-            padding-top: 35%;
+            padding-top: 40%;
         }
     }
 }
