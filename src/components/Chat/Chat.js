@@ -260,10 +260,14 @@ const Chat = () => {
     //     }
     // }, []);
 
+    const reconnectUser = () => {
+        const socketReconnection = reconnectSocket(userToken);
+        setSocketConnection(socketReconnection);
+    };
+
     useEffect(() => {
         if (userToken) {
-            const socketReconnection = reconnectSocket(userToken);
-            setSocketConnection(socketReconnection);
+            reconnectUser();
         }
     }, [socket, userToken]);
 
@@ -313,6 +317,7 @@ const Chat = () => {
                                         handleTicketCloseSuccess
                                     }
                                     handleOpenNewTicket={createNewTicket}
+                                    reconnectUser={reconnectUser}
                                 />
                             ) : (
                                 <div className='empty__chat--interface'>

@@ -83,6 +83,7 @@ const LiveChat = ({
     handleCloseTicket,
     handleTicketCloseSuccess,
     handleOpenNewTicket,
+    reconnectUser,
 }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -400,6 +401,16 @@ const LiveChat = ({
     const handleSocketError = () => {
         setErrorMssg("Tap to Refresh");
         setStatus(ERROR);
+    };
+
+    const handleSocketConnect = () => {
+        setStatus(DATAMODE);
+        setErrorMssg();
+    };
+
+    const handleReconnectUser = () => {
+        setStatus(LOADING);
+        reconnectUser();
     };
 
     const figureInputAction = () => {
@@ -936,6 +947,7 @@ const LiveChat = ({
         // socket.on(CLOSED_TICKET, handleTicketClosure);
 
         socket.on("connect_error", handleSocketError);
+        socket.on("connect", handleSocketConnect);
 
         return () => {
             socket.off(RECEIVE_MESSAGE);
@@ -1128,6 +1140,7 @@ const LiveChat = ({
                             status={status}
                             agent={agent}
                             errorMssg={errorMssg}
+                            reconnectUser={handleReconnectUser}
                         />
                         <MessageBody
                             forcedAgentTyping={forcedAgentTyping}

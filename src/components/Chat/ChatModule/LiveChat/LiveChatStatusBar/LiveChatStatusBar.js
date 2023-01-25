@@ -11,7 +11,7 @@ import "./LiveChatStatusBar.scss";
 const { IDLE, LOADING, ERROR, DATAMODE } = dataQueryStatus;
 const { WORK_MODE, RELAXED } = defaultTemplates;
 
-const LiveChatStatusBar = ({ status, errorMssg }) => {
+const LiveChatStatusBar = ({ status, errorMssg, reconnectUser }) => {
     // const {email} = agent || {}
     const { user } = useSelector((state) => state?.auth);
     const { defaultTemplate } = useSelector(
@@ -24,7 +24,8 @@ const LiveChatStatusBar = ({ status, errorMssg }) => {
     // } = useSelector((state) => state?.auth);
 
     const handleRetry = () => {
-        window.location.reload();
+        // window.location.reload();
+        reconnectUser?.();
     };
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
