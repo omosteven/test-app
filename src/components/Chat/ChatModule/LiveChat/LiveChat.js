@@ -112,7 +112,7 @@ const LiveChat = ({
         ],
     });
 
-    const [uploads, updateUploads] = useState(false);
+    const [uploads, updateUploads] = useState([]);
 
     const {
         chatSettings: { workspaceId },

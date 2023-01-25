@@ -423,6 +423,7 @@ const LiveChatInput = ({
 
     const isFormElementImageUpload = formElementType === IMAGE;
 
+    console.log({currentFormElement, isFormElementImageUpload,uploads})
     return (
         <div className='chat__input__container' ref={inputContainerRef}>
             <div
