@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MediaDisplayError from "./MediaDisplayError/MediaDisplayError";
+// import MediaDisplayError from "./MediaDisplayError/MediaDisplayError";
 import MediaDisplayLoader from "./MediaDisplayLoader/MediaDisplayLoader";
 
 const mediaTypes = {
@@ -10,7 +10,7 @@ const mediaTypes = {
 
 const MediaDisplay = ({ mediaType, ...rest }) => {
     const [mediaIsLoaded, setMediaIsLoaded] = useState(false);
-    const [mediaError, setMediaError] = useState(false);
+    // const [mediaError, setMediaError] = useState(false);
 
     const { VIDEO, FILE, IMAGE } = mediaTypes;
 
@@ -25,9 +25,8 @@ const MediaDisplay = ({ mediaType, ...rest }) => {
                             style={{
                                 display: mediaIsLoaded ? "initial" : "none",
                             }}
-                            onError={() => setMediaError(true)}
+                            // onError={() => setMediaError(true)}
                         />
-                        <MediaDisplayError />
                         {!mediaIsLoaded && <MediaDisplayLoader />}
                     </>
                 );

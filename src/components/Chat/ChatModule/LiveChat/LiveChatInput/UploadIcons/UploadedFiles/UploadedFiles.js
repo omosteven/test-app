@@ -1,8 +1,13 @@
 import UploadedFile from "./UploadedFile/UploadedFile";
 import "./UploadedFiles.scss";
 
-const UploadedFiles = ({ uploads, handleRemoveFile, handleRetry, status }) => {
-    console.log({ uploads });
+const UploadedFiles = ({
+    uploads,
+    handleRemoveFile,
+    handleRetry,
+    status,
+    icon,
+}) => {
     return (
         <div className='uploaded-files'>
             {uploads?.map((file, fileIndex) => (
@@ -13,6 +18,7 @@ const UploadedFiles = ({ uploads, handleRemoveFile, handleRetry, status }) => {
                     handleRemoveFile={handleRemoveFile}
                     status={status}
                     handleRetry={handleRetry}
+                    icon={icon}
                 />
             ))}
         </div>

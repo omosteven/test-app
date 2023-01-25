@@ -38,27 +38,33 @@ const LiveChatInput = ({
     allowUserInput,
     inputType,
     currentFormElement,
+    uploads,
+    updateUploads,
+    request,
+    updateRequest,
 }) => {
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
 
-    const [request, updateRequest] = useState({
-        message: "",
-        fileAttachments: [
-            {
-                fileAttachmentUrl: "",
-                fileAttachmentType: "",
-                fileAttachmentName: "",
-            },
-        ],
-    });
+    // const [request, updateRequest] = useState({
+    //     message: "",
+    //     fileAttachments: [
+    //         {
+    //             fileAttachmentUrl: "",
+    //             fileAttachmentType: "",
+    //             fileAttachmentName: "",
+    //         },
+    //     ],
+    // });
 
-    const [uploads, updateUploads] = useState([]);
+    // const [uploads, updateUploads] = useState([]);
     const [selectedMedia, setSelectedMedia] = useState({});
     const [errors, setErrors] = useState({});
     const [errorMssg, setErrorMssg] = useState("");
     const [status, setStatus] = useState();
     const [showModal, toggleModal] = useState(false);
+    const [loading, setLoading] = useState(false);
+
     const isDisabled = fetchingInputStatus || !allowUserInput;
 
     const socket = useContext(SocketContext);
@@ -199,17 +205,12 @@ const LiveChatInput = ({
 
     const sendNewMessage = () => {
         handleNewMessage(request);
-        updateRequest({
-            message: "",
-            fileAttachments: [
-                {
-                    fileAttachmentUrl: "",
-                    fileAttachmentType: "",
-                    fileAttachmentName: "",
-                },
-            ],
-        });
-        updateUploads([]);
+
+        if (request?.fileAttachments[0]?.fileAttachmentUrl) {
+            setLoading(true);
+        } else {
+            setLoading(false);
+        }
         setErrors((prev) => ({ ...prev, file: "" }));
     };
 
@@ -415,10 +416,12 @@ const LiveChatInput = ({
 
     const { formElementType } = currentFormElement || {};
 
-    const isFormElementUploadable =
-        formElementType === IMAGE ||
-        formElementType === VIDEO ||
-        formElementType === FILE;
+    // const isFormElementUploadable =
+    //     formElementType === IMAGE ||
+    //     formElementType === VIDEO ||
+    //     formElementType === FILE;
+
+    const isFormElementImageUpload = formElementType === IMAGE;
 
     return (
         <div className='chat__input__container' ref={inputContainerRef}>
@@ -431,12 +434,12 @@ const LiveChatInput = ({
                 <form onSubmit={handleSubmit} id='chatInput'>
                     {uploads?.length > 0 && (
                         <>
-                            {isRelaxedTemplate &&
-                            currentFormElement?.formElementType === "IMAGE" ? (
+                            {isRelaxedTemplate && isFormElementImageUpload ? (
                                 <UploadedFiles
                                     uploads={uploads}
                                     status={status}
                                     handleRemoveFile={handleRemoveFile}
+                                    icon={imageLinks?.svg?.attachment2}
                                     handleRetry={(file) =>
                                         handleRetryUpload(file)
                                     }
@@ -482,7 +485,7 @@ const LiveChatInput = ({
 
                     <div className='chat__input--container'>
                         <div className='chat__input--group'>
-                            {isRelaxedTemplate && isFormElementUploadable ? (
+                            {isRelaxedTemplate && isFormElementImageUpload ? (
                                 <>
                                     {uploads?.length === 0 && (
                                         <UploadIcons
@@ -497,7 +500,8 @@ const LiveChatInput = ({
                                             currentFormElement={
                                                 currentFormElement
                                             }
-                                            label={"Upload File"}
+                                            icon={imageLinks?.svg?.attachment2}
+                                            label={"Upload image"}
                                         />
                                     )}
                                 </>
@@ -546,21 +550,24 @@ const LiveChatInput = ({
                         </span>
                     )}
 
-                    {isRelaxedTemplate && isFormElementUploadable && (
-                        <Button
-                            type='submit'
-                            text={"Submit"}
-                            classType='primary'
-                            otherClass={`chat__input__file__button ${
-                                !btnDisabled ? "active" : ""
-                            }`}
-                            disabled={
-                                btnDisabled ||
-                                fetchingInputStatus ||
-                                status === LOADING
-                            }
-                        />
-                    )}
+                    {isRelaxedTemplate &&
+                        isFormElementImageUpload &&
+                        uploads?.length > 0 && (
+                            <Button
+                                type='submit'
+                                text={"Submit"}
+                                classType='primary'
+                                otherClass={`chat__input__file__button ${
+                                    !btnDisabled ? "active" : ""
+                                }`}
+                                loading={loading}
+                                disabled={
+                                    btnDisabled ||
+                                    fetchingInputStatus ||
+                                    status === LOADING
+                                }
+                            />
+                        )}
                 </form>
                 <PoweredBy />
             </div>

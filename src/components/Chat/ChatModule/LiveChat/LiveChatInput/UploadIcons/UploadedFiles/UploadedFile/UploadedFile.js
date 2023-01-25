@@ -9,6 +9,7 @@ const UploadedFile = ({
     status,
     handleRemoveFile,
     fileIndex,
+    icon,
 }) => {
     const { fileAttachmentName, uploadStatus } = file;
 
@@ -16,7 +17,7 @@ const UploadedFile = ({
         <>
             <div className='uploaded-file'>
                 <div>
-                    <ReactSVG src={imageLinks?.svg?.attachment} />
+                    <ReactSVG src={icon ? icon : imageLinks?.svg?.attachment} />
                     <span>{fileAttachmentName}</span>
                 </div>
 
@@ -26,9 +27,9 @@ const UploadedFile = ({
                         fileIndex,
                         handleRemoveFile,
                     }}
-                    status={uploadStatus}
+                    status={status || uploadStatus}
                 />
-                
+
                 <UploadPreviewError
                     status={status || uploadStatus}
                     file={file}

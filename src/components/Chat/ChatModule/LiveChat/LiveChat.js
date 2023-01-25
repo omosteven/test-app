@@ -101,6 +101,19 @@ const LiveChat = ({
     const { conversationBreakers } = useSelector((state) => state.chat);
     const [delayInputNeeded, setDelayInputNeeded] = useState(false);
 
+    const [request, updateRequest] = useState({
+        message: "",
+        fileAttachments: [
+            {
+                fileAttachmentUrl: "",
+                fileAttachmentType: "",
+                fileAttachmentName: "",
+            },
+        ],
+    });
+
+    const [uploads, updateUploads] = useState(false);
+
     const {
         chatSettings: { workspaceId },
     } = useSelector((state) => state.chat);
@@ -464,6 +477,20 @@ const LiveChat = ({
         setFetchingInputStatus(false);
     };
 
+    const clearUserInput = () => {
+        updateRequest({
+            message: "",
+            fileAttachments: [
+                {
+                    fileAttachmentUrl: "",
+                    fileAttachmentType: "",
+                    fileAttachmentName: "",
+                },
+            ],
+        });
+        updateUploads([]);
+    };
+
     const handleNewMessage = async (request) => {
         let { message, fileAttachments } = request;
         message = message?.replace?.(/[^\w ]/g, "");
@@ -474,8 +501,10 @@ const LiveChat = ({
 
         const newMessageId = generateID();
         setMssgOptionLoading(false);
+
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
+
             socket.emit(FILL_FORM_RECORD, {
                 ticketId,
                 message: message,
@@ -759,6 +788,8 @@ const LiveChat = ({
                         : new Date().toISOString(),
                 })
             );
+
+            triggerAgentTyping(false);
         }
 
         if (messageType === FORM_FILLED_COMPLETELY) {
@@ -767,6 +798,7 @@ const LiveChat = ({
             //     workspaceId,
             // });
             sendAgentTicket();
+            triggerAgentTyping(false);
             return handleAddEmail();
         }
     };
@@ -787,6 +819,7 @@ const LiveChat = ({
             branchOptionActionType,
         } = message;
 
+        clearUserInput();
         if (senderType === THIRD_USER && messageType !== DEFAULT) {
             triggerAgentTyping(true);
         } else {
@@ -1132,6 +1165,10 @@ const LiveChat = ({
                     triggerAgentTyping={triggerAgentTyping}
                     showVerifyForm={showVerifyForm}
                     handleScrollChatToBottom={handleScrollChatToBottom}
+                    uploads={uploads}
+                    updateUploads={updateUploads}
+                    updateRequest={updateRequest}
+                    request={request}
                 />{" "}
                 {/* {reminderCount !== null && (
                     <Favicon

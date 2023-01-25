@@ -15,6 +15,7 @@ const UploadIcons = ({
     selectedMedia,
     currentFormElement,
     label,
+    icon,
 }) => {
     const getFileFormat = (fileType) => {
         if (fileType?.startsWith("image/")) {
@@ -81,7 +82,7 @@ const UploadIcons = ({
             <div className='upload--icons'>
                 <AttachmentInput
                     id='file'
-                    src={imageLinks?.svg?.attachment}
+                    src={icon ? icon : imageLinks?.svg?.attachment}
                     accept='.pdf,.doc,.docx,video/*,image/png,image/jpeg,image/jpg'
                     onChange={handleFileEvent}
                     disabled={isDisabled}
