@@ -66,7 +66,9 @@ const MessageOptions = ({
                     />
                 );
             })}
-            {isRelaxedTemplate && <PoweredBy />}
+            {isRelaxedTemplate && (
+                <PoweredBy otherClassName='white__background' />
+            )}
         </div>
     );
 };

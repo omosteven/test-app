@@ -18,6 +18,12 @@
     }
 
     #{$white__mode__theme__selector} {
-        background: $white__mode__background !important;
+        background-color: $white__mode__background !important;
+    }
+
+    &.white__background {
+        #{$white__mode__theme__selector} {
+            background-color: $white__mode__options__background !important;
+        }
     }
 }
