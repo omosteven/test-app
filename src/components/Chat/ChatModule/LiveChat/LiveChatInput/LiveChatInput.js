@@ -46,18 +46,6 @@ const LiveChatInput = ({
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
 
-    // const [request, updateRequest] = useState({
-    //     message: "",
-    //     fileAttachments: [
-    //         {
-    //             fileAttachmentUrl: "",
-    //             fileAttachmentType: "",
-    //             fileAttachmentName: "",
-    //         },
-    //     ],
-    // });
-
-    // const [uploads, updateUploads] = useState([]);
     const [selectedMedia, setSelectedMedia] = useState({});
     const [errors, setErrors] = useState({});
     const [errorMssg, setErrorMssg] = useState("");

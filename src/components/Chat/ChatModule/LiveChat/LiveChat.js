@@ -532,6 +532,8 @@ const LiveChat = ({
                 messageType: DEFAULT,
                 fileAttachments,
             });
+
+            clearUserInput();
         }
     };
 
