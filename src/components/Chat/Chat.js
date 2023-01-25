@@ -25,7 +25,6 @@ import TicketCloseModal from "./TicketCloseModal/TicketCloseModal";
 import { setConversationBreakers } from "store/chat/actions";
 import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import { DotLoader } from "components/ui";
-import PoweredBy from "components/common/PoweredBy/PoweredBy";
 import { useWindowSize } from "utils/hooks";
 import "./Chat.scss";
 
@@ -267,7 +266,6 @@ const Chat = () => {
             setSocketConnection(socketReconnection);
         }
     }, [socket, userToken]);
-
 
     return (
         <>

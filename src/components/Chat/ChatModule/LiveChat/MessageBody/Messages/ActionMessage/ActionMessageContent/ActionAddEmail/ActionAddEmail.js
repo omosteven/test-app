@@ -20,7 +20,9 @@ const ActionAddEmail = ({ handleVerifyAction }) => {
                 onClick={handleVerifyAction}>
                 Add email address
             </div>
-            {isRelaxedTemplate && <PoweredBy />}
+            {isRelaxedTemplate && (
+                <PoweredBy otherClassName='white__background' />
+            )}
         </div>
     );
 };
