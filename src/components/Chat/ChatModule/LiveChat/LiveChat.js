@@ -51,7 +51,7 @@ import {
 } from "../../../../store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
-import Favicon from "react-favicon";
+import { useFaviconNotification } from "react-favicon-notification";
 import "./LiveChat.scss";
 
 const NO_ACTION = "NO_ACTION";
@@ -73,7 +73,7 @@ const {
     SUCCESS,
 } = messageTypes;
 
-const { TEXT } = formInputTypes;
+const { TEXT, DATE } = formInputTypes;
 
 const LiveChat = ({
     getCustomerTickets,
@@ -93,14 +93,15 @@ const LiveChat = ({
     const [mssgOptionLoading, setMssgOptionLoading] = useState(false);
 
     const [fetchingInputStatus, setFetchingInputStatus] = useState(true);
-    const [reminderCount, setReminderCount] = useState(null);
+    const [config, setConfig] = useFaviconNotification();
+
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
 
     const { conversationBreakers } = useSelector((state) => state.chat);
     const [delayInputNeeded, setDelayInputNeeded] = useState(false);
 
     const {
-        chatSettings: { workspaceId, companyLogo },
+        chatSettings: { workspaceId },
     } = useSelector((state) => state.chat);
 
     const { ticketId, agent, ticketPhase, customer } = ticket;
@@ -117,6 +118,16 @@ const LiveChat = ({
         return conversationBreakers?.find(
             (x) => x.actionBranchType === actionBranchType
         );
+    };
+
+    const showNotificationIcon = (show) => {
+        setConfig({
+            ...config,
+            innerCircle: true,
+            fontColor: "red",
+            radius: 6,
+            show,
+        });
     };
 
     const requestAllMessages = async () => {
@@ -150,7 +161,6 @@ const LiveChat = ({
                                 data[data?.length - 1]?.messageContentId
                             }`
                         );
-                        console.log({ ticket });
                         handleAddEmail();
                     }
 
@@ -295,7 +305,6 @@ const LiveChat = ({
                 message: branchOptionLabel,
             });
         }
-
         handleIssueDiscovery(convo);
     };
 
@@ -351,9 +360,9 @@ const LiveChat = ({
             return "";
         }
 
-        triggerAgentTyping(true);
+        // triggerAgentTyping(true);
 
-        console.log('sent this', {
+        console.log("sent this", {
             ticketId,
             branchId,
             branchOptionId,
@@ -416,9 +425,11 @@ const LiveChat = ({
                     if (messageActionType === INPUT_NEEDED) {
                         shouldAllowUserInput = true;
                         userInputType = TEXT;
+                        setCurrentFormElement();
                     } else {
                         shouldAllowUserInput = false;
                         userInputType = TEXT;
+                        setCurrentFormElement();
                     }
 
                     break;
@@ -461,10 +472,13 @@ const LiveChat = ({
     };
 
     const handleNewMessage = async (request) => {
-        const { message, fileAttachments } = request;
+        let { message, fileAttachments } = request;
+        message = message?.replace?.(/[^\w ]/g, "");
+        if (messages?.length === 0) {
+            triggerAgentTyping(true);
+        }
         const newMessageId = generateID();
         setMssgOptionLoading(false);
-
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
             socket.emit(FILL_FORM_RECORD, {
@@ -714,7 +728,7 @@ const LiveChat = ({
             );
         }
     };
-    console.log({ messages });
+
     const handleConvoBreaker = (messageType, deliveryDate, customMessageId) => {
         if (messageType) {
             const {
@@ -776,7 +790,12 @@ const LiveChat = ({
             deliveryDate,
             branchOptionActionType,
         } = message;
-        console.log({ message });
+        if (messageType === BRANCH_OPTION) {
+            triggerAgentTyping(true);
+        } else {
+            triggerAgentTyping(false);
+        }
+
         const { ticketId: newMessageTicketId } = message?.ticket;
         if (senderType === WORKSPACE_AGENT) {
             triggerAgentTyping(false);
@@ -839,6 +858,8 @@ const LiveChat = ({
         }
 
         handleScrollChatToBottom();
+
+        triggerAgentTyping(false);
     };
 
     const handleAgentUnavailable = () => {
@@ -980,7 +1001,9 @@ const LiveChat = ({
                         return "";
                 }
 
-                setReminderCount((prev) => prev + 1);
+                if (document.hidden) {
+                    showNotificationIcon(true);
+                }
 
                 senderReminderEmail();
             }
@@ -1031,6 +1054,12 @@ const LiveChat = ({
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
     const inputNeededTimer = () => {
+        document.onvisibilitychange = () => {
+            if (document.visibilityState === "visible") {
+                showNotificationIcon(false);
+            }
+        };
+
         return setInterval(() => {
             handleInputNeeded();
         }, 120000);
@@ -1047,6 +1076,10 @@ const LiveChat = ({
             clearInterval(timer);
         };
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
+
+    const { formElementType } = currentFormElement || {};
+
+    const isDateFormElement = formElementType === DATE;
 
     return (
         <>
@@ -1093,30 +1126,21 @@ const LiveChat = ({
                 />
             )}
             <div
-                className={`chat__input__container ${
-                    showVerifyForm ? "live-chat-input__add-email" : ""
-                }`}>
+                className={`chat__input__container  ${
+                    isDateFormElement ? "chat__input__high__index" : ""
+                } ${showVerifyForm ? "live-chat-input__add-email" : ""}`}>
                 <LiveChatInput
                     ticketId={ticketId}
                     inputType={currentInputType}
                     currentFormElement={currentFormElement}
                     handleNewMessage={handleNewMessage}
                     fetchingInputStatus={fetchingInputStatus}
-                    allowUserInput={allowUserInput}
+                    allowUserInput={allowUserInput && status !== LOADING}
                     triggerAgentTyping={triggerAgentTyping}
                     showVerifyForm={showVerifyForm}
                     handleScrollChatToBottom={handleScrollChatToBottom}
                     disableInput={status === LOADING}
-                />{" "}
-                {/* {reminderCount !== null && (
-                    <Favicon
-                        url={`https://proxy.cors.sh/${companyLogo}`}
-                        animated={true}
-                        alertCount={undefined}
-                        // key={reminderCount}
-                        // keepIconLink={() => reminderCount === null}
-                    />
-                )} */}
+                />
             </div>
         </>
     );

@@ -11,7 +11,11 @@ import { useWindowSize } from "utils/hooks";
 const { WORK_MODE } = defaultTemplates;
 const { DARK_MODE_DEFAULT, WHITE_MODE_DEFAULT } = defaultThemes;
 
-const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
+const ChatSettingsToggler = ({
+    isMobile,
+    handleCloseTicket,
+    canCloseTicket,
+}) => {
     const [showModal, toggleModal] = useState(false);
     const { defaultTemplate, defaultTheme } = useSelector(
         (state) => state.chat.chatSettings
@@ -21,18 +25,15 @@ const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
 
     const handleToggleModal = () => toggleModal(!showModal);
 
-    const handleChangeTheme = () => {
-        const theme =
-            defaultTheme === DARK_MODE_DEFAULT
-                ? WHITE_MODE_DEFAULT
-                : DARK_MODE_DEFAULT;
-
-        dispatch(changeTheme(theme));
-    };
-
     const isWorkModeTemplate = defaultTemplate === WORK_MODE;
     const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
     const isNotTablet = width > 768;
+
+    const handleChangeTheme = () => {
+        const theme = isDarkModeTheme ? WHITE_MODE_DEFAULT : DARK_MODE_DEFAULT;
+
+        dispatch(changeTheme(theme));
+    };
 
     return (
         <>
@@ -43,6 +44,7 @@ const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
                     handleChangeTheme={handleChangeTheme}
                     isWorkModeTemplate={isWorkModeTemplate}
                     isDarkModeTheme={isDarkModeTheme}
+                    canCloseTicket={canCloseTicket}
                 />
             ) : (
                 <Info
@@ -62,6 +64,7 @@ const ChatSettingsToggler = ({ isMobile, handleCloseTicket }) => {
                     handleChangeTheme={handleChangeTheme}
                     handleCloseTicket={handleCloseTicket}
                     isDarkModeTheme={isDarkModeTheme}
+                    canCloseTicket={canCloseTicket}
                 />
             )}
         </>

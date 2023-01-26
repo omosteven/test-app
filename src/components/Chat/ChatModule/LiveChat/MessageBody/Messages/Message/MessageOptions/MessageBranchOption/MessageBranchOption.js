@@ -1,5 +1,5 @@
-import SmallLoader from "components/ui/SmallLoader/SmallLoader";
 import React from "react";
+import SmallLoader from "components/ui/SmallLoader/SmallLoader";
 import { INPUT_NEEDED } from "../../../enums";
 import "./MessageBranchOption.scss";
 

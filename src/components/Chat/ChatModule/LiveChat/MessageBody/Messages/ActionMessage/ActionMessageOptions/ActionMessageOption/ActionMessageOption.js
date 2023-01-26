@@ -1,3 +1,4 @@
+import React from "react";
 import "./ActionMessageOption.scss";
 
 const ActionMessageOption = ({
@@ -11,6 +12,7 @@ const ActionMessageOption = ({
 }) => {
     const shouldBeDisabled = messageIndex < messagesDepth;
     const isSelected = selectedOption === branchOptionId;
+
     return (
         <>
             <div

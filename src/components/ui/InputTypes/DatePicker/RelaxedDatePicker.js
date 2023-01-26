@@ -1,71 +1,54 @@
-import imageLinks from "assets/images";
-import { Button } from "components/ui/Button/Button";
-import moment from "moment";
 import React, { useState } from "react";
+import imageLinks from "assets/images";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { ReactSVG } from "react-svg";
-import CustomDatePicker from "./DatePicker";
+import { localeDate, getDateAndMonth } from "utils/helper";
 import "./RelaxedDatePicker.scss";
 
-const RelaxedDatePicker = ({ onChange, ...rest }) => {
-    const [selectedDate, setSelectedDate] = useState();
+const RelaxedDatePicker = ({ onChange, toggleDatepicker, ...rest }) => {
+    const [selectedDate, setSelectedDate] = useState("");
+    const [formattedDate, setFormattedDate] = useState({});
+
     return (
-        // <div className={`form-group`}>
-        //     <DatePicker
-        //         onChange={(date) => {
-        //             setSelectedDate(date);
-        //             let dateString = moment(date).format("L");
-        //             onChange(dateString);
-        //         }}
-        //         className='form-control'
-        //         placeholderText='Choose a date'
-        //         popperPlacement='top-start'
-        //         portalId='root'
-        //         selected={selectedDate}
-        //         {...rest}
-        //     />
-        // </div>
         <div className='relaxed-date-picker'>
             <div className='relaxed-date-picker__header'>
                 <span>Select date</span>
-                <span>
-                    <ReactSVG src={imageLinks?.svg?.cancel} />
-                </span>
+                {/* <span>
+                    <ReactSVG
+                        src={imageLinks?.svg?.cancel}
+                        className='relaxed-date-picker__close'
+                        onClick={() => toggleDatepicker(false)}
+                    />
+                </span> */}
             </div>
             <div className='relaxed-date-picker__date_segment'>
-                {/* <input type='date' i/> */}
-                <CustomDatePicker
+                <DatePicker
                     open={true}
-                    // onChange={(date) => {
-                    //     setSelectedDate(date);
-                    //     let dateString = moment(date).format("L");
-                    //     onChange(dateString);
-                    // }}
-                    // className='form-control'
+                    onChange={(date) => {
+                        setSelectedDate(date);
+                        let dateString = localeDate(date);
+                        onChange(dateString);
+                        setFormattedDate(getDateAndMonth(date));
+                    }}
                     className='relaxed-date-picker__date'
                     placeholderText='Choose a date'
-                    popperPlacement='top-start'
-                    portalId='root'
+                    popperPlacement='bottom'
                     selected={selectedDate}
-                    // showMonthYearPicker
                     fixedHeight
                     {...rest}
                 />
             </div>
-            <div className='relaxed-date-picker__buttons'>
-                <Button
-                    type='submit'
-                    text={"Day"}
-                    classType='default'
-                    otherClass={`send__button}`}
-                />
-                <Button
-                    type='submit'
-                    text={"Month"}
-                    classType='default'
-                    otherClass={`send__button}`}
-                />
+            <div className='relaxed-date-picker__values'>
+                <div className='date-picker__value'>
+                    <span>
+                        {formattedDate?.date ? formattedDate?.date : "Day"}
+                    </span>
+                </div>
+                <div className='date-picker__value'>
+                    <span>
+                        {formattedDate?.month ? formattedDate?.month : "Month"}
+                    </span>
+                </div>
             </div>
         </div>
     );

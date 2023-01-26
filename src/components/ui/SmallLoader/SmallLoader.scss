@@ -1,3 +1,4 @@
+@import "assets/scss/master";
 
 .lds-spinner-small {
     color: official;
@@ -20,7 +21,11 @@
     width: 1.67px;
     height: 4.67px;
     border-radius: 6.67%;
-    background: #ffffff;
+    background: $light__theme_color;
+
+    #{$white__mode__theme__selector} {
+      background: $light__gray__theme_color;
+    }
   }
   .lds-spinner-small.primary div:after{
     background: var(--default-primary-color);

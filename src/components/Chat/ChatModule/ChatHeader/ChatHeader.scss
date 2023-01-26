@@ -12,6 +12,10 @@
             z-index: 3;
         }
 
+        &.high__index {
+            z-index: 6;
+        }
+
         #{$dark__mode__theme__selector} {
             background: $dark__mode__theme__background__color;
         }

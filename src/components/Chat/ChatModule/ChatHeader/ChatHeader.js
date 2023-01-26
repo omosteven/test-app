@@ -28,10 +28,10 @@ const ChatHeader = ({
     showActions,
 }) => {
     const {
-        chatSettings: { companyLogo, workspaceSlug, defaultTemplate },
+        chatSettings: { companyLogo, teamName, defaultTemplate },
     } = useSelector((state) => state.chat);
     const {
-        activeTicket: { agent },
+        activeTicket: { agent, ticketId },
     } = useSelector((state) => state.tickets);
 
     const { width } = useWindowSize();
@@ -47,9 +47,9 @@ const ChatHeader = ({
                 return (
                     <CompanyChatLogo
                         src={companyLogo}
-                        alt={workspaceSlug}
+                        alt={teamName}
                         className='company__logo'
-                        name={workspaceSlug}
+                        name={teamName}
                     />
                 );
             case DATAMODE:
@@ -62,7 +62,7 @@ const ChatHeader = ({
                                     <>
                                         <CompanyChatLogo
                                             src={companyLogo}
-                                            alt={workspaceSlug}
+                                            alt={teamName}
                                             className='company__logo'
                                             name={`${agent?.firstName} ${agent?.lastName}`}
                                         />
@@ -70,9 +70,9 @@ const ChatHeader = ({
                                 ) : (
                                     <CompanyChatLogo
                                         src={companyLogo}
-                                        alt={workspaceSlug}
+                                        alt={teamName}
                                         className='company__logo'
-                                        name={workspaceSlug}
+                                        name={teamName}
                                     />
                                 )}
                             </>
@@ -89,16 +89,18 @@ const ChatHeader = ({
                 return (
                     <CompanyChatLogo
                         src={companyLogo}
-                        alt={workspaceSlug}
+                        alt={teamName}
                         className='company__logo'
-                        name={workspaceSlug}
+                        name={teamName}
                     />
                 );
         }
     };
 
     return (
-        <div id='header__wrapper'>
+        <div
+            id='header__wrapper'
+            className={`${!showActions ? "high__index" : ""}`}>
             <header id='header'>
                 <div className='chat__header'>
                     {showActions && (
@@ -113,7 +115,7 @@ const ChatHeader = ({
                         {isWorkModeTemplate || isNotTablet ? (
                             <CompanyChatLogo
                                 src={companyLogo}
-                                alt={workspaceSlug}
+                                alt={teamName}
                                 className='company__logo'
                             />
                         ) : (
@@ -149,6 +151,7 @@ const ChatHeader = ({
                                     <ChatSettingsToggler
                                         isMobile={true}
                                         handleCloseTicket={handleCloseTicket}
+                                        canCloseTicket={ticketId !== undefined}
                                     />
                                 </div>
                             )}
