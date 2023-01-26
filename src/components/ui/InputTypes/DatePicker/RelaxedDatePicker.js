@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import imageLinks from "assets/images";
 import DatePicker from "react-datepicker";
-import { ReactSVG } from "react-svg";
 import { localeDate, getDateAndMonth } from "utils/helper";
 import "./RelaxedDatePicker.scss";
 

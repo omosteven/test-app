@@ -548,6 +548,9 @@ const LiveChatInput = ({
                                                 toggleModal={toggleModal}
                                                 handleUpload={handleUpload}
                                                 selectedMedia={selectedMedia}
+                                                icon={
+                                                    imageLinks?.svg?.attachment2
+                                                }
                                                 currentFormElement={
                                                     currentFormElement
                                                 }
@@ -609,9 +612,15 @@ const LiveChatInput = ({
                                 type='submit'
                                 text={"Submit"}
                                 classType='primary'
-                                otherClass={`chat__input__file__button  ${
-                                    !btnDisabled ? "active" : ""
-                                }`}
+                                otherClass={`chat__input__relaxed__button ${
+                                    isDateFormElement
+                                        ? "chat__input__date__button"
+                                        : ""
+                                } ${!btnDisabled ? "active" : ""} ${
+                                    isFormElementImage && uploads?.length === 0
+                                        ? "chat__input__relaxed__hide-button"
+                                        : ""
+                                } `}
                                 loading={loading}
                                 disabled={
                                     btnDisabled ||

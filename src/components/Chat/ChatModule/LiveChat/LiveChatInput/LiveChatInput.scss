@@ -143,8 +143,6 @@
     color: $file__error__theme_color;
 }
 
-
-
 #chatInput {
     position: sticky;
     bottom: 0;
@@ -190,7 +188,7 @@
     }
 }
 
-.chat__input__file__button {
+.chat__input__relaxed__button {
     padding: 14px 8px !important;
     width: 100% !important;
     border-radius: 100px !important;
@@ -203,11 +201,13 @@
     line-height: 24px !important;
 }
 
-// .chat__input__file__multi-select-button {
-//     margin-left: 45px;
-//     margin-right: 45px;
-//     // width: fit-content !important;
-// }
+.chat__input__date__button {
+    border-radius: 10px !important;
+}
+
+.chat__input__relaxed__hide-button {
+    display: none !important;
+}
 
 #inputGroup {
     position: fixed;
