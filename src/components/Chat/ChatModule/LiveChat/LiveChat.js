@@ -52,7 +52,6 @@ import {
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
 import { useFaviconNotification } from "react-favicon-notification";
-
 import "./LiveChat.scss";
 
 const NO_ACTION = "NO_ACTION";
@@ -74,7 +73,7 @@ const {
     SUCCESS,
 } = messageTypes;
 
-const { TEXT } = formInputTypes;
+const { TEXT, DATE } = formInputTypes;
 
 const LiveChat = ({
     getCustomerTickets,
@@ -377,6 +376,12 @@ const LiveChat = ({
 
         // triggerAgentTyping(true);
 
+        console.log("sent this", {
+            ticketId,
+            branchId,
+            branchOptionId,
+            message: branchOptionLabel,
+        });
         await socket.emit(
             SEND_BRANCH_OPTION,
             {
@@ -444,9 +449,11 @@ const LiveChat = ({
                     if (messageActionType === INPUT_NEEDED) {
                         shouldAllowUserInput = true;
                         userInputType = TEXT;
+                        setCurrentFormElement();
                     } else {
                         shouldAllowUserInput = false;
                         userInputType = TEXT;
+                        setCurrentFormElement();
                     }
 
                     break;
@@ -1121,6 +1128,10 @@ const LiveChat = ({
         };
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
+    const { formElementType } = currentFormElement || {};
+
+    const isDateFormElement = formElementType === DATE;
+
     return (
         <>
             {!showVerifyForm ? (
@@ -1167,9 +1178,9 @@ const LiveChat = ({
                 />
             )}
             <div
-                className={`chat__input__container ${
-                    showVerifyForm ? "live-chat-input__add-email" : ""
-                }`}>
+                className={`chat__input__container  ${
+                    isDateFormElement ? "chat__input__high__index" : ""
+                } ${showVerifyForm ? "live-chat-input__add-email" : ""}`}>
                 <LiveChatInput
                     ticketId={ticketId}
                     inputType={currentInputType}
@@ -1180,20 +1191,13 @@ const LiveChat = ({
                     triggerAgentTyping={triggerAgentTyping}
                     showVerifyForm={showVerifyForm}
                     handleScrollChatToBottom={handleScrollChatToBottom}
+                    disableInput={status === LOADING}
                     uploads={uploads}
                     updateUploads={updateUploads}
                     updateRequest={updateRequest}
                     request={request}
-                />{" "}
-                {/* {reminderCount !== null && (
-                    <Favicon
-                        url={`https://proxy.cors.sh/${companyLogo}`}
-                        animated={true}
-                        alertCount={undefined}
-                        // key={reminderCount}
-                        // keepIconLink={() => reminderCount === null}
-                    />
-                )} */}
+                    isDateFormElement={isDateFormElement}
+                />
             </div>
         </>
     );

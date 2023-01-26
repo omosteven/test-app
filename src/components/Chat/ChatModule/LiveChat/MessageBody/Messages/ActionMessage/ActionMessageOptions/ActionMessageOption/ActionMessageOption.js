@@ -14,6 +14,7 @@ const ActionMessageOption = ({
 }) => {
     const shouldBeDisabled = messageIndex < messagesDepth;
     const isSelected = selectedOption === branchOptionId;
+
     return (
         <>
             <div

@@ -6,7 +6,7 @@
     flex-wrap: wrap;
     gap: 0.5rem;
     background: none;
-
+    
     @include media(">medium-screen") {
         #{$relaxed__mode__template__selector} {
             display: flex;

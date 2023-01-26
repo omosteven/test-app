@@ -98,7 +98,9 @@ const ChatHeader = ({
     };
 
     return (
-        <div id='header__wrapper'>
+        <div
+            id='header__wrapper'
+            className={`${!showActions ? "high__index" : ""}`}>
             <header id='header'>
                 <div className='chat__header'>
                     {showActions && (
