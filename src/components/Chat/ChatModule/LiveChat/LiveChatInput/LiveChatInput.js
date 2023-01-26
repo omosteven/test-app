@@ -25,6 +25,7 @@ import "./LiveChatInput.scss";
 import UploadedFiles from "./UploadIcons/UploadedFiles/UploadedFiles";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import RelaxedDatePicker from "components/ui/InputTypes/DatePicker/RelaxedDatePicker";
+import RelaxedSelectUI from "components/ui/InputTypes/SelectUI/RelaxedSelectUI/RelaxedSelectUI";
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
@@ -200,7 +201,8 @@ const LiveChatInput = ({
 
         if (
             request?.fileAttachments[0]?.fileAttachmentUrl ||
-            isDateFormElement
+            isDateFormElement ||
+            isFormElementMultiselect
         ) {
             setLoading(true);
         } else {
@@ -380,16 +382,33 @@ const LiveChatInput = ({
                     value: item,
                 }));
                 return (
-                    <SelectUI
-                        options={selectOptions}
-                        handleChange={(value) =>
-                            updateRequest({ ...request, message: value })
-                        }
-                        onFocus={handleInputFocus}
-                        onBlur={handleInputBlur}
-                        isDisabled={disableInput}
-                        // onClick={() => handleScrollChatToBottom()}
-                    />
+                    <>
+                        {isRelaxedTemplate ? (
+                            <RelaxedSelectUI
+                                options={selectOptions}
+                                handleChange={(value) =>
+                                    updateRequest({
+                                        ...request,
+                                        message: value,
+                                    })
+                                }
+                            />
+                        ) : (
+                            <SelectUI
+                                options={selectOptions}
+                                handleChange={(value) =>
+                                    updateRequest({
+                                        ...request,
+                                        message: value,
+                                    })
+                                }
+                                onFocus={handleInputFocus}
+                                onBlur={handleInputBlur}
+                                isDisabled={disableInput}
+                                // onClick={() => handleScrollChatToBottom()}
+                            />
+                        )}
+                    </>
                 );
 
             default:
@@ -435,10 +454,9 @@ const LiveChatInput = ({
 
     const { formElementType } = currentFormElement || {};
 
-    const isFormElementUploadable =
-        formElementType === IMAGE ||
-        formElementType === VIDEO ||
-        formElementType === FILE;
+    const isFormElementImage = formElementType === IMAGE;
+
+    const isFormElementMultiselect = formElementType === MULTISELECT;
 
     return (
         <div className={`chat__input__wrapper`} ref={inputContainerRef}>
@@ -448,10 +466,14 @@ const LiveChatInput = ({
                     !allowUserInput ? "disallowed__section" : ""
                 }`}
                 title={!allowUserInput ? "Not Allowed" : "Type a message"}>
-                <form onSubmit={handleSubmit} id='chatInput'>
+                <form
+                    onSubmit={handleSubmit}
+                    id='chatInput'
+                    className={`
+                ${isFormElementMultiselect ? "chatInput-form-select" : ""}`}>
                     {uploads?.length > 0 && (
                         <>
-                            {isRelaxedTemplate && isFormElementUploadable ? (
+                            {isRelaxedTemplate && isFormElementImage ? (
                                 <UploadedFiles
                                     uploads={uploads}
                                     status={status}
@@ -500,12 +522,20 @@ const LiveChatInput = ({
                         </>
                     )}
 
-                    <div className='chat__input--container'>
+                    <div
+                        className={
+                            isFormElementMultiselect
+                                ? ""
+                                : "chat__input--container"
+                        }>
                         <div className='chat__input--group'>
                             {isRelaxedTemplate &&
-                            (isFormElementUploadable || isDateFormElement) ? (
+                            (isFormElementImage ||
+                                isDateFormElement ||
+                                isFormElementMultiselect) ? (
                                 <>
-                                    {isDateFormElement ? (
+                                    {isDateFormElement ||
+                                    isFormElementMultiselect ? (
                                         <> {renderBasedOnInputType()}</>
                                     ) : (
                                         uploads?.length === 0 && (
@@ -572,12 +602,14 @@ const LiveChatInput = ({
                     )}
 
                     {isRelaxedTemplate &&
-                        (isFormElementUploadable || isDateFormElement) && (
+                        (isFormElementImage ||
+                            isDateFormElement ||
+                            isFormElementMultiselect) && (
                             <Button
                                 type='submit'
                                 text={"Submit"}
                                 classType='primary'
-                                otherClass={`chat__input__file__button ${
+                                otherClass={`chat__input__file__button  ${
                                     !btnDisabled ? "active" : ""
                                 }`}
                                 loading={loading}

@@ -376,12 +376,6 @@ const LiveChat = ({
 
         // triggerAgentTyping(true);
 
-        console.log("sent this", {
-            ticketId,
-            branchId,
-            branchOptionId,
-            message: branchOptionLabel,
-        });
         await socket.emit(
             SEND_BRANCH_OPTION,
             {

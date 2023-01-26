@@ -137,24 +137,13 @@
     }
 }
 
-.chat__input__file__button {
-    padding: 14px 8px !important;
-    width: 100% !important;
-    border-radius: 100px !important;
-    margin-top: 1rem !important;
-    margin-bottom: 26px;
-    height: 52px !important;
-    gap: 10px !important;
-    font-weight: 500 !important;
-    font-size: 20px !important;
-    line-height: 24px !important;
-}
-
 .file__error {
     font-size: 0.875rem;
     line-height: 1rem;
     color: $file__error__theme_color;
 }
+
+
 
 #chatInput {
     position: sticky;
@@ -182,6 +171,10 @@
     }
 }
 
+.chatInput-form-select {
+    padding: 0px 45px 0px 45px !important;
+}
+
 .disallowed__section {
     #chatInput {
         background: $gray__out__theme_color;
@@ -196,6 +189,25 @@
         }
     }
 }
+
+.chat__input__file__button {
+    padding: 14px 8px !important;
+    width: 100% !important;
+    border-radius: 100px !important;
+    margin-top: 1rem !important;
+    margin-bottom: 26px;
+    height: 52px !important;
+    gap: 10px !important;
+    font-weight: 500 !important;
+    font-size: 20px !important;
+    line-height: 24px !important;
+}
+
+// .chat__input__file__multi-select-button {
+//     margin-left: 45px;
+//     margin-right: 45px;
+//     // width: fit-content !important;
+// }
 
 #inputGroup {
     position: fixed;
