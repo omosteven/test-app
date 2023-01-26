@@ -141,9 +141,13 @@
     padding: 14px 8px !important;
     width: 100% !important;
     border-radius: 100px !important;
-    margin-top: 1rem;
+    margin-top: 1rem !important;
     margin-bottom: 26px;
     height: 52px !important;
+    gap: 10px !important;
+    font-weight: 500 !important;
+    font-size: 20px !important;
+    line-height: 24px !important;
 }
 
 .file__error {

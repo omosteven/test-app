@@ -15,6 +15,7 @@ const ActionMessageOptions = ({
     messagesDepth,
     deliveryDate,
     messageActionBranchId,
+    mssgOptionLoading,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -47,10 +48,13 @@ const ActionMessageOptions = ({
                         })
                     }
                     deliveryDate={deliveryDate}
+                    mssgOptionLoading={mssgOptionLoading}
                 />
             ))}
 
-            {isRelaxedTemplate && <PoweredBy />}
+            {isRelaxedTemplate && (
+                <PoweredBy otherClassName='white__background' />
+            )}
         </div>
     );
 };

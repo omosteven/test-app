@@ -54,6 +54,9 @@ const imageLinks = {
             "https://res.cloudinary.com/metacare/image/upload/v1672644783/icons/fi-rr-sun_keqywy.svg",
         bookmark:
             "https://res.cloudinary.com/metacare/image/upload/v1672644783/icons/fi-rr-bookmark_dyezj3.svg",
+
+        attachment2:
+            "https://res.cloudinary.com/metacare/image/upload/v1674655585/icons/ic_Photos_bxnxdr.svg",
     },
 };
 

@@ -1,4 +1,5 @@
 import React from "react";
+import SmallLoader from "components/ui/SmallLoader/SmallLoader";
 import "./ActionMessageOption.scss";
 
 const ActionMessageOption = ({
@@ -9,6 +10,7 @@ const ActionMessageOption = ({
     messageIndex,
     messagesDepth,
     actionBranchOptionTitle,
+    mssgOptionLoading,
 }) => {
     const shouldBeDisabled = messageIndex < messagesDepth;
     const isSelected = selectedOption === branchOptionId;
@@ -29,9 +31,19 @@ const ActionMessageOption = ({
                     selectedOption ? null : handleMessageOptionSelect()
                 }
                 disabled={shouldBeDisabled}>
-                {actionBranchOptionTitle
-                    ? actionBranchOptionTitle
-                    : branchOptionLabel}
+                <span
+                    className={
+                        mssgOptionLoading && isSelected
+                            ? "branch__option--hide-on-mobile"
+                            : ""
+                    }>
+                    {actionBranchOptionTitle
+                        ? actionBranchOptionTitle
+                        : branchOptionLabel}
+                </span>
+                {mssgOptionLoading && isSelected && (
+                    <SmallLoader otherClassName='branch__option--loader' />
+                )}
             </div>
         </>
     );

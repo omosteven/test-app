@@ -24,7 +24,6 @@ import { IMAGE, VIDEO, FILE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
 import UploadedFiles from "./UploadIcons/UploadedFiles/UploadedFiles";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
-import DatePickerUI from "components/ui/DatePickerUI/DatePickerUI";
 import RelaxedDatePicker from "components/ui/InputTypes/DatePicker/RelaxedDatePicker";
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
@@ -41,28 +40,23 @@ const LiveChatInput = ({
     inputType,
     currentFormElement,
     disableInput,
+    uploads,
+    updateUploads,
+    request,
+    updateRequest,
+    isDateFormElement,
 }) => {
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
 
-    const [request, updateRequest] = useState({
-        message: "",
-        fileAttachments: [
-            {
-                fileAttachmentUrl: "",
-                fileAttachmentType: "",
-                fileAttachmentName: "",
-            },
-        ],
-    });
-
-    const [uploads, updateUploads] = useState([]);
     const [selectedMedia, setSelectedMedia] = useState({});
     const [errors, setErrors] = useState({});
     const [errorMssg, setErrorMssg] = useState("");
     const [status, setStatus] = useState();
     const [showModal, toggleModal] = useState(false);
     const [openDatePicker, toggleDatepicker] = useState(true);
+    const [loading, setLoading] = useState(false);
+
     const isDisabled = fetchingInputStatus || !allowUserInput;
 
     const socket = useContext(SocketContext);
@@ -203,17 +197,15 @@ const LiveChatInput = ({
 
     const sendNewMessage = () => {
         handleNewMessage(request);
-        updateRequest({
-            message: "",
-            fileAttachments: [
-                {
-                    fileAttachmentUrl: "",
-                    fileAttachmentType: "",
-                    fileAttachmentName: "",
-                },
-            ],
-        });
-        updateUploads([]);
+
+        if (
+            request?.fileAttachments[0]?.fileAttachmentUrl ||
+            isDateFormElement
+        ) {
+            setLoading(true);
+        } else {
+            setLoading(false);
+        }
         setErrors((prev) => ({ ...prev, file: "" }));
     };
 
@@ -448,8 +440,6 @@ const LiveChatInput = ({
         formElementType === VIDEO ||
         formElementType === FILE;
 
-    const isDateFormElement = formElementType === DATE;
-
     return (
         <div className={`chat__input__wrapper`} ref={inputContainerRef}>
             <div
@@ -461,12 +451,12 @@ const LiveChatInput = ({
                 <form onSubmit={handleSubmit} id='chatInput'>
                     {uploads?.length > 0 && (
                         <>
-                            {isRelaxedTemplate &&
-                            currentFormElement?.formElementType === "IMAGE" ? (
+                            {isRelaxedTemplate && isFormElementUploadable ? (
                                 <UploadedFiles
                                     uploads={uploads}
                                     status={status}
                                     handleRemoveFile={handleRemoveFile}
+                                    icon={imageLinks?.svg?.attachment2}
                                     handleRetry={(file) =>
                                         handleRetryUpload(file)
                                     }
@@ -590,6 +580,7 @@ const LiveChatInput = ({
                                 otherClass={`chat__input__file__button ${
                                     !btnDisabled ? "active" : ""
                                 }`}
+                                loading={loading}
                                 disabled={
                                     btnDisabled ||
                                     fetchingInputStatus ||

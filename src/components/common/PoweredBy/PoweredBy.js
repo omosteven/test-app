@@ -3,8 +3,8 @@ import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import "./PoweredBy.scss";
 
-const PoweredBy = () => (
-    <div className='powered__by'>
+const PoweredBy = ({ otherClassName }) => (
+    <div className={`powered__by ${otherClassName ? otherClassName : ""}`}>
         <ReactSVG src={imageLinks.svg.logo} />
     </div>
 );
