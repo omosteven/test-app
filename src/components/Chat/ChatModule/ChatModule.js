@@ -8,7 +8,8 @@ const ChatModule = ({
     handleVerifyAction,
     handleCloseTicket,
     handleTicketCloseSuccess,
-    handleOpenNewTicket
+    handleOpenNewTicket,
+    reconnectUser,
 }) => {
     return (
         <>
@@ -20,7 +21,8 @@ const ChatModule = ({
                     handleVerifyAction,
                     handleCloseTicket,
                     handleTicketCloseSuccess,
-                    handleOpenNewTicket
+                    handleOpenNewTicket,
+                    reconnectUser,
                 }}
             />
         </>

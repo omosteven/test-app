@@ -52,7 +52,6 @@ import {
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
 import { useFaviconNotification } from "react-favicon-notification";
-
 import "./LiveChat.scss";
 
 const NO_ACTION = "NO_ACTION";
@@ -74,7 +73,7 @@ const {
     SUCCESS,
 } = messageTypes;
 
-const { TEXT } = formInputTypes;
+const { TEXT, DATE } = formInputTypes;
 
 const LiveChat = ({
     getCustomerTickets,
@@ -83,6 +82,7 @@ const LiveChat = ({
     handleCloseTicket,
     handleTicketCloseSuccess,
     handleOpenNewTicket,
+    reconnectUser,
 }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -100,6 +100,19 @@ const LiveChat = ({
 
     const { conversationBreakers } = useSelector((state) => state.chat);
     const [delayInputNeeded, setDelayInputNeeded] = useState(false);
+
+    const [request, updateRequest] = useState({
+        message: "",
+        fileAttachments: [
+            {
+                fileAttachmentUrl: "",
+                fileAttachmentType: "",
+                fileAttachmentName: "",
+            },
+        ],
+    });
+
+    const [uploads, updateUploads] = useState([]);
 
     const {
         chatSettings: { workspaceId },
@@ -389,6 +402,16 @@ const LiveChat = ({
         setStatus(ERROR);
     };
 
+    const handleSocketConnect = () => {
+        setStatus(DATAMODE);
+        setErrorMssg();
+    };
+
+    const handleReconnectUser = () => {
+        setStatus(LOADING);
+        reconnectUser();
+    };
+
     const figureInputAction = () => {
         setFetchingInputStatus(true);
         let shouldAllowUserInput = true;
@@ -420,9 +443,11 @@ const LiveChat = ({
                     if (messageActionType === INPUT_NEEDED) {
                         shouldAllowUserInput = true;
                         userInputType = TEXT;
+                        setCurrentFormElement();
                     } else {
                         shouldAllowUserInput = false;
                         userInputType = TEXT;
+                        setCurrentFormElement();
                     }
 
                     break;
@@ -464,16 +489,34 @@ const LiveChat = ({
         setFetchingInputStatus(false);
     };
 
+    const clearUserInput = () => {
+        updateRequest({
+            message: "",
+            fileAttachments: [
+                {
+                    fileAttachmentUrl: "",
+                    fileAttachmentType: "",
+                    fileAttachmentName: "",
+                },
+            ],
+        });
+        updateUploads([]);
+    };
+
     const handleNewMessage = async (request) => {
         let { message, fileAttachments } = request;
         message = message?.replace?.(/[^\w ]/g, "");
-        if (messages?.length === 0) {
+
+        if (messages?.length === 1) {
             triggerAgentTyping(true);
         }
+
         const newMessageId = generateID();
         setMssgOptionLoading(false);
+
         if (currentFormElement) {
             const { order, formId, formElementId } = currentFormElement;
+
             socket.emit(FILL_FORM_RECORD, {
                 ticketId,
                 message: message,
@@ -501,6 +544,8 @@ const LiveChat = ({
                 messageType: DEFAULT,
                 fileAttachments,
             });
+
+            clearUserInput();
         }
     };
 
@@ -558,7 +603,6 @@ const LiveChat = ({
     const fetchConvoSuggestions = async (message) => {
         try {
             const { messageContent } = message;
-            triggerAgentTyping(true);
 
             const url = apiRoutes?.investigateMesage;
             const res = await API.get(url, {
@@ -680,6 +724,8 @@ const LiveChat = ({
                     deliveryDate: new Date().toISOString(),
                 })
             );
+
+            setMssgOptionLoading(false);
         }
     };
 
@@ -756,6 +802,8 @@ const LiveChat = ({
                         : new Date().toISOString(),
                 })
             );
+
+            triggerAgentTyping(false);
         }
 
         if (messageType === FORM_FILLED_COMPLETELY) {
@@ -764,6 +812,7 @@ const LiveChat = ({
             //     workspaceId,
             // });
             sendAgentTicket();
+            triggerAgentTyping(false);
             return handleAddEmail();
         }
     };
@@ -783,7 +832,9 @@ const LiveChat = ({
             deliveryDate,
             branchOptionActionType,
         } = message;
-        if (messageType === BRANCH_OPTION) {
+
+        clearUserInput();
+        if (senderType === THIRD_USER && messageType !== DEFAULT) {
             triggerAgentTyping(true);
         } else {
             triggerAgentTyping(false);
@@ -852,7 +903,7 @@ const LiveChat = ({
 
         handleScrollChatToBottom();
 
-        triggerAgentTyping(false);
+        // triggerAgentTyping(false);
     };
 
     const handleAgentUnavailable = () => {
@@ -897,6 +948,7 @@ const LiveChat = ({
         // socket.on(CLOSED_TICKET, handleTicketClosure);
 
         socket.on("connect_error", handleSocketError);
+        socket.on("connect", handleSocketConnect);
 
         return () => {
             socket.off(RECEIVE_MESSAGE);
@@ -1070,6 +1122,10 @@ const LiveChat = ({
         };
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
+    const { formElementType } = currentFormElement || {};
+
+    const isDateFormElement = formElementType === DATE;
+
     return (
         <>
             {!showVerifyForm ? (
@@ -1089,6 +1145,7 @@ const LiveChat = ({
                             status={status}
                             agent={agent}
                             errorMssg={errorMssg}
+                            reconnectUser={handleReconnectUser}
                         />
                         <MessageBody
                             forcedAgentTyping={forcedAgentTyping}
@@ -1115,9 +1172,9 @@ const LiveChat = ({
                 />
             )}
             <div
-                className={`chat__input__container ${
-                    showVerifyForm ? "live-chat-input__add-email" : ""
-                }`}>
+                className={`chat__input__container  ${
+                    isDateFormElement ? "chat__input__high__index" : ""
+                } ${showVerifyForm ? "live-chat-input__add-email" : ""}`}>
                 <LiveChatInput
                     ticketId={ticketId}
                     inputType={currentInputType}
@@ -1128,16 +1185,13 @@ const LiveChat = ({
                     triggerAgentTyping={triggerAgentTyping}
                     showVerifyForm={showVerifyForm}
                     handleScrollChatToBottom={handleScrollChatToBottom}
-                />{" "}
-                {/* {reminderCount !== null && (
-                    <Favicon
-                        url={`https://proxy.cors.sh/${companyLogo}`}
-                        animated={true}
-                        alertCount={undefined}
-                        // key={reminderCount}
-                        // keepIconLink={() => reminderCount === null}
-                    />
-                )} */}
+                    disableInput={status === LOADING}
+                    uploads={uploads}
+                    updateUploads={updateUploads}
+                    updateRequest={updateRequest}
+                    request={request}
+                    isDateFormElement={isDateFormElement}
+                />
             </div>
         </>
     );

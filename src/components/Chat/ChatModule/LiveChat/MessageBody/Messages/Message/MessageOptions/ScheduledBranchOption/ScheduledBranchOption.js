@@ -55,7 +55,15 @@ const ScheduledBranchOption = ({
                 onClick={() =>
                     selectedOption ? null : handleMessageOptionSelect()
                 }>
-                {branchOptionLabel}
+                <span
+                    className={
+                        mssgOptionLoading && isSelected
+                            ? "branch__option--hide-on-mobile"
+                            : ""
+                    }>
+                    {branchOptionLabel}
+                </span>
+
                 {!enable && isRelaxedTemplate && (
                     <div className='option__pause'>
                         <span>This option is paused for</span>{" "}

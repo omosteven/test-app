@@ -24,6 +24,8 @@ import { IMAGE, VIDEO, FILE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
 import UploadedFiles from "./UploadIcons/UploadedFiles/UploadedFiles";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import RelaxedDatePicker from "components/ui/InputTypes/DatePicker/RelaxedDatePicker";
+import RelaxedSelectUI from "components/ui/InputTypes/SelectUI/RelaxedSelectUI/RelaxedSelectUI";
 
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
@@ -38,27 +40,24 @@ const LiveChatInput = ({
     allowUserInput,
     inputType,
     currentFormElement,
+    disableInput,
+    uploads,
+    updateUploads,
+    request,
+    updateRequest,
+    isDateFormElement,
 }) => {
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
 
-    const [request, updateRequest] = useState({
-        message: "",
-        fileAttachments: [
-            {
-                fileAttachmentUrl: "",
-                fileAttachmentType: "",
-                fileAttachmentName: "",
-            },
-        ],
-    });
-
-    const [uploads, updateUploads] = useState([]);
     const [selectedMedia, setSelectedMedia] = useState({});
     const [errors, setErrors] = useState({});
     const [errorMssg, setErrorMssg] = useState("");
     const [status, setStatus] = useState();
     const [showModal, toggleModal] = useState(false);
+    const [openDatePicker, toggleDatepicker] = useState(true);
+    const [loading, setLoading] = useState(false);
+
     const isDisabled = fetchingInputStatus || !allowUserInput;
 
     const socket = useContext(SocketContext);
@@ -199,17 +198,16 @@ const LiveChatInput = ({
 
     const sendNewMessage = () => {
         handleNewMessage(request);
-        updateRequest({
-            message: "",
-            fileAttachments: [
-                {
-                    fileAttachmentUrl: "",
-                    fileAttachmentType: "",
-                    fileAttachmentName: "",
-                },
-            ],
-        });
-        updateUploads([]);
+
+        if (
+            request?.fileAttachments[0]?.fileAttachmentUrl ||
+            isDateFormElement ||
+            isFormElementMultiselect
+        ) {
+            setLoading(true);
+        } else {
+            setLoading(false);
+        }
         setErrors((prev) => ({ ...prev, file: "" }));
     };
 
@@ -340,20 +338,41 @@ const LiveChatInput = ({
                         // onClick={() => handleScrollChatToBottom()}
                         hideLabel={true}
                         ref={inputRef}
-                        disabled={isDisabled}
                         maxLength={maxLength?.ruleConstraint}
                         // pattern={pattern}
                         max={max?.ruleConstraint}
+                        disabled={
+                            isDisabled || inputType === IMAGE || disableInput
+                        }
                     />
                 );
 
             case DATE:
                 return (
-                    <CustomDatePicker
-                        onChange={(date) =>
-                            updateRequest({ ...request, message: date })
-                        }
-                    />
+                    <>
+                        {isRelaxedTemplate ? (
+                            <>
+                                {openDatePicker && (
+                                    <RelaxedDatePicker
+                                        onChange={(date) =>
+                                            updateRequest({
+                                                ...request,
+                                                message: date,
+                                            })
+                                        }
+                                        toggleDatepicker={toggleDatepicker}
+                                    />
+                                )}
+                            </>
+                        ) : (
+                            <CustomDatePicker
+                                onChange={(date) =>
+                                    updateRequest({ ...request, message: date })
+                                }
+                                disabled={disableInput}
+                            />
+                        )}
+                    </>
                 );
 
             case MULTISELECT:
@@ -363,15 +382,33 @@ const LiveChatInput = ({
                     value: item,
                 }));
                 return (
-                    <SelectUI
-                        options={selectOptions}
-                        handleChange={(value) =>
-                            updateRequest({ ...request, message: value })
-                        }
-                        onFocus={handleInputFocus}
-                        onBlur={handleInputBlur}
-                        // onClick={() => handleScrollChatToBottom()}
-                    />
+                    <>
+                        {isRelaxedTemplate ? (
+                            <RelaxedSelectUI
+                                options={selectOptions}
+                                handleChange={(value) =>
+                                    updateRequest({
+                                        ...request,
+                                        message: value,
+                                    })
+                                }
+                            />
+                        ) : (
+                            <SelectUI
+                                options={selectOptions}
+                                handleChange={(value) =>
+                                    updateRequest({
+                                        ...request,
+                                        message: value,
+                                    })
+                                }
+                                onFocus={handleInputFocus}
+                                onBlur={handleInputBlur}
+                                isDisabled={disableInput}
+                                // onClick={() => handleScrollChatToBottom()}
+                            />
+                        )}
+                    </>
                 );
 
             default:
@@ -385,7 +422,9 @@ const LiveChatInput = ({
                         label='Chat'
                         ref={inputRef}
                         hideLabel={true}
-                        disabled={isDisabled || inputType === IMAGE}
+                        disabled={
+                            isDisabled || inputType === IMAGE || disableInput
+                        }
                         onFocus={handleInputFocus}
                         onBlur={handleInputBlur}
                         // onClick={() => handleScrollChatToBottom()}
@@ -415,28 +454,31 @@ const LiveChatInput = ({
 
     const { formElementType } = currentFormElement || {};
 
-    const isFormElementUploadable =
-        formElementType === IMAGE ||
-        formElementType === VIDEO ||
-        formElementType === FILE;
+    const isFormElementImage = formElementType === IMAGE;
+
+    const isFormElementMultiselect = formElementType === MULTISELECT;
 
     return (
-        <div className='chat__input__container' ref={inputContainerRef}>
+        <div className={`chat__input__wrapper`} ref={inputContainerRef}>
             <div
                 id='inputGroup'
                 className={`col-md-10 col-12 ${
                     !allowUserInput ? "disallowed__section" : ""
                 }`}
                 title={!allowUserInput ? "Not Allowed" : "Type a message"}>
-                <form onSubmit={handleSubmit} id='chatInput'>
+                <form
+                    onSubmit={handleSubmit}
+                    id='chatInput'
+                    className={`
+                ${isFormElementMultiselect ? "chatInput-form-select" : ""}`}>
                     {uploads?.length > 0 && (
                         <>
-                            {isRelaxedTemplate &&
-                            currentFormElement?.formElementType === "IMAGE" ? (
+                            {isRelaxedTemplate && isFormElementImage ? (
                                 <UploadedFiles
                                     uploads={uploads}
                                     status={status}
                                     handleRemoveFile={handleRemoveFile}
+                                    icon={imageLinks?.svg?.attachment2}
                                     handleRetry={(file) =>
                                         handleRetryUpload(file)
                                     }
@@ -480,25 +522,41 @@ const LiveChatInput = ({
                         </>
                     )}
 
-                    <div className='chat__input--container'>
+                    <div
+                        className={
+                            isFormElementMultiselect
+                                ? ""
+                                : "chat__input--container"
+                        }>
                         <div className='chat__input--group'>
-                            {isRelaxedTemplate && isFormElementUploadable ? (
+                            {isRelaxedTemplate &&
+                            (isFormElementImage ||
+                                isDateFormElement ||
+                                isFormElementMultiselect) ? (
                                 <>
-                                    {uploads?.length === 0 && (
-                                        <UploadIcons
-                                            upload={uploads}
-                                            updateUpload={updateUploads}
-                                            isDisabled={isDisabled}
-                                            setErrors={setErrors}
-                                            showModal={showModal}
-                                            toggleModal={toggleModal}
-                                            handleUpload={handleUpload}
-                                            selectedMedia={selectedMedia}
-                                            currentFormElement={
-                                                currentFormElement
-                                            }
-                                            label={"Upload File"}
-                                        />
+                                    {isDateFormElement ||
+                                    isFormElementMultiselect ? (
+                                        <> {renderBasedOnInputType()}</>
+                                    ) : (
+                                        uploads?.length === 0 && (
+                                            <UploadIcons
+                                                upload={uploads}
+                                                updateUpload={updateUploads}
+                                                isDisabled={isDisabled}
+                                                setErrors={setErrors}
+                                                showModal={showModal}
+                                                toggleModal={toggleModal}
+                                                handleUpload={handleUpload}
+                                                selectedMedia={selectedMedia}
+                                                icon={
+                                                    imageLinks?.svg?.attachment2
+                                                }
+                                                currentFormElement={
+                                                    currentFormElement
+                                                }
+                                                label={"Upload File"}
+                                            />
+                                        )
                                     )}
                                 </>
                             ) : (
@@ -546,21 +604,31 @@ const LiveChatInput = ({
                         </span>
                     )}
 
-                    {isRelaxedTemplate && isFormElementUploadable && (
-                        <Button
-                            type='submit'
-                            text={"Submit"}
-                            classType='primary'
-                            otherClass={`chat__input__file__button ${
-                                !btnDisabled ? "active" : ""
-                            }`}
-                            disabled={
-                                btnDisabled ||
-                                fetchingInputStatus ||
-                                status === LOADING
-                            }
-                        />
-                    )}
+                    {isRelaxedTemplate &&
+                        (isFormElementImage ||
+                            isDateFormElement ||
+                            isFormElementMultiselect) && (
+                            <Button
+                                type='submit'
+                                text={"Submit"}
+                                classType='primary'
+                                otherClass={`chat__input__relaxed__button ${
+                                    isDateFormElement
+                                        ? "chat__input__date__button"
+                                        : ""
+                                } ${!btnDisabled ? "active" : ""} ${
+                                    isFormElementImage && uploads?.length === 0
+                                        ? "chat__input__relaxed__hide-button"
+                                        : ""
+                                } `}
+                                loading={loading}
+                                disabled={
+                                    btnDisabled ||
+                                    fetchingInputStatus ||
+                                    status === LOADING
+                                }
+                            />
+                        )}
                 </form>
                 <PoweredBy />
             </div>

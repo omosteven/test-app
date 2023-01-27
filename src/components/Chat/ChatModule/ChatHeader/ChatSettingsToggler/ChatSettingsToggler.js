@@ -25,18 +25,15 @@ const ChatSettingsToggler = ({
 
     const handleToggleModal = () => toggleModal(!showModal);
 
-    const handleChangeTheme = () => {
-        const theme =
-            defaultTheme === DARK_MODE_DEFAULT
-                ? WHITE_MODE_DEFAULT
-                : DARK_MODE_DEFAULT;
-
-        dispatch(changeTheme(theme));
-    };
-
     const isWorkModeTemplate = defaultTemplate === WORK_MODE;
     const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
     const isNotTablet = width > 768;
+
+    const handleChangeTheme = () => {
+        const theme = isDarkModeTheme ? WHITE_MODE_DEFAULT : DARK_MODE_DEFAULT;
+
+        dispatch(changeTheme(theme));
+    };
 
     return (
         <>

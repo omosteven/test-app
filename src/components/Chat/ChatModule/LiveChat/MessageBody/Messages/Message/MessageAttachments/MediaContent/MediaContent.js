@@ -10,6 +10,7 @@ import { getFileFormat, truncate, cropImage } from "utils/helper";
 import MessageContent from "../../MessageContent/MessageContent";
 import { useWindowSize } from "utils/hooks";
 import "./MediaContent.scss";
+import MediaDisplay from "./MediaDisplay/MediaDisplay";
 
 const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     const {
@@ -23,6 +24,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     const { desktopVersion, mobileVersion } = fileAttachmentImageConfig || {};
     const [outPut, setOutput] = useState("");
     const { width } = useWindowSize();
+    const [mediaIsLoaded, setMediaIsLoaded] = useState(false);
 
     const isTablet = width < 768;
 
@@ -47,16 +49,22 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
         switch (fileAttachmentType) {
             case IMAGE:
                 return (
-                    <img
-                        src={cropOutImage ? outPut : fileAttachmentUrl}
-                        alt='media'
-                        className={`content--media img ${
-                            isReceivedMessage ? "received" : "sent"
-                        } ${isTablet ? "mobile" : "desktop"} ${
-                            !cropOutImage ? "img-orientation" : ""
-                        }`}
-                        onClick={() => openPreviewModal(attachment)}
-                    />
+                    <>
+                        <MediaDisplay
+                            src={cropOutImage ? outPut : fileAttachmentUrl}
+                            alt='media'
+                            className={`content--media img ${
+                                isReceivedMessage ? "received" : "sent"
+                            } ${isTablet ? "mobile" : "desktop"} ${
+                                !cropOutImage ? "img-orientation" : ""
+                            }`}
+                            style={{
+                                display: mediaIsLoaded ? "initial" : "none",
+                            }}
+                            onClick={() => openPreviewModal(attachment)}
+                            mediaType={IMAGE}
+                        />
+                    </>
                 );
             case FILE:
                 return (
@@ -79,14 +87,23 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
                 );
             case VIDEO:
                 return (
-                    <video
+                    <MediaDisplay
                         className={`content--media video  ${
                             isReceivedMessage ? "received" : "sent"
                         }`}
                         controls
-                        onClick={() => openPreviewModal(attachment)}>
-                        <source src={fileAttachmentUrl} />
-                    </video>
+                        onClick={() => openPreviewModal(attachment)}
+                        src={fileAttachmentUrl}
+                        mediaType={VIDEO}
+                    />
+                    // <video
+                    //     className={`content--media video  ${
+                    //         isReceivedMessage ? "received" : "sent"
+                    //     }`}
+                    //     controls
+                    //     onClick={() => openPreviewModal(attachment)}>
+                    //     <source src={fileAttachmentUrl} />
+                    // </video>
                 );
 
             default:

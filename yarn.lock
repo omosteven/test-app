@@ -8805,7 +8805,7 @@ react-fast-compare@^3.0.1, react-fast-compare@^3.1.1:
 
 react-favicon-notification@^1.0.28:
   version "1.0.28"
-  resolved "https://registry.npmjs.org/react-favicon-notification/-/react-favicon-notification-1.0.28.tgz"
+  resolved "https://registry.yarnpkg.com/react-favicon-notification/-/react-favicon-notification-1.0.28.tgz#e891afa48e0c69a6c1bac8750ab878d980279bc6"
   integrity sha512-XnAFvNuAyPpSAKG1RaKC46Bv930D3Ve3lFOyyXGLEfCUDuy+TugP8l5Te/Wa15qoIuT837Nd3fUhxj1u6j3srw==
 
 react-helmet@^6.1.0:

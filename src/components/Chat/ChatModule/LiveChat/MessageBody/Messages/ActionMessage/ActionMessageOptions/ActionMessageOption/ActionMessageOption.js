@@ -14,6 +14,7 @@ const ActionMessageOption = ({
 }) => {
     const shouldBeDisabled = messageIndex < messagesDepth;
     const isSelected = selectedOption === branchOptionId;
+
     return (
         <>
             <div
@@ -30,9 +31,16 @@ const ActionMessageOption = ({
                     selectedOption ? null : handleMessageOptionSelect()
                 }
                 disabled={shouldBeDisabled}>
-                {actionBranchOptionTitle
-                    ? actionBranchOptionTitle
-                    : branchOptionLabel}
+                <span
+                    className={
+                        mssgOptionLoading && isSelected
+                            ? "branch__option--hide-on-mobile"
+                            : ""
+                    }>
+                    {actionBranchOptionTitle
+                        ? actionBranchOptionTitle
+                        : branchOptionLabel}
+                </span>
                 {mssgOptionLoading && isSelected && (
                     <SmallLoader otherClassName='branch__option--loader' />
                 )}

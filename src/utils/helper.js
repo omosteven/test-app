@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const getErrorMessage = (error) => {
     const response = error?.response;
     const defaultMssg = "Something went wrong. Please try again.";
@@ -265,4 +267,35 @@ export const isDeviceMobileTablet = () => {
             check = true;
     })(navigator?.userAgent || navigator?.vendor || window?.opera);
     return check;
+};
+
+export const localeDate = (date) => {
+    return moment(date).format("L");
+};
+
+export const getDateAndMonth = (reqDate) => {
+    let fullDate = new Date(reqDate);
+    const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sept",
+        "Oct",
+        "Nov",
+        "Dec",
+    ];
+
+    const date = fullDate.getDate();
+
+    const month = months[fullDate.getMonth()];
+
+    return {
+        date,
+        month,
+    };
 };

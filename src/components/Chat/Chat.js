@@ -25,7 +25,6 @@ import TicketCloseModal from "./TicketCloseModal/TicketCloseModal";
 import { setConversationBreakers } from "store/chat/actions";
 import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import { DotLoader } from "components/ui";
-import PoweredBy from "components/common/PoweredBy/PoweredBy";
 import { useWindowSize } from "utils/hooks";
 import "./Chat.scss";
 
@@ -261,13 +260,16 @@ const Chat = () => {
     //     }
     // }, []);
 
+    const reconnectUser = () => {
+        const socketReconnection = reconnectSocket(userToken);
+        setSocketConnection(socketReconnection);
+    };
+
     useEffect(() => {
         if (userToken) {
-            const socketReconnection = reconnectSocket(userToken);
-            setSocketConnection(socketReconnection);
+            reconnectUser();
         }
     }, [socket, userToken]);
-
 
     return (
         <>
@@ -315,6 +317,7 @@ const Chat = () => {
                                         handleTicketCloseSuccess
                                     }
                                     handleOpenNewTicket={createNewTicket}
+                                    reconnectUser={reconnectUser}
                                 />
                             ) : (
                                 <div className='empty__chat--interface'>

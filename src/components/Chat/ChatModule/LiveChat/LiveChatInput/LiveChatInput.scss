@@ -10,17 +10,15 @@
     #{$relaxed__mode__template__selector} {
         padding: 0 1rem;
         border-radius: 100px;
+        border: none;
     }
 
     #{$dark__mode__theme__selector} {
-        border-top: 0.063rem solid $dark__mode__theme__grey__color;
-        border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
         background: $dark__mode__theme__grey__color;
+        border: none;
     }
 
     #{$white__mode__theme__selector} {
-        border-top: 0.063rem solid $light__theme_color;
-        border-bottom: 0.063rem solid $light__theme_color;
         background: $light__theme_color;
     }
 
@@ -139,15 +137,6 @@
     }
 }
 
-.chat__input__file__button {
-    padding: 14px 8px !important;
-    width: 100% !important;
-    border-radius: 100px !important;
-    margin-top: 1rem;
-    margin-bottom: 26px;
-    height: 52px !important;
-}
-
 .file__error {
     font-size: 0.875rem;
     line-height: 1rem;
@@ -180,6 +169,10 @@
     }
 }
 
+.chatInput-form-select {
+    padding: 0px 45px 0px 45px !important;
+}
+
 .disallowed__section {
     #chatInput {
         background: $gray__out__theme_color;
@@ -193,6 +186,27 @@
             background: $white__mode__background;
         }
     }
+}
+
+.chat__input__relaxed__button {
+    padding: 14px 8px !important;
+    width: 100% !important;
+    border-radius: 100px !important;
+    margin-top: 1rem !important;
+    margin-bottom: 26px;
+    height: 52px !important;
+    gap: 10px !important;
+    font-weight: 500 !important;
+    font-size: 20px !important;
+    line-height: 24px !important;
+}
+
+.chat__input__date__button {
+    border-radius: 10px !important;
+}
+
+.chat__input__relaxed__hide-button {
+    display: none !important;
 }
 
 #inputGroup {
