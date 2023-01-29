@@ -38,6 +38,13 @@
         }
     }
 
+    @include media("<=medium-small-screen") {
+        #{$relaxed__mode__template__selector} {
+            font-size: 18px;
+            line-height: 20px;
+        }
+    }
+
     #{$dark__mode__theme__selector} {
         color: $dark__mode__text__theme__color;
         background: $dark__mode__theme__grey__color;
