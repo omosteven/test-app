@@ -62,6 +62,12 @@
         }
     }
 
+    @include media("<=medium-small-screen") {
+        #{$relaxed__mode__template__selector} {
+            padding: 40px 15px 19px;
+        }
+    }
+
     .add__email {
         color: $text__default_color;
         background: $light__theme_color;
