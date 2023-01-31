@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-const CustomDatePicker = ({ onChange, ...rest }) => {
+const CustomDatePicker = ({ onChange, minDate, maxDate, ...rest }) => {
     const [selectedDate, setSelectedDate] = useState();
     return (
         <div className={`form-group`}>
@@ -19,6 +19,8 @@ const CustomDatePicker = ({ onChange, ...rest }) => {
                 portalId='root'
                 selected={selectedDate}
                 {...rest}
+                minDate={new Date(minDate)}
+                maxDate={new Date(maxDate)}
             />
         </div>
     );

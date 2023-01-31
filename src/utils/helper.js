@@ -219,8 +219,16 @@ export const cropImage = async (crop, url, setOutput) => {
 
 export const getCurrentFormInputRules = (rules, inputType) => {
     const customRules = {
-        number00: "maxLength",
-        number01: "max",
+        number00: "maxNum",
+        number01: "minNum",
+        date00: "minDate",
+        date01: "maxDate",
+        text01: "maxLength",
+        text02: "minLength",
+        text00: "isEmail",
+        text03: "isLink",
+        video00: "maxSize",
+        image00: "maxSize",
     };
 
     const customPatterns = {
@@ -229,6 +237,7 @@ export const getCurrentFormInputRules = (rules, inputType) => {
         LONG_TEXT: "",
         number00: "",
         number01: "",
+        text03: "",
     };
 
     let validationRules = {};
@@ -236,7 +245,7 @@ export const getCurrentFormInputRules = (rules, inputType) => {
     // [A-Za-z]
     // min,max,minLength,maxLength, minSize,maxSize, isALink, isEmail, minDate,maxDate
 
-    pattern += `\+${customPatterns[inputType]}`;
+    // pattern += `\+${customPatterns[inputType]}`;
 
     for (let i = 0; i < rules?.length; i++) {
         let { baseFormRule, ruleConstraint, ...rest } = rules[i];
@@ -250,6 +259,10 @@ export const getCurrentFormInputRules = (rules, inputType) => {
     }
 
     return { ...validationRules, pattern };
+};
+
+export const getURLPattern = () => {
+    return /^$|(http(s)?:\/\/.)?(\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;
 };
 
 export const isDeviceMobileTablet = () => {

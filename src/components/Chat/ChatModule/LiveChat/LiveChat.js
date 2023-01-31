@@ -125,6 +125,8 @@ const LiveChat = ({
         (item) => item?.ticketId === ticketId
     );
 
+    console.log({ messages });
+
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
 
@@ -286,8 +288,15 @@ const LiveChat = ({
 
     const handleOptConversation = async (convo) => {
         // triggerAgentTyping(true);
-        setMssgOptionLoading(true);
+
         const { conversationId, branchOptionId, branchOptionLabel } = convo;
+
+        if (branchOptionId === ADD_EMAIL_ADDRESS) {
+            return handleVerifyAction();
+        }
+
+        setMssgOptionLoading(true);
+
         dispatch(
             updateTicketMessageStatus({
                 messageId: SMART_CONVOS,
@@ -332,6 +341,11 @@ const LiveChat = ({
             branchOptionActionType,
             messageActionBranchId,
         } = messageOption;
+
+        if (branchOptionId === ADD_EMAIL_ADDRESS) {
+            return handleVerifyAction();
+        }
+
         setStatus(DATAMODE);
         setErrorMssg();
         setMssgOptionLoading(true);
