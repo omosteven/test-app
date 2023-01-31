@@ -6,7 +6,6 @@ import { messageTypes } from "../enums";
 import Message from "../Message/Message";
 import SuccessMessage from "../SuccessMessage/SuccessMessage";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
-// import { messageTypes } from "../MessageBody/Messages/enums";
 import "./MessagesLayout.scss";
 
 const { RELAXED } = defaultTemplates;
