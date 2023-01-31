@@ -6,18 +6,23 @@
 }
 
 #dummy {
-    margin-top: 5rem;
     height: 6.25rem;
     display: block;
     width: 100%;
 
-    #{$relaxed__mode__template__selector} {
-        margin-top: 6rem;
+    &.dummy__margin {
+        margin-top: 5rem;
+
+        #{$relaxed__mode__template__selector} {
+            margin-top: 6rem;
+        }
     }
 
     @include media("<=medium-screen") {
-        #{$relaxed__mode__template__selector} {
-            margin-top: 20rem;
+        &.dummy__margin {
+            #{$relaxed__mode__template__selector} {
+                margin-top: 20rem;
+            }
         }
     }
 }

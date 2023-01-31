@@ -23,10 +23,20 @@ const Messages = ({
     mssgOptionLoading,
 }) => {
     const { activeTicket } = useSelector((state) => state.tickets);
-
     const { agentTyping } = activeTicket || {};
     const [agentIsTyping, sayAgentIsTyping] = useState(agentTyping);
+
     const socket = useContext(SocketContext);
+
+    let allMessagesCopy = [...messages];
+    let lastAgentMssg = [...allMessagesCopy]
+        .reverse()
+        ?.find(
+            (message) =>
+                message.senderType === appMessageUserTypes?.WORKSPACE_AGENT
+        );
+
+    const addMargin = lastAgentMssg?.branchOptions?.length > 0;
 
     const handleTypingTrigger = (data) => {
         const { typing, user } = data;
@@ -68,7 +78,6 @@ const Messages = ({
                 )}
             </AnimatePresence>
 
-            {/* <AnimatePresence> */}
             {agentIsTyping ? (
                 <TypingMessageIndicator
                     {...{
@@ -79,8 +88,9 @@ const Messages = ({
             ) : (
                 ""
             )}
-            {/* </AnimatePresence> */}
-            <div id='dummy'></div>
+            <div
+                id='dummy'
+                className={`${addMargin ? "dummy__margin" : ""}`}></div>
         </div>
     );
 };

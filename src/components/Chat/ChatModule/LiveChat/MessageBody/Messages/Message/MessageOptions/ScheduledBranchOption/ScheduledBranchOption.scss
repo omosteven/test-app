@@ -36,8 +36,8 @@
 
     @include media("<=medium-small-screen") {
         #{$relaxed__mode__template__selector} {
-            font-size: 18px;
-            line-height: 20px;
+            font-size: 12px;
+            line-height: 6px;
         }
     }
 
