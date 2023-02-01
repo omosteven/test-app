@@ -6,7 +6,10 @@ import { IS_NOT_TYPING, IS_TYPING } from "../../../../../../lib/socket/events";
 import TypingMessageIndicator from "../../../../../ui/TypingMessageIndicator/TypingMessageIndicator";
 import { appMessageUserTypes } from "./enums";
 import MessagesLayout from "./MessagesLayout/MessagesLayout";
+import { messageTypes } from "./enums";
 import "./Messages.scss";
+
+const { ACTION_INFO } = messageTypes;
 
 const Messages = ({
     agent,
@@ -29,14 +32,15 @@ const Messages = ({
     const socket = useContext(SocketContext);
 
     let allMessagesCopy = [...messages];
-    let lastAgentMssg = [...allMessagesCopy]
+    let lastAgentMssgHasOptions = [...allMessagesCopy]
         .reverse()
         ?.find(
             (message) =>
+                message?.branchOptions?.length > 0 &&
                 message.senderType === appMessageUserTypes?.WORKSPACE_AGENT
         );
 
-    const addMargin = lastAgentMssg?.branchOptions?.length > 0;
+    const addMargin = lastAgentMssgHasOptions !== undefined;
 
     const handleTypingTrigger = (data) => {
         const { typing, user } = data;
