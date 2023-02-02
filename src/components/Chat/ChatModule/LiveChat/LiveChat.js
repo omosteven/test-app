@@ -83,6 +83,7 @@ const LiveChat = ({
     handleTicketCloseSuccess,
     handleOpenNewTicket,
     reconnectUser,
+    handleVerifyForm,
 }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -113,6 +114,7 @@ const LiveChat = ({
     });
 
     const [uploads, updateUploads] = useState([]);
+    const [disableForm, setDisableForm] = useState(false);
 
     const {
         chatSettings: { workspaceId },
@@ -124,8 +126,6 @@ const LiveChat = ({
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
-
-    console.log({ messages });
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
@@ -519,7 +519,10 @@ const LiveChat = ({
 
     const handleNewMessage = async (request) => {
         let { message, fileAttachments } = request;
-        message = message?.replace?.(/[^\w ]/g, "");
+
+        if (!currentFormElement) {
+            message = message?.replace?.(/[^\w ]/g, "");
+        }
 
         if (messages?.length === 1) {
             triggerAgentTyping(true);
@@ -527,9 +530,21 @@ const LiveChat = ({
 
         const newMessageId = generateID();
         setMssgOptionLoading(false);
-
         if (currentFormElement) {
+            setDisableForm(true);
             const { order, formId, formElementId } = currentFormElement;
+
+            // const messageEntry = {
+            //     ticketId,
+            //     senderType: THIRD_USER,
+            //     messageContent: message,
+            //     messageContentId: newMessageId,
+            //     messageId: newMessageId,
+            //     messageType: DEFAULT,
+            //     fileAttachments,
+            // };
+
+            // dispatch(saveTicketsMessages(messageEntry));
 
             socket.emit(FILL_FORM_RECORD, {
                 ticketId,
@@ -539,7 +554,10 @@ const LiveChat = ({
                 formId,
                 fileAttachments,
             });
+
+            clearUserInput();
         } else {
+            console.log("came here");
             const messageEntry = {
                 ticketId,
                 senderType: THIRD_USER,
@@ -848,6 +866,7 @@ const LiveChat = ({
         } = message;
 
         clearUserInput();
+        setDisableForm(false);
         if (senderType === THIRD_USER && messageType !== DEFAULT) {
             triggerAgentTyping(true);
         } else {
@@ -921,6 +940,8 @@ const LiveChat = ({
     };
 
     const handleAgentUnavailable = () => {
+        setMssgOptionLoading(false);
+
         const {
             actionBranchHeader,
             displayAverageResponseTime,
@@ -1160,6 +1181,8 @@ const LiveChat = ({
                             agent={agent}
                             errorMssg={errorMssg}
                             reconnectUser={handleReconnectUser}
+                            handleAddEmailAction={handleVerifyAction}
+                            handleConvoBreaker={handleConvoBreaker}
                         />
                         <MessageBody
                             forcedAgentTyping={forcedAgentTyping}
@@ -1199,7 +1222,7 @@ const LiveChat = ({
                     triggerAgentTyping={triggerAgentTyping}
                     showVerifyForm={showVerifyForm}
                     handleScrollChatToBottom={handleScrollChatToBottom}
-                    disableInput={status === LOADING}
+                    disableInput={status === LOADING || disableForm}
                     uploads={uploads}
                     updateUploads={updateUploads}
                     updateRequest={updateRequest}

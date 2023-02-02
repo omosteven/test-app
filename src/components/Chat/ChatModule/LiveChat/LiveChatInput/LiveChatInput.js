@@ -309,7 +309,6 @@ const LiveChatInput = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    console.log({ currentFormElement });
     const renderBasedOnInputType = () => {
         const { formElementPlaceholder, formElementOptions, options, rules } =
             currentFormElement || {};

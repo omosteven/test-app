@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import { ADD_EMAIL_ADDRESS, messageTypes } from "../../enums";
+import { messageTypes } from "../../enums";
 import MessageBranchOption from "./MessageBranchOption/MessageBranchOption";
 import ScheduledBranchOption from "./ScheduledBranchOption/ScheduledBranchOption";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
@@ -26,28 +26,11 @@ const MessageOptions = ({
         (state) => state?.chat?.chatSettings
     );
 
-    const {
-        activeTicket: { customer },
-    } = useSelector((state) => state.tickets);
-
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-
-    let messageOptions =
-        customer?.email?.length === 0
-            ? options
-            : [
-                  ...options,
-                  {
-                      branchOptionId: ADD_EMAIL_ADDRESS,
-                      branchOptionLabel: "Save Chat",
-                  },
-              ];
-
-    console.log({ messageOptions });
 
     return (
         <div className='options__group col-lg-5 col-md-7 col-12'>
-            {messageOptions?.map((option, index) => {
+            {options?.map((option, index) => {
                 return option?.isScheduled ? (
                     <ScheduledBranchOption
                         key={index}
