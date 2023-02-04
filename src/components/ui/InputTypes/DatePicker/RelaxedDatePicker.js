@@ -3,7 +3,13 @@ import DatePicker from "react-datepicker";
 import { localeDate, getDateAndMonth } from "utils/helper";
 import "./RelaxedDatePicker.scss";
 
-const RelaxedDatePicker = ({ onChange, toggleDatepicker, ...rest }) => {
+const RelaxedDatePicker = ({
+    onChange,
+    toggleDatepicker,
+    minDate,
+    maxDate,
+    ...rest
+}) => {
     const [selectedDate, setSelectedDate] = useState("");
     const [formattedDate, setFormattedDate] = useState({});
 
@@ -34,6 +40,8 @@ const RelaxedDatePicker = ({ onChange, toggleDatepicker, ...rest }) => {
                     selected={selectedDate}
                     fixedHeight
                     {...rest}
+                    minDate={new Date(minDate)}
+                    maxDate={new Date(maxDate)}
                 />
             </div>
             <div className='relaxed-date-picker__values'>

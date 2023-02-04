@@ -17,6 +17,7 @@ import { dataQueryStatus } from "../../../../../utils/formatHandlers";
 import {
     getCurrentFormInputRules,
     getErrorMessage,
+    getURLPattern,
     isDeviceMobileTablet,
 } from "../../../../../utils/helper";
 import { formInputTypes } from "../MessageBody/Messages/enums";
@@ -312,10 +313,20 @@ const LiveChatInput = ({
         const { formElementPlaceholder, formElementOptions, options, rules } =
             currentFormElement || {};
 
-        const { maxLength, max, pattern } = getCurrentFormInputRules(
-            rules,
-            inputType
-        );
+        const {
+            maxLength,
+            minLength,
+            isEmail,
+            isLink,
+            max,
+            pattern,
+            minDate,
+            maxDate,
+        } = getCurrentFormInputRules(rules, inputType);
+
+        // console.log({ isEmail, isLink, pattern });
+
+        const textInputType = isEmail ? "email" : isLink ? "url" : "text";
 
         switch (inputType) {
             case TEXT:
@@ -339,7 +350,14 @@ const LiveChatInput = ({
                         hideLabel={true}
                         ref={inputRef}
                         maxLength={maxLength?.ruleConstraint}
+                        minLength={minLength?.ruleConstraint}
+                        type={textInputType}
+                        // pattern={
+                        //     isLink?.ruleConstraint &&
+                        //     `${isLink?.ruleConstraint}/.*`
+                        // }
                         // pattern={pattern}
+                        // pattern={`/^$|(http(s)?:\/\/.)?(\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g`}
                         max={max?.ruleConstraint}
                         disabled={
                             isDisabled || inputType === IMAGE || disableInput
@@ -361,6 +379,8 @@ const LiveChatInput = ({
                                             })
                                         }
                                         toggleDatepicker={toggleDatepicker}
+                                        minDate={minDate?.ruleConstraint}
+                                        maxDate={maxDate?.ruleConstraint}
                                     />
                                 )}
                             </>
@@ -370,6 +390,8 @@ const LiveChatInput = ({
                                     updateRequest({ ...request, message: date })
                                 }
                                 disabled={disableInput}
+                                minDate={minDate?.ruleConstraint}
+                                maxDate={maxDate?.ruleConstraint}
                             />
                         )}
                     </>
@@ -429,6 +451,7 @@ const LiveChatInput = ({
                         onBlur={handleInputBlur}
                         // onClick={() => handleScrollChatToBottom()}
                         maxLength={maxLength?.ruleConstraint}
+                        minLength={minLength?.ruleConstraint}
                         // pattern={pattern}
                         max={max?.ruleConstraint}
                     />

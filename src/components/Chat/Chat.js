@@ -12,7 +12,7 @@ import {
 import { retriveAccessToken } from "../../storage/sessionStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
-import { getErrorMessage } from "../../utils/helper";
+import { generateID, getErrorMessage } from "../../utils/helper";
 import Empty from "../common/Empty/Empty";
 import { ToastContext } from "../common/Toast/context/ToastContextProvider";
 import queryString from "query-string";
@@ -27,6 +27,7 @@ import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import { DotLoader } from "components/ui";
 import { useWindowSize } from "utils/hooks";
 import "./Chat.scss";
+import { CONVERSATION_SAVED } from "./ChatModule/LiveChat/MessageBody/Messages/enums";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 const { RELAXED, WORK_MODE } = defaultTemplates;
@@ -80,7 +81,19 @@ const Chat = () => {
             const res = await API.get(url);
             if (res.status === 200) {
                 const { data } = res.data;
-                dispatch(setConversationBreakers(data));
+
+                const saveConvoBreaker = {
+                    actionBranchHeader: "Conversation Saved Successfully.",
+                    actionBranchId: generateID(),
+                    actionBranchMainSentence:
+                        "We've sent an email containing a link to your saved conversation",
+                    actionBranchOptions: [],
+                    actionBranchType: CONVERSATION_SAVED,
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                };
+
+                dispatch(setConversationBreakers([...data, saveConvoBreaker]));
             }
         } catch (err) {
             setStatus(ERROR);

@@ -7,16 +7,38 @@ import SmallLoader from "../../../../ui/SmallLoader/SmallLoader";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { useWindowSize } from "utils/hooks";
 import "./LiveChatStatusBar.scss";
+import { Button } from "components/ui";
+
+import assets from "assets/images";
+import { ReactSVG } from "react-svg";
+import { useState } from "react";
+import API from "lib/api";
+import apiRoutes from "lib/api/apiRoutes";
+import { CONVERSATION_SAVED } from "../MessageBody/Messages/enums";
 
 const { IDLE, LOADING, ERROR, DATAMODE } = dataQueryStatus;
 const { WORK_MODE, RELAXED } = defaultTemplates;
 
-const LiveChatStatusBar = ({ status, errorMssg, reconnectUser }) => {
+const LiveChatStatusBar = ({
+    status,
+    errorMssg,
+    reconnectUser,
+    handleAddEmailAction,
+    handleConvoBreaker,
+}) => {
     // const {email} = agent || {}
+    // const [loading, setLoading] = useState(false);
     const { user } = useSelector((state) => state?.auth);
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
+
+    const [saveStatus, setSaveStatus] = useState();
+
+    const {
+        activeTicket: { customer, ticketId },
+    } = useSelector((state) => state.tickets);
+
     const { width } = useWindowSize();
 
     // const {
@@ -68,7 +90,55 @@ const LiveChatStatusBar = ({ status, errorMssg, reconnectUser }) => {
         }
     };
 
-    return <div className='live__chat--status'>{renderBasedOnStatus()}</div>;
+    const saveTicketConvo = async () => {
+        try {
+            setSaveStatus(LOADING);
+            let request = {
+                ticketId,
+                message: `Your Ticket has been saved. Kindly click the button below to go back to it later`,
+            };
+
+            const url = apiRoutes?.sendTicketReminder;
+            const res = await API.post(url, request);
+            if (res.status === 201) {
+                setSaveStatus(DATAMODE);
+                handleConvoBreaker(CONVERSATION_SAVED);
+            }
+        } catch (err) {
+            setSaveStatus(ERROR);
+        }
+    };
+
+    const handleSaveConvo = () => {
+        customer?.email?.length > 0
+            ? saveTicketConvo()
+            : handleAddEmailAction();
+    };
+
+    return (
+        <div className='live__chat--status'>
+            {renderBasedOnStatus()}
+            {saveStatus !== DATAMODE && (
+                <div>
+                    <Button
+                        type='button'
+                        classType='primary'
+                        onClick={() => handleSaveConvo()}
+                        text='Save Conversation'
+                        className='live__chat--save-button'
+                        loading={saveStatus === LOADING}
+                        disabled={saveStatus === LOADING}
+                        icon={
+                            <ReactSVG
+                                src={assets.svg.save}
+                                className='live__chat--save-button__icon'
+                            />
+                        }
+                    />
+                </div>
+            )}
+        </div>
+    );
 };
 
 export default LiveChatStatusBar;

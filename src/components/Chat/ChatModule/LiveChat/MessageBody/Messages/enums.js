@@ -6,6 +6,7 @@ export const DOWNTIME_BRANCH = "DOWNTIME_BRANCH";
 export const INPUT_NEEDED = "INPUT_NEEDED";
 export const AGENT_UNAVAILABLE = "AGENT_UNAVAILABLE";
 export const DOWNTIME_BRANCH_SUB_SENTENCE = "DOWNTIME_BRANCH_SUB_SENTENCE";
+export const CONVERSATION_SAVED = "CONVERSATION_SAVED";
 
 export const messageActionTypes = Object.freeze({
     [TICKET_CLOSED_ALERT]: {
