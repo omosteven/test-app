@@ -75,11 +75,13 @@
 }
 
 .options__group__investigate {
-    @include media("<=medium-screen") {
-        max-height: 50vh !important;
-        display: flex !important;
-        overflow: scroll !important;
-        flex-wrap: unset !important;
+    #{$relaxed__mode__template__selector} {
+        @include media("<=medium-screen") {
+            max-height: 50vh !important;
+            display: flex !important;
+            overflow: scroll !important;
+            flex-wrap: unset !important;
+        }
     }
 }
 

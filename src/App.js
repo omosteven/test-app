@@ -40,7 +40,7 @@ const App = () => {
                         ...data,
                         workspaceSlug,
                         defaultTheme: DARK_MODE_DEFAULT,
-                        defaultTemplate: WORK_MODE,
+                        defaultTemplate: RELAXED,
                     })
                 );
                 root.style.setProperty(
