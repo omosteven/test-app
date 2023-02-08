@@ -2,7 +2,9 @@ import React from "react";
 import SmallLoader from "components/ui/SmallLoader/SmallLoader";
 import { INPUT_NEEDED } from "../../../enums";
 import "./MessageBranchOption.scss";
+import { dataQueryStatus } from "utils/formatHandlers";
 
+const { ERROR } = dataQueryStatus;
 const MessageBranchOption = ({
     data: { branchOptionLabel },
     branchOptionId,
@@ -12,11 +14,15 @@ const MessageBranchOption = ({
     messagesDepth,
     lastMessage,
     mssgOptionLoading,
+    mssgOptionError,
+    status,
 }) => {
     const { messageActionType } = lastMessage || {};
 
     const shouldBeDisabled =
-        messageActionType === INPUT_NEEDED
+        status === ERROR
+            ? true
+            : messageActionType === INPUT_NEEDED
             ? false
             : messageIndex < messagesDepth;
     const isSelected = selectedOption === branchOptionId;

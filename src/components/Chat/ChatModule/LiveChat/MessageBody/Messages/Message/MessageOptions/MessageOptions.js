@@ -21,6 +21,8 @@ const MessageOptions = ({
     deliveryDate,
     lastMessage,
     mssgOptionLoading,
+    mssgOptionError,
+    status,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -29,7 +31,7 @@ const MessageOptions = ({
     const isRelaxedTemplate = defaultTemplate === RELAXED;
 
     return (
-        <div className='options__group col-lg-5 col-md-7 col-12'>
+        <div className='options__group options__group__investigate col-lg-5 col-md-7 col-12'>
             {options?.map((option, index) => {
                 return option?.isScheduled ? (
                     <ScheduledBranchOption
@@ -47,6 +49,7 @@ const MessageOptions = ({
                         }
                         deliveryDate={deliveryDate}
                         mssgOptionLoading={mssgOptionLoading}
+                        status={status}
                     />
                 ) : (
                     <MessageBranchOption
@@ -58,6 +61,7 @@ const MessageOptions = ({
                         selectedOption={selectedOption}
                         lastMessage={lastMessage}
                         mssgOptionLoading={mssgOptionLoading}
+                        status={status}
                         handleMessageOptionSelect={() =>
                             messageType === CONVERSATION
                                 ? handleOptConversation(option)
@@ -66,6 +70,9 @@ const MessageOptions = ({
                     />
                 );
             })}
+            {mssgOptionError && (
+                <p className='options__group__error'>An error occurred</p>
+            )}
             {isRelaxedTemplate && (
                 <PoweredBy otherClassName='white__background' />
             )}

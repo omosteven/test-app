@@ -118,7 +118,7 @@ const LiveChatStatusBar = ({
     return (
         <div className='live__chat--status'>
             {renderBasedOnStatus()}
-            {saveStatus !== DATAMODE && (
+            {/* {saveStatus !== DATAMODE && (
                 <div>
                     <Button
                         type='button'
@@ -136,7 +136,7 @@ const LiveChatStatusBar = ({
                         }
                     />
                 </div>
-            )}
+            )} */}
         </div>
     );
 };

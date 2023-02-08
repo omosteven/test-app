@@ -25,7 +25,10 @@ const Message = ({
     messages,
     setActiveConvo,
     requestAllMessages,
-    mssgOptionLoading
+    mssgOptionLoading,
+    handleNewMessage,
+    mssgOptionError,
+    status,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -101,6 +104,9 @@ const Message = ({
                     messageId={messageId}
                     messages={messages}
                     lastMessage={lastMessage}
+                    data={data}
+                    handleNewMessage={handleNewMessage}
+                    messageIndex={messageIndex}
                 />
                 {parsedBranchOptions?.length > 0 && isRelaxedTemplate ? (
                     showMessageOptions ? (
@@ -117,6 +123,8 @@ const Message = ({
                             deliveryDate={deliveryDate}
                             lastMessage={lastMessage}
                             mssgOptionLoading={mssgOptionLoading}
+                            mssgOptionError={mssgOptionError}
+                            status={status}
                         />
                     ) : (
                         <></>
@@ -135,6 +143,7 @@ const Message = ({
                             handleOptConversation={handleOptConversation}
                             deliveryDate={deliveryDate}
                             lastMessage={lastMessage}
+                            status={status}
                         />
                     )
                 )}

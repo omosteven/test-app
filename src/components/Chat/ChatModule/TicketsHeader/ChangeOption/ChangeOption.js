@@ -1,3 +1,4 @@
+import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +30,8 @@ const ChangeOption = ({
     const { activeTicket: ticket, ticketsMessages } = useSelector(
         (state) => state.tickets
     );
-    const { ticketId } = ticket;
+    const { ticketId, ticketPhase } = ticket;
+    console.log({ ticketPhase });
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
@@ -77,8 +79,11 @@ const ChangeOption = ({
         lastMessage?.messageType === ACTION_INFO ||
         lastMessage?.messageType === FORM_REQUEST ||
         lastMessage?.messageType === DEFAULT ||
+        ticketPhase === ISSUE_DISCOVERY ||
+        messages?.length <= 4 ||
         loading;
 
+    console.log({ lastMessage });
     return (
         <div>
             <Button
