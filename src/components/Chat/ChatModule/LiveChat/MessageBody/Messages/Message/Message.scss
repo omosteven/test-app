@@ -9,6 +9,36 @@
     &.sent {
         justify-content: flex-end;
     }
+    &--sending {
+        margin: unset !important;
+        margin-right: 0rem !important;
+    }
+    &--error {
+        padding: 0.5rem 1rem;
+        padding-right: 1.25rem;
+        border-radius: 0.5rem;
+        border-radius: 0.5rem;
+        color: #ff000096;
+        cursor: pointer;
+
+        #{$relaxed__mode__template__selector} {
+            padding: 4px 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 18px;
+            letter-spacing: -0.2px;
+        }
+
+        #{$dark__mode__theme__selector} {
+            border: 1px solid #f77150;
+            color: #f77150;
+            background: $dark__mode__theme__background__color;
+        }
+    }
     &--content {
         width: 100%;
         display: flex;
@@ -21,7 +51,7 @@
             max-width: 50%;
             font-size: 0.938rem;
             letter-spacing: 0.003rem;
-            margin-bottom: 0.625rem;            
+            margin-bottom: 0.625rem;
 
             .message {
                 padding: 0.75rem 1rem 0.625rem;
@@ -48,8 +78,9 @@
                 @include media("<=medium-screen") {
                     #{$relaxed__mode__template__selector} {
                         font-size: 24px;
-                        line-height: 32px;
+                        line-height: 40px;
                         border-radius: 1rem 1rem 1rem 0;
+                        letter-spacing: 0.01rem;
                     }
                 }
             }
@@ -88,11 +119,11 @@
                 }
 
                 .message {
-                  padding-top: 0.5rem;
+                    padding-top: 0.5rem;
 
-                  #{$relaxed__mode__template__selector} {
-                    padding: 0 0 0;
-                  }
+                    #{$relaxed__mode__template__selector} {
+                        padding: 0 0 0;
+                    }
 
                     .action__message {
                         #{$dark__mode__theme__selector} {
@@ -167,7 +198,7 @@
                         .action__attention {
                             svg {
                                 margin-top: -0.188rem;
-    
+
                                 #{$relaxed__mode__template__selector} {
                                     height: 22px;
                                     width: 22px;
@@ -179,14 +210,13 @@
                                         width: 32px;
                                     }
                                 }
-    
+
                                 path {
                                     fill: $primary__theme_color;
                                 }
                             }
                         }
-                        
-    
+
                         .action__header__text {
                             font-family: $primary_font_family--medium;
                             font-size: 0.938rem;
@@ -200,7 +230,7 @@
                             #{$white__mode__theme__selector} {
                                 color: $text__default_color;
                             }
-    
+
                             @include media("<=medium-screen") {
                                 #{$relaxed__mode__template__selector} {
                                     font-weight: 500;
@@ -241,7 +271,6 @@
                                     }
                                 }
                             }
-                            
                         }
                     }
                 }
@@ -267,19 +296,19 @@
                     background: rgba(0, 102, 245, 0.2);
                     border-radius: 1rem 0 0 0;
 
-                        svg {
-                            #{$relaxed__mode__template__selector} {
-                                height: 22px;
-                                width: 22px;
-                            }
+                    svg {
+                        #{$relaxed__mode__template__selector} {
+                            height: 22px;
+                            width: 22px;
+                        }
 
-                            @include media("<=medium-screen") {
-                                #{$relaxed__mode__template__selector} {
-                                    height: 32px;
-                                    width: 32px;
-                                }
+                        @include media("<=medium-screen") {
+                            #{$relaxed__mode__template__selector} {
+                                height: 32px;
+                                width: 32px;
                             }
                         }
+                    }
                 }
 
                 .success__message__content {
@@ -313,7 +342,6 @@
                                 color: $light__theme_color;
                             }
                         }
-                        
                     }
                 }
             }
@@ -329,13 +357,11 @@
                     background: $dark__mode__theme__grey__color;
                 }
 
-                
-
                 @include media("<=medium-screen") {
                     #{$relaxed__mode__template__selector} {
                         font-size: 24px;
                         line-height: 32px;
-                        border-radius: 1rem 1rem 0 1rem; 
+                        border-radius: 1rem 1rem 0 1rem;
                     }
 
                     #{$white__mode__theme__selector} {

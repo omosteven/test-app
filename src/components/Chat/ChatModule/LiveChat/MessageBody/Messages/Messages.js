@@ -24,6 +24,9 @@ const Messages = ({
     setActiveConvo,
     requestAllMessages,
     mssgOptionLoading,
+    handleNewMessage,
+    mssgOptionError,
+    status,
 }) => {
     const { activeTicket } = useSelector((state) => state.tickets);
     const { agentTyping } = activeTicket || {};
@@ -76,6 +79,9 @@ const Messages = ({
                         setActiveConvo={setActiveConvo}
                         requestAllMessages={requestAllMessages}
                         mssgOptionLoading={mssgOptionLoading}
+                        handleNewMessage={handleNewMessage}
+                        mssgOptionError={mssgOptionError}
+                        status={status}
                     />
                 ) : (
                     ""

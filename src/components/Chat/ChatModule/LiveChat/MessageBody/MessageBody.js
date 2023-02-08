@@ -14,6 +14,9 @@ const MessageBody = ({
     setActiveConvo,
     requestAllMessages,
     mssgOptionLoading,
+    handleNewMessage,
+    mssgOptionError,
+    status,
 }) => {
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
     const { ticketId, agent } = ticket;
@@ -63,6 +66,9 @@ const MessageBody = ({
                 setActiveConvo={setActiveConvo}
                 requestAllMessages={requestAllMessages}
                 mssgOptionLoading={mssgOptionLoading}
+                handleNewMessage={handleNewMessage}
+                mssgOptionError={mssgOptionError}
+                status={status}
             />
             {showModal && (
                 <ModalPreview

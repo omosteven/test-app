@@ -481,6 +481,7 @@ const LiveChatInput = ({
 
     const isFormElementMultiselect = formElementType === MULTISELECT;
 
+    const handleRetryMessage = () => {};
     return (
         <div className={`chat__input__wrapper`} ref={inputContainerRef}>
             <div

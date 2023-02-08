@@ -156,6 +156,7 @@ const ChatHeader = ({
                                 </div>
                             )}
                         </>
+
                     )}
                 </div>
             </header>

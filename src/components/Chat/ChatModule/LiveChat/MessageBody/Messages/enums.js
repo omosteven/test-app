@@ -63,6 +63,7 @@ export const branchOptionsTypes = Object.freeze({
 export const messageStatues = Object.freeze({
     SENDING: "SENDING",
     DELIVERED: "DELIVERED",
+    FAILED: "FAILED",
 });
 
 export const appMessageUserTypes = Object.freeze({

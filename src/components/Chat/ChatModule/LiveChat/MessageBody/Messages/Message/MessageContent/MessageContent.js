@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { messageTypes, appMessageUserTypes } from "../../enums";
+import { messageTypes, appMessageUserTypes, messageStatues } from "../../enums";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import ChangeOptionChoice from "./ChangeOptionChoice/ChangeOptionChoice";
 import ChangeOptionChoiceModal from "./ChangeOptionChoice/ChangeOptionChoiceModal/ChangeOptionChoiceModal";
@@ -9,6 +9,8 @@ const { BRANCH_OPTION, FORM_REQUEST, ACTION_INFO, DEFAULT, CONVERSATION } =
     messageTypes;
 const { THIRD_USER } = appMessageUserTypes;
 const { RELAXED } = defaultTemplates;
+
+const { SENDING, DELIVERED, FAILED } = messageStatues;
 
 const MessageContent = ({
     isReceivedMessage,
@@ -20,11 +22,19 @@ const MessageContent = ({
     messages,
     messageId,
     lastMessage,
+    data,
+    handleNewMessage,
+    messageIndex,
 }) => {
     const [showModal, toggleModal] = useState(false);
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
+
+    const {
+        activeTicket: { ticketPhase },
+    } = useSelector((state) => state.tickets);
+
     const isRelaxedTemplate = defaultTemplate === RELAXED;
 
     const handleChangeOptionChoiceModal = () => {
@@ -44,7 +54,6 @@ const MessageContent = ({
                     message?.senderType === THIRD_USER
             );
 
-    // it works
     const showChangeOptionChoice =
         isRelaxedTemplate &&
         !isReceivedMessage &&
@@ -52,7 +61,34 @@ const MessageContent = ({
         recentThirdUserMessage?.messageId === messageId &&
         (lastMessage?.messageType !== ACTION_INFO ||
             lastMessage?.messageType !== FORM_REQUEST ||
-            lastMessage?.messageType !== DEFAULT);
+            lastMessage?.messageType !== DEFAULT) &&
+        messageIndex > 4;
+
+    const handleRetry = () => {
+        handleNewMessage({ ...data });
+    };
+
+    const { messageStatus } = data;
+
+    const renderBasedOnMessageStatus = () => {
+        switch (messageStatus) {
+            // case SENDING:
+                // return <SmallLoader otherClassName='message__group--sending' />;
+            case DELIVERED:
+                return "";
+
+            case FAILED:
+                return (
+                    <p
+                        className='message__group--error'
+                        onClick={() => handleRetry()}>
+                        Retry
+                    </p>
+                );
+            default:
+                return "";
+        }
+    };
 
     return (
         <>
@@ -82,6 +118,7 @@ const MessageContent = ({
                     requestAllMessages={requestAllMessages}
                 />
             )}
+            {!isReceivedMessage && <>{renderBasedOnMessageStatus()}</>}
         </>
     );
 };

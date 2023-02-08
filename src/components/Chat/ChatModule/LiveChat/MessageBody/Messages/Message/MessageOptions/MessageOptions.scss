@@ -6,7 +6,7 @@
     flex-wrap: wrap;
     gap: 0.5rem;
     background: none;
-    
+
     @include media(">medium-screen") {
         #{$relaxed__mode__template__selector} {
             display: flex;
@@ -21,7 +21,7 @@
             z-index: 2;
             background: $dark__mode__theme__dark__color;
             animation: slide-in 0.8s normal forwards ease;
-            
+
             @keyframes slide-in {
                 0% {
                     transform: translateY(150px);
@@ -61,7 +61,7 @@
                 }
             }
         }
-        
+
         #{$white__mode__theme__selector} {
             background: $white__mode__options__background;
         }
@@ -72,4 +72,17 @@
             padding: 40px 15px 19px;
         }
     }
+}
+
+.options__group__investigate {
+    @include media("<=medium-screen") {
+        max-height: 50vh !important;
+        display: flex !important;
+        overflow: scroll !important;
+        flex-wrap: unset !important;
+    }
+}
+
+.options__group__error {
+    color: red;
 }
