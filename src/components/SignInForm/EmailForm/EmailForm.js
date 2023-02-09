@@ -12,7 +12,13 @@ import imageLinks from "assets/images";
 import pushToDashboard from "../actions";
 import "./EmailForm.scss";
 
-const EmailForm = ({ handleInitialRequestUpdate, title, subTitle, userId }) => {
+const EmailForm = ({
+    handleInitialRequestUpdate,
+    title,
+    subTitle,
+    bottomText,
+    userId,
+}) => {
     const {
         chatSettings: { teamName, workspaceId, workspaceSlug },
     } = useSelector((state) => state.chat);
@@ -115,8 +121,9 @@ const EmailForm = ({ handleInitialRequestUpdate, title, subTitle, userId }) => {
             <div className='info__section'>
                 <ReactSVG src={imageLinks.svg.info} />
                 <p>
-                    This email address will be used to communicate updates with
-                    you.
+                    {bottomText
+                        ? bottomText
+                        : "This email address will be used to communicate updates with you."}
                 </p>
             </div>
         </div>

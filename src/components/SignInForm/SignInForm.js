@@ -27,6 +27,10 @@ const SignInForm = () => {
         setSignInStage(signInstages.final);
     };
 
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+
+    const isTablet = width <= 768;
+
     const renderBasedOnStage = () => {
         const { initial, final } = signInstages;
         switch (signInStage) {
@@ -34,39 +38,54 @@ const SignInForm = () => {
                 return (
                     <EmailForm
                         handleInitialRequestUpdate={handleInitialRequestUpdate}
+                        subTitle={
+                            isRelaxedTemplate &&
+                            "Kindly give us your email address so we can proceed?"
+                        }
+                        title={isRelaxedTemplate && "Hi there!"}
+                        bottomText={
+                            isRelaxedTemplate &&
+                            "Updates would be shared via this email"
+                        }
                     />
                 );
 
             case final:
-                return <OTPForm initialStepRequest={initialStepRequest} />;
+                return (
+                    <OTPForm
+                        initialStepRequest={initialStepRequest}
+                        title={
+                            isRelaxedTemplate &&
+                            "We’ve sent an OTP to your email"
+                        }
+                        subTitle={
+                            isRelaxedTemplate &&
+                            "Check and enter the code received."
+                        }
+                    />
+                );
 
             default:
                 return <EmailForm setSignInStage={setSignInStage} />;
         }
     };
 
-    const isRelaxedTemplate = defaultTemplate === RELAXED;
-
-    const isTablet = width <= 768;
-
     return (
         <FadeIn location={signInStage}>
-            {isRelaxedTemplate && isTablet && (
-                <ChatHeader showActions={false} />
-            )}
-            <div className='row justify-content-center align-items-center form-area'>
-                <div
-                    className='col-lg-4 col-md-5 col-sm-8 col-12'
-                    key={signInStage}>
-                    <div className='signin otp__group'>
-                        {renderBasedOnStage()}
+            <div className='signin--container'>
+                {isRelaxedTemplate && <ChatHeader showActions={false} />}
+                <div className='row justify-content-center align-items-center form-area signin-con'>
+                    <div
+                        className='col-lg-4 col-md-5 col-sm-8 col-12'
+                        key={signInStage}>
+                        <div className='signin otp__group'>
+                            {renderBasedOnStage()}
+                        </div>
                     </div>
                 </div>
             </div>
         </FadeIn>
     );
 };
-
-//  <DatePickerUI />
 
 export default SignInForm;
