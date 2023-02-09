@@ -2,6 +2,17 @@
 @import "assets/scss/_include-media-lib/include-media";
 
 .otp__form {
+    h5 {
+        #{$relaxed__mode__template__selector} {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+    }
+    p {
+        #{$relaxed__mode__template__selector} {
+            text-align: center;
+        }
+    }
     .pincode-input-container {
         padding: 0.625rem 0;
         // margin: 1.25rem 0;
@@ -17,8 +28,8 @@
             border-radius: 0.625rem;
             font-weight: 600;
             margin-left: 0;
-            border: 1px solid #DEE1E5  !important;
-            color: #11142D;
+            border: 1px solid #dee1e5 !important;
+            color: #11142d;
             background: #ffffff !important;
 
             #{$relaxed__mode__template__selector} {
@@ -26,12 +37,11 @@
                 padding: 18px;
                 width: 80px !important;
                 height: 80px !important;
-
             }
 
-            #{$dark__mode__theme__selector} { 
+            #{$dark__mode__theme__selector} {
                 border: 1px solid $dark__mode__theme__dark__color !important;
-                color: #D5D7D8;
+                color: #d5d7d8;
                 background: $dark__mode__theme__dark__color !important;
             }
 
@@ -40,7 +50,7 @@
                 color: $dark__theme_color;
                 background-color: $white__mode__background !important;
             }
-            
+
             &:focus {
                 border: 1px solid $primary__theme_color !important;
             }

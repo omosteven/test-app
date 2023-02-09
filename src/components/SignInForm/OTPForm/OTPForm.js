@@ -17,6 +17,8 @@ const OTPForm = ({
     handleSuccess,
     userId,
     isDirectUser,
+    title,
+    subTitle,
 }) => {
     const { workspaceSlug } = useSelector((state) => state?.chat?.chatSettings);
     const { email, sessionId } = initialStepRequest;
@@ -69,19 +71,36 @@ const OTPForm = ({
         <div>
             <div className='otp__form'>
                 <div>
-                    <h5 className='signin-header'>Enter OTP</h5>
+                    <h5 className='signin-header'>
+                        {title ? title : "Enter OTP"}
+                    </h5>
                     <p className='signin-sub__text'>
                         {isDirectUser ? (
                             <>
-                                Enter the code sent to <strong>{email}</strong>{" "}
-                                to complete your account verification.
+                                {subTitle ? (
+                                    subTitle
+                                ) : (
+                                    <>
+                                        {" "}
+                                        Enter the code sent to{" "}
+                                        <strong>{email}</strong> to complete
+                                        your account verification.
+                                    </>
+                                )}
                             </>
                         ) : (
                             <>
-                                Hello <strong>{email}</strong>, an email has
-                                been sent to you containing an OTP code which is
-                                required to log you into your account. Please
-                                check and enter the code received.
+                                {subTitle ? (
+                                    subTitle
+                                ) : (
+                                    <>
+                                        Hello <strong>{email}</strong>, an email
+                                        has been sent to you containing an OTP
+                                        code which is required to log you into
+                                        your account. Please check and enter the
+                                        code received.
+                                    </>
+                                )}
                             </>
                         )}
                     </p>
