@@ -53,6 +53,11 @@
 
             &:focus {
                 border: 1px solid $primary__theme_color !important;
+
+                #{$relaxed__mode__template__selector} {
+                    background-color: $white__mode__background !important;
+                    color: $dark__mode__theme__dark__color !important;
+                }
             }
             &:not(:last-child) {
                 margin-right: 1rem !important;
