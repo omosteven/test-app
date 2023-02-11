@@ -13,16 +13,30 @@
             text-align: center;
         }
     }
+    .my-3 {
+        #{$relaxed__mode__template__selector} {
+            margin-top: 40px !important;
+        }
+    }
+    button {
+        #{$relaxed__mode__template__selector} {
+            height: 60px !important;
+        }
+    }
     .pincode-input-container {
         padding: 0.625rem 0;
         // margin: 1.25rem 0;
         white-space: nowrap;
         display: flex;
         justify-content: space-between !important;
-
         @include media("<=medium-screen") {
             text-align: center;
             padding: 0;
+
+            #{$relaxed__mode__template__selector} {
+                justify-content: center !important;
+                gap: 16px !important;
+            }
         }
         .pincode-input-text {
             border-radius: 0.625rem;
@@ -33,7 +47,7 @@
             background: #ffffff !important;
 
             #{$relaxed__mode__template__selector} {
-                border-radius: 0.25rem;
+                border-radius: 14px;
                 padding: 18px;
                 width: 80px !important;
                 height: 80px !important;

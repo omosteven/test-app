@@ -26,6 +26,7 @@ const ChatHeader = ({
     showChatMenu,
     toggleChatMenu,
     showActions,
+    isAuthPage,
 }) => {
     const {
         chatSettings: { companyLogo, teamName, defaultTemplate },
@@ -117,6 +118,7 @@ const ChatHeader = ({
                                 src={companyLogo}
                                 alt={teamName}
                                 className='company__logo'
+                                name={isAuthPage ? teamName : ""}
                             />
                         ) : (
                             isTablet && renderBasedOnStatus()
@@ -156,7 +158,6 @@ const ChatHeader = ({
                                 </div>
                             )}
                         </>
-
                     )}
                 </div>
             </header>

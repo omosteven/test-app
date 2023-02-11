@@ -32,6 +32,7 @@
         min-height: 4.875rem;
         top: 0;
         z-index: 3;
+       
 
         #{$relaxed__mode__template__selector} {
             margin-top: 12px;
@@ -128,7 +129,7 @@
             }
 
             .chat__toggler {
-                display: none;
+                // display: none;
 
                 span {
                     font-weight: 400;
