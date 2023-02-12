@@ -118,7 +118,7 @@ const EmailForm = ({
                     loading={loading}
                 />
             </form>
-            <div className='info__section show-only-on-mobile'>
+            <div className='info__section'>
                 <ReactSVG src={imageLinks.svg.info} />
                 <p>
                     {bottomText

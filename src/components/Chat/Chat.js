@@ -151,12 +151,27 @@ const Chat = () => {
                 const tickets = res.data.data;
                 if (tickets.length > 0) {
                     setCustomerTickets(tickets);
+
                     const { ticketId: prevSelectedId } = activeTicket || {};
-                    const newTicket = ticketId
-                        ? tickets?.find((x) => x.ticketId === ticketId)
-                        : prevSelectedId
-                        ? tickets?.find((x) => x.ticketId === prevSelectedId)
+                    // const newTicket = ticketId
+                    //     ? tickets?.find((x) => x.ticketId === ticketId)
+                    //     : prevSelectedId
+                    //     ? tickets?.find((x) => x.ticketId === prevSelectedId)
+                    //     : tickets[0];
+
+                    let selectedTicket = tickets?.find(
+                        (x) => x.ticketId === ticketId
+                    );
+                    let prevSelectedTicket = tickets?.find(
+                        (x) => x.ticketId === prevSelectedId
+                    );
+
+                    const newTicket = selectedTicket
+                        ? selectedTicket
+                        : prevSelectedTicket
+                        ? prevSelectedTicket
                         : tickets[0];
+
                     dispatch(
                         setActiveTicket({
                             ...newTicket,
@@ -254,24 +269,6 @@ const Chat = () => {
     const handleCloseTicket = () => {
         toggleTicketActionModal(true);
     };
-
-    // useEffect(() => {
-    //     if (
-    //         (isAuthCodeAvailable || isAuthTokenAvailable) &&
-    //         params?.connectionStatus !== "connected"
-    //     ) {
-    //         isAuthCodeAvailable
-    //             ? history.push(
-    //                   `/direct?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&code=${params?.code}&connectionStatus=connected`
-    //               )
-    //             : history.push(
-    //                   `/chat?workspaceSlug=${params?.workspaceSlug}&ticketId=${params?.ticketId}&token=${params?.token}&connectionStatus=connected`
-    //               );
-    //         setTimeout(() => {
-    //             window.location.reload();
-    //         }, 1000);
-    //     }
-    // }, []);
 
     const reconnectUser = () => {
         const socketReconnection = reconnectSocket(userToken);

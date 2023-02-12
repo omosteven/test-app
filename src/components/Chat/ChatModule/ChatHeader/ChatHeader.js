@@ -102,9 +102,16 @@ const ChatHeader = ({
         <div
             id='header__wrapper'
             className={`${!showActions ? "high__index" : ""}`}>
-            <header id='header'>
-                <div className='chat__header'>
-                    {showActions && (
+            <header
+                id={`header`}
+                className={`${isAuthPage ? "header__auth" : ""}`}>
+                <div
+                    className={`chat__header ${
+                        !isAuthPage
+                            ? "chat__header__user"
+                            : "chat__header__auth"
+                    }`}>
+                    {showActions && isTablet && (
                         <ChatToggler
                             onClick={() =>
                                 toggleChatMenu?.((prevState) => !prevState)

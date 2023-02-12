@@ -1,6 +1,29 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
+.chat__header__user {
+    @include media("<=medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            background-color: $dark__mode__theme__dark__color !important;
+        }
+    }
+}
+
+.chat__header__auth {
+    @include media(">medium-screen") {
+        height: 72px !important;
+    }
+    @include media("<=medium-screen") {
+        height: 50px !important;
+    }
+}
+
+.header__auth {
+    #{$relaxed__mode__template__selector} {
+        margin-bottom: 10px !important;
+    }
+}
+
 #header__wrapper {
     @include media("<=medium-screen") {
         #{$relaxed__mode__template__selector} {
@@ -32,7 +55,6 @@
         min-height: 4.875rem;
         top: 0;
         z-index: 3;
-       
 
         #{$relaxed__mode__template__selector} {
             margin-top: 12px;
@@ -99,7 +121,6 @@
             @include media("<=medium-screen") {
                 padding: 0 1rem;
                 height: 3.5rem;
-
                 #{$relaxed__mode__template__selector} {
                     padding: 0 16px 0 23.5px;
                 }
@@ -110,10 +131,10 @@
             }
 
             @include media(">medium-screen") {
-              
                 #{$relaxed__mode__template__selector} {
-                    padding: 0 16px 0 23.5px;
-                    height: 3.5rem;
+                    // padding: 0 16px 0 23.5px;
+                    // height: 3.5rem;
+                    padding: 11px 28px;
                 }
 
                 .logo {
