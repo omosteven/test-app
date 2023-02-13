@@ -4,7 +4,13 @@
 .chat__header__user {
     @include media("<=medium-screen") {
         #{$relaxed__mode__template__selector} {
-            background-color: $dark__mode__theme__dark__color !important;
+            #{$dark__mode__theme__selector} {
+                background-color: $dark__mode__theme__dark__color !important;
+            }
+
+            #{$white__mode__theme__selector} {
+                background: $light__theme_color;
+            }
         }
     }
 }
