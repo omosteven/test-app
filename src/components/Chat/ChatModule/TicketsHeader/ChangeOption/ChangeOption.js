@@ -31,7 +31,7 @@ const ChangeOption = ({
         (state) => state.tickets
     );
     const { ticketId, ticketPhase } = ticket;
-    console.log({ ticketPhase });
+
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
@@ -83,7 +83,6 @@ const ChangeOption = ({
         messages?.length <= 4 ||
         loading;
 
-    console.log({ lastMessage });
     return (
         <div>
             <Button
