@@ -13,6 +13,13 @@
             }
         }
     }
+
+    @include media(">medium-screen") {
+        .logo {
+            margin: auto;
+            margin-left: 0rem !important;
+        }
+    }
 }
 
 .chat__header__auth {
@@ -109,7 +116,6 @@
             align-items: center;
             height: 100%;
             padding: 0 2rem;
-
             #{$relaxed__mode__template__selector} {
                 background: $dark__mode__theme__grey__color;
                 border-radius: 100px;
@@ -157,6 +163,7 @@
 
             .chat__toggler {
                 // display: none;
+               
 
                 span {
                     font-weight: 400;
@@ -165,6 +172,17 @@
 
                     #{$dark__mode__theme__selector} {
                         color: $dark__mode__text__theme__color;
+                    }
+                }
+
+                @include media("<=medium-screen") {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    gap: 0.25rem;
+                    height: 0.75rem;
+                    span {
+                        margin-top: 0.1rem;
                     }
                 }
 

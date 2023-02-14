@@ -11,11 +11,23 @@
 }
 
 .signin--container {
-    background-color: $dark__mode__theme__background__color;
     min-height: 100vh;
+
+    #{$white__mode__theme__selector} {
+        background-color: $white__mode__theme__grey__color;
+    }
+    #{$dark__mode__theme__selector} {
+        background: $dark__mode__theme__background__color;
+    }
     @include media(">medium-screen") {
         #{$relaxed__mode__template__selector} {
             padding: 5px 100px;
+        }
+    }
+
+    @include media("<=medium-screen") {
+        #{$white__mode__theme__selector} {
+            background: $light__theme_color;
         }
     }
 
@@ -31,8 +43,14 @@
 
 .signin-con {
     @include media(">medium-screen") {
+        #{$white__mode__theme__selector} {
+            background: $light__theme_color;
+        }
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__grey__color;
+        }
+
         #{$relaxed__mode__template__selector} {
-            background: #2d333a;
             border-radius: 20px;
         }
     }
