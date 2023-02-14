@@ -711,9 +711,9 @@ const LiveChat = ({
                 if (data.length > 0) {
                     const compMessageId = SMART_CONVOS;
                     let messageOptions = data?.map(
-                        ({ conversationId, conversationTitle }) => ({
+                        ({ conversationId, issueName }) => ({
                             branchOptionId: conversationId,
-                            branchOptionLabel: conversationTitle,
+                            branchOptionLabel: issueName,
                             conversationId,
                             parentMessageId: compMessageId,
                             isIssueDiscoveryOption: true,

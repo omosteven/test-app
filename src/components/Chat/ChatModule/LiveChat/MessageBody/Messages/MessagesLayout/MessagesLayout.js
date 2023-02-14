@@ -60,6 +60,7 @@ const MessagesLayout = ({
                         key={message?.messageId}
                         initial='initial'
                         animate='enter'
+                        className="message-thread__list"
                         variants={isRelaxedTemplate ? {} : variants}
                         transition={
                             isRelaxedTemplate

@@ -73,7 +73,9 @@ const SignInForm = () => {
     return (
         <FadeIn location={signInStage}>
             <div className='signin--container'>
-                {isRelaxedTemplate && <ChatHeader showActions={false} />}
+                {isRelaxedTemplate && (
+                    <ChatHeader showActions={false} isAuthPage={true} />
+                )}
                 <div className='row justify-content-center align-items-center form-area signin-con'>
                     <div
                         className='col-lg-4 col-md-5 col-sm-8 col-12'

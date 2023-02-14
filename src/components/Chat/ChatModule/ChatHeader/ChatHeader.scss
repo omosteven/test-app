@@ -1,6 +1,42 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
+.chat__header__user {
+    @include media("<=medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            #{$dark__mode__theme__selector} {
+                background-color: $dark__mode__theme__dark__color !important;
+            }
+
+            #{$white__mode__theme__selector} {
+                background: $light__theme_color;
+            }
+        }
+    }
+
+    @include media(">medium-screen") {
+        .logo {
+            margin: auto;
+            margin-left: 0rem !important;
+        }
+    }
+}
+
+.chat__header__auth {
+    @include media(">medium-screen") {
+        height: 72px !important;
+    }
+    @include media("<=medium-screen") {
+        height: 50px !important;
+    }
+}
+
+.header__auth {
+    #{$relaxed__mode__template__selector} {
+        margin-bottom: 10px !important;
+    }
+}
+
 #header__wrapper {
     @include media("<=medium-screen") {
         #{$relaxed__mode__template__selector} {
@@ -80,7 +116,6 @@
             align-items: center;
             height: 100%;
             padding: 0 2rem;
-
             #{$relaxed__mode__template__selector} {
                 background: $dark__mode__theme__grey__color;
                 border-radius: 100px;
@@ -98,7 +133,6 @@
             @include media("<=medium-screen") {
                 padding: 0 1rem;
                 height: 3.5rem;
-
                 #{$relaxed__mode__template__selector} {
                     padding: 0 16px 0 23.5px;
                 }
@@ -109,10 +143,10 @@
             }
 
             @include media(">medium-screen") {
-              
                 #{$relaxed__mode__template__selector} {
-                    padding: 0 16px 0 23.5px;
-                    height: 3.5rem;
+                    // padding: 0 16px 0 23.5px;
+                    // height: 3.5rem;
+                    padding: 11px 28px;
                 }
 
                 .logo {
@@ -128,7 +162,8 @@
             }
 
             .chat__toggler {
-                display: none;
+                // display: none;
+               
 
                 span {
                     font-weight: 400;
@@ -137,6 +172,17 @@
 
                     #{$dark__mode__theme__selector} {
                         color: $dark__mode__text__theme__color;
+                    }
+                }
+
+                @include media("<=medium-screen") {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    gap: 0.25rem;
+                    height: 0.75rem;
+                    span {
+                        margin-top: 0.1rem;
                     }
                 }
 

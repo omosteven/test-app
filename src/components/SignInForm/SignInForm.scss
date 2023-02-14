@@ -5,23 +5,52 @@
     min-height: 100vh;
     @include media(">medium-screen") {
         #{$relaxed__mode__template__selector} {
-            min-height: 80vh;
+            min-height: 82vh;
         }
     }
 }
 
 .signin--container {
+    min-height: 100vh;
+
+    #{$white__mode__theme__selector} {
+        background-color: $white__mode__theme__grey__color;
+    }
+    #{$dark__mode__theme__selector} {
+        background: $dark__mode__theme__background__color;
+    }
     @include media(">medium-screen") {
         #{$relaxed__mode__template__selector} {
-            padding: 40px 100px;
+            padding: 5px 100px;
+        }
+    }
+
+    @include media("<=medium-screen") {
+        #{$white__mode__theme__selector} {
+            background: $light__theme_color;
+        }
+    }
+
+    .row {
+        #{$relaxed__mode__template__selector} {
+            @include media(">medium-screen") {
+                margin-left: 0rem !important;
+                margin-right: 0rem !important;
+            }
         }
     }
 }
 
 .signin-con {
     @include media(">medium-screen") {
+        #{$white__mode__theme__selector} {
+            background: $light__theme_color;
+        }
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__grey__color;
+        }
+
         #{$relaxed__mode__template__selector} {
-            background: #2d333a;
             border-radius: 20px;
         }
     }
@@ -74,5 +103,7 @@
 }
 
 .otp__group {
-    padding: 0 1rem;
+    @include media("<=medium-screen") {
+        padding: 0 1rem;
+    }
 }

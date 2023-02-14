@@ -33,14 +33,15 @@ const App = () => {
             const res = await API.get(url);
             if (res.status === 200) {
                 const { data } = res.data;
-                const { chatThemeColor } = data;
+                const { chatThemeColor, defaultTemplate, defaultTheme } = data;
                 const root = document.documentElement;
                 store.dispatch(
                     updateChatSettings({
                         ...data,
                         workspaceSlug,
-                        defaultTheme: DARK_MODE_DEFAULT,
-                        defaultTemplate: RELAXED,
+                        defaultTheme,
+                        defaultTemplate:
+                            defaultTemplate === RELAXED ? RELAXED : WORK_MODE,
                     })
                 );
                 root.style.setProperty(
