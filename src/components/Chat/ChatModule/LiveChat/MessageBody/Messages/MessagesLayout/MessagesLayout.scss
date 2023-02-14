@@ -1,4 +1,3 @@
-
 ol.message-thread {
     padding: 0;
     width: 100%;
@@ -6,4 +5,8 @@ ol.message-thread {
     li {
         list-style: none;
     }
+}
+
+.message-thread__list {
+    transform: none !important;
 }
