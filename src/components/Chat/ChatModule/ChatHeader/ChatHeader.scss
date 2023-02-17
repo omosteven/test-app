@@ -85,7 +85,7 @@
         }
 
         @include media("<=medium-screen") {
-            min-height: 3.5rem;
+            min-height: 50px;
             position: fixed;
 
             #{$relaxed__mode__template__selector} {

@@ -55,8 +55,16 @@ const SignInForm = () => {
                     <OTPForm
                         initialStepRequest={initialStepRequest}
                         title={
-                            isRelaxedTemplate &&
-                            "We’ve sent an OTP to your email"
+                            isRelaxedTemplate && (
+                                <>
+                                    <span className='show-only-on-desktop'>
+                                        We’ve sent an OTP to your email
+                                    </span>
+                                    <span className='show-only-on-mobile'>
+                                        We’ve sent an OTP <br /> to your email
+                                    </span>
+                                </>
+                            )
                         }
                         subTitle={
                             isRelaxedTemplate &&
@@ -78,7 +86,7 @@ const SignInForm = () => {
                 )}
                 <div className='row justify-content-center align-items-center form-area signin-con'>
                     <div
-                        className='col-lg-4 col-md-5 col-sm-8 col-12'
+                        // className='col-lg-4 col-md-6 col-sm-8 col-12'
                         key={signInStage}>
                         <div className='signin otp__group'>
                             {renderBasedOnStage()}

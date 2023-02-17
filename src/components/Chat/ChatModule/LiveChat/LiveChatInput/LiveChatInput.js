@@ -44,8 +44,8 @@ const LiveChatInput = ({
     disableInput,
     uploads,
     updateUploads,
-    request,
-    updateRequest,
+    // request,
+    // updateRequest,
     isDateFormElement,
 }) => {
     const [isTyping, inputRef] = useIsTyping();
@@ -61,7 +61,32 @@ const LiveChatInput = ({
 
     const isDisabled = fetchingInputStatus || !allowUserInput;
 
+    const [request, updateRequest] = useState({
+        message: "",
+        fileAttachments: [
+            {
+                fileAttachmentUrl: "",
+                fileAttachmentType: "",
+                fileAttachmentName: "",
+            },
+        ],
+    });
+
     const socket = useContext(SocketContext);
+
+    const clearUserInput = () => {
+        updateRequest({
+            message: "",
+            fileAttachments: [
+                {
+                    fileAttachmentUrl: "",
+                    fileAttachmentType: "",
+                    fileAttachmentName: "",
+                },
+            ],
+        });
+        updateUploads([]);
+    };
 
     const handleRemoveFile = (fileName, fileIndex) => {
         updateUploads((prev) =>
@@ -198,7 +223,7 @@ const LiveChatInput = ({
     };
 
     const sendNewMessage = () => {
-        handleNewMessage(request);
+        handleNewMessage(request, clearUserInput);
 
         if (
             request?.fileAttachments[0]?.fileAttachmentUrl ||
@@ -660,4 +685,5 @@ const LiveChatInput = ({
     );
 };
 
+// export default React.memo(LiveChatInput);
 export default LiveChatInput;

@@ -103,7 +103,11 @@
 }
 
 .otp__group {
+    width: 368px !important;
+    margin-left: auto;
+    margin-right: auto;
     @include media("<=medium-screen") {
         padding: 0 1rem;
+        width: unset !important;
     }
 }
