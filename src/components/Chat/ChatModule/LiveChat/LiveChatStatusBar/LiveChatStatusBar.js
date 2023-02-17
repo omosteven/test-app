@@ -76,11 +76,19 @@ const LiveChatStatusBar = ({
                 return (
                     <>
                         {(isWorkModeTemplate || isNotTablet) && (
-                            <span className='connected'>
-                                {validateEmail(user?.email)
-                                    ? user?.email
-                                    : "Add email address"}
-                            </span>
+                            <>
+                                {validateEmail(user?.email) ? (
+                                    <span className='connected'>
+                                        {user?.email}{" "}
+                                    </span>
+                                ) : (
+                                    <span
+                                        onClick={handleAddEmailAction}
+                                        className='connected pointer'>
+                                        Add email address
+                                    </span>
+                                )}
+                            </>
                         )}
                     </>
                 );
