@@ -40,8 +40,7 @@ const App = () => {
                         ...data,
                         workspaceSlug,
                         defaultTheme,
-                        defaultTemplate:
-                            defaultTemplate === RELAXED ? RELAXED : WORK_MODE,
+                        defaultTemplate: WORK_MODE,
                     })
                 );
                 root.style.setProperty(

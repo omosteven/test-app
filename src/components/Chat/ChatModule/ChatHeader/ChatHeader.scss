@@ -64,15 +64,17 @@
         background-color: $light__theme_color;
         position: sticky;
         width: 100%;
-        display: block;
         min-height: 4.875rem;
         top: 0;
         z-index: 3;
+        display: flex;
+        align-items: center;
 
         #{$relaxed__mode__template__selector} {
             margin-top: 12px;
             border-bottom: none !important;
             background-color: $dark__mode__theme__background__color;
+            display: block;
         }
 
         #{$dark__mode__theme__selector} {
@@ -116,10 +118,15 @@
             align-items: center;
             height: 100%;
             padding: 0 2rem;
+            justify-content: space-between;
+            width: inherit;
+
             #{$relaxed__mode__template__selector} {
                 background: $dark__mode__theme__grey__color;
                 border-radius: 100px;
                 padding: 11px 2rem;
+                width: 100%;
+
                 @include media(">medium-screen") {
                     background: $dark__mode__theme__dark__color;
                 }

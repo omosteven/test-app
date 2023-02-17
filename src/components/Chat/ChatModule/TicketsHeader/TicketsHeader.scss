@@ -57,9 +57,11 @@
     flex-wrap: nowrap;
     align-items: center;
     border-bottom: 0.063rem solid $border__theme_color;
+    border-top: 0.063rem solid $border__theme_color;
     
     #{$dark__mode__theme__selector} {
         border-bottom: 0.063rem solid $dark__mode__theme__grey__color;
+        border-top: 0.063rem solid $dark__mode__theme__grey__color;
     }
 
     .ticket-header__icon {
