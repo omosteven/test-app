@@ -1,0 +1,40 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+.save-chat__button {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+
+    width: fit-content !important;
+    height: 28px !important;
+
+    background: $light__blue__theme__color !important;
+    border-radius: 6px;
+    color: $light__theme_color !important;
+
+    font-weight: 600;
+    font-size: 14px !important;
+    line-height: 18px;
+    letter-spacing: -0.2px;
+
+    border: none !important;
+
+    @include media(">medium-screen") {
+        #{$relaxed__mode__template__selector} {
+            width: fit-content !important;
+            height: 35px !important;
+        }
+    }
+
+    @include media("<=medium-screen") {
+        margin-left: auto;
+        width: 68px !important;
+        border-radius: 6px !important;
+    }
+}
+
+.save-chat__icon {
+    margin-top: -3px;
+}

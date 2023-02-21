@@ -2,13 +2,13 @@
 @import "assets/scss/_include-media-lib/include-media";
 
 .customer-verification {
-    height: 100%;
+    height: 85vh;
 
     @include media(">medium-screen") {
         #{$relaxed__mode__template__selector} {
             background-color: $dark__mode__theme__grey__color;
             border-radius: 20px;
-            height: 37.5rem;
+            // height: 37.5rem;
             // margin-top: 24px;
         }
 
@@ -19,17 +19,29 @@
     }
 
     @include media("<=medium-screen") {
+        // #{$relaxed__mode__template__selector} {
+        //     background: $dark__mode__theme__grey__color;
+        //     border-radius: 20px 20px 0 0;
+        //     border-radius: 20px;
+        //     height: 37.5rem;
+        //     margin: 0 20px 0 20px;
+
+        // }
+
         #{$relaxed__mode__template__selector} {
-            background: $dark__mode__theme__grey__color;
-            border-radius: 20px 20px 0 0;
-            border-radius: 20px;
+            background: transparent;
             height: 37.5rem;
-            margin: 0 20px 0 20px;
         }
 
         #{$white__mode__theme__selector} {
             background-color: $light__theme_color;
             border: 1px solid $white__mode__border__color;
+        }
+    }
+
+    .customer-save__action {
+        @include media("<=medium-screen") {
+            margin-top: 25vh;
         }
     }
 
@@ -44,7 +56,7 @@
                 padding-top: 20px;
                 display: flex;
                 width: fit-content;
-                margin: 0 20px 0 auto; 
+                margin: 0 20px 0 auto;
             }
         }
 
@@ -58,16 +70,16 @@
             padding: 21px;
             margin-right: 0px;
 
-                #{$relaxed__mode__template__selector} {
-                    margin-top: 5rem;
-                }
+            #{$relaxed__mode__template__selector} {
+                margin-top: 5rem;
+            }
         }
     }
     .customer-verify__form {
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 600px;
+        width: 350px;
         margin-left: auto;
         margin-right: auto;
 
@@ -76,15 +88,15 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 600px;
+                width: 350px;
                 margin-left: auto;
                 margin-right: auto;
-                height: 80%;
+                height: 100%;
             }
         }
         @include media("<=medium-screen") {
             width: 100%;
-            padding: 21px;
+            padding: 12px;
         }
         .pincode-input-container {
             padding: 0.625rem 0;

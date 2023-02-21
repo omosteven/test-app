@@ -85,9 +85,7 @@ const SignInForm = () => {
                     <ChatHeader showActions={false} isAuthPage={true} />
                 )}
                 <div className='row justify-content-center align-items-center form-area signin-con'>
-                    <div
-                        // className='col-lg-4 col-md-6 col-sm-8 col-12'
-                        key={signInStage}>
+                    <div key={signInStage}>
                         <div className='signin otp__group'>
                             {renderBasedOnStage()}
                         </div>

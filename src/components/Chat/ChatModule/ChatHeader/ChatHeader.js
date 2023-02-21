@@ -8,6 +8,8 @@ import ErrorView from "components/common/ErrorView/ErrorView";
 import { dataQueryStatus } from "utils/formatHandlers";
 import CompanyChatLogo from "./CompanyChatLogo/CompanyChatLogo";
 import "./ChatHeader.scss";
+import SaveChatButton from "./SaveChatButton/SaveChatButton";
+import { validateEmail } from "utils/helper";
 
 const { RELAXED, WORK_MODE } = defaultTemplates;
 const { LOADING, NULLMODE, DATAMODE, ERROR } = dataQueryStatus;
@@ -27,6 +29,7 @@ const ChatHeader = ({
     toggleChatMenu,
     showActions,
     isAuthPage,
+    handleVerifyAction,
 }) => {
     const {
         chatSettings: { companyLogo, teamName, defaultTemplate },
@@ -35,12 +38,18 @@ const ChatHeader = ({
         activeTicket: { agent, ticketId },
     } = useSelector((state) => state.tickets);
 
+    const { user } = useSelector((state) => state?.auth);
+
+    const { email } = user || {};
+
     const { width } = useWindowSize();
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORK_MODE;
     const isTablet = width <= 768;
     const isNotTablet = width > 768;
+
+    const canSaveConvo = !validateEmail(email) && ticketId;
 
     const renderBasedOnStatus = () => {
         switch (status) {
@@ -111,7 +120,7 @@ const ChatHeader = ({
                             ? "chat__header__user"
                             : "chat__header__auth"
                     }`}>
-                    {showActions && isTablet && (
+                    {showActions && isTablet && !canSaveConvo && (
                         <ChatToggler
                             onClick={() =>
                                 toggleChatMenu?.((prevState) => !prevState)
@@ -119,7 +128,10 @@ const ChatHeader = ({
                         />
                     )}
 
-                    <div className='logo'>
+                    <div
+                        className={`logo ${
+                            canSaveConvo ? "chat__header-save-convo" : ""
+                        }`}>
                         {isWorkModeTemplate || isNotTablet ? (
                             <CompanyChatLogo
                                 src={companyLogo}
@@ -140,6 +152,7 @@ const ChatHeader = ({
                                     handleTicketSelect(data);
                                     toggleChatMenu?.(false);
                                 }}
+                                canSaveConvo={canSaveConvo}
                                 {...{
                                     status,
                                     errorMssg,
@@ -152,7 +165,7 @@ const ChatHeader = ({
                                 }}
                             />
 
-                            {showActions && (
+                            {showActions && !canSaveConvo && (
                                 <div
                                     className={`show-only-on-mobile ${
                                         isNotTablet ? "show-on-desktop" : ""
@@ -165,6 +178,13 @@ const ChatHeader = ({
                                 </div>
                             )}
                         </>
+                    )}
+
+                    {canSaveConvo && (
+                        <SaveChatButton
+                            handleVerifyAction={handleVerifyAction}
+                            showVerifyForm={showVerifyForm}
+                        />
                     )}
                 </div>
             </header>

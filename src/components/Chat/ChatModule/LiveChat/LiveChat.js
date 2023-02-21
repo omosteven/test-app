@@ -84,7 +84,7 @@ const LiveChat = ({
     handleTicketCloseSuccess,
     handleOpenNewTicket,
     reconnectUser,
-    handleVerifyForm,
+    verifyUserAction
 }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -1258,6 +1258,7 @@ const LiveChat = ({
                     customer={customer}
                     handleVerifyAction={handleVerifyAction}
                     messages={messages}
+                    verifyUserAction={verifyUserAction}
                 />
             )}
             <div

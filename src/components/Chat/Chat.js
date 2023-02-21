@@ -51,6 +51,7 @@ const Chat = () => {
     const [customerTickets, setCustomerTickets] = useState([]);
 
     const [showVerifyForm, setShowVerifyForm] = useState(false);
+    const [verifyUserAction, setVerifyUserAction] = useState();
 
     const [socketConnection, setSocketConnection] = useState(socket);
 
@@ -180,6 +181,7 @@ const Chat = () => {
                     );
 
                     const { customer } = newTicket || {};
+
                     if (customer) {
                         dispatch(pushAuthUser(customer));
                     }
@@ -242,8 +244,9 @@ const Chat = () => {
         toastNotification(notification);
     });
 
-    const handleVerifyAction = () => {
+    const handleVerifyAction = (verifyAction) => {
         setShowVerifyForm(!showVerifyForm);
+        setVerifyUserAction(verifyAction);
     };
 
     const callHandler = () => {
@@ -304,6 +307,7 @@ const Chat = () => {
                                     handleCloseTicket,
                                     showChatMenu,
                                     toggleChatMenu,
+                                    handleVerifyAction,
                                 }}
                                 showActions={
                                     loading || showVerifyForm
@@ -328,6 +332,7 @@ const Chat = () => {
                                     }
                                     handleOpenNewTicket={createNewTicket}
                                     reconnectUser={reconnectUser}
+                                    verifyUserAction={verifyUserAction}
                                 />
                             ) : (
                                 <div className='empty__chat--interface'>
