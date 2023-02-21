@@ -18,23 +18,13 @@ const LiveChatStatusBar = ({
     handleAddEmailAction,
     handleConvoBreaker,
 }) => {
-    // const {email} = agent || {}
-    // const [loading, setLoading] = useState(false);
     const { user } = useSelector((state) => state?.auth);
 
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
 
-    const {
-        activeTicket: { customer, ticketId },
-    } = useSelector((state) => state.tickets);
-
     const { width } = useWindowSize();
-
-    // const {
-    //     user: { email },
-    // } = useSelector((state) => state?.auth);
 
     const handleRetry = () => {
         // window.location.reload();
