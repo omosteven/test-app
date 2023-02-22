@@ -5,7 +5,7 @@ import ChatBubble from "../animate/ChatBubble";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import "./TypingMessageIndicator.scss";
 
-const { WORK_MODE } = defaultTemplates;
+const { WORKMODE } = defaultTemplates;
 
 const TypingMessageIndicator = ({ agent }) => {
     const { defaultTemplate } = useSelector(
@@ -18,7 +18,7 @@ const TypingMessageIndicator = ({ agent }) => {
         <ChatBubble>
             <div
                 className={`d-flex align-items-center mb-3 typing__indicator__group`}>
-                {defaultTemplate === WORK_MODE && (
+                {defaultTemplate === WORKMODE && (
                     <AgentImage src={displayPicture} alt={firstName} />
                 )}
                 <div className={`d-flex flex-column w-100 align-items-start`}>

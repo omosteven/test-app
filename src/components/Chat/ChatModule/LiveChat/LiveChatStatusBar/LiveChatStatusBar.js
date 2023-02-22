@@ -9,7 +9,7 @@ import { useWindowSize } from "utils/hooks";
 import "./LiveChatStatusBar.scss";
 
 const { IDLE, LOADING, ERROR, DATAMODE } = dataQueryStatus;
-const { WORK_MODE, RELAXED } = defaultTemplates;
+const { WORKMODE, RELAXED } = defaultTemplates;
 
 const LiveChatStatusBar = ({
     status,
@@ -32,7 +32,7 @@ const LiveChatStatusBar = ({
     };
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isNotTablet = width > 768;
 
     const renderBasedOnStatus = () => {

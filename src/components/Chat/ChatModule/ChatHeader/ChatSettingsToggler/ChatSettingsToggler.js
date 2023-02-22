@@ -8,7 +8,7 @@ import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import { changeTheme } from "store/chat/actions";
 import { useWindowSize } from "utils/hooks";
 
-const { WORK_MODE } = defaultTemplates;
+const { WORKMODE } = defaultTemplates;
 const { DARK_MODE_DEFAULT, WHITE_MODE_DEFAULT } = defaultThemes;
 
 const ChatSettingsToggler = ({
@@ -25,7 +25,7 @@ const ChatSettingsToggler = ({
 
     const handleToggleModal = () => toggleModal(!showModal);
 
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
     const isNotTablet = width > 768;
 
