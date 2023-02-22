@@ -42,7 +42,7 @@ const TogglerDropdown = ({
                     />
                 </Info>
             </DropdownToggle>
-            <DropdownMenu tag='ul' className='toggler__dropdown' right>
+            <DropdownMenu tag='ul' className='toggler__dropdown' end>
                 <li className='dropdown-item' onClick={handleChangeTheme}>
                     <div className='dropdown--item--group'>
                         <ReactSVG

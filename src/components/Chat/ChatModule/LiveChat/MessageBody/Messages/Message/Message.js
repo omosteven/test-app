@@ -147,8 +147,7 @@ const Message = ({
                         />
                     )
                 )}
-                {(messageType !== BRANCH_SUB_SENTENCE ||
-                    !isRelaxedTemplate) && (
+                {messageType !== BRANCH_SUB_SENTENCE && !isRelaxedTemplate && (
                     <>
                         {isReceivedMessage ? (
                             <MessageTimeStatus date={readDate} />

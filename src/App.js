@@ -12,11 +12,7 @@ import PublicRoute from "./routes/PublicRoute/PublicRoute";
 import SignInForm from "./components/SignInForm/SignInForm";
 import Chat from "./components/Chat/Chat";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
-import { defaultThemes, defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import "./App.scss";
-
-const { DARK_MODE_DEFAULT, WHITE_MODE_DEFAULT } = defaultThemes;
-const { RELAXED, WORK_MODE } = defaultTemplates;
 
 const App = () => {
     const [fetching, sayFetching] = useState(true);
@@ -40,7 +36,7 @@ const App = () => {
                         ...data,
                         workspaceSlug,
                         defaultTheme,
-                        defaultTemplate: WORK_MODE,
+                        defaultTemplate,
                     })
                 );
                 root.style.setProperty(
