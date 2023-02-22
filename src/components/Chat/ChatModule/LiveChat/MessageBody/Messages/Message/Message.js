@@ -10,7 +10,7 @@ import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { INPUT_NEEDED } from "../enums";
 import "./Message.scss";
 
-const { WORK_MODE, RELAXED } = defaultTemplates;
+const { WORKMODE, RELAXED } = defaultTemplates;
 const { BRANCH_SUB_SENTENCE, FORM_REQUEST } = messageTypes;
 const { WORKSPACE_AGENT } = appMessageUserTypes;
 
@@ -73,7 +73,7 @@ const Message = ({
         messageIndex === messagesDepth;
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
 
     return (
         <div
@@ -147,8 +147,7 @@ const Message = ({
                         />
                     )
                 )}
-                {(messageType !== BRANCH_SUB_SENTENCE ||
-                    !isRelaxedTemplate) && (
+                {messageType !== BRANCH_SUB_SENTENCE && !isRelaxedTemplate && (
                     <>
                         {isReceivedMessage ? (
                             <MessageTimeStatus date={readDate} />

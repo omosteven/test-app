@@ -11,7 +11,7 @@ import "./ChatHeader.scss";
 import SaveChatButton from "./SaveChatButton/SaveChatButton";
 import { validateEmail } from "utils/helper";
 
-const { RELAXED, WORK_MODE } = defaultTemplates;
+const { RELAXED, WORKMODE } = defaultTemplates;
 const { LOADING, NULLMODE, DATAMODE, ERROR } = dataQueryStatus;
 
 const ChatHeader = ({
@@ -45,7 +45,7 @@ const ChatHeader = ({
     const { width } = useWindowSize();
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isTablet = width <= 768;
     const isNotTablet = width > 768;
 

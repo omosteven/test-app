@@ -16,7 +16,7 @@ import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { useWindowSize } from "utils/hooks";
 
 const { ACTION_INFO } = messageTypes;
-const { RELAXED, WORK_MODE } = defaultTemplates;
+const { RELAXED, WORKMODE } = defaultTemplates;
 
 const Ticket = ({
     data,
@@ -91,7 +91,7 @@ const Ticket = ({
     }, []);
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
 
     return (
         <div

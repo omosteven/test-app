@@ -4,7 +4,7 @@ import { defaultThemes, defaultTemplates } from "./enum";
 import "./AppTemplateWrapper.scss";
 
 const { WHITE_MODE_DEFAULT, DARK_MODE_DEFAULT } = defaultThemes;
-const { WORK_MODE, RELAXED } = defaultTemplates;
+const { WORKMODE, RELAXED } = defaultTemplates;
 
 const AppTemplateWrapper = ({ children }) => {
     const { defaultTheme, defaultTemplate } = useSelector(
@@ -12,7 +12,7 @@ const AppTemplateWrapper = ({ children }) => {
     );
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
     const isWhiteModeTheme = defaultTheme === WHITE_MODE_DEFAULT;
 

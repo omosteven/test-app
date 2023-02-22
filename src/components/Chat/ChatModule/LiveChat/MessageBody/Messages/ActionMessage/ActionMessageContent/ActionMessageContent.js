@@ -8,7 +8,7 @@ import ActionAddEmail from "./ActionAddEmail/ActionAddEmail";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { deleteTicketsMessages } from "store/tickets/actions";
 
-const { WORK_MODE, RELAXED } = defaultTemplates;
+const { WORKMODE, RELAXED } = defaultTemplates;
 
 const ActionMessageContent = ({
     messageContent,
@@ -36,7 +36,7 @@ const ActionMessageContent = ({
     };
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
 
     const showCautionIcon =
         (isRelaxedTemplate && messageActionType === INPUT_NEEDED) ||
