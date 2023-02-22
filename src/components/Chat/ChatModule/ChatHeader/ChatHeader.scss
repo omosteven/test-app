@@ -85,7 +85,7 @@
         }
 
         @include media("<=medium-screen") {
-            min-height: 3.5rem;
+            min-height: 50px;
             position: fixed;
 
             #{$relaxed__mode__template__selector} {
@@ -130,6 +130,14 @@
                 border: 1px solid $white__mode__border__color;
             }
 
+            // .chat__header-save-convo {
+            //     display:flex !important;
+            //     justify-content: space-between !important;
+            //     .logo{
+            //         margin: unset !important;
+            //     }
+            // }
+
             @include media("<=medium-screen") {
                 padding: 0 1rem;
                 height: 3.5rem;
@@ -139,6 +147,10 @@
 
                 .logo {
                     margin: auto;
+                }
+
+                .chat__header-save-convo {
+                    margin: unset !important;
                 }
             }
 
@@ -163,7 +175,6 @@
 
             .chat__toggler {
                 // display: none;
-               
 
                 span {
                     font-weight: 400;

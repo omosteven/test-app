@@ -84,7 +84,7 @@ const LiveChat = ({
     handleTicketCloseSuccess,
     handleOpenNewTicket,
     reconnectUser,
-    handleVerifyForm,
+    verifyUserAction
 }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -103,17 +103,6 @@ const LiveChat = ({
 
     const { conversationBreakers } = useSelector((state) => state.chat);
     const [delayInputNeeded, setDelayInputNeeded] = useState(false);
-
-    const [request, updateRequest] = useState({
-        message: "",
-        fileAttachments: [
-            {
-                fileAttachmentUrl: "",
-                fileAttachmentType: "",
-                fileAttachmentName: "",
-            },
-        ],
-    });
 
     const [uploads, updateUploads] = useState([]);
     const [disableForm, setDisableForm] = useState(false);
@@ -547,21 +536,7 @@ const LiveChat = ({
         setFetchingInputStatus(false);
     };
 
-    const clearUserInput = () => {
-        updateRequest({
-            message: "",
-            fileAttachments: [
-                {
-                    fileAttachmentUrl: "",
-                    fileAttachmentType: "",
-                    fileAttachmentName: "",
-                },
-            ],
-        });
-        updateUploads([]);
-    };
-
-    const handleNewMessage = async (request) => {
+    const handleNewMessage = async (request, clearUserInput) => {
         let { message, fileAttachments, messageId } = request;
 
         if (!currentFormElement) {
@@ -577,18 +552,6 @@ const LiveChat = ({
         if (currentFormElement) {
             setDisableForm(true);
             const { order, formId, formElementId } = currentFormElement;
-
-            // const messageEntry = {
-            //     ticketId,
-            //     senderType: THIRD_USER,
-            //     messageContent: message,
-            //     messageContentId: newMessageId,
-            //     messageId: newMessageId,
-            //     messageType: DEFAULT,
-            //     fileAttachments,
-            // };
-
-            // dispatch(saveTicketsMessages(messageEntry));
 
             await socket.timeout(1000).emit(
                 FILL_FORM_RECORD,
@@ -608,7 +571,7 @@ const LiveChat = ({
                 }
             );
 
-            clearUserInput();
+            clearUserInput?.();
         } else {
             const messageEntry = {
                 ticketId,
@@ -638,7 +601,7 @@ const LiveChat = ({
                 }
             );
 
-            clearUserInput();
+            clearUserInput?.();
         }
     };
 
@@ -934,11 +897,11 @@ const LiveChat = ({
     };
 
     const handleScrollChatToBottom = () => {
-        if (isDeviceMobileTablet()) {
-            const messageBody = document.getElementById("messageBody");
-            messageBody.style.scrollBehavior = "smooth";
-            messageBody.scrollTop = messageBody.scrollHeight;
-        }
+        // if (isDeviceMobileTablet()) {
+        //     const messageBody = document.getElementById("messageBody");
+        //     messageBody.style.scrollBehavior = "smooth";
+        //     messageBody.scrollTop = messageBody.scrollHeight;
+        // }
     };
 
     const handleReceive = (message) => {
@@ -950,7 +913,7 @@ const LiveChat = ({
         } = message;
 
         setMssgOptionError(false);
-        clearUserInput();
+        // clearUserInput();
         setDisableForm(false);
         if (senderType === THIRD_USER && messageType !== DEFAULT) {
             triggerAgentTyping(true);
@@ -1302,6 +1265,7 @@ const LiveChat = ({
                     customer={customer}
                     handleVerifyAction={handleVerifyAction}
                     messages={messages}
+                    verifyUserAction={verifyUserAction}
                 />
             )}
             <div
@@ -1323,8 +1287,6 @@ const LiveChat = ({
                     }
                     uploads={uploads}
                     updateUploads={updateUploads}
-                    updateRequest={updateRequest}
-                    request={request}
                     isDateFormElement={isDateFormElement}
                 />
             </div>

@@ -24,6 +24,7 @@ const CustomerTicketsContainer = ({
     closeTicket,
     showChatMenu,
     toggleChatMenu,
+    canSaveConvo,
 }) => {
     const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
     const { width } = useWindowSize();
@@ -45,8 +46,8 @@ const CustomerTicketsContainer = ({
                 return (
                     <>
                         {isRelaxedTemplate && isTablet ? (
-                            <div className="relaxed__customer__ticket__loader">
-                            <DotLoader />
+                            <div className='relaxed__customer__ticket__loader'>
+                                <DotLoader />
                             </div>
                         ) : (
                             <CustomerTicketsSkeleton />
@@ -75,10 +76,12 @@ const CustomerTicketsContainer = ({
                             showChatMenu={showChatMenu}
                             getCustomerTickets={getCustomerTickets}
                         />
-                        <NewTicketButton
-                            handleClick={createNewTicket}
-                            otherClassNames={showChatMenu ? "large" : ""}
-                        />
+                        {!canSaveConvo && (
+                            <NewTicketButton
+                                handleClick={createNewTicket}
+                                otherClassNames={showChatMenu ? "large" : ""}
+                            />
+                        )}
                     </>
                 );
 

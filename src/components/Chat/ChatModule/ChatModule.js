@@ -10,6 +10,7 @@ const ChatModule = ({
     handleTicketCloseSuccess,
     handleOpenNewTicket,
     reconnectUser,
+    verifyUserAction
 }) => {
     return (
         <>
@@ -23,6 +24,7 @@ const ChatModule = ({
                     handleTicketCloseSuccess,
                     handleOpenNewTicket,
                     reconnectUser,
+                    verifyUserAction
                 }}
             />
         </>

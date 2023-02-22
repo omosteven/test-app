@@ -82,6 +82,13 @@
                         border-radius: 1rem 1rem 1rem 0;
                     }
                 }
+
+                @include media("<=medium-small-screen") {
+                    #{$relaxed__mode__template__selector} {
+                        font-size: 18px;
+                        line-height: 24px;
+                    }
+                }
             }
 
             &.info__action {
@@ -141,7 +148,6 @@
                             color: $text__default_color;
                         }
 
-                        
                         @include media("<=medium-screen") {
                             #{$relaxed__mode__template__selector} {
                                 font-size: 18px;
@@ -150,6 +156,13 @@
 
                             #{$white__mode__theme__selector} {
                                 color: $dark__mode__theme__grey__color;
+                            }
+                        }
+
+                        @include media("<=medium-small-screen") {
+                            #{$relaxed__mode__template__selector} {
+                                font-size: 16px;
+                                line-height: 24px;
                             }
                         }
 
@@ -170,6 +183,13 @@
 
                                 #{$white__mode__theme__selector} {
                                     color: $dark__mode__theme__grey__color;
+                                }
+                            }
+
+                            @include media("<=medium-small-screen") {
+                                #{$relaxed__mode__template__selector} {
+                                    font-size: 18px;
+                                    line-height: 24px;
                                 }
                             }
                         }
@@ -250,6 +270,11 @@
                                     color: $dark__mode__theme__grey__color;
                                 }
                             }
+                            @include media("<=medium-small-screen") {
+                                #{$relaxed__mode__template__selector} {
+                                    font-size: 18px;
+                                }
+                            }
                         }
                     }
 
@@ -288,12 +313,20 @@
                 display: flex;
                 border-radius: 16px 16px 16px 0px;
 
+                border: 1px solid rgba(0, 102, 245, 0.2);
+
+                #{$relaxed__mode__template__selector} {
+                    border: 1px solid rgba(0, 102, 245, 0.2);
+                }
+
                 #{$dark__mode__theme__selector} {
                     background: $dark__mode__theme__grey__color;
+                    border: unset;
                 }
 
                 #{$white__mode__theme__selector} {
                     background: $white__mode__background;
+                    border: unset;
                 }
 
                 .icon__container {
@@ -326,6 +359,15 @@
                         font-size: 0.938rem;
                         color: $text__default_color;
                         margin: 0 0 0.5rem;
+                        font-weight: 500;
+
+                        #{$dark__mode__theme__selector} {
+                            color: $light__theme_color;
+                        }
+
+                        #{$white__mode__theme__selector} {
+                            color: $dark__mode__theme__dark__color;
+                        }
 
                         @include media("<=medium-screen") {
                             #{$relaxed__mode__template__selector} {
@@ -333,7 +375,12 @@
                                 font-size: 20px;
                                 line-height: 28px;
                                 margin: 0;
-                                color: $light__theme_color;
+                            }
+                        }
+
+                        @include media("<=medium-small-screen") {
+                            #{$relaxed__mode__template__selector} {
+                                font-size: 18px;
                             }
                         }
                     }
@@ -341,13 +388,24 @@
                     .success__message__text {
                         font-size: 0.938rem;
                         letter-spacing: 0.003rem;
+                        #{$dark__mode__theme__selector} {
+                            color: $light__theme_color;
+                        }
 
+                        #{$white__mode__theme__selector} {
+                            color: $dark__mode__theme__dark__color;
+                        }
                         @include media("<=medium-screen") {
                             #{$relaxed__mode__template__selector} {
                                 font-size: 18px;
                                 line-height: 24px;
                                 margin: 10px 0 0;
-                                color: $light__theme_color;
+                            }
+                        }
+
+                        @include media("<=medium-small-screen") {
+                            #{$relaxed__mode__template__selector} {
+                                font-size: 16px;
                             }
                         }
                     }
@@ -375,6 +433,13 @@
                     #{$white__mode__theme__selector} {
                         color: $dark__mode__theme__grey__color;
                         background: $white__mode__theme__grey__color;
+                    }
+                }
+
+                @include media("<=medium-small-screen") {
+                    #{$relaxed__mode__template__selector} {
+                        font-size: 18px;
+                        line-height: 24px;
                     }
                 }
 

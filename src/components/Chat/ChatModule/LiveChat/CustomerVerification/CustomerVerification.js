@@ -7,6 +7,7 @@ import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import FadeIn from "components/ui/FadeIn";
 import "./CustomerVerification.scss";
+import { VERIFY_USER_ACTIONS } from "components/Chat/enums";
 
 export const verifystages = {
     initial: "INPUT_EMAIL",
@@ -14,7 +15,12 @@ export const verifystages = {
     success: "SUCCESS",
 };
 
-const CustomerVerification = ({ customer, handleVerifyAction, messages }) => {
+const CustomerVerification = ({
+    customer,
+    handleVerifyAction,
+    messages,
+    verifyUserAction,
+}) => {
     const [verifyStage, setVerifyStage] = useState(verifystages.initial);
     const [initialStepRequest, setinitialStepRequest] = useState();
 
@@ -27,6 +33,9 @@ const CustomerVerification = ({ customer, handleVerifyAction, messages }) => {
         setVerifyStage(verifystages.success);
     };
 
+    const isSaveConvoAction =
+        verifyUserAction === VERIFY_USER_ACTIONS.SAVE_CONVERSATION;
+
     const renderBasedOnStage = () => {
         const { initial, final, success } = verifystages;
         switch (verifyStage) {
@@ -35,8 +44,16 @@ const CustomerVerification = ({ customer, handleVerifyAction, messages }) => {
                     <EmailForm
                         userId={customer?.userId}
                         handleInitialRequestUpdate={handleInitialRequestUpdate}
-                        title='Verify email address'
-                        subTitle='We’ll send you a 4 digit OTP to ensure this is your email address.'
+                        title={
+                            isSaveConvoAction
+                                ? "Save conversation"
+                                : "Verify email address"
+                        }
+                        subTitle={
+                            isSaveConvoAction
+                                ? "Kindly give us your email address so we can save this conversation"
+                                : "We’ll send you a 4 digit OTP to ensure this is your email address."
+                        }
                     />
                 );
 
@@ -68,15 +85,17 @@ const CustomerVerification = ({ customer, handleVerifyAction, messages }) => {
     return (
         <FadeIn location={verifyStage}>
             <div className='customer-verification signin'>
-                <div
-                    className='customer-verify__icon'
-                    onClick={() => handleVerifyAction()}>
-                    <ReactSVG
-                        src={imageLinks?.svg?.cancel}
-                        className='verify-icon'
-                    />
-                </div>
-                <div className='customer-verify__form'>
+                {!isSaveConvoAction && (
+                    <div
+                        className='customer-verify__icon'
+                        onClick={() => handleVerifyAction()}>
+                        <ReactSVG
+                            src={imageLinks?.svg?.cancel}
+                            className='verify-icon'
+                        />
+                    </div>
+                )}
+                <div className='customer-verify__form customer-save__action'>
                     {renderBasedOnStage()}
                 </div>
             </div>

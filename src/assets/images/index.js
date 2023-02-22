@@ -59,6 +59,7 @@ const imageLinks = {
             "https://res.cloudinary.com/metacare/image/upload/v1674655585/icons/ic_Photos_bxnxdr.svg",
 
         save: "https://res.cloudinary.com/metacare/image/upload/v1675265111/icons/Vector_zhavz8.svg",
+        close: "https://res.cloudinary.com/metacare/image/upload/v1676971243/icons/Shape_jkbaea.svg",
     },
 };
 

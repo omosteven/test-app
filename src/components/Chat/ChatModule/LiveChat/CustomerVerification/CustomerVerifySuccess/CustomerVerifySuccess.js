@@ -29,10 +29,11 @@ const CustomerVerifySuccess = ({ closeModal, messages }) => {
     const dispatch = useDispatch();
 
     const handleContinue = async () => {
-        const { messageId, ticketId } = messages?.find(
-            (ticketMessage) =>
-                ticketMessage?.messageActionType === ADD_EMAIL_ADDRESS
-        );
+        const { messageId, ticketId } =
+            messages?.find(
+                (ticketMessage) =>
+                    ticketMessage?.messageActionType === ADD_EMAIL_ADDRESS
+            ) || {};
 
         dispatch(
             deleteTicketsMessages({
