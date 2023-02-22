@@ -4,13 +4,13 @@ import { ReactSVG } from "react-svg";
 import imageLinks from "../../../../../assets/images";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 
-const { WORK_MODE } = defaultTemplates;
+const { WORKMODE } = defaultTemplates;
 const ChatToggler = ({ ...restProps }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
 
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
 
     return (
         <div className='chat__toggler' {...restProps}>

@@ -9,7 +9,7 @@ import ActionResponseTime from "./ActionMessageContent/ActionResponseTime/Action
 import ActionMessageOptions from "./ActionMessageOptions/ActionMessageOptions";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 
-const { WORK_MODE, RELAXED } = defaultTemplates;
+const { WORKMODE, RELAXED } = defaultTemplates;
 
 const ActionMessage = ({
     data,
@@ -55,7 +55,7 @@ const ActionMessage = ({
     } = messageActionData || {};
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const showMessageRefContent = isWorkModeTemplate && messageRefContent;
 
     return (

@@ -4,6 +4,6 @@ export const defaultThemes = Object.freeze({
 });
 
 export const defaultTemplates = Object.freeze({
-    WORK_MODE: "WORK_MODE",
+    WORKMODE: "WORKMODE",
     RELAXED: "RELAXED",
 });

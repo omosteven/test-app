@@ -4,19 +4,19 @@ import { DotLoader } from "components/ui";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import "./FullPageLoader.scss";
 
-const { WORK_MODE } = defaultTemplates;
+const { WORKMODE } = defaultTemplates;
 
 const FullPageLoader = () => {
     const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
 
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
 
     return (
         <div className='full__page_loader'>
             {isWorkModeTemplate ? (
                 <span id='metaInfinite'>metacare</span>
             ) : (
-                <DotLoader background={false}/>
+                <DotLoader background={false} />
             )}
         </div>
     );

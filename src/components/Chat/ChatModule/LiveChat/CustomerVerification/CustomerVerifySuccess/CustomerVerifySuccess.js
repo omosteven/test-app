@@ -18,7 +18,7 @@ import {
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 
 const { SUCCESS } = messageTypes;
-const { WORK_MODE } = defaultTemplates;
+const { WORKMODE } = defaultTemplates;
 const { WORKSPACE_AGENT } = appMessageUserTypes;
 
 const CustomerVerifySuccess = ({ closeModal, messages }) => {
@@ -42,7 +42,7 @@ const CustomerVerifySuccess = ({ closeModal, messages }) => {
             })
         );
 
-        if (defaultTemplate === WORK_MODE) {
+        if (defaultTemplate === WORKMODE) {
             toastMessage(<ToastCustomerVerifySuccess />);
         } else {
             dispatch(

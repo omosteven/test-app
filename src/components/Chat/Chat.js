@@ -30,7 +30,7 @@ import "./Chat.scss";
 import { CONVERSATION_SAVED } from "./ChatModule/LiveChat/MessageBody/Messages/enums";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
-const { RELAXED, WORK_MODE } = defaultTemplates;
+const { RELAXED, WORKMODE } = defaultTemplates;
 const { DARK_MODE_DEFAULT } = defaultThemes;
 
 const Chat = () => {
@@ -70,7 +70,7 @@ const Chat = () => {
     );
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
     const isTablet = width <= 768;
 

@@ -6,7 +6,7 @@ import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import SmallLoader from "components/ui/SmallLoader/SmallLoader";
 import "./ScheduledBranchOption.scss";
 
-const { WORK_MODE, RELAXED } = defaultTemplates;
+const { WORKMODE, RELAXED } = defaultTemplates;
 
 const ScheduledBranchOption = ({
     data,
@@ -23,7 +23,7 @@ const ScheduledBranchOption = ({
         (state) => state?.chat?.chatSettings
     );
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORK_MODE;
+    const isWorkModeTemplate = defaultTemplate === WORKMODE;
 
     const { messageActionType } = lastMessage || {};
 
