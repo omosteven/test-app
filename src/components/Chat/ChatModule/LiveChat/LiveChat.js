@@ -333,11 +333,18 @@ const LiveChat = ({
             );
             handleAddEmail();
         } else {
+            const allMessagesCopy = messages;
+            let lastCustomerMssg = [...allMessagesCopy]
+                .reverse()
+                ?.find((message) => message.senderType === THIRD_USER);
+    
+
             await socket.timeout(1000).emit(
                 SEND_CUSTOMER_CONVERSATION_REPLY,
                 {
                     ticketId,
                     conversationId,
+                    convoInitedBy: lastCustomerMssg?.messageContent,
                     message: branchOptionLabel,
                     isIssueDiscoveryOption,
                 },
