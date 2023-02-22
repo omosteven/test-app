@@ -147,16 +147,16 @@ const Message = ({
                         />
                     )
                 )}
-                {messageType !== BRANCH_SUB_SENTENCE ||
-                    (!isRelaxedTemplate && (
-                        <>
-                            {isReceivedMessage ? (
-                                <MessageTimeStatus date={readDate} />
-                            ) : (
-                                <MessageTimeStatus date={deliveryDate} />
-                            )}
-                        </>
-                    ))}
+                {(messageType !== BRANCH_SUB_SENTENCE ||
+                    !isRelaxedTemplate) && (
+                    <>
+                        {isReceivedMessage ? (
+                            <MessageTimeStatus date={readDate} />
+                        ) : (
+                            <MessageTimeStatus date={deliveryDate} />
+                        )}
+                    </>
+                )}
             </div>
         </div>
     );
