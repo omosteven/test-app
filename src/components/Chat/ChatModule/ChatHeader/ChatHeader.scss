@@ -233,13 +233,13 @@
 
                 .company__logo {
                     width: 36px;
-                    height: 34.45px;
+                    height: 36.45px;
                     border-radius: 100%;
                     object-fit: contain;
 
                     @include media("<=medium-screen") {
                         max-width: 26px;
-                        height: 25px;
+                        height: 26px;
                     }
                 }
 

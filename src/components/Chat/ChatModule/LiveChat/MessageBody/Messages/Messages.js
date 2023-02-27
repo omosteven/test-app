@@ -23,10 +23,9 @@ const Messages = ({
     messages,
     setActiveConvo,
     requestAllMessages,
-    mssgOptionLoading,
     handleNewMessage,
-    mssgOptionError,
     status,
+    mssgSendStatus,
 }) => {
     const { activeTicket } = useSelector((state) => state.tickets);
     const { agentTyping } = activeTicket || {};
@@ -35,15 +34,24 @@ const Messages = ({
     const socket = useContext(SocketContext);
 
     let allMessagesCopy = [...messages];
-    let lastAgentMssgHasOptions = [...allMessagesCopy]
-        .reverse()
-        ?.find(
-            (message) =>
-                message?.branchOptions?.length > 0 &&
-                message.senderType === appMessageUserTypes?.WORKSPACE_AGENT
-        );
+    // let lastAgentMssgHasOptions = [...allMessagesCopy]
+    //     .reverse()
+    //     ?.find(
+    //         (message) =>
+    //             message?.branchOptions?.length > 0 &&
+    //             Array.isArray(message?.branchOptions) &&
+    //             message.senderType === appMessageUserTypes?.WORKSPACE_AGENT
+    //     );
 
-    const addMargin = lastAgentMssgHasOptions !== undefined;
+    const lastAgentMssgWithOptions = [...allMessagesCopy][
+        allMessagesCopy.length - 1
+    ];
+
+    const addMargin =
+        lastAgentMssgWithOptions?.branchOptions?.length > 0 &&
+        Array.isArray(lastAgentMssgWithOptions?.branchOptions) &&
+        lastAgentMssgWithOptions?.senderType ===
+            appMessageUserTypes?.WORKSPACE_AGENT;
 
     const handleTypingTrigger = (data) => {
         const { typing, user } = data;
@@ -78,9 +86,8 @@ const Messages = ({
                         handleVerifyAction={handleVerifyAction}
                         setActiveConvo={setActiveConvo}
                         requestAllMessages={requestAllMessages}
-                        mssgOptionLoading={mssgOptionLoading}
                         handleNewMessage={handleNewMessage}
-                        mssgOptionError={mssgOptionError}
+                        mssgSendStatus={mssgSendStatus}
                         status={status}
                     />
                 ) : (

@@ -25,10 +25,9 @@ const Message = ({
     messages,
     setActiveConvo,
     requestAllMessages,
-    mssgOptionLoading,
     handleNewMessage,
-    mssgOptionError,
     status,
+    mssgSendStatus,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -122,9 +121,8 @@ const Message = ({
                             handleOptConversation={handleOptConversation}
                             deliveryDate={deliveryDate}
                             lastMessage={lastMessage}
-                            mssgOptionLoading={mssgOptionLoading}
-                            mssgOptionError={mssgOptionError}
                             status={status}
+                            mssgSendStatus={mssgSendStatus}
                         />
                     ) : (
                         <></>
@@ -144,6 +142,7 @@ const Message = ({
                             deliveryDate={deliveryDate}
                             lastMessage={lastMessage}
                             status={status}
+                            mssgSendStatus={mssgSendStatus}
                         />
                     )
                 )}

@@ -1,6 +1,10 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
+.options__container {
+    position: fixed;
+    z-index: 1;
+}
 .options__group {
     display: flex;
     flex-wrap: wrap;
@@ -11,7 +15,8 @@
         #{$relaxed__mode__template__selector} {
             display: flex;
             flex-wrap: wrap;
-            padding: 40px 45px 19px;
+            padding: 40px 45px 65px;
+            // padding: 40px 15px 50px;
             gap: 16px;
             position: fixed;
             left: 8.5%;
@@ -77,14 +82,55 @@
 .options__group__investigate {
     #{$relaxed__mode__template__selector} {
         @include media("<=medium-screen") {
-            max-height: 50vh !important;
+            max-height: 40vh !important;
             display: flex !important;
             overflow: scroll !important;
             flex-wrap: unset !important;
+            padding: 40px 15px 60px;
         }
     }
 }
 
 .options__group__error {
     color: red;
+    position: fixed;
+    z-index: 100;
+    padding: 8px;
+    width: 80%;
+    left: 12%;
+    margin-top: 11.5rem;
+    font-size: 14px;
+    left: 12%;
+    margin-top: 10.5rem;
+    font-size: 14px;
+
+    @include media("<=large-screen") {
+        margin-top: 10.6rem;
+        padding: 0;
+        left: 14%;
+    }
+    
+    @include media("<=medium-screen") {
+        margin-top: 9.5rem;
+        left: 0%;
+        width: 100%;
+        right: 0%;
+        text-align: center;
+        padding: 10px;
+    }
+}
+
+.options__footer {
+    bottom: 10px !important;
+    position: fixed;
+    z-index: 100;
+    padding: 8px;
+    width: 80%;
+    left: auto;
+    right: auto;
+    @include media("<=medium-screen") {
+        bottom: 0px !important;
+        width: 100%;
+        left: 0;
+    }
 }

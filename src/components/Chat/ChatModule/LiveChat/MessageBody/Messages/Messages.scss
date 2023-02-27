@@ -21,7 +21,7 @@
     @include media("<=medium-screen") {
         &.dummy__margin {
             #{$relaxed__mode__template__selector} {
-                margin-top: 20rem;
+                margin-top: 30vh;
             }
         }
     }
