@@ -950,6 +950,7 @@ const LiveChat = ({
     };
 
     const handleReceive = (message) => {
+        console.log({ message });
         const {
             messageType,
             senderType,
