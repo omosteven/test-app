@@ -84,7 +84,7 @@ const LiveChat = ({
     handleTicketCloseSuccess,
     handleOpenNewTicket,
     reconnectUser,
-    verifyUserAction
+    verifyUserAction,
 }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -326,7 +326,6 @@ const LiveChat = ({
             let lastCustomerMssg = [...allMessagesCopy]
                 .reverse()
                 ?.find((message) => message.senderType === THIRD_USER);
-    
 
             await socket.timeout(1000).emit(
                 SEND_CUSTOMER_CONVERSATION_REPLY,
@@ -905,6 +904,7 @@ const LiveChat = ({
     };
 
     const handleReceive = (message) => {
+        console.log({ message });
         const {
             messageType,
             senderType,
