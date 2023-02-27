@@ -16,7 +16,6 @@ const LiveChatStatusBar = ({
     errorMssg,
     reconnectUser,
     handleAddEmailAction,
-    handleConvoBreaker,
 }) => {
     const { user } = useSelector((state) => state?.auth);
 

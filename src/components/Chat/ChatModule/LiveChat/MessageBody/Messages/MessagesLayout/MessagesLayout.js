@@ -41,10 +41,9 @@ const MessagesLayout = ({
     handleVerifyAction,
     setActiveConvo,
     requestAllMessages,
-    mssgOptionLoading,
     handleNewMessage,
-    mssgOptionError,
     status,
+    mssgSendStatus,
 }) => {
     const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
 
@@ -60,7 +59,7 @@ const MessagesLayout = ({
                         key={message?.messageId}
                         initial='initial'
                         animate='enter'
-                        className="message-thread__list"
+                        className='message-thread__list'
                         variants={isRelaxedTemplate ? {} : variants}
                         transition={
                             isRelaxedTemplate
@@ -85,8 +84,8 @@ const MessagesLayout = ({
                                 }
                                 handleOptConversation={handleOptConversation}
                                 openPreviewModal={openPreviewModal}
-                                mssgOptionLoading={mssgOptionLoading}
                                 status={status}
+                                mssgSendStatus={mssgSendStatus}
                             />
                         ) : messageType === SUCCESS ? (
                             <SuccessMessage data={message} />
@@ -104,10 +103,9 @@ const MessagesLayout = ({
                                 openPreviewModal={openPreviewModal}
                                 setActiveConvo={setActiveConvo}
                                 requestAllMessages={requestAllMessages}
-                                mssgOptionLoading={mssgOptionLoading}
                                 handleNewMessage={handleNewMessage}
-                                mssgOptionError={mssgOptionError}
                                 status={status}
+                                mssgSendStatus={mssgSendStatus}
                             />
                         )}
                     </motion.li>

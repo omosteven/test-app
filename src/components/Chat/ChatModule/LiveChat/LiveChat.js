@@ -84,7 +84,7 @@ const LiveChat = ({
     handleTicketCloseSuccess,
     handleOpenNewTicket,
     reconnectUser,
-    verifyUserAction
+    verifyUserAction,
 }) => {
     const [status, setStatus] = useState(LOADING);
     const [activeConvo, setActiveConvo] = useState(false);
@@ -93,8 +93,8 @@ const LiveChat = ({
     const [allowUserInput, setAllowUserInput] = useState(false);
     const [currentInputType, setCurrentInputType] = useState(TEXT);
     const [currentFormElement, setCurrentFormElement] = useState();
-    const [mssgOptionLoading, setMssgOptionLoading] = useState(false);
-    const [mssgOptionError, setMssgOptionError] = useState(false);
+
+    const [mssgSendStatus, setMssgSendStatus] = useState();
 
     const [fetchingInputStatus, setFetchingInputStatus] = useState(true);
     const [config, setConfig] = useFaviconNotification();
@@ -291,8 +291,7 @@ const LiveChat = ({
             return handleVerifyAction();
         }
 
-        setMssgOptionLoading(true);
-        setMssgOptionError(false);
+        setMssgSendStatus(LOADING);
 
         dispatch(
             updateTicketMessageStatus({
@@ -326,9 +325,8 @@ const LiveChat = ({
             let lastCustomerMssg = [...allMessagesCopy]
                 .reverse()
                 ?.find((message) => message.senderType === THIRD_USER);
-    
 
-            await socket.timeout(1000).emit(
+            const sendCustomerReply = await socket.timeout(30000).emit(
                 SEND_CUSTOMER_CONVERSATION_REPLY,
                 {
                     ticketId,
@@ -337,22 +335,22 @@ const LiveChat = ({
                     message: branchOptionLabel,
                     isIssueDiscoveryOption,
                 },
-                (err, resp) => {
-                    // console.log("option selected", { err, resp });
-                    // if (err) {
-                    //     setMssgOptionError(true);
-                    //     setMssgOptionLoading(false);
-                    //     dispatch(
-                    //         updateTicketMessageStatus({
-                    //             messageId: SMART_CONVOS,
-                    //             ticketId,
-                    //             selectedOption: null,
-                    //             messageStatus: messageStatues?.FAILED,
-                    //         })
-                    //     );
-                    // } else {
-                    //     setMssgOptionError(false);
-                    // }
+                (error) => {
+                    if (error) {
+                        setMssgSendStatus(ERROR);
+                        sendCustomerReply?.close();
+                        sendCustomerReply?.destroy();
+                        dispatch(
+                            updateTicketMessageStatus({
+                                messageId: SMART_CONVOS,
+                                ticketId,
+                                selectedOption: null,
+                                messageStatus: messageStatues?.FAILED,
+                            })
+                        );
+                    } else {
+                        setMssgSendStatus(SUCCESS);
+                    }
                 }
             );
         }
@@ -376,8 +374,7 @@ const LiveChat = ({
 
         setStatus(DATAMODE);
         setErrorMssg();
-        setMssgOptionLoading(true);
-        setMssgOptionError(false);
+        setMssgSendStatus(LOADING);
 
         let newMessageList = await messages.map((x) => {
             return (x.messageType === BRANCH ||
@@ -418,7 +415,7 @@ const LiveChat = ({
 
         // triggerAgentTyping(true);
 
-        await socket.timeout(2000).emit(
+        const sendBranchOption = await socket.timeout(30000).emit(
             SEND_BRANCH_OPTION,
             {
                 ticketId,
@@ -426,20 +423,23 @@ const LiveChat = ({
                 branchOptionId,
                 message: branchOptionLabel,
             },
-            (err, resp) => {
-                setMssgOptionError(false);
-                triggerAgentTyping(false);
-                // if (err) {
-                //     setMssgOptionError(true);
-                //     triggerAgentTyping(false);
-                //     setMssgOptionLoading(false);
-                //     // const freshMessageList = (messages).map((x) => {
-                //     //     return x.messageContentId === parentMessageId ? { ...x, selectedOption: "" } : x
-                //     // })
-                // } else {
-                //     setMssgOptionError(false);
-                //     triggerAgentTyping(false);
-                // }
+            (error) => {
+                if (error) {
+                    triggerAgentTyping(false);
+                    setMssgSendStatus(ERROR);
+                    sendBranchOption?.close();
+                    sendBranchOption?.destroy();
+                    const freshMessageList = messages.map((x) => {
+                        return x.messageContentId === branchId
+                            ? { ...x, selectedOption: "" }
+                            : x;
+                    });
+
+                    dispatch(setTicketMessages(freshMessageList));
+                } else {
+                    setMssgSendStatus(SUCCESS);
+                    triggerAgentTyping(false);
+                }
             }
         );
     };
@@ -548,12 +548,11 @@ const LiveChat = ({
         }
 
         const newMessageId = generateID();
-        setMssgOptionLoading(false);
+        setMssgSendStatus(LOADING);
         if (currentFormElement) {
             setDisableForm(true);
             const { order, formId, formElementId } = currentFormElement;
-
-            await socket.timeout(1000).emit(
+            const sendFormRecord = await socket.timeout(30000).emit(
                 FILL_FORM_RECORD,
                 {
                     ticketId,
@@ -564,14 +563,32 @@ const LiveChat = ({
                     fileAttachments,
                     messageStatus: messageStatues?.SENDING,
                 },
-                (err, resp) => {
-                    if (err) {
+                (error) => {
+                    if (error) {
+                        sendFormRecord?.close();
+                        sendFormRecord?.destroy();
+                        setMssgSendStatus(ERROR);
+                        dispatch(
+                            updateTicketMessageStatus({
+                                ticketId,
+                                messageId: messageId ? messageId : newMessageId,
+                                messageStatus: messageStatues?.FAILED,
+                            })
+                        );
                     } else {
+                        setMssgSendStatus(SUCCESS);
+                        dispatch(
+                            updateTicketMessageStatus({
+                                ticketId,
+                                messageId: messageId ? messageId : newMessageId,
+                                messageStatus: messageStatues?.DELIVERED,
+                            })
+                        );
+
+                        clearUserInput?.();
                     }
                 }
             );
-
-            clearUserInput?.();
         } else {
             const messageEntry = {
                 ticketId,
@@ -586,7 +603,7 @@ const LiveChat = ({
 
             dispatch(saveTicketsMessages(messageEntry));
 
-            await socket.timeout(1000).emit(
+            const sendCustomerMessage = await socket.timeout(30000).emit(
                 SEND_CUSTOMER_MESSAGE,
                 {
                     ticketId,
@@ -594,13 +611,36 @@ const LiveChat = ({
                     messageType: DEFAULT,
                     fileAttachments,
                 },
-                (err, resp) => {
-                    if (err) {
+                (error) => {
+                    if (error) {
+                        sendCustomerMessage?.close();
+                        sendCustomerMessage?.destroy();
+                        setMssgSendStatus(ERROR);
+                        dispatch(
+                            updateTicketMessageStatus({
+                                ticketId,
+                                messageId: messageId ? messageId : newMessageId,
+                                messageStatus: messageStatues?.FAILED,
+                            })
+                        );
                     } else {
+                        setMssgSendStatus(SUCCESS);
+                        dispatch(
+                            updateTicketMessageStatus({
+                                ticketId,
+                                messageId: messageId ? messageId : newMessageId,
+                                messageStatus: messageStatues?.DELIVERED,
+                            })
+                        );
+
+                        clearUserInput?.();
                     }
                 }
             );
+        }
 
+        // --- clear input if it is at investigate message stage ---
+        if (messages?.length <= 3) {
             clearUserInput?.();
         }
     };
@@ -804,7 +844,7 @@ const LiveChat = ({
                 })
             );
 
-            setMssgOptionLoading(false);
+            setMssgSendStatus();
         }
     };
 
@@ -883,6 +923,11 @@ const LiveChat = ({
             );
 
             triggerAgentTyping(false);
+
+            if (actionBranchType === AGENT_FOLLOWUP) {
+                sendAgentTicket();
+                triggerAgentTyping(false);
+            }
         }
 
         if (messageType === FORM_FILLED_COMPLETELY) {
@@ -897,11 +942,11 @@ const LiveChat = ({
     };
 
     const handleScrollChatToBottom = () => {
-        // if (isDeviceMobileTablet()) {
-        //     const messageBody = document.getElementById("messageBody");
-        //     messageBody.style.scrollBehavior = "smooth";
-        //     messageBody.scrollTop = messageBody.scrollHeight;
-        // }
+        if (isDeviceMobileTablet()) {
+            const messageBody = document.getElementById("messageBody");
+            messageBody.style.scrollBehavior = "smooth";
+            messageBody.scrollTop = messageBody.scrollHeight;
+        }
     };
 
     const handleReceive = (message) => {
@@ -912,7 +957,6 @@ const LiveChat = ({
             branchOptionActionType,
         } = message;
 
-        setMssgOptionError(false);
         // clearUserInput();
         setDisableForm(false);
         if (senderType === THIRD_USER && messageType !== DEFAULT) {
@@ -988,7 +1032,7 @@ const LiveChat = ({
     };
 
     const handleAgentUnavailable = () => {
-        setMssgOptionLoading(false);
+        setMssgSendStatus();
 
         const {
             actionBranchHeader,
@@ -1051,7 +1095,7 @@ const LiveChat = ({
             setActiveConvo(false);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [socket]);
 
     useEffect(() => {
         figureInputAction();
@@ -1238,7 +1282,6 @@ const LiveChat = ({
                             errorMssg={errorMssg}
                             reconnectUser={handleReconnectUser}
                             handleAddEmailAction={handleVerifyAction}
-                            handleConvoBreaker={handleConvoBreaker}
                         />
                         <MessageBody
                             forcedAgentTyping={forcedAgentTyping}
@@ -1253,10 +1296,9 @@ const LiveChat = ({
                             handleVerifyAction={handleVerifyAction}
                             setActiveConvo={setActiveConvo}
                             requestAllMessages={requestAllMessages}
-                            mssgOptionLoading={mssgOptionLoading}
-                            mssgOptionError={mssgOptionError}
                             handleNewMessage={handleNewMessage}
                             status={status}
+                            mssgSendStatus={mssgSendStatus}
                         />
                     </div>
                 </div>
@@ -1288,6 +1330,7 @@ const LiveChat = ({
                     uploads={uploads}
                     updateUploads={updateUploads}
                     isDateFormElement={isDateFormElement}
+                    mssgSendStatus={mssgSendStatus}
                 />
             </div>
         </>

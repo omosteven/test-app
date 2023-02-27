@@ -14,7 +14,6 @@ const MessageBranchOption = ({
     messagesDepth,
     lastMessage,
     mssgOptionLoading,
-    mssgOptionError,
     status,
 }) => {
     const { messageActionType } = lastMessage || {};

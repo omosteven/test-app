@@ -17,11 +17,10 @@ import { dataQueryStatus } from "../../../../../utils/formatHandlers";
 import {
     getCurrentFormInputRules,
     getErrorMessage,
-    getURLPattern,
     isDeviceMobileTablet,
 } from "../../../../../utils/helper";
 import { formInputTypes } from "../MessageBody/Messages/enums";
-import { IMAGE, VIDEO, FILE } from "./UploadIcons/enum";
+import { IMAGE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
 import UploadedFiles from "./UploadIcons/UploadedFiles/UploadedFiles";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
@@ -44,9 +43,8 @@ const LiveChatInput = ({
     disableInput,
     uploads,
     updateUploads,
-    // request,
-    // updateRequest,
     isDateFormElement,
+    mssgSendStatus,
 }) => {
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
@@ -506,7 +504,6 @@ const LiveChatInput = ({
 
     const isFormElementMultiselect = formElementType === MULTISELECT;
 
-    const handleRetryMessage = () => {};
     return (
         <div className={`chat__input__wrapper`} ref={inputContainerRef}>
             <div
@@ -637,9 +634,16 @@ const LiveChatInput = ({
                                         classType='default'
                                         otherClass={`send__button ${
                                             !btnDisabled ? "active" : ""
+                                        } ${
+                                            mssgSendStatus === LOADING
+                                                ? "active"
+                                                : ""
                                         }`}
+                                        loading={mssgSendStatus === LOADING}
                                         disabled={
-                                            btnDisabled || fetchingInputStatus
+                                            (btnDisabled ||
+                                                fetchingInputStatus) &&
+                                            mssgSendStatus === LOADING
                                         }
                                     />
                                 </>
@@ -652,7 +656,11 @@ const LiveChatInput = ({
                             {errors?.file || errorMssg}
                         </span>
                     )}
-
+                    {mssgSendStatus === ERROR && (
+                        <span className='chat__input__error'>
+                            Response failed to send.
+                        </span>
+                    )}
                     {isRelaxedTemplate &&
                         (isFormElementImage ||
                             isDateFormElement ||
@@ -670,11 +678,12 @@ const LiveChatInput = ({
                                         ? "chat__input__relaxed__hide-button"
                                         : ""
                                 } `}
-                                loading={loading}
+                                loading={loading && !(mssgSendStatus === ERROR)}
                                 disabled={
-                                    btnDisabled ||
-                                    fetchingInputStatus ||
-                                    status === LOADING
+                                    (btnDisabled ||
+                                        fetchingInputStatus ||
+                                        status === LOADING) &&
+                                    !(mssgSendStatus === ERROR)
                                 }
                             />
                         )}
@@ -685,5 +694,4 @@ const LiveChatInput = ({
     );
 };
 
-// export default React.memo(LiveChatInput);
 export default LiveChatInput;

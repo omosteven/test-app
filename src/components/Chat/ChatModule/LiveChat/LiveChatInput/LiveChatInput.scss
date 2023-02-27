@@ -238,3 +238,13 @@
         }
     }
 }
+
+.chat__input__error {
+    color: $file__error__theme_color;
+    z-index: 100;
+    font-size: 14px;
+    margin-top: -5px;
+    text-align: center;
+    display: block;
+    margin-bottom: -5px;
+}
