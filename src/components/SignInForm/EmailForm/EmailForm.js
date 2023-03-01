@@ -55,7 +55,7 @@ const EmailForm = ({
                 if (sessionId) {
                     handleInitialRequestUpdate({ sessionId, email });
                 } else {
-                    await pushToDashboard(data, () => {});
+                    pushToDashboard(data);
                     window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
                 }
             }

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
 import API from "../../lib/api";
 import apiRoutes from "../../lib/api/apiRoutes";
 import { onMessageListener } from "../../lib/firebase/firebase";
@@ -9,10 +9,19 @@ import {
     socket,
     SocketContext,
 } from "../../lib/socket/context/socket";
-import { retriveAccessToken } from "../../storage/sessionStorage";
+import {
+    retriveAccessToken,
+    retriveAuthData,
+    setAccessToken,
+    setAuthData,
+} from "storage/cookieStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
-import { generateID, getErrorMessage } from "../../utils/helper";
+import {
+    generateID,
+    generateRandomId,
+    getErrorMessage,
+} from "../../utils/helper";
 import Empty from "../common/Empty/Empty";
 import { ToastContext } from "../common/Toast/context/ToastContextProvider";
 import queryString from "query-string";
@@ -26,8 +35,9 @@ import { setConversationBreakers } from "store/chat/actions";
 import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import { DotLoader } from "components/ui";
 import { useWindowSize } from "utils/hooks";
-import "./Chat.scss";
 import { CONVERSATION_SAVED } from "./ChatModule/LiveChat/MessageBody/Messages/enums";
+import pushToDashboard from "components/SignInForm/actions";
+import "./Chat.scss";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 const { RELAXED, WORKMODE } = defaultTemplates;
@@ -39,8 +49,11 @@ const Chat = () => {
     const [status, setStatus] = useState("");
     const [loading, setLoading] = useState(false);
     const [errorMssg, setErrorMssg] = useState("");
+
     const dispatch = useDispatch();
     const history = useHistory();
+    const location = useLocation();
+
     const { width } = useWindowSize();
 
     const toastMessage = useContext(ToastContext);
@@ -58,16 +71,19 @@ const Chat = () => {
     let params = queryString.parse(window.location.search);
 
     const isAuthCodeAvailable = params?.code ? true : false;
-
     const isAuthTokenAvailable = params?.token ? true : false;
+    const firstName = params?.firstName;
+    const lastName = params?.lastName;
+    const email = params?.email;
+    const appUserId =
+        params?.appUserId || retriveAuthData()?.userId || generateRandomId();
+    const conversationId = params?.conversationId;
 
     const userToken = retriveAccessToken();
-    // const [selectedTicket, setSelectedTicket] = useState();
 
     const [customerTicketId, setCustomerTicketId] = useState();
-    const { defaultTemplate, defaultTheme } = useSelector(
-        (state) => state.chat.chatSettings
-    );
+    const { defaultTemplate, defaultTheme, workspaceId, workspaceSlug } =
+        useSelector((state) => state.chat.chatSettings);
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORKMODE;
@@ -106,7 +122,8 @@ const Chat = () => {
         const tickedId = params?.ticketId;
         const authToken = params?.token;
         setCustomerTicketId(tickedId);
-        await sessionStorage.setItem("accessToken", authToken);
+
+        setAccessToken(authToken);
     };
 
     const getCustomerAuthToken = async () => {
@@ -123,10 +140,7 @@ const Chat = () => {
 
             if (res.status === 200) {
                 setCustomerTicketId(tickedId);
-                await sessionStorage.setItem(
-                    "accessToken",
-                    res.data.data.token
-                );
+                setAccessToken(res.data.data.token);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -154,6 +168,7 @@ const Chat = () => {
                     setCustomerTickets(tickets);
 
                     const { ticketId: prevSelectedId } = activeTicket || {};
+
                     // const newTicket = ticketId
                     //     ? tickets?.find((x) => x.ticketId === ticketId)
                     //     : prevSelectedId
@@ -231,6 +246,64 @@ const Chat = () => {
         }
     };
 
+    const validateUser = async () => {
+        try {
+            setStatus(LOADING);
+            setErrorMssg();
+            const url = apiRoutes?.validateUser;
+            const res = await API.post(url, {
+                workspaceId,
+                appUserId,
+                firstName,
+                lastName,
+                email,
+            });
+
+            if (res.status === 201) {
+                const { data } = res.data;
+
+                pushToDashboard(data);
+                setAuthData(data?.thirdUser);
+
+                if (conversationId) {
+                    engageConversation();
+                } else {
+                    history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+                }
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
+
+    const engageConversation = async () => {
+        try {
+            setStatus(LOADING);
+            setErrorMssg();
+            const url = apiRoutes?.engageConversation(conversationId);
+            const res = await API.get(url);
+
+            if (res.status === 200) {
+                const { data } = res.data;
+
+                history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+
+                // history.push({
+                //     pathname: `/chat?workspaceSlug=${workspaceSlug}`,
+                //     state: {
+                //         tickedId: data?.ticketId,
+                //     },
+                // });
+
+                // getCustomerTickets(data?.ticketId);
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
+
     const handleTicketSelect = (ticket) => {
         dispatch(setActiveTicket(ticket));
     };
@@ -266,8 +339,12 @@ const Chat = () => {
     };
 
     useEffect(() => {
-        callHandler();
-    }, [customerTicketId]);
+        if (userToken === undefined) {
+            validateUser();
+        } else {
+            conversationId ? engageConversation() : callHandler();
+        }
+    }, []);
 
     const handleCloseTicket = () => {
         toggleTicketActionModal(true);

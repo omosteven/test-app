@@ -20,7 +20,7 @@ const TogglerDropdown = ({
     // const handleLogOut = async () => {
     //     let params = queryString.parse(window.location.search);
     //     const slugCC = params?.workspaceSlug;
-    //     await sessionStorage.clear();
+    //
     //     window.location.replace(`/?workspaceSlug=${slugCC}`);
     //     await store.dispatch({ type: SIGNOUT_REQUEST });
 

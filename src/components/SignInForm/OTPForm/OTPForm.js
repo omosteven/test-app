@@ -43,9 +43,7 @@ const OTPForm = ({
             if (res.status === 200) {
                 const { data } = res.data;
 
-                await pushToDashboard(data, () => {
-                    // history.replace(`);
-                });
+                pushToDashboard(data);
                 if (redirectUser) {
                     window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
                 } else {
