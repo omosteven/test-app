@@ -63,6 +63,9 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
                             }}
                             onClick={() => openPreviewModal(attachment)}
                             mediaType={IMAGE}
+                            isTablet={isTablet}
+                            mobileDimension={mobileVersion}
+                            desktopDimension={desktopVersion}
                         />
                     </>
                 );
