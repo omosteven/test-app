@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import API from "../../lib/api";
 import apiRoutes from "../../lib/api/apiRoutes";
 import { onMessageListener } from "../../lib/firebase/firebase";
@@ -52,7 +52,6 @@ const Chat = () => {
 
     const dispatch = useDispatch();
     const history = useHistory();
-    const location = useLocation();
 
     const { width } = useWindowSize();
 
@@ -155,8 +154,6 @@ const Chat = () => {
         openChatMenu = false
     ) => {
         try {
-            dispatch(setActiveTicket(null));
-
             setStatus(LOADING);
             setErrorMssg();
             setLoading(true);
@@ -287,16 +284,13 @@ const Chat = () => {
             if (res.status === 200) {
                 const { data } = res.data;
 
+                dispatch(
+                    setActiveTicket({
+                        ...data,
+                    })
+                );
+
                 history.push(`/chat?workspaceSlug=${workspaceSlug}`);
-
-                // history.push({
-                //     pathname: `/chat?workspaceSlug=${workspaceSlug}`,
-                //     state: {
-                //         tickedId: data?.ticketId,
-                //     },
-                // });
-
-                // getCustomerTickets(data?.ticketId);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -344,7 +338,8 @@ const Chat = () => {
         } else {
             conversationId ? engageConversation() : callHandler();
         }
-    }, []);
+        //eslint-disable-next-line
+    }, [customerTicketId]);
 
     const handleCloseTicket = () => {
         toggleTicketActionModal(true);
@@ -359,6 +354,7 @@ const Chat = () => {
         if (userToken) {
             reconnectUser();
         }
+        //eslint-disable-next-line
     }, [socket, userToken]);
 
     return (
