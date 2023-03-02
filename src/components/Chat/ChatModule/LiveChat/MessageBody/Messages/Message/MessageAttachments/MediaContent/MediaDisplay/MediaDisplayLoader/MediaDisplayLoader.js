@@ -15,6 +15,7 @@ const MediaDisplayLoader = ({
         width,
         height,
     };
+
     return <div className='media-display-loader' style={style}></div>;
 };
 

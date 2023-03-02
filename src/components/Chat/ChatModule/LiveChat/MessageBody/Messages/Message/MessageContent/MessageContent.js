@@ -68,12 +68,12 @@ const MessageContent = ({
         handleNewMessage({ ...data });
     };
 
-    const { messageStatus } = data;
+    const { messageStatus } = data || {};
 
     const renderBasedOnMessageStatus = () => {
         switch (messageStatus) {
             // case SENDING:
-                // return <SmallLoader otherClassName='message__group--sending' />;
+            // return <SmallLoader otherClassName='message__group--sending' />;
             case DELIVERED:
                 return "";
 

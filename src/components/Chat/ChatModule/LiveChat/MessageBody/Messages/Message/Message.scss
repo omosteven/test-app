@@ -91,15 +91,36 @@
                 }
             }
 
+            &.input__needed {
+                @include media(">medium-screen") {
+                    #{$relaxed__mode__template__selector} {
+                        background: $dark__mode__desktop__chat__theme__color !important;
+                    }
+
+                    #{$white__mode__theme__selector} {
+                        background: $white__mode__background !important;
+                    }
+                }
+            }
+
             &.info__action {
                 color: $text__default_color;
                 background: $light__theme_color;
                 border: 0.063rem solid $primary__theme_color;
                 border-radius: 0.75rem 0.75rem 0.75rem 0;
 
+                #{$dark__mode__theme__selector} {
+                    border: none;
+                    background: $dark__mode__theme__grey__color;
+                }
+
+                #{$white__mode__theme__selector} {
+                    background: $white__mode__theme__grey__color;
+                }
+
                 @include media(">medium-screen") {
                     #{$relaxed__mode__template__selector} {
-                        background: $dark__mode__desktop__chat__theme__color !important;
+                        background: $primary__theme_color;
                         padding: 16px 24px;
                     }
 
@@ -112,6 +133,11 @@
                     #{$relaxed__mode__template__selector} {
                         border-radius: 1rem 1rem 1rem 0;
                         padding: 18px 24px;
+                        background: $primary__theme_color !important;
+                    }
+
+                    #{$white__mode__theme__selector} {
+                        background: $white__mode__background !important;
                     }
                 }
 
@@ -122,15 +148,6 @@
                 //         border-radius: 1rem 1rem 1rem 0;
                 //     }
                 // }
-
-                #{$dark__mode__theme__selector} {
-                    border: none;
-                    background: $dark__mode__theme__grey__color;
-                }
-
-                #{$white__mode__theme__selector} {
-                    background: $white__mode__theme__grey__color;
-                }
 
                 .message {
                     padding-top: 0.5rem;

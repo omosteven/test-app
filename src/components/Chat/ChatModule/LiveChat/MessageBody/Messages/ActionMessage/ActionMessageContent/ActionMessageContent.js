@@ -44,7 +44,10 @@ const ActionMessageContent = ({
 
     return (
         <>
-            <div className='message__content info__action'>
+            <div
+                className={`message__content info__action ${
+                    showCautionIcon ? "input__needed" : ""
+                }`}>
                 {messageHeader && (
                     <div className='action__header'>
                         <div className='action__header__text__container'>
