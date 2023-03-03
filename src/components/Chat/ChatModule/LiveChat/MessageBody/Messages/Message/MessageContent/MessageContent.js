@@ -68,7 +68,7 @@ const MessageContent = ({
         handleNewMessage({ ...data });
     };
 
-    const { messageStatus } = data;
+    const { messageStatus } = data || {};
 
     const renderBasedOnMessageStatus = () => {
         switch (messageStatus) {
