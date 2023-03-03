@@ -3,3 +3,10 @@
     flex-direction: column;
     align-items: flex-start;
 }
+
+.attachment__image{
+    aspect-ratio: 1;
+    width: 576px;
+    object-fit: cover;
+    // object-view-box: inset(0, 615);
+}

@@ -8,7 +8,13 @@ const mediaTypes = {
     IMAGE: "IMAGE",
 };
 
-const MediaDisplay = ({ mediaType, ...rest }) => {
+const MediaDisplay = ({
+    mediaType,
+    isTablet,
+    mobileDimension,
+    desktopDimension,
+    ...rest
+}) => {
     const [mediaIsLoaded, setMediaIsLoaded] = useState(false);
     // const [mediaError, setMediaError] = useState(false);
 
@@ -27,7 +33,13 @@ const MediaDisplay = ({ mediaType, ...rest }) => {
                             }}
                             // onError={() => setMediaError(true)}
                         />
-                        {!mediaIsLoaded && <MediaDisplayLoader />}
+                        {!mediaIsLoaded && (
+                            <MediaDisplayLoader
+                                isTablet={isTablet}
+                                mobileDimension={mobileDimension}
+                                desktopDimension={desktopDimension}
+                            />
+                        )}
                     </>
                 );
             case VIDEO:
@@ -41,7 +53,13 @@ const MediaDisplay = ({ mediaType, ...rest }) => {
                             }}>
                             <source {...rest} />
                         </video>
-                        {!mediaIsLoaded && <MediaDisplayLoader />}
+                        {!mediaIsLoaded && (
+                            <MediaDisplayLoader
+                                isTablet={isTablet}
+                                mobileDimension={mobileDimension}
+                                desktopDimension={desktopDimension}
+                            />
+                        )}
                     </>
                 );
             case FILE:
