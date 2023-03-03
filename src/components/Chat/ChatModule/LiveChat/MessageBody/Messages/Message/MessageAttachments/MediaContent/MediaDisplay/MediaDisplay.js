@@ -20,6 +20,7 @@ const MediaDisplay = ({
 
     const { VIDEO, FILE, IMAGE } = mediaTypes;
 
+    console.log({rest})
     const renderBasedOnMediaType = () => {
         switch (mediaType) {
             case IMAGE:
@@ -33,13 +34,13 @@ const MediaDisplay = ({
                             }}
                             // onError={() => setMediaError(true)}
                         />
-                        {!mediaIsLoaded && (
+                        {/* {!mediaIsLoaded && (
                             <MediaDisplayLoader
                                 isTablet={isTablet}
                                 mobileDimension={mobileDimension}
                                 desktopDimension={desktopDimension}
                             />
-                        )}
+                        )} */}
                     </>
                 );
             case VIDEO:

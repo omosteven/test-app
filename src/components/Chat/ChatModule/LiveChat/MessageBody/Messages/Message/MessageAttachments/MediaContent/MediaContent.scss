@@ -24,12 +24,14 @@
             // width: 275px;
             // height: 160px;
             aspect-ratio: 3/2;
+            max-width: 100%;
         }
 
         &.desktop {
-            // width: 440px;
+            width: 440px;
             // height: 246px;
             aspect-ratio: 16/9;
+            // width: 400px;
         }
 
         &.img-orientation {
