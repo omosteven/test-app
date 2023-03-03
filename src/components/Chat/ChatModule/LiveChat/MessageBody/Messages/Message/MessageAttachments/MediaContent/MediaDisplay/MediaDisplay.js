@@ -32,6 +32,7 @@ const MediaDisplay = ({
                                 display: mediaIsLoaded ? "initial" : "none",
                             }}
                             // onError={() => setMediaError(true)}
+                            alt='branch instruction'
                         />
                         {!mediaIsLoaded && (
                             <MediaDisplayLoader
