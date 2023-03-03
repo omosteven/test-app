@@ -1,9 +1,21 @@
 @import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
 
 .media-display-loader {
-    height: 400px;
-    width: 400px;
+    // width: 440px;
     background-color: $ash__theme_color !important;
+
+    @include media(">medium-screen") {
+        max-width: 440px !important;
+        min-width: 400px !important;
+        height: 246px !important;
+    }
+
+    @include media("<=medium-screen") {
+        min-width: 275px !important;
+        height: 200px;
+    }
+    
     // position: relative;
     // overflow: hidden;
 

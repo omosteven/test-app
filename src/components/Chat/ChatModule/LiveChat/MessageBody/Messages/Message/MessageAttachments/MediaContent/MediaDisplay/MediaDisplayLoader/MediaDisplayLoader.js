@@ -1,15 +1,12 @@
 import "./MediaDisplayLoader.scss";
 
 const MediaDisplayLoader = ({
-    mobileDimension,
     desktopDimension,
     isTablet,
 }) => {
-    const width = isTablet ? mobileDimension?.width : desktopDimension?.width;
+    const width = isTablet ? "340px" : desktopDimension?.width;
 
-    const height = isTablet
-        ? mobileDimension?.height
-        : desktopDimension?.height;
+    const height = isTablet ? "200px" : desktopDimension?.height;
 
     const style = {
         width,

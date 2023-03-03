@@ -37,13 +37,15 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
             fileAttachmentImageConfig &&
             Object?.entries(fileAttachmentImageConfig)?.length > 0
         ) {
-            cropImage(
-                isTablet ? mobileVersion : desktopVersion,
-                fileAttachmentUrl,
-                setOutput
-            );
+            if (width > 0) {
+                cropImage(
+                    isTablet ? mobileVersion : desktopVersion,
+                    fileAttachmentUrl,
+                    setOutput
+                );
+            }
         }
-    }, [isTablet, cropOutImage]);
+    }, [isTablet, cropOutImage, width]);
 
     const renderBasedOnMediaType = () => {
         switch (fileAttachmentType) {

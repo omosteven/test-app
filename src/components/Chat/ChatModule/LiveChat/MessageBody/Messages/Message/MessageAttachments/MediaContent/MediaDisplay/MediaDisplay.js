@@ -31,6 +31,7 @@ const MediaDisplay = ({
                             style={{
                                 display: mediaIsLoaded ? "initial" : "none",
                             }}
+                            alt={'Branch Image'}
                             // onError={() => setMediaError(true)}
                             alt='branch instruction'
                         />
