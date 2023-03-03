@@ -20,7 +20,6 @@ const MediaDisplay = ({
 
     const { VIDEO, FILE, IMAGE } = mediaTypes;
 
-    console.log({rest})
     const renderBasedOnMediaType = () => {
         switch (mediaType) {
             case IMAGE:
@@ -32,15 +31,16 @@ const MediaDisplay = ({
                             style={{
                                 display: mediaIsLoaded ? "initial" : "none",
                             }}
+                            alt={'Branch Image'}
                             // onError={() => setMediaError(true)}
                         />
-                        {/* {!mediaIsLoaded && (
+                        {!mediaIsLoaded && (
                             <MediaDisplayLoader
                                 isTablet={isTablet}
                                 mobileDimension={mobileDimension}
                                 desktopDimension={desktopDimension}
                             />
-                        )} */}
+                        )}
                     </>
                 );
             case VIDEO:
