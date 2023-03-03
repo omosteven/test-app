@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Redirect, withRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-import { retriveAccessToken } from "../../storage/sessionStorage";
+import { retriveAccessToken } from "storage/cookieStorage";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
     const isAuthenticated =
         retriveAccessToken() ||
         window.location.pathname === "/direct" ||
+        window.location.pathname === "/link" ||
         window.location.search?.includes?.("token");
 
     const {

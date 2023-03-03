@@ -7,6 +7,7 @@ const apiRoutes = {
     userTickets: `${agentsInbox}app-message-user/tickets`,
     initiateChat: `${agentsInbox}app-message-user/chat`,
     decryptToken: `${agentsInbox}app-message-user/token/decrypt`,
+    validateUser: `${agentsInbox}app-message-user/validate/app-user`,
     getAuthToken: (code, tickedId) =>
         `${agentsInbox}app-message-user/conversation/${code}/${tickedId}`,
     getTicketMessages: (ticketId) => `${agentsInbox}messages/${ticketId}`,
@@ -27,6 +28,8 @@ const apiRoutes = {
         `${agentsInbox}app-message-user/session/${sessionId}/otp/resend`,
     chatSettings: (workspaceSlug) =>
         `${accountsService}workspace/chat-appearance/${workspaceSlug}`,
+    engageConversation: (conversationId) =>
+        `${agentsInbox}ticket/engage-conversation/${conversationId}`,
     getActionBranches: `${kSam}branches/action-branch`,
     fileUpload: `agents-inbox/file-upload/file-upload`,
 };

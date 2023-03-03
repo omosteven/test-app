@@ -5,7 +5,7 @@ import EmailForm from "./EmailForm/EmailForm";
 import OTPForm from "./OTPForm/OTPForm";
 import ChatHeader from "components/Chat/ChatModule/ChatHeader/ChatHeader";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
-import { useWindowSize } from "utils/hooks";
+import InAppAuth from "./InAppAuth/InAppAuth";
 import "./SignInForm.scss";
 
 const { RELAXED } = defaultTemplates;
@@ -20,16 +20,12 @@ const SignInForm = () => {
     const [initialStepRequest, setinitialStepRequest] = useState();
     const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
 
-    const { width } = useWindowSize();
-
     const handleInitialRequestUpdate = (data) => {
         setinitialStepRequest(data);
         setSignInStage(signInstages.final);
     };
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-
-    const isTablet = width <= 768;
 
     const renderBasedOnStage = () => {
         const { initial, final } = signInstages;
@@ -88,6 +84,7 @@ const SignInForm = () => {
                     <div key={signInStage}>
                         <div className='signin otp__group'>
                             {renderBasedOnStage()}
+                            {/* <InAppAuth /> */}
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import React from "react";
 import { io } from "socket.io-client";
 import config from "../../../config/config";
-import { retriveAccessToken } from "../../../storage/sessionStorage";
+import { retriveAccessToken } from "storage/cookieStorage";
 
 const token = retriveAccessToken();
 

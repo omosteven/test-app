@@ -1,8 +1,6 @@
 import axios from "axios";
 import config from "../../config/config";
-import { retriveAccessToken } from "../../storage/sessionStorage";
-
-const deleteAccessToken = () => sessionStorage.clear();
+import { retriveAccessToken, deleteAccessToken } from "storage/cookieStorage";
 
 const API = axios.create({
     baseURL: config?.apiGateway?.BASE_URL,

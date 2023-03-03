@@ -30,6 +30,7 @@ const ChatHeader = ({
     showActions,
     isAuthPage,
     handleVerifyAction,
+    alignLeft,
 }) => {
     const {
         chatSettings: { companyLogo, teamName, defaultTemplate },
@@ -130,7 +131,9 @@ const ChatHeader = ({
 
                     <div
                         className={`logo ${
-                            canSaveConvo ? "chat__header-save-convo" : ""
+                            alignLeft || canSaveConvo
+                                ? "chat__header-save-convo"
+                                : ""
                         }`}>
                         {isWorkModeTemplate || isNotTablet ? (
                             <CompanyChatLogo
