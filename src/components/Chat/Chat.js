@@ -355,11 +355,11 @@ const Chat = () => {
     };
 
     useEffect(() => {
-        if (userToken) {
+        if (!socketConnection?.connected) {
             reconnectUser();
         }
         //eslint-disable-next-line
-    }, [socket, userToken]);
+    }, [socket]);
 
     return (
         <>
