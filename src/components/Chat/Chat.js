@@ -333,7 +333,11 @@ const Chat = () => {
     };
 
     useEffect(() => {
-        if (userToken === undefined) {
+        if (
+            userToken === undefined &&
+            !isAuthTokenAvailable &&
+            !isAuthCodeAvailable
+        ) {
             validateUser();
         } else {
             conversationId ? engageConversation() : callHandler();
