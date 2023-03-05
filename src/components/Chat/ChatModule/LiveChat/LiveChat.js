@@ -336,10 +336,8 @@ const LiveChat = ({
                     isIssueDiscoveryOption,
                 },
                 (error) => {
-                    if (error) {
+                    if (error && sendCustomerReply?.connected === false) {
                         setMssgSendStatus(ERROR);
-                        sendCustomerReply?.close();
-                        sendCustomerReply?.destroy();
                         dispatch(
                             updateTicketMessageStatus({
                                 messageId: SMART_CONVOS,
@@ -348,8 +346,6 @@ const LiveChat = ({
                                 messageStatus: messageStatues?.FAILED,
                             })
                         );
-                    } else {
-                        setMssgSendStatus(SUCCESS);
                     }
                 }
             );
@@ -424,11 +420,9 @@ const LiveChat = ({
                 message: branchOptionLabel,
             },
             (error) => {
-                if (error) {
+                if (error && sendBranchOption?.connected === false) {
                     triggerAgentTyping(false);
                     setMssgSendStatus(ERROR);
-                    sendBranchOption?.close();
-                    sendBranchOption?.destroy();
                     const freshMessageList = messages.map((x) => {
                         return x.messageContentId === branchId
                             ? { ...x, selectedOption: "" }
@@ -436,12 +430,11 @@ const LiveChat = ({
                     });
 
                     dispatch(setTicketMessages(freshMessageList));
-                } else {
-                    setMssgSendStatus(SUCCESS);
-                    triggerAgentTyping(false);
                 }
             }
         );
+
+        triggerAgentTyping(false);
     };
 
     const handleSocketError = () => {
@@ -564,9 +557,7 @@ const LiveChat = ({
                     messageStatus: messageStatues?.SENDING,
                 },
                 (error) => {
-                    if (error) {
-                        sendFormRecord?.close();
-                        sendFormRecord?.destroy();
+                    if (error && sendFormRecord?.connected === false) {
                         setMssgSendStatus(ERROR);
                         dispatch(
                             updateTicketMessageStatus({
@@ -575,20 +566,12 @@ const LiveChat = ({
                                 messageStatus: messageStatues?.FAILED,
                             })
                         );
-                    } else {
-                        setMssgSendStatus(SUCCESS);
-                        dispatch(
-                            updateTicketMessageStatus({
-                                ticketId,
-                                messageId: messageId ? messageId : newMessageId,
-                                messageStatus: messageStatues?.DELIVERED,
-                            })
-                        );
-
-                        clearUserInput?.();
+                        return;
                     }
                 }
             );
+
+            clearUserInput?.();
         } else {
             const messageEntry = {
                 ticketId,
@@ -612,9 +595,7 @@ const LiveChat = ({
                     fileAttachments,
                 },
                 (error) => {
-                    if (error) {
-                        sendCustomerMessage?.close();
-                        sendCustomerMessage?.destroy();
+                    if (error && sendCustomerMessage?.connected === false) {
                         setMssgSendStatus(ERROR);
                         dispatch(
                             updateTicketMessageStatus({
@@ -623,20 +604,11 @@ const LiveChat = ({
                                 messageStatus: messageStatues?.FAILED,
                             })
                         );
-                    } else {
-                        setMssgSendStatus(SUCCESS);
-                        dispatch(
-                            updateTicketMessageStatus({
-                                ticketId,
-                                messageId: messageId ? messageId : newMessageId,
-                                messageStatus: messageStatues?.DELIVERED,
-                            })
-                        );
-
-                        clearUserInput?.();
                     }
                 }
             );
+
+            clearUserInput?.();
         }
 
         // --- clear input if it is at investigate message stage ---
@@ -706,6 +678,8 @@ const LiveChat = ({
                     search: messageContent.trim(),
                 },
             });
+
+            setMssgSendStatus();
             if (res.status === 200) {
                 const { data } = res.data;
                 triggerAgentTyping(false);
@@ -950,7 +924,6 @@ const LiveChat = ({
     };
 
     const handleReceive = (message) => {
-        console.log({ message });
         const {
             messageType,
             senderType,
@@ -959,6 +932,7 @@ const LiveChat = ({
         } = message;
 
         // clearUserInput();
+        setMssgSendStatus(SUCCESS);
         setDisableForm(false);
         if (senderType === THIRD_USER && messageType !== DEFAULT) {
             triggerAgentTyping(true);
