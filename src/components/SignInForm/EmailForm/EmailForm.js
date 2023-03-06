@@ -10,14 +10,23 @@ import { Button, ErrorDialog, Input } from "../../ui";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import pushToDashboard from "../actions";
+import IssueSuggestions from "../InAppAuth/IssueSuggestions/IssueSuggestions";
 import "./EmailForm.scss";
 
+export const emailFormActions = {
+    ADD_EMAIL: "ADD_EMAIL",
+    ADD_NAME: "ADD_NAME",
+};
+
+const { ADD_EMAIL, ADD_NAME } = emailFormActions;
+
 const EmailForm = ({
-    handleInitialRequestUpdate,
+    handleEmailRequestUpdate,
     title,
     subTitle,
     bottomText,
     userId,
+    isNameRequest,
 }) => {
     const {
         chatSettings: { teamName, workspaceId, workspaceSlug },
@@ -33,8 +42,9 @@ const EmailForm = ({
         email: "",
         workspaceId,
         userId,
+        name: "",
     });
-
+    console.log({ isNameRequest });
     const handleChange = (e) => {
         const { name, value } = e.target;
         setRequest({ ...request, [name]: value });
@@ -45,15 +55,16 @@ const EmailForm = ({
         try {
             setErrorMsg("");
             setLoading(true);
-            const res = await API.post(apiRoutes.authenticate, request);
+            const { name, ...requestData } = request;
+            const res = await API.post(apiRoutes.authenticate, requestData);
 
             if (res.status === 201) {
                 const { data } = res?.data;
                 const { sessionId } = data;
-                const { email } = request;
+                const { email } = requestData;
 
                 if (sessionId) {
-                    handleInitialRequestUpdate({ sessionId, email });
+                    handleEmailRequestUpdate({ sessionId, email }, ADD_EMAIL);
                 } else {
                     pushToDashboard(data);
                     window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
@@ -64,17 +75,22 @@ const EmailForm = ({
             setLoading(false);
         }
     };
+    console.log({ request });
+    const sendUserName = () => {
+        const { name } = request;
+        handleEmailRequestUpdate({ name }, ADD_NAME);
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
         const { formisValid, errors: formErrors } = ValidateForm(e, request);
         if (formisValid) {
-            intiateChatForUser();
+            isNameRequest ? sendUserName() : intiateChatForUser();
         }
         setErrors(formErrors);
     };
 
-    const { email } = request;
+    const { email, name } = request;
 
     return (
         <div>
@@ -97,17 +113,21 @@ const EmailForm = ({
                     hide={() => setErrorMsg()}
                 />
                 <Input
-                    type='email'
-                    placeholder='Enter your email address'
-                    name='email'
-                    id='email'
+                    type={`${isNameRequest ? "text" : "email"}`}
+                    placeholder={`${
+                        isNameRequest
+                            ? "Enter your name"
+                            : "Enter your email address"
+                    }`}
+                    name={`${isNameRequest ? "name" : "email"}`}
+                    id={`${isNameRequest ? "name" : "email"}`}
                     inputClass='py-3 email__input'
-                    data-label='Email address'
-                    value={email}
-                    label='Email'
+                    data-label={`${isNameRequest ? "Name" : "Email address"}`}
+                    value={`${isNameRequest ? name : email}`}
+                    label={`${isNameRequest ? "Name" : "Email"}`}
                     onChange={handleChange}
-                    isErr={errors?.email}
-                    errMssg={errors?.email}
+                    isErr={isNameRequest ? errors?.name : errors?.email}
+                    errMssg={isNameRequest ? errors?.name : errors?.email}
                     hideLabel={true}
                 />
                 <Button
@@ -118,14 +138,13 @@ const EmailForm = ({
                     loading={loading}
                 />
             </form>
-            <div className='info__section'>
-                <ReactSVG src={imageLinks.svg.info} />
-                <p>
-                    {bottomText
-                        ? bottomText
-                        : "This email address will be used to communicate updates with you."}
-                </p>
-            </div>
+            {bottomText && (
+                <div className='info__section'>
+                    <ReactSVG src={imageLinks.svg.info} />
+                    <p>{bottomText}</p>
+                </div>
+            )}
+            <IssueSuggestions title='Or, facing any of these?' />
         </div>
     );
 };

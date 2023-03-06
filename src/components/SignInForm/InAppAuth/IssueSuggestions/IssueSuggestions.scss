@@ -1,16 +1,22 @@
 @import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
 
 .issues__suggestions {  
-    padding-top: 40px;
+    margin-top: 38px;
+
+    @include media("<=medium-screen") {
+        margin-top: 40px;
+    }
 
     #{$dark__mode__theme__selector} {
-        border-top: 1px solid #838589;
+        // border-top: 1px solid #838589;
     }
 
     &__title {
         font-weight: 600;
         font-size: 20px;
         line-height: 28px;
+        margin: 0;
       
         #{$dark__mode__theme__selector} {
             color: #E0E0E0;
@@ -18,9 +24,13 @@
     }
 
     &__list {
-        padding: 34px 0;
+        padding: 24px 0;
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
+
+        @include media("<=medium-screen") {
+            padding: 34px 0;
+        }
     }
 }

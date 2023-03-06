@@ -1,8 +1,16 @@
+@import "assets/scss/master.scss";
+@import "assets/scss/_include-media-lib/include-media";
+
 .auth__buttons {
     display: flex;
-    flex-direction: column;
     gap: 1rem;
     margin: 30px 0 40px;
+
+    @include media("<=medium-screen") {
+        flex-direction: column;
+        gap: 1rem;
+        margin: 30px 0 40px;
+    }
 
     .question__btn {
         display: flex;

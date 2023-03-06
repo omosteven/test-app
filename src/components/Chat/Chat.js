@@ -71,9 +71,9 @@ const Chat = () => {
 
     const isAuthCodeAvailable = params?.code ? true : false;
     const isAuthTokenAvailable = params?.token ? true : false;
-    const firstName = params?.firstName;
-    const lastName = params?.lastName;
-    const email = params?.email;
+    const firstName = params?.firstName || "";
+    const lastName = params?.lastName || "";
+    const email = params?.email || "";
     const appUserId =
         params?.appUserId || retriveAuthData()?.userId || generateRandomId();
     const conversationId = params?.conversationId;
@@ -331,7 +331,7 @@ const Chat = () => {
             ? customerTicketId && fetchConvoBreakers()
             : fetchConvoBreakers();
     };
-
+    console.log(userToken);
     useEffect(() => {
         if (
             userToken === undefined &&

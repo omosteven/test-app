@@ -6,7 +6,14 @@ import IntroHeader from "./IntroHeader/IntroHeader";
 import IssueSuggestions from "./IssueSuggestions/IssueSuggestions";
 import "./InAppAuth.scss";
 
-const InAppAuth = () => {
+export const inAppAuthActions = {
+    ASK__SUPPORT: "ASK__SUPPORT",
+    OPEN_OLD_CONVERSATIONS: " OPEN_OLD_CONVERSATIONS",
+};
+
+const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
+
+const InAppAuth = ({ handleInitialRequestUpdate }) => {
     return (
         <div>
             <div>
@@ -24,12 +31,14 @@ const InAppAuth = () => {
                     text='Ask Support a Question'
                     classType='primary'
                     otherClass={`question__btn`}
-                    onClick={() => ""}
+                    onClick={() => handleInitialRequestUpdate(ASK__SUPPORT)}
                 />
                 <Button
                     text='Open an Old Conversation'
                     otherClass={`old__convo__btn`}
-                    onClick={() => ""}
+                    onClick={() =>
+                        handleInitialRequestUpdate(OPEN_OLD_CONVERSATIONS)
+                    }
                 />
             </div>
 
