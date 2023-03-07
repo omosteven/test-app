@@ -8,20 +8,30 @@ import { dataQueryStatus } from "utils/formatHandlers";
 import { DotLoader } from "components/ui";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import ErrorView from "components/common/ErrorView/ErrorView";
+import {
+    storePinnedConversations,
+    getStoredPinnedConversations,
+} from "storage/localStorage";
 import "./PinnedConversations.scss";
 
 const { LOADING, ERROR, DATAMODE, NULLMODE } = dataQueryStatus;
 const { WORKMODE } = defaultTemplates;
 
 const PinnedConversations = ({ title, routeToChat }) => {
-    const [convo, setConvo] = useState([]);
-    const [status, setStatus] = useState(LOADING);
+    const storedPinnedConversations = getStoredPinnedConversations() || [];
+    const [pinnedConversations, setPinnedConversations] = useState(
+        storedPinnedConversations || []
+    );
+    const [status, setStatus] = useState(
+        storedPinnedConversations?.length > 0 ? DATAMODE : ""
+    );
     const [errorMssg, setErrorMssg] = useState("");
     const { workspaceId } = useSelector((state) => state.chat.chatSettings);
     const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
 
     const getPinnedConversations = async () => {
         try {
+            setStatus(LOADING);
             const url = apiRoutes.getPinnedConversations;
             const res = await API.get(url, {
                 params: {
@@ -30,12 +40,12 @@ const PinnedConversations = ({ title, routeToChat }) => {
             });
 
             if (res.status === 200) {
-                console.log({ res });
                 const { data } = res.data;
 
                 let newStatus = data?.length > 0 ? DATAMODE : NULLMODE;
-                setConvo(data);
+                setPinnedConversations(data);
                 setStatus(newStatus);
+                storePinnedConversations(data);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -44,7 +54,13 @@ const PinnedConversations = ({ title, routeToChat }) => {
     };
 
     useEffect(() => {
-        getPinnedConversations();
+        if (
+            storedPinnedConversations &&
+            storedPinnedConversations?.length === 0
+        ) {
+            getPinnedConversations();
+        }
+        //eslint-disable-next-line
     }, []);
 
     const isWorkModeTemplate = defaultTemplate === WORKMODE;
@@ -60,18 +76,32 @@ const PinnedConversations = ({ title, routeToChat }) => {
             case DATAMODE:
                 return (
                     <div className='pinned__conversations__list'>
-                        {convo?.map((convo) => (
-                            <PinnedConversation
-                                issueTitle={convo?.issue?.issueName}
-                                onClick={() =>
-                                    routeToChat("", "", convo?.conversationId)
-                                }
-                            />
-                        ))}
+                        {pinnedConversations
+                            ?.slice(0, 6)
+                            .map((convo, index) => (
+                                <PinnedConversation
+                                    key={index}
+                                    issueTitle={convo?.issue?.issueName}
+                                    onClick={() =>
+                                        routeToChat(
+                                            "",
+                                            "",
+                                            convo?.conversationId
+                                        )
+                                    }
+                                />
+                            ))}
                     </div>
                 );
             case ERROR:
-                return <ErrorView message={errorMssg} />;
+                return (
+                    <div className='pinned__conversations__error'>
+                        <ErrorView
+                            message={errorMssg}
+                            retry={() => getPinnedConversations()}
+                        />
+                    </div>
+                );
             default:
                 return "";
         }

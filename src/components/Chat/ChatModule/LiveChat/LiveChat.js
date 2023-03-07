@@ -1048,7 +1048,6 @@ const LiveChat = ({
 
     const handleConversationLinkMessages = async () => {
         if (messages?.length === 0) {
-            console.log("called");
             await socket.emit(SEND_CUSTOMER_CONVERSATION_REPLY, {
                 ticketId: ticket?.ticketId,
                 conversationId: ticket?.conversationId,

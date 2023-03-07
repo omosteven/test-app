@@ -268,7 +268,6 @@ const Chat = () => {
                 }
             }
         } catch (err) {
-            console.log("validate endpoi t error here,", err);
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
         }
