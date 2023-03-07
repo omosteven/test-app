@@ -14,9 +14,28 @@ import Chat from "./components/Chat/Chat";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
 import "./App.scss";
 
+import { getChatSettings, storeChatSettings } from "storage/localStorage";
+
 const App = () => {
     const [fetching, sayFetching] = useState(true);
     const [fetchingError, setFetchingError] = useState();
+
+    const chatSettings = getChatSettings() || {};
+
+    let params = queryString.parse(window.location.search);
+
+    const setCurrentAppearance = (data) => {
+        const root = document.documentElement;
+
+        store.dispatch(
+            updateChatSettings({
+                ...data,
+            })
+        );
+
+        root.style.setProperty("--default-primary-color", data?.chatThemeColor);
+
+    };
 
     const fetchChatSetting = async () => {
         try {
@@ -29,20 +48,19 @@ const App = () => {
             const res = await API.get(url);
             if (res.status === 200) {
                 const { data } = res.data;
-                const { chatThemeColor, defaultTemplate, defaultTheme } = data;
-                const root = document.documentElement;
-                store.dispatch(
-                    updateChatSettings({
-                        ...data,
-                        workspaceSlug,
-                        defaultTheme,
-                        defaultTemplate,
-                    })
-                );
-                root.style.setProperty(
-                    "--default-primary-color",
-                    chatThemeColor
-                );
+                const { defaultTemplate, defaultTheme } = data;
+                storeChatSettings({
+                    ...data,
+                    workspaceSlug,
+                    defaultTheme,
+                    defaultTemplate,
+                });
+                setCurrentAppearance({
+                    ...data,
+                    workspaceSlug,
+                    defaultTheme,
+                    defaultTemplate,
+                });
                 sayFetching(false);
             }
         } catch (err) {
@@ -52,8 +70,23 @@ const App = () => {
     };
 
     useEffect(() => {
-        fetchChatSetting();
-    }, []);
+        const { workspaceSlug } = chatSettings || {};
+        const queryParsedWorkspaceSlug = params?.workspaceSlug;
+        if (
+            workspaceSlug !== params?.workspaceSlug &&
+            queryParsedWorkspaceSlug
+        ) {
+            fetchChatSetting();
+        } else {
+            setCurrentAppearance({
+                ...chatSettings,
+            });
+
+            setTimeout(() => {
+                sayFetching(false);
+            }, 3000);
+        }
+    }, [chatSettings]);
 
     if (fetching) return <FullPageLoader />;
 

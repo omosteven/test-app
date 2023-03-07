@@ -70,7 +70,8 @@ const OTPForm = ({
             <div className='otp__form'>
                 <div>
                     <h5 className='signin-header'>
-                        {title ? title : "Enter OTP"}
+                        {/* {title ? title : "Enter OTP"} */}
+                        We’ve sent an OTP to your email
                     </h5>
                     <p className='signin-sub__text'>
                         {isDirectUser ? (
