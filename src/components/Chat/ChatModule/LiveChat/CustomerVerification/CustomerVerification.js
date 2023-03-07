@@ -24,7 +24,7 @@ const CustomerVerification = ({
     const [verifyStage, setVerifyStage] = useState(verifystages.initial);
     const [initialStepRequest, setinitialStepRequest] = useState();
 
-    const handleInitialRequestUpdate = (data) => {
+    const handleEmailRequestUpdate = (data) => {
         setinitialStepRequest(data);
         setVerifyStage(verifystages.final);
     };
@@ -43,7 +43,7 @@ const CustomerVerification = ({
                 return (
                     <EmailForm
                         userId={customer?.userId}
-                        handleInitialRequestUpdate={handleInitialRequestUpdate}
+                        handleEmailRequestUpdate={handleEmailRequestUpdate}
                         title={
                             isSaveConvoAction
                                 ? "Save conversation"
@@ -54,6 +54,7 @@ const CustomerVerification = ({
                                 ? "Kindly give us your email address so we can save this conversation"
                                 : "We’ll send you a 4 digit OTP to ensure this is your email address."
                         }
+                        bottomText='This email address will be used to communicate updates with you.'
                     />
                 );
 

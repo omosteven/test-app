@@ -137,13 +137,9 @@
                 border: 1px solid $white__mode__border__color;
             }
 
-            // .chat__header-save-convo {
-            //     display:flex !important;
-            //     justify-content: space-between !important;
-            //     .logo{
-            //         margin: unset !important;
-            //     }
-            // }
+            .logo__left__aligned {
+                margin: unset !important;
+            }
 
             @include media("<=medium-screen") {
                 padding: 0 1rem;
@@ -159,7 +155,7 @@
                 .chat__header-save-convo {
                     margin: unset !important;
                 }
-            }
+            }  
 
             @include media(">medium-screen") {
                 #{$relaxed__mode__template__selector} {

@@ -13,3 +13,14 @@ export const storeUserAuth = (userAuth) => {
 export const getUserAuth = () => {
     return JSON.parse(localStorage.getItem("userAuth"));
 };
+
+export const storePinnedConversations = (pinnedConversations) => {
+    localStorage.setItem(
+        "pinnedConversations",
+        JSON.stringify(pinnedConversations)
+    );
+};
+
+export const getStoredPinnedConversations = () => {
+    return JSON.parse(localStorage.getItem("pinnedConversations"));
+};

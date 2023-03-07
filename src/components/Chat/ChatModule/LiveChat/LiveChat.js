@@ -1046,9 +1046,19 @@ const LiveChat = ({
         dispatch(setActiveTicket(JSON.parse(data)));
     };
 
+    const handleConversationLinkMessages = async () => {
+        if (messages?.length === 0) {
+            await socket.emit(SEND_CUSTOMER_CONVERSATION_REPLY, {
+                ticketId: ticket?.ticketId,
+                conversationId: ticket?.conversationId,
+            });
+        }
+    };
+
     useEffect(() => {
         requestAllMessages();
         socket.emit(SUBSCRIBE_TO_TICKET, { ticketId });
+        handleConversationLinkMessages();
         socket.on(RECEIVE_MESSAGE, handleReceive);
         // socket.on(CLOSED_TICKET, handleTicketClosureProvision)
         socket.on(NEW_TICKET_UPDATE, handleTicketClosure);
@@ -1095,7 +1105,10 @@ const LiveChat = ({
     };
 
     const callTicketClosure = () => {
-        if (messages?.length === 1) {
+        if (
+            messages?.length === 1 &&
+            messages[0]?.messageType !== ACTION_INFO
+        ) {
             closeTicket();
         }
     };

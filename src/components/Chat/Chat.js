@@ -32,8 +32,8 @@ import { DotLoader } from "components/ui";
 import { useWindowSize } from "utils/hooks";
 import { CONVERSATION_SAVED } from "./ChatModule/LiveChat/MessageBody/Messages/enums";
 import pushToDashboard from "components/SignInForm/actions";
-import "./Chat.scss";
 import { storeUserAuth } from "storage/localStorage";
+import "./Chat.scss";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 const { RELAXED, WORKMODE } = defaultTemplates;
@@ -69,9 +69,9 @@ const Chat = () => {
 
     const isAuthCodeAvailable = params?.code ? true : false;
     const isAuthTokenAvailable = params?.token ? true : false;
-    const firstName = params?.firstName;
-    const lastName = params?.lastName;
-    const email = params?.email;
+    const firstName = params?.firstName || "";
+    const lastName = params?.lastName || "";
+    const email = params?.email || "";
 
     const appUserId = params?.appUserId || user?.userId || generateRandomId();
     const conversationId = params?.conversationId;
@@ -268,7 +268,6 @@ const Chat = () => {
                 }
             }
         } catch (err) {
-            console.log("validate endpoi t error here,", err);
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
         }
