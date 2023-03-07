@@ -35,7 +35,6 @@ const App = () => {
 
         root.style.setProperty("--default-primary-color", data?.chatThemeColor);
 
-        sayFetching(false);
     };
 
     const fetchChatSetting = async () => {
@@ -82,6 +81,10 @@ const App = () => {
             setCurrentAppearance({
                 ...chatSettings,
             });
+
+            setTimeout(() => {
+                sayFetching(false);
+            }, 3000);
         }
     }, [chatSettings]);
 
