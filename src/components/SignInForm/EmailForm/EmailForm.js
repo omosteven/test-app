@@ -10,13 +10,9 @@ import { Button, ErrorDialog, Input } from "../../ui";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import pushToDashboard from "../actions";
-import IssueSuggestions from "../InAppAuth/IssueSuggestions/IssueSuggestions";
+import PinnedConversations from "../InAppAuth/PinnedConversations/PinnedConversations";
+import { emailFormActions } from "../enum";
 import "./EmailForm.scss";
-
-export const emailFormActions = {
-    ADD_EMAIL: "ADD_EMAIL",
-    ADD_NAME: "ADD_NAME",
-};
 
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
 
@@ -27,6 +23,8 @@ const EmailForm = ({
     bottomText,
     userId,
     isNameRequest,
+    routeToChat,
+    showPinnedConversations,
 }) => {
     const {
         chatSettings: { teamName, workspaceId, workspaceSlug },
@@ -42,9 +40,9 @@ const EmailForm = ({
         email: "",
         workspaceId,
         userId,
-        name: "",
+        fullname: "",
     });
-    console.log({ isNameRequest });
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setRequest({ ...request, [name]: value });
@@ -55,7 +53,7 @@ const EmailForm = ({
         try {
             setErrorMsg("");
             setLoading(true);
-            const { name, ...requestData } = request;
+            const { fullname, ...requestData } = request;
             const res = await API.post(apiRoutes.authenticate, requestData);
 
             if (res.status === 201) {
@@ -77,8 +75,8 @@ const EmailForm = ({
     };
     console.log({ request });
     const sendUserName = () => {
-        const { name } = request;
-        handleEmailRequestUpdate({ name }, ADD_NAME);
+        const { fullname } = request;
+        handleEmailRequestUpdate({ fullname }, ADD_NAME);
     };
 
     const handleSubmit = (e) => {
@@ -90,7 +88,7 @@ const EmailForm = ({
         setErrors(formErrors);
     };
 
-    const { email, name } = request;
+    const { email, fullname } = request;
 
     return (
         <div>
@@ -119,15 +117,15 @@ const EmailForm = ({
                             ? "Enter your name"
                             : "Enter your email address"
                     }`}
-                    name={`${isNameRequest ? "name" : "email"}`}
-                    id={`${isNameRequest ? "name" : "email"}`}
+                    name={`${isNameRequest ? "fullname" : "email"}`}
+                    id={`${isNameRequest ? "fullname" : "email"}`}
                     inputClass='py-3 email__input'
                     data-label={`${isNameRequest ? "Name" : "Email address"}`}
-                    value={`${isNameRequest ? name : email}`}
-                    label={`${isNameRequest ? "Name" : "Email"}`}
+                    value={`${isNameRequest ? fullname : email}`}
+                    label={`${isNameRequest ? "Full name" : "Email"}`}
                     onChange={handleChange}
-                    isErr={isNameRequest ? errors?.name : errors?.email}
-                    errMssg={isNameRequest ? errors?.name : errors?.email}
+                    isErr={isNameRequest ? errors?.fullname : errors?.email}
+                    errMssg={isNameRequest ? errors?.fullname : errors?.email}
                     hideLabel={true}
                 />
                 <Button
@@ -144,7 +142,12 @@ const EmailForm = ({
                     <p>{bottomText}</p>
                 </div>
             )}
-            <IssueSuggestions title='Or, facing any of these?' />
+            {showPinnedConversations && (
+                <PinnedConversations
+                    title='Or, facing any of these?'
+                    routeToChat={routeToChat}
+                />
+            )}
         </div>
     );
 };

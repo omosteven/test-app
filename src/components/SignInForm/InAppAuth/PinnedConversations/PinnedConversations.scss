@@ -1,7 +1,7 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
-.issues__suggestions {  
+.pinned__conversations {  
     margin-top: 38px;
 
     @include media("<=medium-screen") {
@@ -10,6 +10,12 @@
 
     #{$dark__mode__theme__selector} {
         // border-top: 1px solid #838589;
+    }
+
+    &__loader {
+        display: flex;
+        justify-content: center;
+        margin-top: 38px;
     }
 
     &__title {

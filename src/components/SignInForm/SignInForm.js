@@ -7,21 +7,15 @@ import OTPForm from "./OTPForm/OTPForm";
 import ChatHeader from "components/Chat/ChatModule/ChatHeader/ChatHeader";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import InAppAuth from "./InAppAuth/InAppAuth";
-import { inAppAuthActions } from "./InAppAuth/InAppAuth";
 import queryString from "query-string";
 import { generateRandomId } from "utils/helper";
-import { emailFormActions } from "./EmailForm/EmailForm";
+import { signInstages, emailFormActions, inAppAuthActions } from "./enum";
+
 import "./SignInForm.scss";
 
 const { RELAXED, WORKMODE } = defaultTemplates;
 const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
-
-export const signInstages = {
-    initial: "WELCOME_PAGE",
-    email_stage: "INPUT_EMAIL",
-    final: "INPUT_OTP",
-};
 
 const SignInForm = () => {
     const [signInStage, setSignInStage] = useState(signInstages.initial);
@@ -40,11 +34,19 @@ const SignInForm = () => {
     const email = Queryparams?.email || "";
     const appUserId = Queryparams?.appUserId || generateRandomId();
 
+    const routeToChat = (firstName, lastName, conversationId) => {
+        conversationId
+            ? history.push(
+                  `/link?workspaceSlug=${workspaceSlug}&conversationId=${conversationId}&appUserId=${`${appUserId}`}&email=${email}`
+              )
+            : history.push(
+                  `/link?workspaceSlug=${workspaceSlug}&appUserId=${`${firstName}${lastName}${appUserId}`}&firstName=${firstName}&lastName=${lastName}&email=${email}`
+              );
+    };
+
     const handleAskAction = () => {
         if (firstName || lastName) {
-            history.push(
-                `/link?workspaceSlug=${workspaceSlug}&appUserId=${appUserId}&firstName=${firstName}&lastName=${lastName}&email=${email}`
-            );
+            routeToChat(firstName, lastName);
         } else {
             setInitialStageAction(ASK__SUPPORT);
             setSignInStage(signInstages.email_stage);
@@ -63,19 +65,18 @@ const SignInForm = () => {
                 break;
         }
     };
-    console.log({ emailStepRequest, initialStageAction, appUserId });
 
     const handleEmailRequestUpdate = (data, action) => {
-        console.log({ data });
         switch (action) {
             case ADD_EMAIL:
                 setEmailStepRequest(data);
                 setSignInStage(signInstages.final);
                 break;
             case ADD_NAME:
-                history.push(
-                    `/link?workspaceSlug=${workspaceSlug}&appUserId=${appUserId}&firstName=${data?.name}&email=${email}`
-                );
+                const { fullname } = data;
+                const firstName = fullname.split(" ")[0] || "";
+                const lastName = fullname.split(" ")[1] || "";
+                routeToChat(firstName, lastName);
                 break;
             default:
                 break;
@@ -92,6 +93,7 @@ const SignInForm = () => {
                 return (
                     <InAppAuth
                         handleInitialRequestUpdate={handleInitialRequestUpdate}
+                        routeToChat={routeToChat}
                     />
                 );
 
@@ -111,6 +113,8 @@ const SignInForm = () => {
                             "This email address will be used to communicate updates with you."
                         }
                         isNameRequest={isNameRequest}
+                        routeToChat={routeToChat}
+                        showPinnedConversations={true}
                     />
                 );
 

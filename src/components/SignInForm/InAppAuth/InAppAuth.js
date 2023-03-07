@@ -3,17 +3,13 @@ import { Button } from "components/ui";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import IntroHeader from "./IntroHeader/IntroHeader";
-import IssueSuggestions from "./IssueSuggestions/IssueSuggestions";
+import PinnedConversations from "./PinnedConversations/PinnedConversations";
+import { inAppAuthActions } from "../enum";
 import "./InAppAuth.scss";
-
-export const inAppAuthActions = {
-    ASK__SUPPORT: "ASK__SUPPORT",
-    OPEN_OLD_CONVERSATIONS: " OPEN_OLD_CONVERSATIONS",
-};
 
 const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
 
-const InAppAuth = ({ handleInitialRequestUpdate }) => {
+const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
     return (
         <div>
             <div>
@@ -42,7 +38,10 @@ const InAppAuth = ({ handleInitialRequestUpdate }) => {
                 />
             </div>
 
-            <IssueSuggestions title='Facing any of these issues?' />
+            <PinnedConversations
+                title='Facing any of these issues?'
+                routeToChat={routeToChat}
+            />
         </div>
     );
 };

@@ -331,7 +331,7 @@ const Chat = () => {
             ? customerTicketId && fetchConvoBreakers()
             : fetchConvoBreakers();
     };
-    console.log(userToken);
+
     useEffect(() => {
         if (
             userToken === undefined &&
