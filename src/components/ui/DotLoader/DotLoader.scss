@@ -14,7 +14,8 @@
         height: 10px;
         float: left;
         margin: 0 0.313rem;
-        background-color: $light__theme_color;
+        // background-color: $light__theme_color;
+        background-color: $dark__mode__theme__background__color;
         display: block;
         border-radius: 50%;
         opacity: 0.4;
@@ -26,6 +27,10 @@
 
         #{$white__mode__theme__selector} {
             background-color: $dark__mode__theme__background__color;
+        }
+
+        #{$dark__mode__theme__selector} {
+            background-color: $light__theme_color;
         }
     }
 }
