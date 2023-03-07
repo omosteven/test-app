@@ -2,6 +2,10 @@ import axios from "axios";
 import config from "../../config/config";
 import { retriveAccessToken, deleteAccessToken } from "storage/cookieStorage";
 
+import pushToDashboard from "components/SignInForm/actions";
+import apiRoutes from "./apiRoutes";
+import { getUserAuth } from "storage/localStorage";
+
 const API = axios.create({
     baseURL: config?.apiGateway?.BASE_URL,
     headers: {
@@ -20,23 +24,47 @@ const requestHandler = (request) => {
 };
 
 const responseHandler = (response) => {
-    if (response.status === 401 || response.status === 409) {
+    const { userId, workspaceId } = getUserAuth() || {};
+
+    if (response.status === 401 || response?.status === 409) {
         deleteAccessToken();
-        window.location.reload();
+        return refreshTokenHandler(userId, workspaceId);
     }
 
     return response;
 };
 
+const refreshTokenHandler = async (appUserId, workspaceId) => {
+    try {
+        const url = apiRoutes?.validateUser;
+        const res = await API.post(url, {
+            workspaceId,
+            appUserId,
+        });
+
+        if (res.status === 201) {
+            const { data } = res.data;
+            pushToDashboard(data);
+            window.location.reload();
+        }
+    } catch (error) {
+        return Promise.reject(error);
+    }
+};
+
 const errorHandler = (error) => {
-    if (
-        error?.response?.status === 401 ||
-        error?.response?.status === 403 ||
-        error?.response?.status === 409
-    ) {
+    const { userId, workspaceId } = getUserAuth() || {};
+
+    if (error?.response?.status === 401 || error?.response?.status === 409) {
+        deleteAccessToken();
+        return refreshTokenHandler(userId, workspaceId);
+    }
+
+    if (error?.response?.status === 403) {
         deleteAccessToken();
         window.location.reload();
     }
+
     return Promise.reject(error);
 };
 

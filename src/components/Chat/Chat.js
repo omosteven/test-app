@@ -9,12 +9,7 @@ import {
     socket,
     SocketContext,
 } from "../../lib/socket/context/socket";
-import {
-    retriveAccessToken,
-    retriveAuthData,
-    setAccessToken,
-    setAuthData,
-} from "storage/cookieStorage";
+import { retriveAccessToken, setAccessToken } from "storage/cookieStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
 import {
@@ -38,6 +33,7 @@ import { useWindowSize } from "utils/hooks";
 import { CONVERSATION_SAVED } from "./ChatModule/LiveChat/MessageBody/Messages/enums";
 import pushToDashboard from "components/SignInForm/actions";
 import "./Chat.scss";
+import { storeUserAuth } from "storage/localStorage";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 const { RELAXED, WORKMODE } = defaultTemplates;
@@ -59,6 +55,8 @@ const Chat = () => {
 
     const { activeTicket } = useSelector((state) => state.tickets);
 
+    const { user } = useSelector((state) => state.auth);
+
     const selectedTicket = activeTicket;
     const [customerTickets, setCustomerTickets] = useState([]);
 
@@ -74,8 +72,8 @@ const Chat = () => {
     const firstName = params?.firstName;
     const lastName = params?.lastName;
     const email = params?.email;
-    const appUserId =
-        params?.appUserId || retriveAuthData()?.userId || generateRandomId();
+
+    const appUserId = params?.appUserId || user?.userId || generateRandomId();
     const conversationId = params?.conversationId;
 
     const userToken = retriveAccessToken();
@@ -196,6 +194,7 @@ const Chat = () => {
 
                     if (customer) {
                         dispatch(pushAuthUser(customer));
+                        storeUserAuth(customer);
                     }
 
                     setStatus(DATAMODE);
@@ -247,6 +246,7 @@ const Chat = () => {
         try {
             setStatus(LOADING);
             setErrorMssg();
+            console.log("this was called here to generate new token again");
             const url = apiRoutes?.validateUser;
             const res = await API.post(url, {
                 workspaceId,
@@ -260,7 +260,6 @@ const Chat = () => {
                 const { data } = res.data;
 
                 pushToDashboard(data);
-                setAuthData(data?.thirdUser);
 
                 if (conversationId) {
                     engageConversation();
@@ -269,6 +268,7 @@ const Chat = () => {
                 }
             }
         } catch (err) {
+            console.log("validate endpoi t error here,", err);
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
         }
@@ -334,7 +334,7 @@ const Chat = () => {
 
     useEffect(() => {
         if (
-            userToken === undefined &&
+            (userToken === undefined || userToken === null) &&
             !isAuthTokenAvailable &&
             !isAuthCodeAvailable
         ) {

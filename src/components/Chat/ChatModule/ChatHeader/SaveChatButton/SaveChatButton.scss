@@ -10,7 +10,8 @@
     width: fit-content !important;
     height: 35px !important;
 
-    background: $light__blue__theme__color !important;
+    
+    background: $primary__theme_color !important;
     border-radius: 6px;
     color: $light__theme_color !important;
 
@@ -30,6 +31,7 @@
 
     @include media("<=medium-screen") {
         margin-left: auto;
+        margin-right: 10px;
         width: 68px !important;
         border-radius: 6px !important;
         height: 28px !important;

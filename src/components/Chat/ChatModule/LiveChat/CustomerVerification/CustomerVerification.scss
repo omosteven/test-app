@@ -92,7 +92,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 350px;
+            width: 385px;
             margin-left: auto;
             margin-right: auto;
             height: 100%;
@@ -112,14 +112,18 @@
                 padding: 0;
                 justify-content: space-between !important;
                 display: flex;
+                #{$relaxed__mode__template__selector} {
+                    justify-content: center !important;
+                    gap: 16px !important;
+                }
             }
             .pincode-input-text {
                 border-radius: 0.625rem;
                 font-weight: 600;
                 margin-left: 0;
                 // justify-content: space-evenly !important;
-                width: 89px !important;
-                height: 89px !important;
+                width: 80px !important;
+                height: 80px !important;
                 @include media("<=medium-screen") {
                     width: 60px !important;
                     height: 60px !important;
