@@ -20,8 +20,9 @@ const App = () => {
     const [fetching, sayFetching] = useState(true);
     const [fetchingError, setFetchingError] = useState();
 
-    const chatSettings = getChatSettings() || {};
+    const chatSettings = getChatSettings();
 
+    console.log({ chatSettings });
     let params = queryString.parse(window.location.search);
 
     const setCurrentAppearance = (data) => {
@@ -34,7 +35,6 @@ const App = () => {
         );
 
         root.style.setProperty("--default-primary-color", data?.chatThemeColor);
-
     };
 
     const fetchChatSetting = async () => {
@@ -73,8 +73,9 @@ const App = () => {
         const { workspaceSlug } = chatSettings || {};
         const queryParsedWorkspaceSlug = params?.workspaceSlug;
         if (
-            workspaceSlug !== params?.workspaceSlug &&
-            queryParsedWorkspaceSlug
+            (workspaceSlug !== params?.workspaceSlug &&
+                queryParsedWorkspaceSlug) ||
+            !chatSettings
         ) {
             fetchChatSetting();
         } else {
@@ -86,7 +87,7 @@ const App = () => {
                 sayFetching(false);
             }, 3000);
         }
-    }, [chatSettings]);
+    }, []);
 
     if (fetching) return <FullPageLoader />;
 
