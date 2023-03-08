@@ -91,18 +91,6 @@
                 }
             }
 
-            &.input__needed {
-                @include media(">medium-screen") {
-                    #{$relaxed__mode__template__selector} {
-                        background: $dark__mode__desktop__chat__theme__color !important;
-                    }
-
-                    #{$white__mode__theme__selector} {
-                        background: $white__mode__background !important;
-                    }
-                }
-            }
-
             &.info__action {
                 color: $text__default_color;
                 background: $light__theme_color;
@@ -323,6 +311,16 @@
                             }
                         }
                     }
+                }
+            }
+
+            &.input__needed {
+                #{$relaxed__mode__template__selector} {
+                    background: $dark__mode__desktop__chat__theme__color !important;
+                }
+
+                #{$white__mode__theme__selector} {
+                    background: $white__mode__background !important;
                 }
             }
 
