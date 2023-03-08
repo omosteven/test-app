@@ -14,8 +14,9 @@
     @include media("<=medium-screen") {
         min-width: 275px !important;
         height: 200px;
+        width: 100%;
     }
-    
+
     // position: relative;
     // overflow: hidden;
 
