@@ -131,10 +131,8 @@ const ChatHeader = ({
 
                     <div
                         className={`logo ${
-                            alignLeft || canSaveConvo
-                                ? "chat__header-save-convo"
-                                : ""
-                        }`}>
+                            canSaveConvo ? "chat__header-save-convo" : ""
+                        } ${alignLeft ? "logo__left__aligned" : ""}`}>
                         {isWorkModeTemplate || isNotTablet ? (
                             <CompanyChatLogo
                                 src={companyLogo}

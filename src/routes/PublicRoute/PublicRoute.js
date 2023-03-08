@@ -2,10 +2,11 @@ import React from "react";
 import { Redirect, Route } from "react-router-dom";
 import { retriveAccessToken } from "storage/cookieStorage";
 import { useSelector } from "react-redux";
+import { getUserAuth } from "storage/localStorage";
 const authRedirectPath = "/chat";
 
 const PublicRoute = ({ component: Component, ...rest }) => {
-    const isAuthenticated = retriveAccessToken();
+    const isAuthenticated = retriveAccessToken() || getUserAuth();
 
     const {
         chatSettings: { workspaceSlug },

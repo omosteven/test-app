@@ -16,7 +16,7 @@ const FullPageLoader = () => {
             {isWorkModeTemplate ? (
                 <span id='metaInfinite'>metacare</span>
             ) : (
-                <DotLoader background={defaultTemplate === undefined} />
+                <DotLoader background={false} />
             )}
         </div>
     );

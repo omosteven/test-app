@@ -43,15 +43,25 @@ const Messages = ({
     //             message.senderType === appMessageUserTypes?.WORKSPACE_AGENT
     //     );
 
-    const lastAgentMssgWithOptions = [...allMessagesCopy][
-        allMessagesCopy.length - 1
-    ];
+    const secondToLastAgentMessage = [...messages][allMessagesCopy.length - 2];
+
+    const lastAgentMessage = [...allMessagesCopy][allMessagesCopy.length - 1];
+
+    const checkIfMessageHasOptions = (message) => {
+        if (!message) return false;
+        return (
+            message?.branchOptions?.length > 0 &&
+            Array.isArray(message?.branchOptions) &&
+            message?.senderType === appMessageUserTypes?.WORKSPACE_AGENT
+        );
+    };
 
     const addMargin =
-        lastAgentMssgWithOptions?.branchOptions?.length > 0 &&
-        Array.isArray(lastAgentMssgWithOptions?.branchOptions) &&
-        lastAgentMssgWithOptions?.senderType ===
-            appMessageUserTypes?.WORKSPACE_AGENT;
+        checkIfMessageHasOptions(lastAgentMessage) ||
+        (lastAgentMessage?.messageType === ACTION_INFO &&
+            checkIfMessageHasOptions(secondToLastAgentMessage));
+
+    console.log({ messages, secondToLastAgentMessage, lastAgentMessage });
 
     const handleTypingTrigger = (data) => {
         const { typing, user } = data;

@@ -32,6 +32,7 @@ const apiRoutes = {
         `${agentsInbox}ticket/engage-conversation/${conversationId}`,
     getActionBranches: `${kSam}branches/action-branch`,
     fileUpload: `agents-inbox/file-upload/file-upload`,
+    getPinnedConversations: `${kSam}conversations-bookmarks`,
 };
 
 export default apiRoutes;
