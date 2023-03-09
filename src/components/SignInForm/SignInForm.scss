@@ -72,10 +72,6 @@
 
         #{$relaxed__mode__template__selector} {
             font-weight: 600;
-            font-size: 28px;
-            line-height: 36px;
-            color: #E0E0E0;
-            opacity: 0.6;
             font-size: 32px;
             line-height: 40px;
             @include media(">medium-screen") {
@@ -99,10 +95,16 @@
         color: $muted__theme_color_2;
 
         #{$relaxed__mode__template__selector} {
-            font-weight: 600;
-            font-size: 32px;
-            line-height: 40px;
-            color: #D5D7D8;
+            font-size: 1rem;
+            line-height: 24px;
+            @include media(">medium-screen") {
+                text-align: center;
+                font-size: 20px;
+                line-height: 28px;
+                font-weight: 400;
+                margin-top: 24px;
+                margin-bottom: 40px;
+            }
         }
 
         #{$dark__mode__theme__selector} {

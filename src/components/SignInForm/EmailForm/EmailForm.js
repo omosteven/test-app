@@ -10,7 +10,6 @@ import { Button, ErrorDialog, Input } from "../../ui";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import pushToDashboard from "../actions";
-import PinnedConversations from "../InAppAuth/PinnedConversations/PinnedConversations";
 import { emailFormActions } from "../enum";
 import "./EmailForm.scss";
 
@@ -24,7 +23,6 @@ const EmailForm = ({
     userId,
     isNameRequest,
     routeToChat,
-    showPinnedConversations,
 }) => {
     const {
         chatSettings: { teamName, workspaceId, workspaceSlug },
@@ -73,7 +71,7 @@ const EmailForm = ({
             setLoading(false);
         }
     };
-    console.log({ request });
+
     const sendUserName = () => {
         const { fullname } = request;
         handleEmailRequestUpdate({ fullname }, ADD_NAME);
@@ -141,12 +139,6 @@ const EmailForm = ({
                     <ReactSVG src={imageLinks.svg.info} />
                     <p>{bottomText}</p>
                 </div>
-            )}
-            {showPinnedConversations && (
-                <PinnedConversations
-                    title='Or, facing any of these?'
-                    routeToChat={routeToChat}
-                />
             )}
         </div>
     );

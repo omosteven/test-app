@@ -114,7 +114,6 @@ const SignInForm = () => {
                         }
                         isNameRequest={isNameRequest}
                         routeToChat={routeToChat}
-                        showPinnedConversations={true}
                     />
                 );
 
