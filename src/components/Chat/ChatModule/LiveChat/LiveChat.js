@@ -195,7 +195,8 @@ const LiveChat = ({
                     };
                 });
 
-                dispatch(setTicketMessages(messagesArr));
+                await dispatch(setTicketMessages(messagesArr));
+                await handleConversationLinkMessages(messagesArr)
             }
         } catch (err) {
             setStatus(ERROR);
@@ -586,11 +587,13 @@ const LiveChat = ({
 
             dispatch(saveTicketsMessages(messageEntry));
 
+            console.log(ticketId, message)
+                
             const sendCustomerMessage = await socket.timeout(30000).emit(
                 SEND_CUSTOMER_MESSAGE,
                 {
                     ticketId,
-                    message: message,
+                    message,
                     messageType: DEFAULT,
                     fileAttachments,
                 },
@@ -1046,7 +1049,7 @@ const LiveChat = ({
         dispatch(setActiveTicket(JSON.parse(data)));
     };
 
-    const handleConversationLinkMessages = async () => {
+    const handleConversationLinkMessages = async (messages) => {
         if (messages?.length === 0) {
             await socket.emit(SEND_CUSTOMER_CONVERSATION_REPLY, {
                 ticketId: ticket?.ticketId,
@@ -1058,7 +1061,6 @@ const LiveChat = ({
     useEffect(() => {
         requestAllMessages();
         socket.emit(SUBSCRIBE_TO_TICKET, { ticketId });
-        handleConversationLinkMessages();
         socket.on(RECEIVE_MESSAGE, handleReceive);
         // socket.on(CLOSED_TICKET, handleTicketClosureProvision)
         socket.on(NEW_TICKET_UPDATE, handleTicketClosure);
