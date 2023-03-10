@@ -18,13 +18,16 @@ const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
 
 const SignInForm = () => {
-    const [signInStage, setSignInStage] = useState(signInstages.initial);
+    const { initial, email_stage, final } = signInstages;
+
+    const [signInStage, setSignInStage] = useState(email_stage);
     const [emailStepRequest, setEmailStepRequest] = useState();
     const { defaultTemplate, workspaceSlug } = useSelector(
         (state) => state.chat.chatSettings
     );
-    const { initial, email_stage, final } = signInstages;
-    const [initialStageAction, setInitialStageAction] = useState("");
+    const [initialStageAction, setInitialStageAction] = useState(
+        OPEN_OLD_CONVERSATIONS
+    );
 
     const history = useHistory();
 
@@ -86,6 +89,7 @@ const SignInForm = () => {
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isNameRequest = initialStageAction === ASK__SUPPORT;
+    const isEmailStage = signInStage === email_stage;
 
     const renderBasedOnStage = () => {
         switch (signInStage) {
@@ -114,6 +118,7 @@ const SignInForm = () => {
                         }
                         isNameRequest={isNameRequest}
                         routeToChat={routeToChat}
+                        isEmailStage={isEmailStage}
                     />
                 );
 

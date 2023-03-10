@@ -22,7 +22,6 @@ const App = () => {
 
     const chatSettings = getChatSettings();
 
-    console.log({ chatSettings });
     let params = queryString.parse(window.location.search);
 
     const setCurrentAppearance = (data) => {

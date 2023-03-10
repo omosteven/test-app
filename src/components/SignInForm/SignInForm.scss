@@ -126,9 +126,10 @@
     @include media("<=medium-screen") {
         padding: 0 1rem;
         width: unset !important;
-        height: 700px;
-        overflow-y: auto;
-        margin: 100px auto;
+        // still needed for initial sign in page
+        // height: 700px;
+        // overflow-y: auto;
+        // margin: 100px auto;
 
         &.initial__content {
             width: fit-content !important;

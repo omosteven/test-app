@@ -75,3 +75,31 @@
         }
     }
 }
+
+
+.saved__email__option {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 12px 24px;
+
+   
+    & > p {
+        font-size: 14px;
+        line-height: 22px;
+        color: #FFFFFF;
+        margin: 0;
+        display: inline;
+    }
+
+    & > a {
+        font-size: 14px;
+        line-height: 22px;
+        color: #DBBF78;
+        text-decoration: none;
+        cursor: pointer;
+
+        &:hover {
+            color: #DBBF78;
+        }
+    }
+}

@@ -1,7 +1,6 @@
 import store from "../../../store/store";
 import { pushAuthUser } from "../../../store/auth/actions";
-import { setAccessToken } from "storage/cookieStorage";
-import { storeUserAuth } from "storage/localStorage";
+import { setAccessToken, storeUserAuth } from "storage/sessionStorage";
 
 const pushToDashboard = (LoginResponse) => {
     const { userToken, thirdUser } = LoginResponse;

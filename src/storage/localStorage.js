@@ -29,13 +29,13 @@ export const getChatSettings = () => {
     }
 };
 
-export const storeUserAuth = (userAuth) => {
-    localStorage.setItem("userAuth", JSON.stringify(userAuth));
-};
+// export const storeUserAuth = (userAuth) => {
+//     localStorage.setItem("userAuth", JSON.stringify(userAuth));
+// };
 
-export const getUserAuth = () => {
-    return JSON.parse(localStorage.getItem("userAuth"));
-};
+// export const getUserAuth = () => {
+//     return JSON.parse(localStorage.getItem("userAuth"));
+// };
 
 export const storePinnedConversations = (pinnedConversations) => {
     localStorage.setItem(
