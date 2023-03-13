@@ -61,8 +61,6 @@ const Messages = ({
         (lastAgentMessage?.messageType === ACTION_INFO &&
             checkIfMessageHasOptions(secondToLastAgentMessage));
 
-    console.log({ messages, secondToLastAgentMessage, lastAgentMessage });
-
     const handleTypingTrigger = (data) => {
         const { typing, user } = data;
         const { userType } = user;

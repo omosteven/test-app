@@ -196,7 +196,7 @@ const LiveChat = ({
                 });
 
                 await dispatch(setTicketMessages(messagesArr));
-                await handleConversationLinkMessages(messagesArr)
+                await handleConversationLinkMessages(messagesArr);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -587,8 +587,8 @@ const LiveChat = ({
 
             dispatch(saveTicketsMessages(messageEntry));
 
-            console.log(ticketId, message)
-                
+            console.log(ticketId, message);
+
             const sendCustomerMessage = await socket.timeout(30000).emit(
                 SEND_CUSTOMER_MESSAGE,
                 {
@@ -1246,6 +1246,14 @@ const LiveChat = ({
             clearInterval(timer);
         };
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
+
+    useEffect(() => {
+        window.addEventListener("beforeunload", (event) => {
+            event.preventDefault();
+            event.returnValue = "";
+            closeTicket();
+        });
+    }, []);
 
     const { formElementType } = currentFormElement || {};
 

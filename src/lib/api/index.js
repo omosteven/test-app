@@ -1,10 +1,10 @@
 import axios from "axios";
 import config from "../../config/config";
-import { retriveAccessToken, deleteAccessToken } from "storage/cookieStorage";
+import { retriveAccessToken, deleteAccessToken } from "storage/sessionStorage";
 
 import pushToDashboard from "components/SignInForm/actions";
 import apiRoutes from "./apiRoutes";
-import { getUserAuth } from "storage/localStorage";
+import { getUserAuth } from "storage/sessionStorage";
 
 const API = axios.create({
     baseURL: config?.apiGateway?.BASE_URL,

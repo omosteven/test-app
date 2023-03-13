@@ -271,7 +271,6 @@ const LiveChatInput = ({
             !window.MSStream && /iPad|iPhone|iPod/.test(navigator.userAgent); // fails on iPad iOS 13
         if (iOS) {
             document.body.classList.add("keyboard");
-            console.log("on an iphone");
             showIphoneKeyboard();
         } else {
             if (isDeviceMobileTablet()) {

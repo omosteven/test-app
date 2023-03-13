@@ -9,7 +9,7 @@ import {
     socket,
     SocketContext,
 } from "../../lib/socket/context/socket";
-import { retriveAccessToken, setAccessToken } from "storage/cookieStorage";
+import { setAccessToken, retriveAccessToken } from "storage/sessionStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
 import {
@@ -32,7 +32,7 @@ import { DotLoader } from "components/ui";
 import { useWindowSize } from "utils/hooks";
 import { CONVERSATION_SAVED } from "./ChatModule/LiveChat/MessageBody/Messages/enums";
 import pushToDashboard from "components/SignInForm/actions";
-import { storeUserAuth } from "storage/localStorage";
+import { storeUserAuth } from "storage/sessionStorage";
 import "./Chat.scss";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
@@ -69,12 +69,14 @@ const Chat = () => {
 
     const isAuthCodeAvailable = params?.code ? true : false;
     const isAuthTokenAvailable = params?.token ? true : false;
-    const firstName = params?.firstName || "";
-    const lastName = params?.lastName || "";
-    const email = params?.email || "";
 
-    const appUserId = params?.appUserId || user?.userId || generateRandomId();
-    const conversationId = params?.conversationId;
+    // useful for initial email flow
+    // const firstName = params?.firstName || "";
+    // const lastName = params?.lastName || "";
+    // const email = params?.email || "";
+
+    // const appUserId = params?.appUserId || user?.userId || generateRandomId();
+    // const conversationId = params?.conversationId;
 
     const userToken = retriveAccessToken();
 
@@ -200,6 +202,7 @@ const Chat = () => {
                     setStatus(DATAMODE);
                     toggleChatMenu(openChatMenu ? true : false);
                 } else {
+                    console.log("only one ticket should be created");
                     openNewTicket ? createNewTicket() : setStatus(NULLMODE);
                 }
 
@@ -242,61 +245,6 @@ const Chat = () => {
         }
     };
 
-    const validateUser = async () => {
-        try {
-            setStatus(LOADING);
-            setErrorMssg();
-            console.log("this was called here to generate new token again");
-            const url = apiRoutes?.validateUser;
-            const res = await API.post(url, {
-                workspaceId,
-                appUserId,
-                firstName,
-                lastName,
-                email,
-            });
-
-            if (res.status === 201) {
-                const { data } = res.data;
-
-                pushToDashboard(data);
-
-                if (conversationId) {
-                    engageConversation();
-                } else {
-                    history.push(`/chat?workspaceSlug=${workspaceSlug}`);
-                }
-            }
-        } catch (err) {
-            setStatus(ERROR);
-            setErrorMssg(getErrorMessage(err));
-        }
-    };
-
-    const engageConversation = async () => {
-        try {
-            setStatus(LOADING);
-            setErrorMssg();
-            const url = apiRoutes?.engageConversation(conversationId);
-            const res = await API.get(url);
-
-            if (res.status === 200) {
-                const { data } = res.data;
-
-                dispatch(
-                    setActiveTicket({
-                        ...data,
-                    })
-                );
-
-                history.push(`/chat?workspaceSlug=${workspaceSlug}`);
-            }
-        } catch (err) {
-            setStatus(ERROR);
-            setErrorMssg(getErrorMessage(err));
-        }
-    };
-
     const handleTicketSelect = (ticket) => {
         dispatch(setActiveTicket(ticket));
     };
@@ -332,15 +280,7 @@ const Chat = () => {
     };
 
     useEffect(() => {
-        if (
-            (userToken === undefined || userToken === null) &&
-            !isAuthTokenAvailable &&
-            !isAuthCodeAvailable
-        ) {
-            validateUser();
-        } else {
-            conversationId ? engageConversation() : callHandler();
-        }
+        callHandler();
         //eslint-disable-next-line
     }, [customerTicketId]);
 

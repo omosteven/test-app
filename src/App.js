@@ -22,7 +22,6 @@ const App = () => {
 
     const chatSettings = getChatSettings();
 
-    console.log({ chatSettings });
     let params = queryString.parse(window.location.search);
 
     const setCurrentAppearance = (data) => {
@@ -111,7 +110,7 @@ const App = () => {
 
                     <ProtectedRoute path='/direct' exact component={Chat} />
 
-                    <ProtectedRoute path='/link' exact component={Chat} />
+                    {/* <ProtectedRoute path='/link' exact component={Chat} /> */}
 
                     <PublicRoute path='/*' exact component={SignInForm} />
                 </Switch>

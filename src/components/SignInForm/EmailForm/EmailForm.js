@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import queryString from "query-string";
-import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import API from "../../../lib/api";
 import apiRoutes from "../../../lib/api/apiRoutes";
 import { getErrorMessage } from "../../../utils/helper";
@@ -10,12 +10,13 @@ import { Button, ErrorDialog, Input } from "../../ui";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import pushToDashboard from "../actions";
-import PinnedConversations from "../InAppAuth/PinnedConversations/PinnedConversations";
 import { emailFormActions } from "../enum";
+import { dataQueryStatus } from "utils/formatHandlers";
+import { setActiveTicket } from "store/tickets/actions";
 import "./EmailForm.scss";
 
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
-
+const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 const EmailForm = ({
     handleEmailRequestUpdate,
     title,
@@ -23,15 +24,19 @@ const EmailForm = ({
     bottomText,
     userId,
     isNameRequest,
-    routeToChat,
-    showPinnedConversations,
+    // routeToChat,
 }) => {
     const {
         chatSettings: { teamName, workspaceId, workspaceSlug },
     } = useSelector((state) => state.chat);
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
-    const [errorMsg, setErrorMsg] = useState("");
+    const [errorMssg, setErrorMssg] = useState("");
+    const [status, setStatus] = useState("");
+
+    const dispatch = useDispatch();
+    const history = useHistory();
+
     let params = queryString.parse(window.location.search);
     const conversationId = params?.conversationId;
 
@@ -49,31 +54,59 @@ const EmailForm = ({
         setErrors({ ...errors, [name]: "" });
     };
 
+    const engageConversation = async () => {
+        try {
+            setStatus(LOADING);
+            setErrorMssg();
+            const url = apiRoutes?.engageConversation(conversationId);
+            const res = await API.get(url);
+
+            if (res.status === 200) {
+                const { data } = res.data;
+
+                dispatch(
+                    setActiveTicket({
+                        ...data,
+                    })
+                );
+
+                history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
+
     const intiateChatForUser = async () => {
         try {
-            setErrorMsg("");
+            setErrorMssg("");
             setLoading(true);
-            const { fullname, ...requestData } = request;
-            const res = await API.post(apiRoutes.authenticate, requestData);
+            const { email, workspaceId } = request;
 
+            const url = apiRoutes?.validateUser;
+            const res = await API.post(url, {
+                workspaceId,
+                appUserId: email,
+            });
+            console.log({ res });
             if (res.status === 201) {
-                const { data } = res?.data;
-                const { sessionId } = data;
-                const { email } = requestData;
+                const { data } = res.data;
 
-                if (sessionId) {
-                    handleEmailRequestUpdate({ sessionId, email }, ADD_EMAIL);
+                pushToDashboard(data);
+
+                if (conversationId) {
+                    engageConversation();
                 } else {
-                    pushToDashboard(data);
-                    window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+                    history.push(`/chat?workspaceSlug=${workspaceSlug}`);
                 }
             }
         } catch (err) {
-            setErrorMsg(getErrorMessage(err));
+            setErrorMssg(getErrorMessage(err));
             setLoading(false);
         }
     };
-    console.log({ request });
+
     const sendUserName = () => {
         const { fullname } = request;
         handleEmailRequestUpdate({ fullname }, ADD_NAME);
@@ -106,9 +139,9 @@ const EmailForm = ({
             </p>
             <form onSubmit={handleSubmit}>
                 <ErrorDialog
-                    show={Boolean(errorMsg)}
-                    message={errorMsg}
-                    hide={() => setErrorMsg()}
+                    show={Boolean(errorMssg)}
+                    message={errorMssg}
+                    hide={() => setErrorMssg()}
                 />
                 <Input
                     type={`${isNameRequest ? "text" : "email"}`}
@@ -141,12 +174,6 @@ const EmailForm = ({
                     <ReactSVG src={imageLinks.svg.info} />
                     <p>{bottomText}</p>
                 </div>
-            )}
-            {showPinnedConversations && (
-                <PinnedConversations
-                    title='Or, facing any of these?'
-                    routeToChat={routeToChat}
-                />
             )}
         </div>
     );
