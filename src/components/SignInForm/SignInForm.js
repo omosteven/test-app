@@ -117,6 +117,7 @@ const SignInForm = () => {
                         }
                         isNameRequest={isNameRequest}
                         routeToChat={routeToChat}
+                        // isEmailStage ={}
                     />
                 );
 
@@ -149,7 +150,7 @@ const SignInForm = () => {
     };
 
     const isInitialStage = signInStage === initial;
-
+    console.log({ isInitialStage });
     return (
         <FadeIn location={signInStage}>
             <div className='signin--container'>

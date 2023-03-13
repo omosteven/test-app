@@ -1050,11 +1050,19 @@ const LiveChat = ({
     };
 
     const handleConversationLinkMessages = async (messages) => {
-        if (messages?.length === 0) {
-            await socket.emit(SEND_CUSTOMER_CONVERSATION_REPLY, {
-                ticketId: ticket?.ticketId,
-                conversationId: ticket?.conversationId,
-            });
+        if (ticket?.conversationId && messages?.length === 0) {
+            triggerAgentTyping(true);
+
+            await socket.emit(
+                SEND_CUSTOMER_CONVERSATION_REPLY,
+                {
+                    ticketId: ticket?.ticketId,
+                    conversationId: ticket?.conversationId,
+                },
+                () => {
+                    triggerAgentTyping(false);
+                }
+            );
         }
     };
 
@@ -1247,13 +1255,13 @@ const LiveChat = ({
         };
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
-    useEffect(() => {
-        window.addEventListener("beforeunload", (event) => {
-            event.preventDefault();
-            event.returnValue = "";
-            closeTicket();
-        });
-    }, []);
+    // useEffect(() => {
+    //     window.addEventListener("beforeunload", (event) => {
+    //         event.preventDefault();
+    //         event.returnValue = "";
+    //         closeTicket();
+    //     });
+    // }, []);
 
     const { formElementType } = currentFormElement || {};
 

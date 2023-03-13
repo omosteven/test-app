@@ -33,6 +33,9 @@ const apiRoutes = {
     getActionBranches: `${kSam}branches/action-branch`,
     fileUpload: `agents-inbox/file-upload/file-upload`,
     getPinnedConversations: `${kSam}conversations-bookmarks`,
+    linkEmail: `${agentsInbox}app-message-user/link-email`,
+    validateAttachmentSessionOtp: (sessionId) =>
+        `${agentsInbox}app-message-user/attachment-session/${sessionId}/otp/validate`,
 };
 
 export default apiRoutes;
