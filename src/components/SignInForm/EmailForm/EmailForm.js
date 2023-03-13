@@ -25,7 +25,6 @@ const EmailForm = ({
     userId,
     isNameRequest,
     // routeToChat,
-    isEmailStage,
 }) => {
     const {
         chatSettings: { teamName, workspaceId, workspaceSlug },
@@ -84,20 +83,6 @@ const EmailForm = ({
             setErrorMssg("");
             setLoading(true);
             const { email, workspaceId } = request;
-            // const res = await API.post(apiRoutes.authenticate, requestData);
-
-            // if (res.status === 201) {
-            //     const { data } = res?.data;
-            //     const { sessionId } = data;
-            //     const { email } = requestData;
-
-            //     if (sessionId) {
-            //         handleEmailRequestUpdate({ sessionId, email }, ADD_EMAIL);
-            //     } else {
-            //         pushToDashboard(data);
-            //         window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
-            //     }
-            // }
 
             const url = apiRoutes?.validateUser;
             const res = await API.post(url, {
@@ -188,15 +173,6 @@ const EmailForm = ({
                 <div className='info__section'>
                     <ReactSVG src={imageLinks.svg.info} />
                     <p>{bottomText}</p>
-                </div>
-            )}
-            {isEmailStage && (
-                <div className='saved__email__option'>
-                    <p>
-                        If you had previously started a conversation with the
-                        link and saved it to your email,
-                    </p>{" "}
-                    <a href='#'>Click here</a>
                 </div>
             )}
         </div>

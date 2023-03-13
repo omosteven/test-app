@@ -202,6 +202,7 @@ const Chat = () => {
                     setStatus(DATAMODE);
                     toggleChatMenu(openChatMenu ? true : false);
                 } else {
+                    console.log("only one ticket should be created");
                     openNewTicket ? createNewTicket() : setStatus(NULLMODE);
                 }
 
@@ -244,62 +245,6 @@ const Chat = () => {
         }
     };
 
-    // useful for initial page flow
-    // const validateUser = async () => {
-    //     try {
-    //         setStatus(LOADING);
-    //         setErrorMssg();
-    //         console.log("this was called here to generate new token again");
-    //         const url = apiRoutes?.validateUser;
-    //         const res = await API.post(url, {
-    //             workspaceId,
-    //             appUserId,
-    //             firstName,
-    //             lastName,
-    //             email,
-    //         });
-
-    //         if (res.status === 201) {
-    //             const { data } = res.data;
-
-    //             pushToDashboard(data);
-
-    //             if (conversationId) {
-    //                 engageConversation();
-    //             } else {
-    //                 history.push(`/chat?workspaceSlug=${workspaceSlug}`);
-    //             }
-    //         }
-    //     } catch (err) {
-    //         setStatus(ERROR);
-    //         setErrorMssg(getErrorMessage(err));
-    //     }
-    // };
-
-    // const engageConversation = async () => {
-    //     try {
-    //         setStatus(LOADING);
-    //         setErrorMssg();
-    //         const url = apiRoutes?.engageConversation(conversationId);
-    //         const res = await API.get(url);
-
-    //         if (res.status === 200) {
-    //             const { data } = res.data;
-
-    //             dispatch(
-    //                 setActiveTicket({
-    //                     ...data,
-    //                 })
-    //             );
-
-    //             history.push(`/chat?workspaceSlug=${workspaceSlug}`);
-    //         }
-    //     } catch (err) {
-    //         setStatus(ERROR);
-    //         setErrorMssg(getErrorMessage(err));
-    //     }
-    // };
-
     const handleTicketSelect = (ticket) => {
         dispatch(setActiveTicket(ticket));
     };
@@ -335,16 +280,7 @@ const Chat = () => {
     };
 
     useEffect(() => {
-        // if (
-        //     (userToken === undefined || userToken === null) &&
-        //     !isAuthTokenAvailable &&
-        //     !isAuthCodeAvailable
-        // ) {
-        //     validateUser();
-        // } else {
-        // conversationId ? engageConversation() :
         callHandler();
-        // }
         //eslint-disable-next-line
     }, [customerTicketId]);
 

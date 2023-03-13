@@ -89,7 +89,6 @@ const SignInForm = () => {
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isNameRequest = initialStageAction === ASK__SUPPORT;
-    const isEmailStage = signInStage === email_stage;
 
     const renderBasedOnStage = () => {
         switch (signInStage) {
@@ -118,7 +117,6 @@ const SignInForm = () => {
                         }
                         isNameRequest={isNameRequest}
                         routeToChat={routeToChat}
-                        isEmailStage={isEmailStage}
                     />
                 );
 
