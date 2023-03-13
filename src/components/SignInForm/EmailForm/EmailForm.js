@@ -16,7 +16,7 @@ import { setActiveTicket } from "store/tickets/actions";
 import "./EmailForm.scss";
 
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
-const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
+const { ERROR, LOADING } = dataQueryStatus;
 const EmailForm = ({
     handleEmailRequestUpdate,
     title,
