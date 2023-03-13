@@ -78,11 +78,10 @@ const EmailForm = ({
         }
     };
 
-    const validateUser = async () => {
+    const intiateChatForUser = async () => {
         try {
+            setErrorMssg("");
             setLoading(true);
-            setErrorMssg();
-
             const { email, workspaceId } = request;
 
             const url = apiRoutes?.validateUser;
@@ -90,7 +89,7 @@ const EmailForm = ({
                 workspaceId,
                 appUserId: email,
             });
-
+            console.log({ res });
             if (res.status === 201) {
                 const { data } = res.data;
 
@@ -100,31 +99,6 @@ const EmailForm = ({
                     engageConversation();
                 } else {
                     history.push(`/chat?workspaceSlug=${workspaceSlug}`);
-                }
-            }
-        } catch (err) {
-            setLoading(false);
-            setErrorMssg(getErrorMessage(err));
-        }
-    };
-
-    const intiateChatForUser = async () => {
-        try {
-            setErrorMssg("");
-            setLoading(true);
-            const { fullname, ...requestData } = request;
-            const res = await API.post(apiRoutes.authenticate, requestData);
-
-            if (res.status === 201) {
-                const { data } = res?.data;
-                const { sessionId } = data;
-                const { email } = requestData;
-
-                if (sessionId) {
-                    handleEmailRequestUpdate({ sessionId, email }, ADD_EMAIL);
-                } else {
-                    pushToDashboard(data);
-                    window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
                 }
             }
         } catch (err) {
@@ -142,11 +116,7 @@ const EmailForm = ({
         e.preventDefault();
         const { formisValid, errors: formErrors } = ValidateForm(e, request);
         if (formisValid) {
-            isNameRequest
-                ? sendUserName()
-                : userId
-                ? intiateChatForUser()
-                : validateUser();
+            isNameRequest ? sendUserName() : intiateChatForUser();
         }
         setErrors(formErrors);
     };
