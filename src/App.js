@@ -12,6 +12,7 @@ import PublicRoute from "./routes/PublicRoute/PublicRoute";
 import SignInForm from "./components/SignInForm/SignInForm";
 import Chat from "./components/Chat/Chat";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
+import ConversationSignIn from "./components/ConversationSignIn/ConversationSignIn";
 import "./App.scss";
 
 import { getChatSettings, storeChatSettings } from "storage/localStorage";
@@ -107,11 +108,12 @@ const App = () => {
             <Layout>
                 <Switch>
                     <ProtectedRoute path='/chat' exact component={Chat} />
-
                     <ProtectedRoute path='/direct' exact component={Chat} />
-
-                    {/* <ProtectedRoute path='/link' exact component={Chat} /> */}
-
+                    <PublicRoute
+                        path='/conversation'
+                        exact
+                        component={ConversationSignIn}
+                    />
                     <PublicRoute path='/*' exact component={SignInForm} />
                 </Switch>
             </Layout>

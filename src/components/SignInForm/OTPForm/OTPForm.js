@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useSelector } from "react-redux";
 import { Button, ErrorDialog } from "../../ui";
 import PinInput from "react-pin-input";
@@ -8,6 +8,8 @@ import apiRoutes from "../../../lib/api/apiRoutes";
 import { ResendOTP } from "./ResendOTP/ResendOTP";
 import pushToDashboard from "../actions";
 import { getDevicePushToken } from "../../../lib/firebase/firebase";
+import { ToastContext } from "components/common/Toast/context/ToastContextProvider";
+import ToastCustomerVerifySuccess from "components/Chat/ChatModule/LiveChat/CustomerVerification/CustomerVerifySuccess/ToastCustomerVerifySuccess/ToastCustomerVerifySuccess";
 import "./OTPForm.scss";
 
 const OTPForm = ({
@@ -19,6 +21,7 @@ const OTPForm = ({
     isDirectUser,
     title,
     subTitle,
+    isSaveConvoAction,
 }) => {
     const { workspaceSlug } = useSelector((state) => state?.chat?.chatSettings);
     const { email, sessionId } = initialStepRequest;
@@ -26,10 +29,11 @@ const OTPForm = ({
     const [loading, setLoading] = useState(false);
     const [request, updateRequest] = useState();
     const [deviceToken, setDeviceToken] = useState();
+    console.log({ initialStepRequest, isSaveConvoAction });
+    const toastMessage = useContext(ToastContext);
 
-    const handleSubmit = async (e) => {
+    const validateSessionOtp = async () => {
         try {
-            e.preventDefault();
             setErrorMsg("");
             setLoading(true);
             const url = apiRoutes?.validateSessionOtp(sessionId);
@@ -56,6 +60,31 @@ const OTPForm = ({
         }
     };
 
+    const validateAttachmentSessionOtp = async (e) => {
+        try {
+            e.preventDefault();
+            setErrorMsg("");
+            setLoading(true);
+            const url = apiRoutes?.validateAttachmentSessionOtp(sessionId);
+            const res = await API.get(url, {
+                params: {
+                    otp: request?.otp,
+                },
+            });
+            console.log({ res });
+            if (res.status === 200) {
+                const { data } = res.data;
+                console.log({ data });
+                pushToDashboard(data);
+                toastMessage(<ToastCustomerVerifySuccess />);
+                window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+            }
+        } catch (err) {
+            setErrorMsg(getErrorMessage(err));
+            setLoading(false);
+        }
+    };
+
     const setDevicePushToken = async () => {
         let devicePushToken = await getDevicePushToken();
         setDeviceToken(devicePushToken);
@@ -64,6 +93,13 @@ const OTPForm = ({
     useEffect(() => {
         setDevicePushToken();
     }, []);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        isSaveConvoAction
+            ? validateAttachmentSessionOtp()
+            : validateSessionOtp();
+    };
 
     return (
         <div>
@@ -81,9 +117,15 @@ const OTPForm = ({
                                 ) : (
                                     <>
                                         {" "}
-                                        Enter the code sent to{" "}
-                                        <strong>{email}</strong> to complete
-                                        your account verification.
+                                        Enter the code sent{" "}
+                                        {email ? (
+                                            <>
+                                                to <strong>{email}</strong>
+                                            </>
+                                        ) : (
+                                            ""
+                                        )}{" "}
+                                        to complete your account verification.
                                     </>
                                 )}
                             </>

@@ -1,13 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import EmailForm from "components/SignInForm/EmailForm/EmailForm";
+import ErrorView from "components/common/ErrorView/ErrorView";
+import { DotLoader } from "components/ui";
 import OTPForm from "components/SignInForm/OTPForm/OTPForm";
-import { useState } from "react";
 import CustomerVerifySuccess from "./CustomerVerifySuccess/CustomerVerifySuccess";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import FadeIn from "components/ui/FadeIn";
-import "./CustomerVerification.scss";
+import API from "lib/api";
+import apiRoutes from "lib/api/apiRoutes";
+import { getErrorMessage } from "utils/helper";
 import { VERIFY_USER_ACTIONS } from "components/Chat/enums";
+import { dataQueryStatus } from "utils/formatHandlers";
+import "./CustomerVerification.scss";
 
 export const verifystages = {
     initial: "INPUT_EMAIL",
@@ -15,29 +20,75 @@ export const verifystages = {
     success: "SUCCESS",
 };
 
+const { ERROR, DATAMODE, LOADING } = dataQueryStatus;
+
 const CustomerVerification = ({
     customer,
     handleVerifyAction,
     messages,
     verifyUserAction,
 }) => {
-    const [verifyStage, setVerifyStage] = useState(verifystages.initial);
+    const isSaveConvoAction =
+        verifyUserAction === VERIFY_USER_ACTIONS.SAVE_CONVERSATION;
+    const { initial, final, success } = verifystages;
+    const [verifyStage, setVerifyStage] = useState(
+        !isSaveConvoAction ? initial : final
+    );
     const [initialStepRequest, setinitialStepRequest] = useState();
+    const [status, setStatus] = useState(
+        !isSaveConvoAction ? DATAMODE : LOADING
+    );
+    const [errorMssg, setErrorMssg] = useState("");
 
     const handleEmailRequestUpdate = (data) => {
         setinitialStepRequest(data);
         setVerifyStage(verifystages.final);
+    };
+    console.log({ initialStepRequest });
+    const linkEmail = async () => {
+        try {
+            setStatus(LOADING);
+            const url = apiRoutes.linkEmail;
+            const res = await API.get(url);
+
+            if (res.status === 200) {
+                const { data } = res.data;
+                setinitialStepRequest({ sessionId: data });
+                setStatus(DATAMODE);
+            }
+        } catch (err) {
+            setStatus(ERROR);
+            setErrorMssg(getErrorMessage(err));
+        }
+    };
+
+    useEffect(() => {
+        if (isSaveConvoAction) {
+            linkEmail();
+        }
+        //eslint-disable-next-line
+    }, []);
+
+    const renderBasedOnStatus = () => {
+        switch (status) {
+            case LOADING:
+                return <DotLoader background={false} />;
+            case DATAMODE:
+                return <>{renderBasedOnStage()}</>;
+            case ERROR:
+                return (
+                    <ErrorView message={errorMssg} retry={() => linkEmail()} />
+                );
+            default:
+                return "";
+        }
     };
 
     const handleSuccess = () => {
         setVerifyStage(verifystages.success);
     };
 
-    const isSaveConvoAction =
-        verifyUserAction === VERIFY_USER_ACTIONS.SAVE_CONVERSATION;
-
     const renderBasedOnStage = () => {
-        const { initial, final, success } = verifystages;
         switch (verifyStage) {
             case initial:
                 return (
@@ -67,6 +118,7 @@ const CustomerVerification = ({
                         userId={customer?.userId}
                         handleSuccess={handleSuccess}
                         isDirectUser={true}
+                        isSaveConvoAction={isSaveConvoAction}
                     />
                 );
 
@@ -97,7 +149,7 @@ const CustomerVerification = ({
                     </div>
                 )}
                 <div className='customer-verify__form customer-save__action'>
-                    {renderBasedOnStage()}
+                    {renderBasedOnStatus()}
                 </div>
             </div>
         </FadeIn>

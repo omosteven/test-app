@@ -1,0 +1,105 @@
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import queryString from "query-string";
+import FadeIn from "components/ui/FadeIn";
+import ChatHeader from "components/Chat/ChatModule/ChatHeader/ChatHeader";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import { Button, Input } from "components/ui";
+import { getErrorMessage } from "utils/helper";
+import { setActiveTicket } from "store/tickets/actions";
+import API from "lib/api";
+import apiRoutes from "lib/api/apiRoutes";
+import pushToDashboard from "components/SignInForm/actions";
+import ValidateForm from "utils/validations/validator";
+import { ErrorDialog } from "components/ui";
+import ConversationSignInEmailForm from "./ConversationSignInEmailForm/ConversationSignInEmailForm";
+import OTPForm from "components/SignInForm/OTPForm/OTPForm";
+import { signInstages } from "components/SignInForm/enum";
+import "../SignInForm/SignInForm.scss";
+
+const { RELAXED } = defaultTemplates;
+
+const ConversationSignIn = () => {
+    const { email_stage, final } = signInstages;
+
+    const { defaultTemplate, workspaceSlug } = useSelector(
+        (state) => state.chat.chatSettings
+    );
+    const [signInStage, setSignInStage] = useState(email_stage);
+    const [emailStepRequest, setEmailStepRequest] = useState();
+
+    const params = queryString.parse(window.location.search);
+    const conversationId = params?.conversationId;
+
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const handleEmailRequestUpdate = (data) => {
+        setEmailStepRequest(data);
+        setSignInStage(final);
+    };
+
+    const renderBasedOnStage = () => {
+        switch (signInStage) {
+            case email_stage:
+                return (
+                    <ConversationSignInEmailForm
+                        handleEmailRequestUpdate={handleEmailRequestUpdate}
+                    />
+                );
+
+            case final:
+                return (
+                    <OTPForm
+                        initialStepRequest={emailStepRequest}
+                        title={
+                            isRelaxedTemplate && (
+                                <>
+                                    <span className='show-only-on-desktop'>
+                                        We’ve sent an OTP to your email
+                                    </span>
+                                    <span className='show-only-on-mobile'>
+                                        We’ve sent an OTP <br /> to your email
+                                    </span>
+                                </>
+                            )
+                        }
+                        subTitle={
+                            isRelaxedTemplate &&
+                            "Check and enter the code received."
+                        }
+                    />
+                );
+
+            default:
+                return "";
+        }
+    };
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
+    return (
+        <FadeIn location={signInStage}>
+            <div className='signin--container'>
+                {isRelaxedTemplate && (
+                    <ChatHeader
+                        showActions={false}
+                        isAuthPage={true}
+                        alignLeft={true}
+                    />
+                )}
+                <div
+                    className={`row justify-content-center align-items-center form-area signin-con
+                `}>
+                    <div>
+                        <div className={`signin otp__group`}>
+                            {renderBasedOnStage()}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </FadeIn>
+    );
+};
+
+export default ConversationSignIn;
