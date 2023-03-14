@@ -114,7 +114,7 @@ const LiveChat = ({
         chatSettings: { workspaceId },
     } = useSelector((state) => state.chat);
 
-    const { ticketId, agent, ticketPhase, customer } = ticket;
+    const { ticketId, agent, ticketPhase, customer, conversationId } = ticket;
 
     const { ticketsMessages } = useSelector((state) => state.tickets);
     const messages = ticketsMessages?.filter(
@@ -199,7 +199,10 @@ const LiveChat = ({
                 });
 
                 await dispatch(setTicketMessages(messagesArr));
-                await handleConversationLinkMessages(messagesArr);
+                await handleConversationLinkMessages(messagesArr, {
+                    ticketId,
+                    conversationId,
+                });
             }
         } catch (err) {
             setStatus(ERROR);
@@ -909,10 +912,6 @@ const LiveChat = ({
         }
 
         if (messageType === FORM_FILLED_COMPLETELY) {
-            // socket.emit(SEND_AGENT_TICKET, {
-            //     ticketId,
-            //     workspaceId,
-            // });
             sendAgentTicket();
             triggerAgentTyping(false);
             return handleAddEmail();
@@ -1050,21 +1049,50 @@ const LiveChat = ({
         dispatch(setActiveTicket(JSON.parse(data)));
     };
 
-    const handleConversationLinkMessages = async (messages) => {
-        if (ticket?.conversationId && messages?.length === 0) {
+    const handleConversationLinkMessages = async (messages, ticket) => {
+        const conversationData = JSON.parse(
+            sessionStorage.getItem("conversationData")
+        );
+
+        if (
+            ticket?.ticketId !== conversationData?.ticketId &&
+            ticket?.conversationId !== conversationData?.conversationId &&
+            ticket?.conversationId &&
+            messages?.length === 0
+        ) {
             triggerAgentTyping(true);
             setAllowUserInput(false);
-            await socket.emit(
+
+            const sendCustomerReply = await socket.timeout(30000).emit(
                 SEND_CUSTOMER_CONVERSATION_REPLY,
                 {
                     ticketId: ticket?.ticketId,
                     conversationId: ticket?.conversationId,
                 },
-                () => {
+                (error) => {
                     triggerAgentTyping(false);
+                    if (error && sendCustomerReply?.connected === false) {
+                        setMssgSendStatus(ERROR);
+                        dispatch(
+                            updateTicketMessageStatus({
+                                messageId: SMART_CONVOS,
+                                ticketId,
+                                selectedOption: null,
+                                messageStatus: messageStatues?.FAILED,
+                            })
+                        );
+                    }
                 }
             );
         }
+
+        sessionStorage.setItem(
+            "conversationData",
+            JSON.stringify({
+                ticketId: ticket?.ticketId,
+                conversationId: ticket?.conversationId,
+            })
+        );
     };
 
     useEffect(() => {
