@@ -102,6 +102,9 @@ const LiveChat = ({
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
 
     const { conversationBreakers } = useSelector((state) => state.chat);
+    const {
+        user: { email },
+    } = useSelector((state) => state?.auth);
     const [delayInputNeeded, setDelayInputNeeded] = useState(false);
 
     const [uploads, updateUploads] = useState([]);
@@ -587,8 +590,6 @@ const LiveChat = ({
 
             dispatch(saveTicketsMessages(messageEntry));
 
-            console.log(ticketId, message);
-
             const sendCustomerMessage = await socket.timeout(30000).emit(
                 SEND_CUSTOMER_MESSAGE,
                 {
@@ -1052,7 +1053,7 @@ const LiveChat = ({
     const handleConversationLinkMessages = async (messages) => {
         if (ticket?.conversationId && messages?.length === 0) {
             triggerAgentTyping(true);
-
+            setAllowUserInput(false);
             await socket.emit(
                 SEND_CUSTOMER_CONVERSATION_REPLY,
                 {
@@ -1256,11 +1257,14 @@ const LiveChat = ({
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
     // useEffect(() => {
-    //     window.addEventListener("beforeunload", (event) => {
-    //         event.preventDefault();
-    //         event.returnValue = "";
-    //         closeTicket();
-    //     });
+    //     console.log({ ww: validateEmail(email) });
+    //     if (!validateEmail(email)) {
+    //         window.addEventListener("beforeunload", (event) => {
+    //             event.preventDefault();
+    //             event.returnValue = "";
+    //             closeTicket();
+    //         });
+    //     }
     // }, []);
 
     const { formElementType } = currentFormElement || {};

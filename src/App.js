@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import queryString from "query-string";
 import Layout from "./layout/Layout";
 import { getErrorMessage } from "./utils/helper";
@@ -13,11 +13,13 @@ import SignInForm from "./components/SignInForm/SignInForm";
 import Chat from "./components/Chat/Chat";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
 import ConversationSignIn from "./components/ConversationSignIn/ConversationSignIn";
+import { retriveAccessToken } from "storage/sessionStorage";
 import "./App.scss";
 
 import { getChatSettings, storeChatSettings } from "storage/localStorage";
 
 const App = () => {
+    const isAuthenticated = retriveAccessToken();
     const [fetching, sayFetching] = useState(true);
     const [fetchingError, setFetchingError] = useState();
 
@@ -109,10 +111,11 @@ const App = () => {
                 <Switch>
                     <ProtectedRoute path='/chat' exact component={Chat} />
                     <ProtectedRoute path='/direct' exact component={Chat} />
-                    <PublicRoute
+                    <ProtectedRoute path='/link' exact component={Chat} />
+                    <ProtectedRoute
                         path='/conversation'
                         exact
-                        component={ConversationSignIn}
+                        component={isAuthenticated ? Chat : ConversationSignIn}
                     />
                     <PublicRoute path='/*' exact component={SignInForm} />
                 </Switch>

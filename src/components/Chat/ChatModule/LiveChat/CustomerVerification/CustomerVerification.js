@@ -12,6 +12,7 @@ import apiRoutes from "lib/api/apiRoutes";
 import { getErrorMessage } from "utils/helper";
 import { VERIFY_USER_ACTIONS } from "components/Chat/enums";
 import { dataQueryStatus } from "utils/formatHandlers";
+import { useHistory } from "react-router-dom";
 import "./CustomerVerification.scss";
 
 export const verifystages = {
@@ -31,13 +32,15 @@ const CustomerVerification = ({
     const isSaveConvoAction =
         verifyUserAction === VERIFY_USER_ACTIONS.SAVE_CONVERSATION;
     const { initial, final, success } = verifystages;
+    const history = useHistory();
+
+    const isLinkEmail = history?.location?.pathname === "/conversation";
+
     const [verifyStage, setVerifyStage] = useState(
-        !isSaveConvoAction ? initial : final
+        !isLinkEmail ? initial : final
     );
     const [initialStepRequest, setinitialStepRequest] = useState();
-    const [status, setStatus] = useState(
-        !isSaveConvoAction ? DATAMODE : LOADING
-    );
+    const [status, setStatus] = useState(!isLinkEmail ? DATAMODE : LOADING);
     const [errorMssg, setErrorMssg] = useState("");
 
     const handleEmailRequestUpdate = (data) => {
@@ -45,6 +48,7 @@ const CustomerVerification = ({
         setVerifyStage(verifystages.final);
     };
     console.log({ initialStepRequest });
+
     const linkEmail = async () => {
         try {
             setStatus(LOADING);
@@ -63,7 +67,7 @@ const CustomerVerification = ({
     };
 
     useEffect(() => {
-        if (isSaveConvoAction) {
+        if (isLinkEmail) {
             linkEmail();
         }
         //eslint-disable-next-line
@@ -118,7 +122,7 @@ const CustomerVerification = ({
                         userId={customer?.userId}
                         handleSuccess={handleSuccess}
                         isDirectUser={true}
-                        isSaveConvoAction={isSaveConvoAction}
+                        isLinkEmail={isLinkEmail}
                     />
                 );
 

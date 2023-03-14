@@ -50,7 +50,8 @@ const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
                     })
                 );
 
-                history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+                return window.location.reload();
+                // history.push(`/chat?workspaceSlug=${workspaceSlug}`);
             }
         } catch (err) {
             setErrorMssg(getErrorMessage(err));
@@ -72,15 +73,18 @@ const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
 
             if (res.status === 201) {
                 const { data } = res.data;
-
+                console.log({ data });
                 if (data?.userToken) {
                     pushToDashboard(data);
 
                     if (conversationId) {
                         engageConversation();
-                    } else {
-                        history.push(`/chat?workspaceSlug=${workspaceSlug}`);
                     }
+
+                    window.location.reload();
+                    // else {
+                    //     history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+                    // }
                 } else {
                     handleEmailRequestUpdate({ email, sessionId: data });
                 }

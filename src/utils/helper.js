@@ -138,7 +138,7 @@ export const convertSecondsToISOString = (seconds) => {
 };
 
 export const validateEmail = (emailAddress = "") => {
-    let emailTest = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    let emailTest = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,15})+$/;
     return emailAddress?.match(emailTest) ? true : false;
 };
 

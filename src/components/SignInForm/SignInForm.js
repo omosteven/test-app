@@ -117,7 +117,6 @@ const SignInForm = () => {
                         }
                         isNameRequest={isNameRequest}
                         routeToChat={routeToChat}
-                        // isEmailStage ={}
                     />
                 );
 
