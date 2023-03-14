@@ -48,6 +48,7 @@
   "scripts": {
     "start": "set PORT=7777 && react-scripts start",
     "dev": "PORT=7777 react-scripts start",
+    "start:dev": "REACT_APP_STAGE=staging PORT=7777 react-scripts start",
     "deploy": "react-scripts build; sudo netlify deploy --prod;",
     "build": "react-scripts build",
     "test": "react-scripts test",
