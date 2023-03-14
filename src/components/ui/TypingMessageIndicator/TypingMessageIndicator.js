@@ -12,14 +12,15 @@ const TypingMessageIndicator = ({ agent }) => {
         (state) => state?.chat?.chatSettings
     );
 
-    const { displayPicture, firstName } = agent;
-
     return (
         <ChatBubble>
             <div
                 className={`d-flex align-items-center mb-3 typing__indicator__group`}>
                 {defaultTemplate === WORKMODE && (
-                    <AgentImage src={displayPicture} alt={firstName} />
+                    <AgentImage
+                        src={agent?.displayPicture}
+                        alt={agent?.firstName}
+                    />
                 )}
                 <div className={`d-flex flex-column w-100 align-items-start`}>
                     <div className={`typing__content received`}>

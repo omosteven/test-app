@@ -2,21 +2,21 @@ import React, { useState } from "react";
 import queryString from "query-string";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import API from "../../../lib/api";
-import apiRoutes from "../../../lib/api/apiRoutes";
-import { getErrorMessage } from "../../../utils/helper";
-import ValidateForm from "../../../utils/validations/validator";
+import API from "lib/api";
+import apiRoutes from "lib/api/apiRoutes";
+import { getErrorMessage } from "utils/helper";
+import ValidateForm from "utils/validations/validator";
 import { Button, ErrorDialog, Input } from "../../ui";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import pushToDashboard from "../actions";
 import { emailFormActions } from "../enum";
 import { dataQueryStatus } from "utils/formatHandlers";
-import { setActiveTicket } from "store/tickets/actions";
 import "./EmailForm.scss";
 
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
 const { ERROR, LOADING } = dataQueryStatus;
+
 const EmailForm = ({
     handleEmailRequestUpdate,
     title,
@@ -24,7 +24,6 @@ const EmailForm = ({
     bottomText,
     userId,
     isNameRequest,
-    // routeToChat,
 }) => {
     const {
         chatSettings: { teamName, workspaceId, workspaceSlug },
@@ -32,7 +31,6 @@ const EmailForm = ({
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [errorMssg, setErrorMssg] = useState("");
-    const [status, setStatus] = useState("");
 
     const dispatch = useDispatch();
     const history = useHistory();

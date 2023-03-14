@@ -4,7 +4,7 @@ import { setAccessToken, storeUserAuth } from "storage/sessionStorage";
 
 const pushToDashboard = (LoginResponse) => {
     const { userToken, thirdUser } = LoginResponse;
-    setAccessToken(userToken);
+    userToken && setAccessToken(userToken);
     store.dispatch(pushAuthUser(thirdUser));
     storeUserAuth(thirdUser);
 };

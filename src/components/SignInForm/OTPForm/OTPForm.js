@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, ErrorDialog } from "../../ui";
 import PinInput from "react-pin-input";
@@ -8,8 +9,6 @@ import apiRoutes from "../../../lib/api/apiRoutes";
 import { ResendOTP } from "./ResendOTP/ResendOTP";
 import pushToDashboard from "../actions";
 import { getDevicePushToken } from "../../../lib/firebase/firebase";
-import { ToastContext } from "components/common/Toast/context/ToastContextProvider";
-import ToastCustomerVerifySuccess from "components/Chat/ChatModule/LiveChat/CustomerVerification/CustomerVerifySuccess/ToastCustomerVerifySuccess/ToastCustomerVerifySuccess";
 import "./OTPForm.scss";
 
 const OTPForm = ({
@@ -21,7 +20,7 @@ const OTPForm = ({
     isDirectUser,
     title,
     subTitle,
-    isSaveConvoAction,
+    isLinkEmail,
 }) => {
     const { workspaceSlug } = useSelector((state) => state?.chat?.chatSettings);
     const { email, sessionId } = initialStepRequest;
@@ -29,8 +28,8 @@ const OTPForm = ({
     const [loading, setLoading] = useState(false);
     const [request, updateRequest] = useState();
     const [deviceToken, setDeviceToken] = useState();
-    console.log({ initialStepRequest, isSaveConvoAction });
-    const toastMessage = useContext(ToastContext);
+
+    const history = useHistory();
 
     const validateSessionOtp = async () => {
         try {
@@ -60,9 +59,8 @@ const OTPForm = ({
         }
     };
 
-    const validateAttachmentSessionOtp = async (e) => {
+    const validateAttachmentSessionOtp = async () => {
         try {
-            e.preventDefault();
             setErrorMsg("");
             setLoading(true);
             const url = apiRoutes?.validateAttachmentSessionOtp(sessionId);
@@ -71,13 +69,12 @@ const OTPForm = ({
                     otp: request?.otp,
                 },
             });
-            console.log({ res });
+
             if (res.status === 200) {
                 const { data } = res.data;
-                console.log({ data });
+
                 pushToDashboard(data);
-                toastMessage(<ToastCustomerVerifySuccess />);
-                window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+                history.push(`/chat?workspaceSlug=${workspaceSlug}`);
             }
         } catch (err) {
             setErrorMsg(getErrorMessage(err));
@@ -96,9 +93,7 @@ const OTPForm = ({
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        isSaveConvoAction
-            ? validateAttachmentSessionOtp()
-            : validateSessionOtp();
+        isLinkEmail ? validateAttachmentSessionOtp() : validateSessionOtp();
     };
 
     return (

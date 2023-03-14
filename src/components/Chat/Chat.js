@@ -36,7 +36,7 @@ import { storeUserAuth } from "storage/sessionStorage";
 import "./Chat.scss";
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
-const { RELAXED, WORKMODE } = defaultTemplates;
+const { RELAXED } = defaultTemplates;
 const { DARK_MODE_DEFAULT } = defaultThemes;
 
 const Chat = () => {
@@ -65,16 +65,17 @@ const Chat = () => {
 
     const [socketConnection, setSocketConnection] = useState(socket);
 
-    let params = queryString.parse(window.location.search);
+    const queryParams = queryString.parse(window.location.search);
 
-    const isAuthCodeAvailable = params?.code ? true : false;
-    const isAuthTokenAvailable = params?.token ? true : false;
-    const firstName = params?.firstName || "";
-    const lastName = params?.lastName || "";
-    const email = params?.email || "";
+    const isAuthCodeAvailable = queryParams?.code ? true : false;
+    const isAuthTokenAvailable = queryParams?.token ? true : false;
+    const firstName = queryParams?.firstName || "";
+    const lastName = queryParams?.lastName || "";
+    const email = queryParams?.email || "";
 
-    const appUserId = params?.appUserId || user?.userId || generateRandomId();
-    const conversationId = params?.conversationId;
+    const appUserId =
+        queryParams?.appUserId || user?.userId || generateRandomId();
+    const conversationId = queryParams?.conversationId;
 
     const userToken = retriveAccessToken();
 
@@ -83,7 +84,7 @@ const Chat = () => {
         useSelector((state) => state.chat.chatSettings);
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORKMODE;
+
     const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
     const isTablet = width <= 768;
 
@@ -116,8 +117,8 @@ const Chat = () => {
     };
 
     const loginWithEmailLink = async () => {
-        const tickedId = params?.ticketId;
-        const authToken = params?.token;
+        const tickedId = queryParams?.ticketId;
+        const authToken = queryParams?.token;
         setCustomerTicketId(tickedId);
 
         setAccessToken(authToken);
@@ -128,8 +129,8 @@ const Chat = () => {
             setStatus(LOADING);
             setErrorMssg();
 
-            const tickedId = params?.ticketId;
-            const authCode = params?.code;
+            const tickedId = queryParams?.ticketId;
+            const authCode = queryParams?.code;
 
             const res = await API.get(
                 apiRoutes.getAuthToken(authCode, tickedId)
@@ -246,7 +247,7 @@ const Chat = () => {
         try {
             setStatus(LOADING);
             setErrorMssg();
-            console.log("this was called here to generate new token again");
+
             const url = apiRoutes?.validateUser;
             const res = await API.post(url, {
                 workspaceId,
@@ -289,7 +290,11 @@ const Chat = () => {
                     })
                 );
 
-                history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+                if (history?.location?.pathname !== "/conversation") {
+                    history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+                }
+
+                setStatus(DATAMODE);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -332,17 +337,15 @@ const Chat = () => {
     };
 
     useEffect(() => {
-        // if (
-        //     (userToken === undefined || userToken === null) &&
-        //     !isAuthTokenAvailable &&
-        //     !isAuthCodeAvailable
-        // ) {
-        //     validateUser();
-        // } else {
-        //     conversationId ? engageConversation() :callHandler();
-        // }
-        callHandler();
-
+        if (
+            (userToken === undefined || userToken === null) &&
+            !isAuthTokenAvailable &&
+            !isAuthCodeAvailable
+        ) {
+            validateUser();
+        } else {
+            conversationId ? engageConversation() : callHandler();
+        }
         //eslint-disable-next-line
     }, [customerTicketId]);
 

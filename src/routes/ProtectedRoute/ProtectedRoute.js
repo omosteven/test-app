@@ -7,7 +7,8 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
     const isAuthenticated =
         retriveAccessToken() ||
         window.location.pathname === "/direct" ||
-        // window.location.pathname === "/link" ||
+        window.location.pathname === "/link" ||
+        window.location.pathname === "/conversation" ||
         window.location.search?.includes?.("token") ||
         getUserAuth();
 

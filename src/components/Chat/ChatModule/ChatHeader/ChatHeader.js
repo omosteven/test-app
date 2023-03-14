@@ -7,9 +7,9 @@ import { useWindowSize } from "utils/hooks";
 import ErrorView from "components/common/ErrorView/ErrorView";
 import { dataQueryStatus } from "utils/formatHandlers";
 import CompanyChatLogo from "./CompanyChatLogo/CompanyChatLogo";
-import "./ChatHeader.scss";
 import SaveChatButton from "./SaveChatButton/SaveChatButton";
 import { validateEmail } from "utils/helper";
+import "./ChatHeader.scss";
 
 const { RELAXED, WORKMODE } = defaultTemplates;
 const { LOADING, NULLMODE, DATAMODE, ERROR } = dataQueryStatus;
