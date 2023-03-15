@@ -15,6 +15,7 @@ import { dataQueryStatus } from "utils/formatHandlers";
 import ErrorView from "components/common/ErrorView/ErrorView";
 import { getErrorMessage } from "utils/helper";
 import "../SignInForm/SignInForm.scss";
+import { pushAuthUser } from "store/auth/actions";
 
 const { RELAXED } = defaultTemplates;
 const { ERROR, DATAMODE } = dataQueryStatus;
@@ -49,12 +50,17 @@ const ConversationSignIn = () => {
 
             if (res.status === 200) {
                 const { data } = res.data;
+                const { customer } = data || {};
 
                 dispatch(
                     setActiveTicket({
                         ...data,
                     })
                 );
+
+                if (customer) {
+                    dispatch(pushAuthUser(customer));
+                }
 
                 history.push(`/chat?workspaceSlug=${workspaceSlug}`);
             }

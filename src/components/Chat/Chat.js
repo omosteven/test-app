@@ -12,11 +12,7 @@ import {
 import { setAccessToken, retriveAccessToken } from "storage/sessionStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
-import {
-    generateID,
-    generateRandomId,
-    getErrorMessage,
-} from "../../utils/helper";
+import { generateRandomId, getErrorMessage } from "../../utils/helper";
 import Empty from "../common/Empty/Empty";
 import { ToastContext } from "../common/Toast/context/ToastContextProvider";
 import queryString from "query-string";
@@ -26,11 +22,9 @@ import ChatToastNotification from "./ChatToastNotification/ChatToastNotification
 import NewTicketButton from "./CustomerTicketsContainer/CustomerTickets/common/NewTicketButton/NewTicketButton";
 import { pushAuthUser } from "store/auth/actions";
 import TicketCloseModal from "./TicketCloseModal/TicketCloseModal";
-import { setConversationBreakers } from "store/chat/actions";
 import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import { DotLoader } from "components/ui";
 import { useWindowSize } from "utils/hooks";
-import { CONVERSATION_SAVED } from "./ChatModule/LiveChat/MessageBody/Messages/enums";
 import pushToDashboard from "components/SignInForm/actions";
 import { storeUserAuth } from "storage/sessionStorage";
 import "./Chat.scss";
@@ -87,34 +81,6 @@ const Chat = () => {
 
     const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
     const isTablet = width <= 768;
-
-    const fetchConvoBreakers = async () => {
-        try {
-            setStatus(LOADING);
-            setErrorMssg();
-            const url = apiRoutes?.getActionBranches;
-            const res = await API.get(url);
-            if (res.status === 200) {
-                const { data } = res.data;
-
-                const saveConvoBreaker = {
-                    actionBranchHeader: "Conversation Saved Successfully.",
-                    actionBranchId: generateID(),
-                    actionBranchMainSentence:
-                        "We've sent an email containing a link to your saved conversation",
-                    actionBranchOptions: [],
-                    actionBranchType: CONVERSATION_SAVED,
-                    createdDate: new Date(),
-                    updatedDate: new Date(),
-                };
-
-                dispatch(setConversationBreakers([...data, saveConvoBreaker]));
-            }
-        } catch (err) {
-            setStatus(ERROR);
-            setErrorMssg(getErrorMessage(err));
-        }
-    };
 
     const loginWithEmailLink = async () => {
         const tickedId = queryParams?.ticketId;
@@ -330,10 +296,6 @@ const Chat = () => {
                 ? getCustomerTickets(customerTicketId)
                 : getCustomerAuthToken()
             : getCustomerTickets();
-
-        isAuthCodeAvailable
-            ? customerTicketId && fetchConvoBreakers()
-            : fetchConvoBreakers();
     };
 
     useEffect(() => {

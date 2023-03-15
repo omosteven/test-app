@@ -341,7 +341,7 @@ const LiveChatInput = ({
             isEmail,
             isLink,
             max,
-            pattern,
+            // pattern,
             minDate,
             maxDate,
         } = getCurrentFormInputRules(rules, inputType);
@@ -657,7 +657,7 @@ const LiveChatInput = ({
                     )}
                     {mssgSendStatus === ERROR && (
                         <span className='chat__input__error'>
-                            Response failed to send.
+                            Sorry, an error occurred. Please refresh or try again.
                         </span>
                     )}
                     {isRelaxedTemplate &&

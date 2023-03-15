@@ -39,3 +39,14 @@ export const storePinnedConversations = (pinnedConversations) => {
 export const getStoredPinnedConversations = () => {
     return JSON.parse(localStorage.getItem("pinnedConversations"));
 };
+
+export const storeConvoBreakers = (workspaceSlug, convoBreakers) => {
+    localStorage.setItem(
+        `${workspaceSlug}ConvoBreakers`,
+        JSON.stringify(convoBreakers)
+    );
+};
+
+export const getConvoBreakers = (workspaceSlug) => {
+    return JSON.parse(localStorage.getItem(`${workspaceSlug}ConvoBreakers`));
+};

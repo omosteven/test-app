@@ -54,6 +54,11 @@ import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/Custom
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
 import { useFaviconNotification } from "react-favicon-notification";
 import "./LiveChat.scss";
+import { getConvoBreakers } from "storage/localStorage";
+import {
+    getConversationData,
+    storeConversationData,
+} from "storage/sessionStorage";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
@@ -101,17 +106,13 @@ const LiveChat = ({
 
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
 
-    const { conversationBreakers } = useSelector((state) => state.chat);
-    const {
-        user: { email },
-    } = useSelector((state) => state?.auth);
     const [delayInputNeeded, setDelayInputNeeded] = useState(false);
 
     const [uploads, updateUploads] = useState([]);
     const [disableForm, setDisableForm] = useState(false);
 
     const {
-        chatSettings: { workspaceId },
+        chatSettings: { workspaceId, workspaceSlug },
     } = useSelector((state) => state.chat);
 
     const { ticketId, agent, ticketPhase, customer, conversationId } = ticket;
@@ -125,6 +126,7 @@ const LiveChat = ({
     const dispatch = useDispatch();
 
     const getConvoBreaker = (actionBranchType) => {
+        const conversationBreakers = getConvoBreakers(workspaceSlug);
         return conversationBreakers?.find(
             (x) => x.actionBranchType === actionBranchType
         );
@@ -1050,9 +1052,7 @@ const LiveChat = ({
     };
 
     const handleConversationLinkMessages = async (messages, ticket) => {
-        const conversationData = JSON.parse(
-            sessionStorage.getItem("conversationData")
-        );
+        const conversationData = getConversationData();
 
         if (
             ticket?.ticketId !== conversationData?.ticketId &&
@@ -1086,13 +1086,7 @@ const LiveChat = ({
             );
         }
 
-        sessionStorage.setItem(
-            "conversationData",
-            JSON.stringify({
-                ticketId: ticket?.ticketId,
-                conversationId: ticket?.conversationId,
-            })
-        );
+        storeConversationData(ticket);
     };
 
     useEffect(() => {
@@ -1227,17 +1221,19 @@ const LiveChat = ({
                 lastMessage?.messageType !== CANNED_RESPONSE
             ) {
                 if (lastMessage?.branchOptions?.length > 0) {
-                    lastMessage?.branchOptions?.map(({ scheduleDuration }) => {
-                        if (scheduleDuration) {
-                            if (
-                                Number.parseFloat(scheduleDuration) >
-                                lastMessageMaxOptionTime
-                            ) {
-                                lastMessageMaxOptionTime =
-                                    Number.parseFloat(scheduleDuration);
+                    lastMessage?.branchOptions?.forEach(
+                        ({ scheduleDuration }) => {
+                            if (scheduleDuration) {
+                                if (
+                                    Number.parseFloat(scheduleDuration) >
+                                    lastMessageMaxOptionTime
+                                ) {
+                                    lastMessageMaxOptionTime =
+                                        Number.parseFloat(scheduleDuration);
+                                }
                             }
                         }
-                    });
+                    );
 
                     var countdownTo = new Date(lastMessage?.deliveryDate);
 
@@ -1258,6 +1254,7 @@ const LiveChat = ({
         setInterval(() => {
             getLastMssgScheduledOptionTime();
         }, 1000);
+        // eslint-disable-next-line
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
     const inputNeededTimer = () => {
@@ -1282,6 +1279,7 @@ const LiveChat = ({
         return () => {
             clearInterval(timer);
         };
+        // eslint-disable-next-line
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
     // useEffect(() => {
