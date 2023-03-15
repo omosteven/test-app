@@ -1221,19 +1221,19 @@ const LiveChat = ({
                 lastMessage?.messageType !== CANNED_RESPONSE
             ) {
                 if (lastMessage?.branchOptions?.length > 0) {
-                    lastMessage?.branchOptions?.map(({ scheduleDuration }) => {
-                        if (scheduleDuration) {
-                            if (
-                                Number.parseFloat(scheduleDuration) >
-                                lastMessageMaxOptionTime
-                            ) {
-                                lastMessageMaxOptionTime =
-                                    Number.parseFloat(scheduleDuration);
+                    lastMessage?.branchOptions?.forEach(
+                        ({ scheduleDuration }) => {
+                            if (scheduleDuration) {
+                                if (
+                                    Number.parseFloat(scheduleDuration) >
+                                    lastMessageMaxOptionTime
+                                ) {
+                                    lastMessageMaxOptionTime =
+                                        Number.parseFloat(scheduleDuration);
+                                }
                             }
                         }
-
-                        return;
-                    });
+                    );
 
                     var countdownTo = new Date(lastMessage?.deliveryDate);
 

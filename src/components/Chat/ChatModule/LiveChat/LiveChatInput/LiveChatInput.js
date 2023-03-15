@@ -341,7 +341,7 @@ const LiveChatInput = ({
             isEmail,
             isLink,
             max,
-            pattern,
+            // pattern,
             minDate,
             maxDate,
         } = getCurrentFormInputRules(rules, inputType);
