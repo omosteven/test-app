@@ -17,3 +17,17 @@ export const retriveAccessToken = () => {
 export const deleteAccessToken = () => {
     sessionStorage.removeItem("accessToken");
 };
+
+export const storeConversationData = (ticket) => {
+    sessionStorage.setItem(
+        "conversationData",
+        JSON.stringify({
+            ticketId: ticket?.ticketId,
+            conversationId: ticket?.conversationId,
+        })
+    );
+};
+
+export const getConversationData = () => {
+    return JSON.parse(sessionStorage.getItem("conversationData"));
+};

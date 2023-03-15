@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch } from "react-router-dom";
 import queryString from "query-string";
 import Layout from "./layout/Layout";
-import { getErrorMessage } from "./utils/helper";
+import { generateID, getErrorMessage } from "./utils/helper";
 import API from "./lib/api";
 import apiRoutes from "./lib/api/apiRoutes";
 import FullPageLoader from "./components/common/FullPageLoader/FullPageLoader";
-import { updateChatSettings } from "./store/chat/actions";
+import {
+    setConversationBreakers,
+    updateChatSettings,
+} from "./store/chat/actions";
 import store from "./store/store";
 import PublicRoute from "./routes/PublicRoute/PublicRoute";
 import SignInForm from "./components/SignInForm/SignInForm";
@@ -16,7 +19,12 @@ import ConversationSignIn from "./components/ConversationSignIn/ConversationSign
 import { retriveAccessToken } from "storage/sessionStorage";
 import "./App.scss";
 
-import { getChatSettings, storeChatSettings } from "storage/localStorage";
+import {
+    getChatSettings,
+    storeChatSettings,
+    storeConvoBreakers,
+} from "storage/localStorage";
+import { CONVERSATION_SAVED } from "components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
 
 const App = () => {
     const isAuthenticated = retriveAccessToken();
@@ -50,13 +58,41 @@ const App = () => {
             const res = await API.get(url);
             if (res.status === 200) {
                 const { data } = res.data;
-                const { defaultTemplate, defaultTheme } = data;
+
+                const { defaultTemplate, defaultTheme, initialBranch } = data;
+
+                const { actionBranches } = initialBranch || {};
+
+                const saveConvoBreaker = {
+                    actionBranchHeader: "Conversation Saved Successfully.",
+                    actionBranchId: generateID(),
+                    actionBranchMainSentence:
+                        "We've sent an email containing a link to your saved conversation",
+                    actionBranchOptions: [],
+                    actionBranchType: CONVERSATION_SAVED,
+                    createdDate: new Date(),
+                    updatedDate: new Date(),
+                };
+
+                store.dispatch(
+                    setConversationBreakers([
+                        ...actionBranches,
+                        saveConvoBreaker,
+                    ])
+                );
+
+                storeConvoBreakers(workspaceSlug, [
+                    ...actionBranches,
+                    saveConvoBreaker,
+                ]);
+
                 storeChatSettings({
                     ...data,
                     workspaceSlug,
                     defaultTheme,
                     defaultTemplate,
                 });
+
                 setCurrentAppearance({
                     ...data,
                     workspaceSlug,
@@ -89,6 +125,7 @@ const App = () => {
                 sayFetching(false);
             }, 3000);
         }
+        // eslint-disable-next-line
     }, []);
 
     if (fetching) return <FullPageLoader />;
