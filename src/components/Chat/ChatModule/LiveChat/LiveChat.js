@@ -121,6 +121,9 @@ const LiveChat = ({
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
+    const {
+        user: { email },
+    } = useSelector((state) => state?.auth);
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
@@ -1282,16 +1285,16 @@ const LiveChat = ({
         // eslint-disable-next-line
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
-    // useEffect(() => {
-    //     console.log({ ww: validateEmail(email) });
-    //     if (!validateEmail(email)) {
-    //         window.addEventListener("beforeunload", (event) => {
-    //             event.preventDefault();
-    //             event.returnValue = "";
-    //             closeTicket();
-    //         });
-    //     }
-    // }, []);
+    useEffect(() => {
+        console.log({ ww: validateEmail(email) });
+        if (!validateEmail(email)) {
+            window.addEventListener("beforeunload", (event) => {
+                event.preventDefault();
+                event.returnValue = "";
+                closeTicket();
+            });
+        }
+    }, []);
 
     const { formElementType } = currentFormElement || {};
 
