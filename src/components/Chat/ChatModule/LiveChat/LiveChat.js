@@ -1288,10 +1288,26 @@ const LiveChat = ({
     useEffect(() => {
         console.log({ ww: validateEmail(email) });
         if (!validateEmail(email)) {
-            window.addEventListener("beforeunload", (event) => {
-                event.preventDefault();
-                event.returnValue = "";
-                closeTicket();
+            // window.addEventListener("beforeunload", (event) => {
+            //     event.preventDefault();
+            //     event.returnValue = "";
+            //     closeTicket();
+            // });
+
+            window.addEventListener("beforeunload", async function (event) {
+                const entries = performance.getEntriesByType("navigation");
+                console.log({ entries });
+                if (entries.length && entries[0].type === "navigate") {
+                    // This is a tab close or navigation away from the page
+                    // Make the API call here
+                    // await closeTicket();
+
+                    const url = apiRoutes?.closeTicket(ticketId);
+
+                    navigator.sendBeacon(url);
+                } else {
+                    // This is a page reload, do nothing
+                }
             });
         }
     }, []);

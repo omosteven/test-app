@@ -51,7 +51,6 @@ const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
                 );
 
                 return window.location.reload();
-                // history.push(`/chat?workspaceSlug=${workspaceSlug}`);
             }
         } catch (err) {
             setErrorMssg(getErrorMessage(err));
@@ -82,9 +81,6 @@ const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
                     }
 
                     window.location.reload();
-                    // else {
-                    //     history.push(`/chat?workspaceSlug=${workspaceSlug}`);
-                    // }
                 } else {
                     handleEmailRequestUpdate({ email, sessionId: data });
                 }
