@@ -62,7 +62,10 @@ const ConversationSignIn = () => {
                     dispatch(pushAuthUser(customer));
                 }
 
-                history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+                await window.history.replaceState(null, "New Conversation", `/chat?workspaceSlug=${workspaceSlug}`)
+                await window.location.reload();
+                // window.location.reload();
+                // history.push(`/chat?workspaceSlug=${workspaceSlug}`);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -71,6 +74,8 @@ const ConversationSignIn = () => {
     };
 
     const handleSuccess = () => {
+        console.log("Called to handle Success");
+        console.log("conversationId",conversationId)
         if (conversationId) {
             engageConversation();
         } else {
