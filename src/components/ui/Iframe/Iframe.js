@@ -30,6 +30,8 @@ const Iframe = ({ src, timeOut = 10000, title }) => {
             setIsError(false);
             setIsLoading(false);
         };
+
+        // eslint-disable-next-line
     }, []);
 
     return (

@@ -24,7 +24,6 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
     const { desktopVersion, mobileVersion } = fileAttachmentImageConfig || {};
     const [outPut, setOutput] = useState("");
     const { width } = useWindowSize();
-    const [mediaIsLoaded, setMediaIsLoaded] = useState(false);
 
     const isTablet = width < 768;
 
@@ -45,6 +44,7 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
                 );
             }
         }
+        // eslint-disable-next-line
     }, [isTablet, cropOutImage, width]);
 
     const renderBasedOnMediaType = () => {
@@ -60,9 +60,6 @@ const MediaContent = ({ attachment, openPreviewModal, isReceivedMessage }) => {
                             } ${isTablet ? "mobile" : "desktop"} ${
                                 !cropOutImage ? "img-orientation" : ""
                             }`}
-                            style={{
-                                display: mediaIsLoaded ? "initial" : "none",
-                            }}
                             onClick={() => openPreviewModal(attachment)}
                             mediaType={IMAGE}
                             isTablet={isTablet}

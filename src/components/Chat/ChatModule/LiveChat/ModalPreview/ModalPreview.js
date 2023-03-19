@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import Iframe from "components/ui/Iframe/Iframe";
 import { Modal } from "../../../../ui/Modal/Modal";
 import { IMAGE, FILE, VIDEO } from "../LiveChatInput/UploadIcons/enum";
-import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
+import { defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import "./ModalPreview.scss";
 
 const { DARK_MODE_DEFAULT } = defaultThemes;

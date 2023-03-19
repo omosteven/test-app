@@ -10,7 +10,7 @@ const { BRANCH_OPTION, FORM_REQUEST, ACTION_INFO, DEFAULT, CONVERSATION } =
 const { THIRD_USER } = appMessageUserTypes;
 const { RELAXED } = defaultTemplates;
 
-const { SENDING, DELIVERED, FAILED } = messageStatues;
+const { DELIVERED, FAILED } = messageStatues;
 
 const MessageContent = ({
     isReceivedMessage,
@@ -30,10 +30,6 @@ const MessageContent = ({
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
-
-    const {
-        activeTicket: { ticketPhase },
-    } = useSelector((state) => state.tickets);
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
 
