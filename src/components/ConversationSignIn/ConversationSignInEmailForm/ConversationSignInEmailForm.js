@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import queryString from "query-string";
 import { Button, Input } from "components/ui";
@@ -12,7 +11,7 @@ import ValidateForm from "utils/validations/validator";
 import { ErrorDialog } from "components/ui";
 
 const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
-    const { workspaceSlug, workspaceId } = useSelector(
+    const { workspaceId } = useSelector(
         (state) => state.chat.chatSettings
     );
     const [request, setRequest] = useState({
@@ -27,7 +26,6 @@ const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
     const conversationId = params?.conversationId;
 
     const dispatch = useDispatch();
-    const history = useHistory();
 
     const handleChange = (e) => {
         const { name, value } = e.target;

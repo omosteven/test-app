@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import queryString from "query-string";
-import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 import API from "lib/api";
 import apiRoutes from "lib/api/apiRoutes";
 import { getErrorMessage } from "utils/helper";
@@ -11,11 +10,9 @@ import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import pushToDashboard from "../actions";
 import { emailFormActions } from "../enum";
-import { dataQueryStatus } from "utils/formatHandlers";
 import "./EmailForm.scss";
 
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
-const { ERROR, LOADING } = dataQueryStatus;
 
 const EmailForm = ({
     handleEmailRequestUpdate,
@@ -31,9 +28,6 @@ const EmailForm = ({
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [errorMssg, setErrorMssg] = useState("");
-
-    const dispatch = useDispatch();
-    const history = useHistory();
 
     let params = queryString.parse(window.location.search);
     const conversationId = params?.conversationId;
