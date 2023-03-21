@@ -59,6 +59,8 @@ import {
     getConversationData,
     storeConversationData,
 } from "storage/sessionStorage";
+import envConfig from "../../../../config/config";
+import { retriveAccessToken } from "storage/sessionStorage";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
@@ -124,6 +126,7 @@ const LiveChat = ({
     const {
         user: { email },
     } = useSelector((state) => state?.auth);
+    const userToken = retriveAccessToken();
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
@@ -1284,32 +1287,101 @@ const LiveChat = ({
         };
         // eslint-disable-next-line
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
-
+    const entries = performance.getEntriesByType("navigation");
+    console.log({
+        entries,
+        d: entries.length && entries[0].type === "reload",
+        // ||
+        // entries[0].type === "navigate" ||
+        // entries[0].type !== "back_forward"
+    });
     useEffect(() => {
+        // this event should only run it's a tab close and not reload
+        const handleBeforeUnload = (event) => {
+            event.preventDefault();
+
+            const entries = performance.getEntriesByType("navigation");
+            console.log({ entries });
+            const types = ["reload", "navigate", "back_forward", "prerender"];
+
+            if (entries.length && entries[0].type === "reload") {
+                //
+                return "";
+            }
+
+            if (
+                "serviceWorker" in navigator &&
+                navigator.serviceWorker.controller
+            ) {
+                const tag = "close-ticket";
+
+                navigator.serviceWorker.controller.postMessage({
+                    tag,
+                    ticketId,
+                    baseUrl: envConfig?.apiGateway?.BASE_URL,
+                    apiKey: envConfig?.apiGateway?.CLIENT_KEY,
+                    token: userToken,
+                });
+            }
+
+            // if (
+            //     entries.length &&
+            //     entries[0].type !== "reload" &&
+            //     entries[0].type !== "navigate" &&
+            //     entries[0].type !== "back_forward" &&
+            //     "serviceWorker" in navigator &&
+            //     navigator.serviceWorker.controller
+            // ) {
+            //     const tag = "close-ticket";
+
+            //     navigator.serviceWorker.controller.postMessage({
+            //         tag,
+            //         ticketId,
+            //         baseUrl: envConfig?.apiGateway?.BASE_URL,
+            //         apiKey: envConfig?.apiGateway?.CLIENT_KEY,
+            //         token: userToken,
+            //     });
+            // }
+            // if (
+            //     entries.length &&
+            //     entries[0].type === "navigate" &&
+            //     "serviceWorker" in navigator &&
+            //     navigator.serviceWorker.controller
+            // ) {
+            //     const tag = "close-ticket";
+
+            //     navigator.serviceWorker.controller.postMessage({
+            //         tag,
+            //         ticketId,
+            //         baseUrl: envConfig?.apiGateway?.BASE_URL,
+            //         apiKey: envConfig?.apiGateway?.CLIENT_KEY,
+            //         token: userToken,
+            //     });
+            // if (
+            //     "serviceWorker" in navigator &&
+            //     navigator.serviceWorker.controller
+            // ) {
+            //     navigator.serviceWorker.controller.postMessage({
+            //         tag,
+            //         ticketId,
+            //         baseUrl: envConfig?.apiGateway?.BASE_URL,
+            //         apiKey: envConfig?.apiGateway?.CLIENT_KEY,
+            //         token: userToken,
+            //     });
+            // }
+            // } else {
+            //     console.log("reloaded");
+            //     // This is a page reload, do nothing
+            // }
+        };
         console.log({ ww: validateEmail(email) });
         if (!validateEmail(email)) {
-            // window.addEventListener("beforeunload", (event) => {
-            //     event.preventDefault();
-            //     event.returnValue = "";
-            //     closeTicket();
-            // });
-
-            window.addEventListener("beforeunload", async function (event) {
-                const entries = performance.getEntriesByType("navigation");
-                console.log({ entries });
-                if (entries.length && entries[0].type === "navigate") {
-                    // This is a tab close or navigation away from the page
-                    // Make the API call here
-                    // await closeTicket();
-
-                    const url = apiRoutes?.closeTicket(ticketId);
-
-                    navigator.sendBeacon(url);
-                } else {
-                    // This is a page reload, do nothing
-                }
-            });
+            window.addEventListener("beforeunload", handleBeforeUnload);
         }
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
     }, []);
 
     const { formElementType } = currentFormElement || {};
