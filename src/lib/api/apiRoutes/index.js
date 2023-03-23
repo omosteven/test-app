@@ -10,6 +10,7 @@ const apiRoutes = {
     validateUser: `${agentsInbox}app-message-user/validate/app-user`,
     getAuthToken: (code, tickedId) =>
         `${agentsInbox}app-message-user/conversation/${code}/${tickedId}`,
+    validateTicketUser: `${agentsInbox}app-message-user/validate/ticket-user`,
     getTicketMessages: (ticketId) => `${agentsInbox}messages/${ticketId}`,
     updateTicketDiscovery: (ticketId) =>
         `${agentsInbox}ticket/${ticketId}/issueDiscovered`,

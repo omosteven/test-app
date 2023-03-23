@@ -149,6 +149,7 @@ const App = () => {
                     <ProtectedRoute path='/chat' exact component={Chat} />
                     <ProtectedRoute path='/direct' exact component={Chat} />
                     <ProtectedRoute path='/link' exact component={Chat} />
+                    <ProtectedRoute path='/ticket' exact component={Chat} />
                     <ProtectedRoute
                         path='/conversation'
                         exact

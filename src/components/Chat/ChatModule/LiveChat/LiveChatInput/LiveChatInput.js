@@ -607,19 +607,21 @@ const LiveChatInput = ({
                             ) : (
                                 <>
                                     <div className='chat__input--group--inputs'>
-                                        <UploadIcons
-                                            upload={uploads}
-                                            updateUpload={updateUploads}
-                                            isDisabled={isDisabled}
-                                            setErrors={setErrors}
-                                            showModal={showModal}
-                                            toggleModal={toggleModal}
-                                            handleUpload={handleUpload}
-                                            selectedMedia={selectedMedia}
-                                            currentFormElement={
-                                                currentFormElement
-                                            }
-                                        />
+                                        {!isRelaxedTemplate && (
+                                            <UploadIcons
+                                                upload={uploads}
+                                                updateUpload={updateUploads}
+                                                isDisabled={isDisabled}
+                                                setErrors={setErrors}
+                                                showModal={showModal}
+                                                toggleModal={toggleModal}
+                                                handleUpload={handleUpload}
+                                                selectedMedia={selectedMedia}
+                                                currentFormElement={
+                                                    currentFormElement
+                                                }
+                                            />
+                                        )}
                                         {renderBasedOnInputType()}
                                     </div>
                                     <Button
@@ -657,7 +659,8 @@ const LiveChatInput = ({
                     )}
                     {mssgSendStatus === ERROR && (
                         <span className='chat__input__error'>
-                            Sorry, an error occurred. Please refresh or try again.
+                            Sorry, an error occurred. Please refresh or try
+                            again.
                         </span>
                     )}
                     {isRelaxedTemplate &&
