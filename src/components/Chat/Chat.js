@@ -99,13 +99,12 @@ const Chat = () => {
             });
 
             if (res.status === 201) {
-                const { data, ticket: userTicket } = res.data;
+                const { data } = res.data;
+                const { ticket: userTicket } = data;
                 dispatch(setActiveTicket(userTicket));
                 pushToDashboard(data);
-
-                if (history?.location?.pathname === "/ticket") {
-                    history.push(`/chat?workspaceSlug=${workspaceSlug}`);
-                }
+                setStatus(DATAMODE);
+                getCustomerTickets(userTicket?.ticketId);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -123,7 +122,6 @@ const Chat = () => {
             setStatus(LOADING);
             setErrorMssg();
             setLoading(true);
-
             const res = await API.get(apiRoutes.userTickets);
             if (res.status === 200) {
                 const tickets = res.data.data;
