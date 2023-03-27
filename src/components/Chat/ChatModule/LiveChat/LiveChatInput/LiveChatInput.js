@@ -333,7 +333,7 @@ const LiveChatInput = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    console.log({ request });
+    // console.log({ request });
     const [datePickerStage, setDatePickerStage] = useState(DATE_VALUE);
 
     const renderBasedOnInputType = () => {
@@ -522,10 +522,10 @@ const LiveChatInput = ({
     const isFormElementMultiselect = formElementType === MULTISELECT;
 
     const isFinalDatePickerStage = datePickerStage === PICK_DATE;
-    console.log({
-        formElementType,
-        datePickerStage,
-    });
+    // console.log({
+    //     formElementType,
+    //     datePickerStage,
+    // });
     return (
         <div className={`chat__input__wrapper`} ref={inputContainerRef}>
             <div
