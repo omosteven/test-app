@@ -10,7 +10,8 @@ const ReDatePicker = ({ onChange }) => {
         index: moment().format("M") - 1,
     });
 
-    const [dates, setDates] = useState([]);
+    // const [dates, setDates] = useState([]);
+    const [monthDates, setMonthDates] = useState(new Map());
     const [weekdays, setWeekdays] = useState([]);
     const [currentWeekIndex, setCurrentWeekIndex] = useState(2);
     const [selectedDate, setSelectedDate] = useState("");
@@ -37,7 +38,7 @@ const ReDatePicker = ({ onChange }) => {
         for (let i = 0; i < daysInMonth; i++) {
             const date = moment(firstDayOfMonth).add(i, "days");
 
-            dates.push(date.format("DD"));
+            dates.push(date.format("dd,DD"));
         }
 
         // Get the index of the current week (relative to the dates array)
@@ -52,13 +53,59 @@ const ReDatePicker = ({ onChange }) => {
         );
         // console.log(dates, weekdays, currentWeekIndex);
 
-        setDates(dates);
+        // setDates(dates);
+        setMonthDates(monthDates.set(month, dates));
         setWeekdays(weekdays);
         setCurrentWeekIndex(currentWeekIndex);
 
-        const currentDate = moment().format("DD");
-        setSelectedDate(moment().format("DD"));
+        const currentDate = moment().format("dd,DD");
+        setSelectedDate(currentDate);
         onChange(`${selectedMonth?.name},${currentDate}`);
+    };
+
+    const handleGetSubsequentMonthDates = (monthIndex) => {
+        const year = moment().format("YYYY");
+
+        // Get the number of days in the selected month
+        const daysInMonth = moment(
+            `${year}-${monthIndex + 1}`,
+            "YYYY-MM"
+        ).daysInMonth();
+
+        // Get the first day of the month and set it to the start of the week (Saturday)
+        const firstDayOfMonth = moment(
+            `${year}-${monthIndex + 1}-01`,
+            "YYYY-MM-DD"
+        )
+            .startOf("month")
+            .startOf("week")
+            .day("Saturday");
+
+        const dates = [];
+
+        // Loop through the days in the selected month and add them to the dates array
+        for (let i = 0; i < daysInMonth; i++) {
+            const date = moment(firstDayOfMonth).add(i, "days");
+
+            dates.push(date.format("dd,DD"));
+        }
+
+        // Get the index of the current week (relative to the dates array)
+        const currentWeekIndex = Math.floor(
+            moment().diff(firstDayOfMonth, "days") / 7
+        );
+
+        // Get the weekdays for the current week
+        // const weekdays = dates.slice(
+        //     currentWeekIndex * 7,
+        //     (currentWeekIndex + 1) * 7
+        // );
+        // console.log(dates, weekdays, currentWeekIndex);
+
+        // setDates(dates);
+        setMonthDates(monthDates.set(monthIndex, dates));
+        // setWeekdays(weekdays);
+        // setCurrentWeekIndex(currentWeekIndex);
     };
 
     useEffect(() => {
@@ -118,7 +165,7 @@ const ReDatePicker = ({ onChange }) => {
     ];
 
     const days = ["Sa", "Su", "Mo", "Tu", "We", "Th", "Fr"];
-
+    console.log({ dd: monthDates });
     // months
     const handleNextMonthNavigation = (currentMonthIndex) => {
         const isEndOfMonthList = months.length - 1 === currentMonthIndex;
@@ -127,7 +174,7 @@ const ReDatePicker = ({ onChange }) => {
             name: months[isEndOfMonthList ? 0 : currentMonthIndex + 1]?.name,
             index: nextMonthIndex,
         });
-        // handleGetDates(nextMonthIndex);
+        handleGetSubsequentMonthDates(nextMonthIndex);
     };
 
     const handlePreviousMonthNavigation = (currentMonthIndex) => {
@@ -141,7 +188,7 @@ const ReDatePicker = ({ onChange }) => {
             ]?.name,
             index: previousMonthIndex,
         });
-        // handleGetDates(previousMonthIndex);
+        handleGetSubsequentMonthDates(previousMonthIndex);
     };
 
     // weeks
@@ -150,8 +197,28 @@ const ReDatePicker = ({ onChange }) => {
         const week = currentWeekIndex * 7;
 
         setCurrentWeekIndex((prev) => prev + 1);
+        const currentMonthdays = monthDates.get(selectedMonth?.index);
+        console.log(
+            selectedMonth.index,
+            currentMonthdays[currentMonthdays.length - 1],
+            weekdays[weekdays.length - 1]
+        );
 
-        setWeekdays([...dates?.slice(skip, week)]);
+        if (
+            currentMonthdays[currentMonthdays.length - 1] ===
+            weekdays[weekdays.length - 1]
+        ) {
+            handleNextMonthNavigation(selectedMonth.index);
+
+            console.log(monthDates, selectedMonth);
+            //   return setWeekdays([
+            //     ...monthDates.get(selectedMonth?.index)?.slice(skip, week),
+            // ]);
+        }
+
+        setWeekdays([
+            ...monthDates.get(selectedMonth?.index)?.slice(skip, week),
+        ]);
     };
 
     const handlePreviousWeekNavigation = (currentWeekIndex) => {
@@ -160,7 +227,21 @@ const ReDatePicker = ({ onChange }) => {
 
         setCurrentWeekIndex((prev) => prev - 1);
 
-        setWeekdays([...dates?.slice(skip, week)]);
+        // setWeekdays([...dates?.slice(skip, week)]);
+        const currentMonthdays = monthDates.get(selectedMonth?.index);
+        console.log(selectedMonth.index, currentMonthdays[0], weekdays[0]);
+
+        if (currentMonthdays[0] === weekdays[0]) {
+            handlePreviousMonthNavigation(selectedMonth.index);
+
+            //    setWeekdays([
+            //     ...monthDates.get(selectedMonth?.index).slice(skip, week),
+            // ]);
+        }
+
+        setWeekdays([
+            ...monthDates.get(selectedMonth?.index).slice(skip, week),
+        ]);
     };
 
     const handleSelectDate = (date) => {
