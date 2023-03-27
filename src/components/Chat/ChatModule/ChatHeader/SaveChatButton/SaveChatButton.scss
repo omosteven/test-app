@@ -6,25 +6,19 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
-
-    width: fit-content !important;
     height: 35px !important;
-
-    
     background: $primary__theme_color !important;
-    border-radius: 6px;
+    border-radius: 6px !important;
     color: $light__theme_color !important;
-
-    font-weight: 600;
-    font-size: 14px !important;
+    font-weight: 900 !important;
+    font-size: 18px !important;
     line-height: 18px;
     letter-spacing: -0.2px;
-
+    padding: 5px 10px !important;
     border: none !important;
 
     @include media(">medium-screen") {
         #{$relaxed__mode__template__selector} {
-            width: fit-content !important;
             height: 35px !important;
         }
     }
@@ -32,7 +26,6 @@
     @include media("<=medium-screen") {
         margin-left: auto;
         margin-right: 10px;
-        width: 68px !important;
         border-radius: 6px !important;
         height: 28px !important;
     }

@@ -1,0 +1,161 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+.re__date__picker__container {
+    padding: 20px 10px;
+    gap: 24px;
+    position: absolute;
+    width: 390px;
+    height: fit-content;
+    border-radius: 16px 16px 0px 0px;
+
+    #{$dark__mode__theme__selector} {
+        background-color: $dark__mode__theme__dark__color;
+    }
+
+    #{$white__mode__theme__selector} {
+        background-color: $white__mode__theme__grey__color;
+    }
+
+    @include media("<=small-screen") {
+        width: 100%;
+    }
+
+    .re__date__picker {
+        border-radius: 12px;
+        padding: 8px 7.5px;
+
+        #{$dark__mode__theme__selector} {
+            background-color: $dark__mode__connected__background;
+        }
+    
+        #{$white__mode__theme__selector} {
+            background-color: #ffffff;
+        }
+
+        &__month__selector {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            border-radius: 100px;
+            padding: 1rem 17.67px;
+
+            #{$dark__mode__theme__selector} {
+                background-color: rgba(255, 255, 255, 0.04);
+            }
+        
+            #{$white__mode__theme__selector} {
+                background-color: $light__theme_color;
+                border: 1px solid #E7EBEF;
+            }
+
+        }    
+
+        &__month {
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 24px;
+
+            #{$dark__mode__theme__selector} {
+                color: $light__theme_color;
+            }
+        
+            #{$white__mode__theme__selector} {
+                color: $dark__mode__theme__grey__color;
+            }
+        }
+
+        &__days__container {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            padding: 8px 10.75px;
+
+            .week__days {
+                display: flex;
+                width: 100%;
+
+                .week__day {
+                    padding: 12px 11.06px;
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 24px;
+
+                    #{$dark__mode__theme__selector} {
+                        color: #AAAAAA;
+                    }
+
+                    #{$white__mode__theme__selector} {
+                        color: $light__gray__theme_color;
+                    }
+
+                    &.--active {
+                        #{$dark__mode__theme__selector} {
+                            color: $light__theme_color;
+                        }
+                    
+                        #{$white__mode__theme__selector} {
+                            color: $dark__mode__theme__grey__color;
+                        }
+                    }
+                 }
+            }
+
+            .week__dates {
+                display: flex;
+                width: 100%;
+                gap: 2px;
+
+                .week__date {
+                    padding: 8px 11.06px;
+                    font-weight: 600;
+                    font-size: 16px;
+                    line-height: 24px;
+                    cursor: pointer;
+
+                    #{$dark__mode__theme__selector} {
+                        color: #AAAAAA;
+                    }
+
+                    #{$white__mode__theme__selector} {
+                        color: $light__gray__theme_color;
+                    }
+
+                    &.--active {
+                        color: $light__theme_color;
+                        background: #2F80ED;
+                        border-radius: 8px;
+                    }
+                }
+            }
+        }
+    }
+
+    .re__date__picker__arrow {
+        svg {
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+
+            path {
+                #{$dark__mode__theme__selector} {
+                    fill: $light__theme_color;
+                }
+        
+                #{$white__mode__theme__selector} {
+                   fill: $dark__mode__theme__grey__color;
+                }
+            }
+        }
+
+        &.--right {
+            svg {
+                transform: rotate(180deg);
+            }
+        }
+
+        &.--date {
+            margin-bottom: 10px;
+        }
+    }
+}

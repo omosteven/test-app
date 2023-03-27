@@ -1,0 +1,21 @@
+@import "assets/scss/master";
+
+.input__container {
+    display: flex;
+    align-items: center;
+
+    .input__prefix {
+        text-transform: uppercase;
+        font-size: 18px;
+        line-height: 26px;
+
+        #{$dark__mode__theme__selector} {
+            color: #8A8D90;
+        }
+
+        #{$white__mode__theme__selector} {
+            color: $muted__theme_color_2;
+        }
+        
+    }
+}
