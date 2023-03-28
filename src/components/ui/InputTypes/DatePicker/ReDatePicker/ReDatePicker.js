@@ -51,13 +51,13 @@ const ReDatePicker = ({ onChange }) => {
 
         setMonthDates(monthDates.set(month, dates));
         setWeekdays(weekdays);
-        setCurrentWeekIndex(currentWeekIndex);
+        setCurrentWeekIndex(currentWeekIndex + 2);
 
         const currentDate = moment().format("DD,MMM");
         setSelectedDate(currentDate);
         onChange(`${selectedMonth?.name},${stripOutDate(currentDate)}`);
     };
-    console.log({ weekdays });
+
     const handleGetSubsequentMonthDates = (monthIndex) => {
         const year = moment().format("YYYY");
 
@@ -86,7 +86,6 @@ const ReDatePicker = ({ onChange }) => {
         setMonthDates(monthDates.set(monthIndex, dates));
     };
 
-    console.log({ monthDates });
     useEffect(() => {
         handleGetDates();
         // eslint-disable-next-line
@@ -214,15 +213,10 @@ const ReDatePicker = ({ onChange }) => {
         setCurrentWeekIndex((prev) => prev + 1);
         const currentMonthdays = monthDates.get(selectedMonth?.index);
 
-        console.log(
-            currentMonthdays[currentMonthdays.length - 1],
-            weekdays[weekdays.length - 1]
-        );
         if (
             currentMonthdays[currentMonthdays.length - 1] ===
             weekdays[weekdays.length - 1]
         ) {
-            console.log("the right side");
             return handleNextMonthNavigation(selectedMonth.index, true);
         }
 
@@ -231,7 +225,6 @@ const ReDatePicker = ({ onChange }) => {
         ]);
     };
 
-    console.log("currentWeekIndex", currentWeekIndex);
     const handlePreviousWeekNavigation = (currentWeekIndex) => {
         const skip = (currentWeekIndex - 3) * 7;
         const week = (currentWeekIndex - 2) * 7;
@@ -240,9 +233,7 @@ const ReDatePicker = ({ onChange }) => {
 
         const currentMonthdays = monthDates.get(selectedMonth?.index);
 
-        console.log(currentMonthdays[0], weekdays[0]);
         if (currentMonthdays[0] === weekdays[0]) {
-            console.log("it ran in this place");
             return handlePreviousMonthNavigation(selectedMonth.index, true);
         }
 
