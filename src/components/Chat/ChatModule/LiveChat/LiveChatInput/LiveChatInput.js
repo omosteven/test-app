@@ -24,7 +24,6 @@ import { IMAGE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
 import UploadedFiles from "./UploadIcons/UploadedFiles/UploadedFiles";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
-// import RelaxedDatePicker from "components/ui/InputTypes/DatePicker/RelaxedDatePicker/RelaxedDatePicker";
 import RelaxedSelectUI from "components/ui/InputTypes/SelectUI/RelaxedSelectUI/RelaxedSelectUI";
 import DatePickerWrapper from "./DatePickerWrapper/DatePickerWrapper";
 import { datePickerStages } from "./DatePickerWrapper/enum";
@@ -57,7 +56,6 @@ const LiveChatInput = ({
     const [errorMssg, setErrorMssg] = useState("");
     const [status, setStatus] = useState();
     const [showModal, toggleModal] = useState(false);
-    const [openDatePicker, toggleDatepicker] = useState(true);
     const [loading, setLoading] = useState(false);
 
     const isDisabled = fetchingInputStatus || !allowUserInput;
@@ -333,7 +331,7 @@ const LiveChatInput = ({
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    // console.log({ request });
+
     const [datePickerStage, setDatePickerStage] = useState(DATE_VALUE);
 
     const renderBasedOnInputType = () => {
@@ -399,27 +397,13 @@ const LiveChatInput = ({
                 return (
                     <>
                         {isRelaxedTemplate ? (
-                            <>
-                                {openDatePicker && (
-                                    // <RelaxedDatePicker
-                                    //     onChange={(date) =>
-                                    //         updateRequest({
-                                    //             ...request,
-                                    //             message: date,
-                                    //         })
-                                    //     }
-                                    //     toggleDatepicker={toggleDatepicker}
-                                    //     minDate={minDate?.ruleConstraint}
-                                    //     maxDate={maxDate?.ruleConstraint}
-                                    // />
-                                    <DatePickerWrapper
-                                        stage={datePickerStage}
-                                        request={request}
-                                        updateRequest={updateRequest}
-                                        setDatePickerStage={setDatePickerStage}
-                                    />
-                                )}
-                            </>
+                            <DatePickerWrapper
+                                stage={datePickerStage}
+                                request={request}
+                                updateRequest={updateRequest}
+                                setDatePickerStage={setDatePickerStage}
+                                loading={loading}
+                            />
                         ) : (
                             <CustomDatePicker
                                 onChange={(date) =>
@@ -522,10 +506,7 @@ const LiveChatInput = ({
     const isFormElementMultiselect = formElementType === MULTISELECT;
 
     const isFinalDatePickerStage = datePickerStage === PICK_DATE;
-    // console.log({
-    //     formElementType,
-    //     datePickerStage,
-    // });
+
     return (
         <div className={`chat__input__wrapper`} ref={inputContainerRef}>
             <div

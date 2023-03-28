@@ -9,6 +9,10 @@
     padding: 0 16px;
     cursor: pointer;
 
+    &.--disable__date__picker__field {
+        pointer-events: none;
+    }
+
     .calendar__icon {
         cursor: pointer;
         margin-right: 16px;

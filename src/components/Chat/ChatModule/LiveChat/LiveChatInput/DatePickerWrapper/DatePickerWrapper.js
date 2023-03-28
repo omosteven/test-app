@@ -10,6 +10,7 @@ const DatePickerWrapper = ({
     request,
     updateRequest,
     setDatePickerStage,
+    loading,
 }) => {
     const handleDatePickerStage = (stage) => {
         setDatePickerStage(stage);
@@ -22,6 +23,7 @@ const DatePickerWrapper = ({
                     <DatePickerField
                         request={request}
                         onClick={handleDatePickerStage}
+                        loading={loading}
                     />
                 );
             case PICK_DATE:
