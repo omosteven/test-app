@@ -9,7 +9,7 @@ import {
     socket,
     SocketContext,
 } from "../../lib/socket/context/socket";
-import { setAccessToken, retriveAccessToken } from "storage/sessionStorage";
+import { retriveAccessToken } from "storage/sessionStorage";
 import { setActiveTicket } from "../../store/tickets/actions";
 import { dataQueryStatus } from "../../utils/formatHandlers";
 import { generateRandomId, getErrorMessage } from "../../utils/helper";
@@ -61,8 +61,11 @@ const Chat = () => {
 
     const queryParams = queryString.parse(window.location.search);
 
-    const isAuthCodeAvailable = queryParams?.code ? true : false;
-    const isAuthTokenAvailable = queryParams?.token ? true : false;
+    const isTicketRoutedLink =
+        window.location?.pathname === "/ticket" &&
+        queryParams?.appUserId &&
+        queryParams?.ticketId;
+
     const firstName = queryParams?.firstName || "";
     const lastName = queryParams?.lastName || "";
     const email = queryParams?.email || "";
@@ -73,7 +76,6 @@ const Chat = () => {
 
     const userToken = retriveAccessToken();
 
-    const [customerTicketId, setCustomerTicketId] = useState();
     const { defaultTemplate, defaultTheme, workspaceId, workspaceSlug } =
         useSelector((state) => state.chat.chatSettings);
 
@@ -82,29 +84,27 @@ const Chat = () => {
     const isDarkModeTheme = defaultTheme === DARK_MODE_DEFAULT;
     const isTablet = width <= 768;
 
-    const loginWithEmailLink = async () => {
-        const tickedId = queryParams?.ticketId;
-        const authToken = queryParams?.token;
-        setCustomerTicketId(tickedId);
-
-        setAccessToken(authToken);
-    };
-
-    const getCustomerAuthToken = async () => {
+    const getCustomerFromTicketLink = async () => {
         try {
             setStatus(LOADING);
             setErrorMssg();
 
-            const tickedId = queryParams?.ticketId;
-            const authCode = queryParams?.code;
+            const ticketId = queryParams?.ticketId;
+            const userId = queryParams?.appUserId;
 
-            const res = await API.get(
-                apiRoutes.getAuthToken(authCode, tickedId)
-            );
+            const res = await API.post(apiRoutes.validateTicketUser, {
+                ticketId,
+                workspaceId,
+                appUserId: userId,
+            });
 
-            if (res.status === 200) {
-                setCustomerTicketId(tickedId);
-                setAccessToken(res.data.data.token);
+            if (res.status === 201) {
+                const { data } = res.data;
+                const { ticket: userTicket } = data;
+                dispatch(setActiveTicket(userTicket));
+                pushToDashboard(data);
+                setStatus(DATAMODE);
+                getCustomerTickets(userTicket?.ticketId);
             }
         } catch (err) {
             setStatus(ERROR);
@@ -122,7 +122,6 @@ const Chat = () => {
             setStatus(LOADING);
             setErrorMssg();
             setLoading(true);
-
             const res = await API.get(apiRoutes.userTickets);
             if (res.status === 200) {
                 const tickets = res.data.data;
@@ -287,29 +286,24 @@ const Chat = () => {
     };
 
     const callHandler = () => {
-        isAuthTokenAvailable
-            ? !customerTicketId
-                ? loginWithEmailLink()
-                : getCustomerTickets(customerTicketId)
-            : isAuthCodeAvailable
-            ? customerTicketId
-                ? getCustomerTickets(customerTicketId)
-                : getCustomerAuthToken()
+        conversationId
+            ? engageConversation()
+            : isTicketRoutedLink
+            ? getCustomerFromTicketLink()
             : getCustomerTickets();
     };
 
     useEffect(() => {
         if (
             (userToken === undefined || userToken === null) &&
-            !isAuthTokenAvailable &&
-            !isAuthCodeAvailable
+            !isTicketRoutedLink
         ) {
             validateUser();
         } else {
-            conversationId ? engageConversation() : callHandler();
+            callHandler();
         }
         //eslint-disable-next-line
-    }, [customerTicketId]);
+    }, [appUserId, isTicketRoutedLink]);
 
     const handleCloseTicket = () => {
         toggleTicketActionModal(true);

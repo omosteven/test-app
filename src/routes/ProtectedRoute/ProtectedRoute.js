@@ -9,7 +9,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         window.location.pathname === "/direct" ||
         window.location.pathname === "/link" ||
         window.location.pathname === "/conversation" ||
-        window.location.search?.includes?.("token") ||
+        window.location.pathname === "/ticket" ||
         getUserAuth();
 
     const {
