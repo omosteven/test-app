@@ -16,6 +16,10 @@ const ReDatePicker = ({ onChange }) => {
     const [currentWeekIndex, setCurrentWeekIndex] = useState();
     const [selectedDate, setSelectedDate] = useState("");
 
+    const stripOutDate = (date) => {
+        return date?.split(",")[0];
+    };
+
     const handleGetDates = () => {
         const year = moment().format("YYYY");
         const month = selectedMonth?.index;
@@ -32,7 +36,7 @@ const ReDatePicker = ({ onChange }) => {
 
         let currentDay = moment(firstDayOfMonth);
         while (currentDay.isSameOrBefore(lastDayOfMonth)) {
-            dates.push(currentDay.format("DD"));
+            dates.push(currentDay.format("DD,MMM"));
             currentDay.add(1, "day");
         }
 
@@ -49,13 +53,12 @@ const ReDatePicker = ({ onChange }) => {
         setWeekdays(weekdays);
         setCurrentWeekIndex(currentWeekIndex);
 
-        const currentDate = moment().format("DD");
+        const currentDate = moment().format("DD,MMM");
         setSelectedDate(currentDate);
-        onChange(`${selectedMonth?.name},${currentDate}`);
+        onChange(`${selectedMonth?.name},${stripOutDate(currentDate)}`);
     };
-
+    console.log({ weekdays });
     const handleGetSubsequentMonthDates = (monthIndex) => {
-        console.log({ monthIndex });
         const year = moment().format("YYYY");
 
         const firstDayOfMonth = moment(
@@ -76,7 +79,7 @@ const ReDatePicker = ({ onChange }) => {
 
         let currentDay = moment(firstDayOfMonth);
         while (currentDay.isSameOrBefore(lastDayOfMonth)) {
-            dates.push(currentDay.format("DD"));
+            dates.push(currentDay.format("DD,MMM"));
             currentDay.add(1, "day");
         }
 
@@ -262,19 +265,20 @@ const ReDatePicker = ({ onChange }) => {
     const handleSelectDate = (date) => {
         setSelectedDate(date);
 
+        const strippedDate = stripOutDate(date);
         let monthValue = selectedMonth?.index;
 
-        if (isFirstWeekOfMonth && date > 7) {
+        if (isFirstWeekOfMonth && strippedDate > 7) {
             monthValue =
                 selectedMonth?.index === 11 ? 0 : selectedMonth?.index - 1;
         }
 
-        if (isLastWeekOfMonth && date < 7) {
+        if (isLastWeekOfMonth && strippedDate < 7) {
             monthValue =
                 selectedMonth?.index === 11 ? 0 : selectedMonth?.index + 1;
         }
 
-        onChange(`${months[monthValue]?.name},${date}`);
+        onChange(`${months[monthValue]?.name},${strippedDate}`);
     };
 
     return (
@@ -324,19 +328,21 @@ const ReDatePicker = ({ onChange }) => {
                                     className={`week__date   ${
                                         selectedDate === date ? "--active" : ""
                                     } ${
-                                        isFirstWeekOfMonth && date > 7
+                                        isFirstWeekOfMonth &&
+                                        stripOutDate(date) > 7
                                             ? "--gray__out__dates"
                                             : ""
                                     }
                                     ${
-                                        isLastWeekOfMonth && date < 7
+                                        isLastWeekOfMonth &&
+                                        stripOutDate(date) < 7
                                             ? "--gray__out__dates"
                                             : ""
                                     }
                                     `}
                                     key={index}
                                     onClick={() => handleSelectDate(date)}>
-                                    {date}
+                                    {stripOutDate(date)}
                                 </span>
                             ))}
                         </div>

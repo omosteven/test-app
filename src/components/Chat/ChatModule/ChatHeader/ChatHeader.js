@@ -180,12 +180,17 @@ const ChatHeader = ({
                             )}
                         </>
                     )}
-                    {canSaveConvo && (
+                    <ChatSettingsToggler
+                        isMobile={true}
+                        handleCloseTicket={handleCloseTicket}
+                        canCloseTicket={ticketId !== undefined}
+                    />
+                    {/* {canSaveConvo && (
                         <SaveChatButton
                             handleVerifyAction={handleVerifyAction}
                             showVerifyForm={showVerifyForm}
                         />
-                    )}
+                    )} */}
                 </div>
             </header>
         </div>
