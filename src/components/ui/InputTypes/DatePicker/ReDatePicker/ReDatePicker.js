@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
+import { checkArrayEquality } from "utils/helper";
 import "./ReDatePicker.scss";
 
 const ReDatePicker = ({ onChange }) => {
@@ -12,28 +13,27 @@ const ReDatePicker = ({ onChange }) => {
 
     const [monthDates, setMonthDates] = useState(new Map());
     const [weekdays, setWeekdays] = useState([]);
-    const [currentWeekIndex, setCurrentWeekIndex] = useState(2);
+    const [currentWeekIndex, setCurrentWeekIndex] = useState();
     const [selectedDate, setSelectedDate] = useState("");
 
     const handleGetDates = () => {
         const year = moment().format("YYYY");
         const month = selectedMonth?.index;
 
-        const daysInMonth = moment(
-            `${year}-${month + 1}`,
-            "YYYY-MM"
-        ).daysInMonth();
-
         const firstDayOfMonth = moment(`${year}-${month + 1}-01`, "YYYY-MM-DD")
             .startOf("month")
             .startOf("week");
 
+        const lastDayOfMonth = moment(`${year}-${month + 1}-01}`, "YYYY-MM-DD")
+            .endOf("month")
+            .endOf("week");
+
         const dates = [];
 
-        for (let i = 0; i < daysInMonth; i++) {
-            const date = moment(firstDayOfMonth).add(i, "day");
-
-            dates.push(date.format("DD"));
+        let currentDay = moment(firstDayOfMonth);
+        while (currentDay.isSameOrBefore(lastDayOfMonth)) {
+            dates.push(currentDay.format("DD"));
+            currentDay.add(1, "day");
         }
 
         const currentWeekIndex = Math.floor(
@@ -55,12 +55,8 @@ const ReDatePicker = ({ onChange }) => {
     };
 
     const handleGetSubsequentMonthDates = (monthIndex) => {
+        console.log({ monthIndex });
         const year = moment().format("YYYY");
-
-        const daysInMonth = moment(
-            `${year}-${monthIndex + 1}`,
-            "YYYY-MM"
-        ).daysInMonth();
 
         const firstDayOfMonth = moment(
             `${year}-${monthIndex + 1}-01`,
@@ -69,17 +65,25 @@ const ReDatePicker = ({ onChange }) => {
             .startOf("month")
             .startOf("week");
 
+        const lastDayOfMonth = moment(
+            `${year}-${monthIndex + 1}-01}`,
+            "YYYY-MM-DD"
+        )
+            .endOf("month")
+            .endOf("week");
+
         const dates = [];
 
-        for (let i = 0; i < daysInMonth; i++) {
-            const date = moment(firstDayOfMonth).add(i, "day");
-
-            dates.push(date.format("DD"));
+        let currentDay = moment(firstDayOfMonth);
+        while (currentDay.isSameOrBefore(lastDayOfMonth)) {
+            dates.push(currentDay.format("DD"));
+            currentDay.add(1, "day");
         }
 
         setMonthDates(monthDates.set(monthIndex, dates));
     };
 
+    console.log({ monthDates });
     useEffect(() => {
         handleGetDates();
         // eslint-disable-next-line
@@ -139,7 +143,7 @@ const ReDatePicker = ({ onChange }) => {
     const days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
 
     // months
-    const handleNextMonthNavigation = (currentMonthIndex) => {
+    const handleNextMonthNavigation = (currentMonthIndex, isWeekNavigation) => {
         const isEndOfMonthList = months.length - 1 === currentMonthIndex;
         const nextMonthIndex = isEndOfMonthList ? 0 : currentMonthIndex + 1;
         setSelectedMonth({
@@ -149,15 +153,26 @@ const ReDatePicker = ({ onChange }) => {
 
         handleGetSubsequentMonthDates(nextMonthIndex);
 
-        setCurrentWeekIndex(2);
+        let currentWeekIndex = 2;
+        let skip = 0;
+        let week = 7;
+        if (isWeekNavigation) {
+            currentWeekIndex = 3;
+            skip = 7;
+            week = 14;
+        }
+        setCurrentWeekIndex(currentWeekIndex);
         setWeekdays([
             ...monthDates
                 .get(selectedMonth?.index === 11 ? 0 : selectedMonth?.index + 1)
-                ?.slice(0, 7),
+                ?.slice(skip, week),
         ]);
     };
 
-    const handlePreviousMonthNavigation = (currentMonthIndex) => {
+    const handlePreviousMonthNavigation = (
+        currentMonthIndex,
+        isWeekNavigation
+    ) => {
         const isBeginOfMonthList = currentMonthIndex === 0;
         const previousMonthIndex = isBeginOfMonthList
             ? months.length - 1
@@ -170,13 +185,23 @@ const ReDatePicker = ({ onChange }) => {
         });
         handleGetSubsequentMonthDates(previousMonthIndex);
 
-        setCurrentWeekIndex(3);
+        const currentMonth = monthDates.get(
+            selectedMonth?.index === 0 ? 11 : selectedMonth?.index - 1
+        );
 
-        setWeekdays([
-            ...monthDates
-                .get(selectedMonth?.index === 0 ? 11 : selectedMonth?.index - 1)
-                ?.slice(21, 28),
-        ]);
+        let currentWeekIndex = 2;
+        let skip = 0;
+        let week = 7;
+
+        if (isWeekNavigation) {
+            currentWeekIndex = 5;
+            skip = currentMonth?.length - 14;
+            week = currentMonth?.length - 7;
+        }
+
+        setCurrentWeekIndex(currentWeekIndex);
+
+        setWeekdays([...currentMonth?.slice(skip, week)]);
     };
 
     const handleNextWeekNavigation = (currentWeekIndex) => {
@@ -186,11 +211,16 @@ const ReDatePicker = ({ onChange }) => {
         setCurrentWeekIndex((prev) => prev + 1);
         const currentMonthdays = monthDates.get(selectedMonth?.index);
 
+        console.log(
+            currentMonthdays[currentMonthdays.length - 1],
+            weekdays[weekdays.length - 1]
+        );
         if (
             currentMonthdays[currentMonthdays.length - 1] ===
             weekdays[weekdays.length - 1]
         ) {
-            return handleNextMonthNavigation(selectedMonth.index);
+            console.log("the right side");
+            return handleNextMonthNavigation(selectedMonth.index, true);
         }
 
         setWeekdays([
@@ -198,16 +228,19 @@ const ReDatePicker = ({ onChange }) => {
         ]);
     };
 
+    console.log("currentWeekIndex", currentWeekIndex);
     const handlePreviousWeekNavigation = (currentWeekIndex) => {
-        const skip = (currentWeekIndex - 1) * 7;
-        const week = currentWeekIndex * 7;
+        const skip = (currentWeekIndex - 3) * 7;
+        const week = (currentWeekIndex - 2) * 7;
 
         setCurrentWeekIndex((prev) => prev - 1);
 
         const currentMonthdays = monthDates.get(selectedMonth?.index);
 
+        console.log(currentMonthdays[0], weekdays[0]);
         if (currentMonthdays[0] === weekdays[0]) {
-            return handlePreviousMonthNavigation(selectedMonth.index);
+            console.log("it ran in this place");
+            return handlePreviousMonthNavigation(selectedMonth.index, true);
         }
 
         setWeekdays([
@@ -215,12 +248,34 @@ const ReDatePicker = ({ onChange }) => {
         ]);
     };
 
+    const currentMonth = monthDates.get(selectedMonth?.index);
+
+    const isFirstWeekOfMonth = checkArrayEquality(
+        weekdays,
+        currentMonth?.slice(0, 7)
+    );
+    const isLastWeekOfMonth = checkArrayEquality(
+        weekdays,
+        currentMonth?.slice(currentMonth?.length - 7, currentMonth?.length)
+    );
+
     const handleSelectDate = (date) => {
         setSelectedDate(date);
-        onChange(`${selectedMonth?.name},${date}`);
-    };
 
-    const isBeginingOfANewMonth = weekdays.includes("01");
+        let monthValue = selectedMonth?.index;
+
+        if (isFirstWeekOfMonth && date > 7) {
+            monthValue =
+                selectedMonth?.index === 11 ? 0 : selectedMonth?.index - 1;
+        }
+
+        if (isLastWeekOfMonth && date < 7) {
+            monthValue =
+                selectedMonth?.index === 11 ? 0 : selectedMonth?.index + 1;
+        }
+
+        onChange(`${months[monthValue]?.name},${date}`);
+    };
 
     return (
         <div className='re__date__picker__container'>
@@ -269,8 +324,13 @@ const ReDatePicker = ({ onChange }) => {
                                     className={`week__date   ${
                                         selectedDate === date ? "--active" : ""
                                     } ${
-                                        isBeginingOfANewMonth && date - 1 > 7
-                                            ? "--previous__dates"
+                                        isFirstWeekOfMonth && date > 7
+                                            ? "--gray__out__dates"
+                                            : ""
+                                    }
+                                    ${
+                                        isLastWeekOfMonth && date < 7
+                                            ? "--gray__out__dates"
                                             : ""
                                     }
                                     `}

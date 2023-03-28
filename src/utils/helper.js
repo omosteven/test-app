@@ -319,3 +319,7 @@ export const getDateAndMonth = (reqDate) => {
         month,
     };
 };
+
+export const checkArrayEquality = (a, b) => {
+    return a?.length === b?.length && a.every((val) => b?.includes(val));
+};
