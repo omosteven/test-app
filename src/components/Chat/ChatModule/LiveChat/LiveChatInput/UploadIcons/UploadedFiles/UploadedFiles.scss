@@ -41,6 +41,10 @@
             font-size: 18px;
             line-height: 26px;
             color: $dark__mode__text__theme__color;
+
+            #{$white__mode__theme__selector} {
+                color :$dark__mode__theme__grey__color;
+            }
         }
         &__icon {
             cursor: pointer;

@@ -22,9 +22,14 @@
         display: flex;
         align-items: center;
         gap: 0.92rem;
+        justify-content: center;
+
+        height: 100%;
         &__label {
             display: flex;
-            margin-top: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 14px;
             margin-bottom: 10px;
             gap: 19px;
             cursor: pointer;

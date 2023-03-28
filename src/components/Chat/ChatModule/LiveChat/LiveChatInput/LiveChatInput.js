@@ -630,6 +630,21 @@ const LiveChatInput = ({
                             ) : (
                                 <>
                                     <div className='chat__input--group--inputs'>
+                                        {!isRelaxedTemplate && (
+                                            <UploadIcons
+                                                upload={uploads}
+                                                updateUpload={updateUploads}
+                                                isDisabled={isDisabled}
+                                                setErrors={setErrors}
+                                                showModal={showModal}
+                                                toggleModal={toggleModal}
+                                                handleUpload={handleUpload}
+                                                selectedMedia={selectedMedia}
+                                                currentFormElement={
+                                                    currentFormElement
+                                                }
+                                            />
+                                        )}
                                         {renderBasedOnInputType()}
                                     </div>
                                     <Button

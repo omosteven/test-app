@@ -6,7 +6,11 @@
     border-radius: 16px;
 
     &.dot__loader__background {
-        background: $dark__mode__theme__background__color;
+        background: $primary__theme_color;
+        color: $light__theme_color !important;
+        span {
+            background-color: $light__theme_color !important;
+        }
     }
 
     span {
