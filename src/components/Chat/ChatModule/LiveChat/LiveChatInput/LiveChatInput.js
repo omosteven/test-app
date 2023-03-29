@@ -222,17 +222,19 @@ const LiveChatInput = ({
     };
 
     const sendNewMessage = () => {
-        handleNewMessage(request, clearUserInput);
-
         if (
             request?.fileAttachments[0]?.fileAttachmentUrl ||
             isDateFormElement ||
-            isFormElementMultiselect
+            isFormElementMultiselect ||
+            request?.message?.length > 0
         ) {
             setLoading(true);
         } else {
             setLoading(false);
+            return;
         }
+
+        handleNewMessage(request, clearUserInput);
         setErrors((prev) => ({ ...prev, file: "" }));
     };
 
