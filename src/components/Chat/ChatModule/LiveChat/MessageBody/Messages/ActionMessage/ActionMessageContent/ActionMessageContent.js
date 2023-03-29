@@ -20,6 +20,7 @@ const ActionMessageContent = ({
     handleVerifyAction,
     requestRatings,
     ticketId,
+    messages,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -41,6 +42,12 @@ const ActionMessageContent = ({
     const showCautionIcon =
         (isRelaxedTemplate && messageActionType === INPUT_NEEDED) ||
         isWorkModeTemplate;
+
+    const lastMessage = messages[messages.length - 1];
+
+    const showAddEmailAddress =
+        messageActionType === ADD_EMAIL_ADDRESS &&
+        lastMessage?.messageActionType === ADD_EMAIL_ADDRESS;
 
     return (
         <>
@@ -86,7 +93,7 @@ const ActionMessageContent = ({
                     )}
                 </div>
             </div>
-            {messageActionType === ADD_EMAIL_ADDRESS && (
+            {showAddEmailAddress && (
                 <ActionAddEmail handleVerifyAction={handleVerifyAction} />
             )}
         </>

@@ -86,6 +86,7 @@ const MessagesLayout = ({
                                 openPreviewModal={openPreviewModal}
                                 status={status}
                                 mssgSendStatus={mssgSendStatus}
+                                messages={messages}
                             />
                         ) : messageType === SUCCESS ? (
                             <SuccessMessage data={message} />

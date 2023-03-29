@@ -76,7 +76,7 @@ const CustomerVerification = ({
     const renderBasedOnStatus = () => {
         switch (status) {
             case LOADING:
-                return <DotLoader background={false} />;
+                return <DotLoader />;
             case DATAMODE:
                 return <>{renderBasedOnStage()}</>;
             case ERROR:
