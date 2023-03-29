@@ -47,7 +47,6 @@ const CustomerVerification = ({
         setinitialStepRequest(data);
         setVerifyStage(verifystages.final);
     };
-    console.log({ initialStepRequest });
 
     const linkEmail = async () => {
         try {
@@ -76,7 +75,7 @@ const CustomerVerification = ({
     const renderBasedOnStatus = () => {
         switch (status) {
             case LOADING:
-                return <DotLoader background={false} />;
+                return <DotLoader />;
             case DATAMODE:
                 return <>{renderBasedOnStage()}</>;
             case ERROR:
@@ -131,6 +130,7 @@ const CustomerVerification = ({
                     <CustomerVerifySuccess
                         closeModal={handleVerifyAction}
                         messages={messages}
+                        redirectUser={isLinkEmail}
                     />
                 );
 
@@ -142,7 +142,7 @@ const CustomerVerification = ({
     return (
         <FadeIn location={verifyStage}>
             <div className='customer-verification signin'>
-                {!isSaveConvoAction && (
+                {!isSaveConvoAction && !isLinkEmail && (
                     <div
                         className='customer-verify__icon'
                         onClick={() => handleVerifyAction()}>

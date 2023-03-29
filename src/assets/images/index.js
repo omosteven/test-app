@@ -60,6 +60,8 @@ const imageLinks = {
 
         save: "https://res.cloudinary.com/metacare/image/upload/v1675265111/icons/Vector_zhavz8.svg",
         close: "https://res.cloudinary.com/metacare/image/upload/v1676971243/icons/Shape_jkbaea.svg",
+        calendar:
+            "https://res.cloudinary.com/metacare/image/upload/v1679568105/fi-rr-calendar_xa1fhr.svg",
     },
 };
 

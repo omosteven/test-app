@@ -21,6 +21,7 @@ const ActionMessage = ({
     messagesDepth,
     openPreviewModal,
     mssgOptionLoading,
+    messages,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -86,6 +87,7 @@ const ActionMessage = ({
                     messageHeader={messageHeader}
                     requestRatings={requestRatings}
                     ticketId={ticketId}
+                    messages={messages}
                 />
 
                 {displayAverageResponseTime &&

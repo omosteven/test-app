@@ -24,9 +24,11 @@ import { IMAGE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
 import UploadedFiles from "./UploadIcons/UploadedFiles/UploadedFiles";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
-import RelaxedDatePicker from "components/ui/InputTypes/DatePicker/RelaxedDatePicker";
 import RelaxedSelectUI from "components/ui/InputTypes/SelectUI/RelaxedSelectUI/RelaxedSelectUI";
+import DatePickerWrapper from "./DatePickerWrapper/DatePickerWrapper";
+import { datePickerStages } from "./DatePickerWrapper/enum";
 
+const { DATE_VALUE, PICK_DATE } = datePickerStages;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
 const { TEXT, NUMERIC, LONG_TEXT, DATE, MULTISELECT } = formInputTypes;
 
@@ -54,7 +56,6 @@ const LiveChatInput = ({
     const [errorMssg, setErrorMssg] = useState("");
     const [status, setStatus] = useState();
     const [showModal, toggleModal] = useState(false);
-    const [openDatePicker, toggleDatepicker] = useState(true);
     const [loading, setLoading] = useState(false);
 
     const isDisabled = fetchingInputStatus || !allowUserInput;
@@ -221,17 +222,19 @@ const LiveChatInput = ({
     };
 
     const sendNewMessage = () => {
-        handleNewMessage(request, clearUserInput);
-
         if (
             request?.fileAttachments[0]?.fileAttachmentUrl ||
             isDateFormElement ||
-            isFormElementMultiselect
+            isFormElementMultiselect ||
+            request?.message?.length > 0
         ) {
             setLoading(true);
         } else {
             setLoading(false);
+            return;
         }
+
+        handleNewMessage(request, clearUserInput);
         setErrors((prev) => ({ ...prev, file: "" }));
     };
 
@@ -331,6 +334,8 @@ const LiveChatInput = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const [datePickerStage, setDatePickerStage] = useState(DATE_VALUE);
+
     const renderBasedOnInputType = () => {
         const { formElementPlaceholder, formElementOptions, options, rules } =
             currentFormElement || {};
@@ -384,6 +389,9 @@ const LiveChatInput = ({
                         disabled={
                             isDisabled || inputType === IMAGE || disableInput
                         }
+                        showPrefix={inputType === NUMERIC}
+                        // dynamic value
+                        prefix={"NGN"}
                     />
                 );
 
@@ -391,21 +399,13 @@ const LiveChatInput = ({
                 return (
                     <>
                         {isRelaxedTemplate ? (
-                            <>
-                                {openDatePicker && (
-                                    <RelaxedDatePicker
-                                        onChange={(date) =>
-                                            updateRequest({
-                                                ...request,
-                                                message: date,
-                                            })
-                                        }
-                                        toggleDatepicker={toggleDatepicker}
-                                        minDate={minDate?.ruleConstraint}
-                                        maxDate={maxDate?.ruleConstraint}
-                                    />
-                                )}
-                            </>
+                            <DatePickerWrapper
+                                stage={datePickerStage}
+                                request={request}
+                                updateRequest={updateRequest}
+                                setDatePickerStage={setDatePickerStage}
+                                loading={loading}
+                            />
                         ) : (
                             <CustomDatePicker
                                 onChange={(date) =>
@@ -481,6 +481,10 @@ const LiveChatInput = ({
         }
     };
 
+    const handleDatePickerStage = () => {
+        setDatePickerStage(DATE_VALUE);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         sendNewMessage();
@@ -502,6 +506,8 @@ const LiveChatInput = ({
     const isFormElementImage = formElementType === IMAGE;
 
     const isFormElementMultiselect = formElementType === MULTISELECT;
+
+    const isFinalDatePickerStage = datePickerStage === PICK_DATE;
 
     return (
         <div className={`chat__input__wrapper`} ref={inputContainerRef}>
@@ -576,7 +582,7 @@ const LiveChatInput = ({
                         <div className='chat__input--group'>
                             {isRelaxedTemplate &&
                             (isFormElementImage ||
-                                isDateFormElement ||
+                                isFinalDatePickerStage ||
                                 isFormElementMultiselect) ? (
                                 <>
                                     {isDateFormElement ||
@@ -665,11 +671,11 @@ const LiveChatInput = ({
                     )}
                     {isRelaxedTemplate &&
                         (isFormElementImage ||
-                            isDateFormElement ||
+                            isFinalDatePickerStage ||
                             isFormElementMultiselect) && (
                             <Button
-                                type='submit'
-                                text={"Submit"}
+                                type={isDateFormElement ? "button" : "submit"}
+                                text={isDateFormElement ? "Save" : "Submit"}
                                 classType='primary'
                                 otherClass={`chat__input__relaxed__button ${
                                     isDateFormElement
@@ -686,6 +692,9 @@ const LiveChatInput = ({
                                         fetchingInputStatus ||
                                         status === LOADING) &&
                                     !(mssgSendStatus === ERROR)
+                                }
+                                onClick={
+                                    isDateFormElement && handleDatePickerStage
                                 }
                             />
                         )}

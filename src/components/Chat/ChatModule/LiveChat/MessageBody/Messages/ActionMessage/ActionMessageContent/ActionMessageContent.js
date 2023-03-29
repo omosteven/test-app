@@ -7,6 +7,7 @@ import { ADD_EMAIL_ADDRESS, INPUT_NEEDED } from "../../enums";
 import ActionAddEmail from "./ActionAddEmail/ActionAddEmail";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { deleteTicketsMessages } from "store/tickets/actions";
+import { validateEmail } from "utils/helper";
 
 const { WORKMODE, RELAXED } = defaultTemplates;
 
@@ -20,10 +21,13 @@ const ActionMessageContent = ({
     handleVerifyAction,
     requestRatings,
     ticketId,
+    messages,
 }) => {
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
+    const { activeTicket } = useSelector((state) => state.tickets);
+
     const dispatch = useDispatch();
 
     const handleRemoveReminder = () => {
@@ -41,6 +45,13 @@ const ActionMessageContent = ({
     const showCautionIcon =
         (isRelaxedTemplate && messageActionType === INPUT_NEEDED) ||
         isWorkModeTemplate;
+
+    const lastMessage = messages[messages.length - 1];
+
+    const showAddEmailAddress =
+        messageActionType === ADD_EMAIL_ADDRESS &&
+        lastMessage?.messageActionType === ADD_EMAIL_ADDRESS &&
+        !validateEmail(activeTicket?.customer?.email);
 
     return (
         <>
@@ -86,7 +97,7 @@ const ActionMessageContent = ({
                     )}
                 </div>
             </div>
-            {messageActionType === ADD_EMAIL_ADDRESS && (
+            {showAddEmailAddress && (
                 <ActionAddEmail handleVerifyAction={handleVerifyAction} />
             )}
         </>

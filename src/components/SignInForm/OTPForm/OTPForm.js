@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Button, ErrorDialog } from "../../ui";
 import PinInput from "react-pin-input";
@@ -28,8 +27,6 @@ const OTPForm = ({
     const [loading, setLoading] = useState(false);
     const [request, updateRequest] = useState();
     const [deviceToken, setDeviceToken] = useState();
-
-    const history = useHistory();
 
     const validateSessionOtp = async () => {
         try {
@@ -74,7 +71,8 @@ const OTPForm = ({
                 const { data } = res.data;
 
                 pushToDashboard(data);
-                history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+                handleSuccess?.();
+                // history.push(`/chat?workspaceSlug=${workspaceSlug}`);
             }
         } catch (err) {
             setErrorMsg(getErrorMessage(err));
