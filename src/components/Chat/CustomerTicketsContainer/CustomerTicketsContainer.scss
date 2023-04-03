@@ -17,7 +17,6 @@
             }
         }
 
-
         #{$dark__mode__theme__selector} {
             background: $dark__mode__theme__background__color;
         }
@@ -30,11 +29,14 @@
         }
         
         .customer__tickets--container,
-        .mCustomScrollBox,
         .customer__ticket {
             width: 100% !important;
         }
-        .mCustomScrollBox {
+     
+        .customer__tickets--container{
+            height: 60%;
+            margin: 0;
+            margin-bottom: 2rem;
             overflow-y: auto;
 
             &::-webkit-scrollbar {
@@ -44,11 +46,6 @@
             &::-webkit-scrollbar-thumb {
                 background: rgba(0,0,0,0.1)
             }
-        }
-        .customer__tickets--container{
-            height: 60%;
-            margin: 0;
-            margin-bottom: 2rem;
 
             @include media("<=medium-screen") { 
                 #{$relaxed__mode__template__selector} {
@@ -91,7 +88,7 @@
                 }
             }
         }
-        .customer__tickets--container .mCSB_container {
+        .customer__tickets--container {
             flex-direction: column;
 
             @include media("<=medium-screen") { 
