@@ -1,3 +1,4 @@
+import React, { useContext, useEffect, useState } from "react";
 import {
     appMessageUserTypes,
     messageTypes,
@@ -5,7 +6,6 @@ import {
 } from "components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
 import { SocketContext } from "lib/socket/context/socket";
 import { CLOSED_TICKET } from "lib/socket/events";
-import { useContext, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ReactSVG } from "react-svg";
 import { saveTicketsMessages } from "store/tickets/actions";
@@ -14,6 +14,7 @@ import TicketStatus from "../common/TicketStatus/TicketStatus";
 import { AgentImage } from "components/ui";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { useWindowSize } from "utils/hooks";
+import { timeSince } from "utils/helper";
 
 const { ACTION_INFO } = messageTypes;
 const { RELAXED, WORKMODE } = defaultTemplates;
@@ -30,6 +31,13 @@ const Ticket = ({
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
+    const { conversationBreakers } = useSelector((state) => state.chat);
+    const { ticketsMessages } = useSelector((state) => state.tickets);
+    const messages = ticketsMessages?.filter(
+        (item) => item?.ticketId === ticketId
+    );
+    const [lastMessage, setLastMessage] = useState({});
+
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
 
@@ -37,12 +45,21 @@ const Ticket = ({
 
     const isTablet = width <= 768;
 
-    const { conversationBreakers } = useSelector((state) => state.chat);
+    const lastActivitySince = timeSince(lastMessage?.deliveryDate)?.replace(
+        " ",
+        ""
+    );
 
     const getConvoBreaker = (actionBranchType) => {
         return conversationBreakers?.find(
             (x) => x.actionBranchType === actionBranchType
         );
+    };
+
+    const getTicketLastMessage = () => {
+        const lastMessage = messages[messages.length - 1];
+
+        setLastMessage(lastMessage);
     };
 
     const handleTicketClosure = (ticketStr) => {
@@ -90,6 +107,11 @@ const Ticket = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    useEffect(() => {
+        getTicketLastMessage();
+        // eslint-disable-next-line
+    }, [ticketsMessages]);
+
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORKMODE;
 
@@ -115,9 +137,11 @@ const Ticket = ({
                         />
                     ) : (
                         isRelaxedTemplate && (
-                            // active
-                            <span className='ticket__last__message'>
-                                I think I might have an issuedffdf fdfdff f...
+                            <span
+                                className={`ticket__last__message ${
+                                    isActive ? "active" : ""
+                                }`}>
+                                {lastMessage?.messageContent}
                             </span>
                         )
                     )}
@@ -135,7 +159,9 @@ const Ticket = ({
             </div>
             {isRelaxedTemplate && (
                 <div className='ticket__metadata'>
-                    <span className='ticket__timestamp'>10mins</span>
+                    <span className='ticket__timestamp'>
+                        {lastActivitySince}
+                    </span>
                     <span className='new__ticket__message'>1</span>
                 </div>
             )}
