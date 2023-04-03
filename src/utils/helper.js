@@ -265,6 +265,13 @@ export const getCurrentFormInputRules = (rules, inputType) => {
     return { ...validationRules, pattern };
 };
 
+export const getNumberPrefix = (rules) => {
+    const rule = rules?.find(
+        (rule) => rule?.baseFormRule?.formElementRuleCode === "number02"
+    );
+    return rule?.ruleConstraint;
+};
+
 export const getURLPattern = () => {
     //eslint-disable-next-line
     return /^$|(http(s)?:\/\/.)?(\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g;

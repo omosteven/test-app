@@ -11,6 +11,7 @@ import { Button } from "../../../../ui";
 import {
     appMessageUserTypes,
     messageTypes,
+    INPUT_NEEDED,
 } from "../../LiveChat/MessageBody/Messages/enums";
 
 const { DEFAULT, BRANCH, FORM_REQUEST, CONVERSATION, ACTION_INFO } =
@@ -76,7 +77,8 @@ const ChangeOption = ({
     };
 
     const disableChangeChoice =
-        lastMessage?.messageType === ACTION_INFO ||
+        (lastMessage?.messageType === ACTION_INFO &&
+            lastMessage?.messageActionType !== INPUT_NEEDED) ||
         lastMessage?.messageType === FORM_REQUEST ||
         lastMessage?.messageType === DEFAULT ||
         ticketPhase === ISSUE_DISCOVERY ||
