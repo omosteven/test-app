@@ -1,83 +1,62 @@
 import React, { useEffect } from "react";
-import $ from 'jquery';
-import 'malihu-custom-scrollbar-plugin';
-import 'malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css';
-require('jquery-mousewheel');
 
-export const SmothScrollContentHorizontal = ({ children, activeElement, className, tag, ID, selector, extraProps }) => {
+export const SmothScrollContentHorizontal = ({
+    children,
+    selector,
+    axis = "x",
+    activeElement,
+    className,
+    parentScrollId,
+    trigger,
+}) => {
+    const smoothScrollEffect = () => {
+        let previousTotalHeight = 0;
 
-    // const Tag = ({ label, children, ...props }) => React.createElement((label ? label : "div"), props, children)
+        let parentScrollContainer = document.getElementById(parentScrollId);
+        let scrollContainerElement = document.getElementById(selector);
 
-    const loopDuration = 2000; 
-    const _autoScroll = (to) => {
-        try {
-            if (to) {
-                $(`${selector}`).mCustomScrollbar("scrollTo", to, { scrollInertia: loopDuration / 2, easing: "easeInOutSmooth" });
+        for (
+            let scrollItemIndex = 0;
+            scrollItemIndex < scrollContainerElement?.children?.length;
+            scrollItemIndex++
+        ) {
+            const currentElement =
+                scrollContainerElement?.children[scrollItemIndex];
+            const isElementActive =
+                currentElement?.className?.includes("active");
+            if (isElementActive) {
+                break;
             }
-        } catch (err) {
-            
+            if (axis === "y") {
+                previousTotalHeight += currentElement.offsetHeight;
+            } else {
+                previousTotalHeight += currentElement.offsetWidth;
+            }
         }
 
-    }
-
-    const runOnClient = (func) => {
-        if (typeof window !== "undefined") {
-            if (window.document.readyState === "loading") {
-                window.addEventListener("load", func);
-            } else {
-                func();
-            }
+        if (axis === "y") {
+            parentScrollContainer.scrollTo({
+                top: previousTotalHeight,
+                behavior: "smooth",
+            });
+        } else {
+            parentScrollContainer.scrollTo({
+                left: previousTotalHeight,
+                behavior: "smooth",
+            });
         }
     };
 
-    const smoothScrollEffect = () => {
-        try {
-            $(`${selector}`).mCustomScrollbar({
-                theme: "minimal-dark",
-                callbacks: {//
-                    onInit: function () {
-                        setTimeout(function () {
-                            if (activeElement) {
-                                runOnClient(() => _autoScroll(`#${activeElement}`));
-                            }
-
-                        }, 1000);
-                    }
-                    // onTotalScroll:function(){
-                    //   if($(this).data("mCS").trigger==="external"){
-                    //     _autoScroll("left");
-                    //   }
-                    // },
-                    // onTotalScrollBack:function(){
-                    //   if($(this).data("mCS").trigger==="external" && totalLoops){
-                    //     _autoScroll("right");
-                    //     totalLoops--
-                    //   }
-                    // }
-                },
-                ...extraProps
-            });
-        } catch (error) {
-            
-
-        }
-
-    }
-
     useEffect(() => {
-        runOnClient(() => smoothScrollEffect())
-        if (activeElement) {
-            runOnClient(() => _autoScroll(`#${activeElement}`));
+        if (activeElement && parentScrollId && selector) {
+            smoothScrollEffect();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [activeElement])
+        // eslint-disable-next-line
+    }, [activeElement, parentScrollId, selector, trigger]);
 
     return (
-        <div
-            // label={div}
-            className={className}
-            id={`${ID}`}>
+        <div id={selector} className={className}>
             {children}
         </div>
-    )
-}
+    );
+};
