@@ -9,17 +9,16 @@ const CustomerTickets = ({
     handleTicketSelect,
     closeTicket,
     showChatMenu,
-    getCustomerTickets
+    getCustomerTickets,
 }) => {
     return (
         <SmothScrollContentHorizontal
-            ID={"tickets-list"}
+            selector='tickets-list'
+            parentScrollId={"tickets-list"}
             activeElement={selectedTicket?.ticketId}
+            axis={showChatMenu ? "y" : "x"}
             className={`customer__tickets--container`}
-            selector={"#tickets-list"}
-            extraProps={{
-                axis: showChatMenu ? "y" : "x",
-            }}>
+            trigger={showChatMenu}>
             <>
                 {tickets.map((item, index) => {
                     return (

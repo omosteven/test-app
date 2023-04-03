@@ -404,7 +404,7 @@ const LiveChatInput = ({
                                 request={request}
                                 updateRequest={updateRequest}
                                 setDatePickerStage={setDatePickerStage}
-                                loading={loading}
+                                disabled={disableInput}
                             />
                         ) : (
                             <CustomDatePicker
@@ -686,7 +686,11 @@ const LiveChatInput = ({
                                         ? "chat__input__relaxed__hide-button"
                                         : ""
                                 } `}
-                                loading={loading && !(mssgSendStatus === ERROR)}
+                                loading={
+                                    isFinalDatePickerStage
+                                        ? disableInput
+                                        : loading && !(mssgSendStatus === ERROR)
+                                }
                                 disabled={
                                     (btnDisabled ||
                                         fetchingInputStatus ||
