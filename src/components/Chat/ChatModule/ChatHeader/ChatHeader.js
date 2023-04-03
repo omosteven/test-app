@@ -180,7 +180,6 @@ const ChatHeader = ({
                             )}
                         </>
                     )}
-
                     {canSaveConvo && (
                         <SaveChatButton
                             handleVerifyAction={handleVerifyAction}

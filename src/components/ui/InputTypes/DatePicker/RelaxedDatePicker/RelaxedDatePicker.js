@@ -25,7 +25,9 @@ const RelaxedDatePicker = ({
                     />
                 </span> */}
             </div>
-            <div className='relaxed-date-picker__date_segment'>
+            <div
+            // className='relaxed-date-picker__date_segment'
+            >
                 <DatePicker
                     open={true}
                     onChange={(date) => {
@@ -34,7 +36,7 @@ const RelaxedDatePicker = ({
                         onChange(dateString);
                         setFormattedDate(getDateAndMonth(date));
                     }}
-                    className='relaxed-date-picker__date'
+                    // className='relaxed-date-picker__date'
                     placeholderText='Choose a date'
                     popperPlacement='bottom'
                     selected={selectedDate}
@@ -42,6 +44,13 @@ const RelaxedDatePicker = ({
                     {...rest}
                     minDate={new Date(minDate)}
                     maxDate={new Date(maxDate)}
+                    //
+                    // includeDateIntervals?: Array<{ start: Date; end: Date }> | undefined;
+                    // inline={true}
+
+                    showWeekNumbers
+                    dateFormat='MMMM dd'
+                    filterDate={(date) => date.getDay() === 1}
                 />
             </div>
             <div className='relaxed-date-picker__values'>

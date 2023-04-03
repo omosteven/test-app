@@ -20,7 +20,7 @@ const SaveChatButton = ({ handleVerifyAction, showVerifyForm }) => {
                         src={
                             showVerifyForm
                                 ? imageLinks.svg.close
-                                : imageLinks.svg.save
+                                : imageLinks.svg.add
                         }
                         className='save-chat__icon'
                     />

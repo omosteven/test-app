@@ -6,7 +6,6 @@ import { getErrorMessage } from "utils/helper";
 import PinnedConversation from "./PinnedConversation/PinnedConversation";
 import { dataQueryStatus } from "utils/formatHandlers";
 import { DotLoader } from "components/ui";
-import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import ErrorView from "components/common/ErrorView/ErrorView";
 import {
     storePinnedConversations,
@@ -15,7 +14,6 @@ import {
 import "./PinnedConversations.scss";
 
 const { LOADING, ERROR, DATAMODE, NULLMODE } = dataQueryStatus;
-const { WORKMODE } = defaultTemplates;
 
 const PinnedConversations = ({ title, routeToChat }) => {
     const storedPinnedConversations = getStoredPinnedConversations() || [];
@@ -27,7 +25,6 @@ const PinnedConversations = ({ title, routeToChat }) => {
     );
     const [errorMssg, setErrorMssg] = useState("");
     const { workspaceId } = useSelector((state) => state.chat.chatSettings);
-    const { defaultTemplate } = useSelector((state) => state.chat.chatSettings);
 
     const getPinnedConversations = async () => {
         try {
@@ -62,8 +59,6 @@ const PinnedConversations = ({ title, routeToChat }) => {
         }
         //eslint-disable-next-line
     }, []);
-
-    const isWorkModeTemplate = defaultTemplate === WORKMODE;
 
     const renderBasedOnStatus = () => {
         switch (status) {

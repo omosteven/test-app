@@ -1,0 +1,48 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - dev
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      id-token: write
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      # Install node version 12
+      - uses: actions/setup-node@v2-beta
+        with:
+          node-version: '16'
+
+      # Install npm packages
+      - name: Build
+        run: |  
+          touch .env
+          echo "$ENV_FILE" > .env
+          cat .env
+          yarn install
+          yarn build
+        shell: bash
+        env:
+          ENV_FILE : ${{ secrets.ENV_FILE }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: "arn:aws:iam::718556592310:role/github-deploy-role-Role-OMRMO5SQ3CON"
+
+      - name: Deploy
+        run: |
+          aws s3 sync ./build  s3://$AWS_ARTIFACT_BUCKET_NAME --region $AWS_REGION
+          aws cloudfront create-invalidation --distribution-id $AWS_CLOUDFRONT_DISTRIBUTION_ID --paths "/*" --region $AWS_REGION
+        env:
+          AWS_ARTIFACT_BUCKET_NAME: ${{ secrets.AWS_ARTIFACT_BUCKET_NAME }}
+          AWS_CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}

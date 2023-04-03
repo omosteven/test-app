@@ -1,26 +1,4 @@
-// @import "assets/scss/_include-media-lib/include-media";
-
-// .upload {
-//     margin-bottom: 0.938rem;
-    
-//     &--icons {
-//         display: flex;
-//         align-items: center;
-//         gap: 0.92rem;
-    
-//         svg {
-//             cursor: pointer;
-    
-//             @include media("<=medium-screen") {
-//                 height: 0.917rem;
-//                 width: 0.917rem;
-//             }
-//         }
-//     }
-// }
-
-
-
+@import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
 .upload {
@@ -31,21 +9,38 @@
         line-height: 26px;
         display: flex;
         align-items: center;
-        color: #d5d7d8;
+
+        #{$dark__mode__theme__selector} {
+            color: $dark__mode__text__theme__color;
+        }
+
+        #{$white__mode__theme__selector} {
+           color: $dark__mode__theme__grey__color;
+        }
     }
     &--icons {
         display: flex;
         align-items: center;
         gap: 0.92rem;
+        justify-content: center;
+
+        height: 100%;
         &__label {
             display: flex;
-            margin-top: 20px;
-            margin-bottom: 10px;
+            justify-content: center;
+            align-items: center;
+            margin-top: 14px;
             gap: 19px;
             cursor: pointer;
         }
         svg {
             cursor: pointer;
+
+            path {
+                #{$white__mode__theme__selector} {
+                   fill: $dark__mode__theme__grey__color;
+                }
+            }
 
             @include media("<=medium-screen") {
                 height: 0.917rem;

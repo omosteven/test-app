@@ -83,7 +83,7 @@ const UploadIcons = ({
                 <AttachmentInput
                     id='file'
                     src={icon ? icon : imageLinks?.svg?.attachment}
-                    accept='.pdf,.doc,.docx,video/*,image/png,image/jpeg,image/jpg'
+                    accept='.pdf,.doc,.docx,image/png,image/jpeg,image/jpg'
                     onChange={handleFileEvent}
                     disabled={isDisabled}
                     file={upload}

@@ -1,0 +1,67 @@
+@import "assets/scss/master";
+
+.date__picker__field {
+    display: flex;
+    align-items: center;
+    height: 54px;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 16px;
+    cursor: pointer;
+
+    &.--disable__date__picker__field {
+        pointer-events: none;
+    }
+
+    .calendar__icon {
+        cursor: pointer;
+        margin-right: 16px;
+
+        svg {
+            g {
+                path {
+                    #{$white__mode__theme__selector} {
+                        fill:  $black__theme_color;
+                    }
+                }
+            }
+        }
+    }
+
+    .date__picker__value {
+        padding: 16px;
+        width: 100%;
+
+        #{$dark__mode__theme__selector} {
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #{$white__mode__theme__selector} {
+            border-right: 1px solid $border__theme_color;
+        }
+
+        &:not(:last-of-type) {
+            #{$dark__mode__theme__selector} {
+                border-left: 1px solid rgba(255, 255, 255, 0.1);
+            }
+
+            #{$white__mode__theme__selector} {
+                border-left: 1px solid $border__theme_color;
+            }
+        }
+
+        &__text {
+            font-size: 16px;
+            line-height: 26px;
+            text-align: center;
+
+            #{$dark__mode__theme__selector} {
+                color: $dark__mode__text__theme__color;
+            }
+    
+            #{$white__mode__theme__selector} {
+                color: 1px solid $black__theme_color;
+            }
+        }
+    }
+}

@@ -1,5 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import imageLinks from "assets/images";
 import { ToastContext } from "components/common/Toast/context/ToastContextProvider";
 import { Button } from "components/ui";
@@ -21,12 +22,13 @@ const { SUCCESS } = messageTypes;
 const { WORKMODE } = defaultTemplates;
 const { WORKSPACE_AGENT } = appMessageUserTypes;
 
-const CustomerVerifySuccess = ({ closeModal, messages }) => {
-    const { defaultTemplate } = useSelector(
+const CustomerVerifySuccess = ({ closeModal, messages, redirectUser }) => {
+    const { defaultTemplate, workspaceSlug } = useSelector(
         (state) => state?.chat?.chatSettings
     );
     const toastMessage = useContext(ToastContext);
     const dispatch = useDispatch();
+    const history = useHistory();
 
     const handleContinue = async () => {
         const { messageId, ticketId } =
@@ -57,7 +59,12 @@ const CustomerVerifySuccess = ({ closeModal, messages }) => {
                 })
             );
         }
-        closeModal();
+
+        if (redirectUser) {
+            history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+        } else {
+            closeModal();
+        }
     };
 
     return (
