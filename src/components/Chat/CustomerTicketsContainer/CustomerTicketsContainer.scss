@@ -239,6 +239,10 @@
                 color: $option__change__theme__color;
             }
 
+            #{$white__mode__theme__selector} {
+                color: $muted__theme_color_2;
+            }
+
             @include media("<=medium-screen") {
                 #{$relaxed__mode__template__selector} {
                     font-size: 18px;
@@ -256,7 +260,7 @@
 
                 &.active {
                     #{$white__mode__theme__selector} {
-                        color: $option__change__theme__color;
+                        color: $dark__mode__theme__grey__color;
                     }
                 }
             }
@@ -267,7 +271,7 @@
                 }
 
                 #{$white__mode__theme__selector} {
-                    // color: $option__change__theme__color;
+                    color: $dark__mode__theme__grey__color;
                 }
             }
         }
