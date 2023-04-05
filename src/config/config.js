@@ -2,7 +2,7 @@ const dev = {
     apiGateway: {
         BASE_URL: process.env.REACT_APP_DEV_API_BASE_URL,
         CLIENT_KEY: process.env.REACT_APP_DEV_CLIENT_KEY,
-        SOCKET_BASE_URL: process.env.REACT_APP_SOCKET_URL,
+        SOCKET_BASE_URL: process.env.REACT_APP_DEV_SOCKET_URL,
     },
     firebase: {
         CLIENT_KEY: process.env.REACT_APP_STAGING_FIREBASE_KEY,

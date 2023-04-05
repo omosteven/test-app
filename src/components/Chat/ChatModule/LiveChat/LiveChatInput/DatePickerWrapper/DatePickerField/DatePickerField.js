@@ -6,13 +6,13 @@ import "./DatePickerField.scss";
 
 const { PICK_DATE } = datePickerStages;
 
-const DatePickerField = ({ request, onClick, loading }) => {
+const DatePickerField = ({ request, onClick, disabled }) => {
     const { message } = request || {};
 
     return (
         <div
             className={`date__picker__field ${
-                loading ? "--disable__date__picker__field" : ""
+                disabled ? "--disable__date__picker__field" : ""
             }`}
             onClick={() => onClick(PICK_DATE)}>
             <ReactSVG
