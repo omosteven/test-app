@@ -42,6 +42,7 @@
     "redux-thunk": "^2.4.1",
     "sass": "^1.49.11",
     "socket.io-client": "^4.4.1",
+    "use-exit-intent": "^1.0.7",
     "use-is-typing": "^1.0.3",
     "web-vitals": "^2.1.4"
   },

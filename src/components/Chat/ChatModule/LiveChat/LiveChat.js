@@ -58,9 +58,12 @@ import { getConvoBreakers } from "storage/localStorage";
 import {
     getConversationData,
     storeConversationData,
+    getUserExitIntent,
 } from "storage/sessionStorage";
 import envConfig from "../../../../config/config";
 import { retriveAccessToken } from "storage/sessionStorage";
+import { useExitIntent } from "use-exit-intent";
+import TabCloseConfirmModal from "./TabCloseConfirmModal/TabCloseConfirmModal";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
@@ -130,6 +133,20 @@ const LiveChat = ({
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
+
+    const [showModal, toggleModal] = useState(false);
+    const { registerHandler, resetState, isTriggered, willBeTriggered } =
+        useExitIntent();
+
+    console.log({ isTriggered, willBeTriggered });
+    registerHandler({
+        id: "openModal",
+        handler: () => {
+            if (!validateEmail(email)) {
+                toggleModal(true);
+            }
+        },
+    });
 
     const getConvoBreaker = (actionBranchType) => {
         const conversationBreakers = getConvoBreakers(workspaceSlug);
@@ -1287,27 +1304,10 @@ const LiveChat = ({
         };
         // eslint-disable-next-line
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
-    const entries = performance.getEntriesByType("navigation");
-    console.log({
-        entries,
-        d: entries.length && entries[0].type === "reload",
-        // ||
-        // entries[0].type === "navigate" ||
-        // entries[0].type !== "back_forward"
-    });
+
     useEffect(() => {
-        // this event should only run it's a tab close and not reload
         const handleBeforeUnload = (event) => {
             event.preventDefault();
-
-            const entries = performance.getEntriesByType("navigation");
-            console.log({ entries });
-            const types = ["reload", "navigate", "back_forward", "prerender"];
-
-            if (entries.length && entries[0].type === "reload") {
-                //
-                return "";
-            }
 
             if (
                 "serviceWorker" in navigator &&
@@ -1323,58 +1323,11 @@ const LiveChat = ({
                     token: userToken,
                 });
             }
-
-            // if (
-            //     entries.length &&
-            //     entries[0].type !== "reload" &&
-            //     entries[0].type !== "navigate" &&
-            //     entries[0].type !== "back_forward" &&
-            //     "serviceWorker" in navigator &&
-            //     navigator.serviceWorker.controller
-            // ) {
-            //     const tag = "close-ticket";
-
-            //     navigator.serviceWorker.controller.postMessage({
-            //         tag,
-            //         ticketId,
-            //         baseUrl: envConfig?.apiGateway?.BASE_URL,
-            //         apiKey: envConfig?.apiGateway?.CLIENT_KEY,
-            //         token: userToken,
-            //     });
-            // }
-            // if (
-            //     entries.length &&
-            //     entries[0].type === "navigate" &&
-            //     "serviceWorker" in navigator &&
-            //     navigator.serviceWorker.controller
-            // ) {
-            //     const tag = "close-ticket";
-
-            //     navigator.serviceWorker.controller.postMessage({
-            //         tag,
-            //         ticketId,
-            //         baseUrl: envConfig?.apiGateway?.BASE_URL,
-            //         apiKey: envConfig?.apiGateway?.CLIENT_KEY,
-            //         token: userToken,
-            //     });
-            // if (
-            //     "serviceWorker" in navigator &&
-            //     navigator.serviceWorker.controller
-            // ) {
-            //     navigator.serviceWorker.controller.postMessage({
-            //         tag,
-            //         ticketId,
-            //         baseUrl: envConfig?.apiGateway?.BASE_URL,
-            //         apiKey: envConfig?.apiGateway?.CLIENT_KEY,
-            //         token: userToken,
-            //     });
-            // }
-            // } else {
-            //     console.log("reloaded");
-            //     // This is a page reload, do nothing
-            // }
         };
-        console.log({ ww: validateEmail(email) });
+        console.log({
+            ww: validateEmail(email),
+            getUserExitIntent: getUserExitIntent(),
+        });
         if (!validateEmail(email)) {
             window.addEventListener("beforeunload", handleBeforeUnload);
         }
@@ -1383,7 +1336,9 @@ const LiveChat = ({
             window.removeEventListener("beforeunload", handleBeforeUnload);
         };
     }, []);
-
+    console.log({
+        getUserExitIntent: getUserExitIntent(),
+    });
     const { formElementType } = currentFormElement || {};
 
     const isDateFormElement = formElementType === DATE;
@@ -1460,6 +1415,16 @@ const LiveChat = ({
                     mssgSendStatus={mssgSendStatus}
                 />
             </div>
+
+            {showModal && (
+                <TabCloseConfirmModal
+                    showModal={showModal}
+                    toggleModal={toggleModal}
+                    resetState={resetState}
+                    ticketId={ticketId}
+                    userToken={userToken}
+                />
+            )}
         </>
     );
 };

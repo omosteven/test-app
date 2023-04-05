@@ -11,9 +11,7 @@ import ValidateForm from "utils/validations/validator";
 import { ErrorDialog } from "components/ui";
 
 const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
-    const { workspaceId } = useSelector(
-        (state) => state.chat.chatSettings
-    );
+    const { workspaceId } = useSelector((state) => state.chat.chatSettings);
     const [request, setRequest] = useState({
         email: "",
         workspaceId,
@@ -70,7 +68,7 @@ const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
 
             if (res.status === 201) {
                 const { data } = res.data;
-                console.log({ data });
+
                 if (data?.userToken) {
                     pushToDashboard(data);
 

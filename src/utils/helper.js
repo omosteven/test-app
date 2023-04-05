@@ -39,7 +39,12 @@ export function timeSince(reqDate) {
     if (interval > 1) {
         return Math.floor(interval) + " mins";
     }
-    return Math.floor(seconds) < 1 ? "Now" : `${Math.floor(seconds)} s`;
+    console.log(seconds);
+    return seconds
+        ? Math.floor(seconds) < 1
+            ? "Now"
+            : `${Math.floor(seconds)} s`
+        : `0 s`;
 }
 
 export const getFormatedDate = (reqDate, getTimeOnly) => {
