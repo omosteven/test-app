@@ -11,7 +11,12 @@ import { INPUT_NEEDED } from "../enums";
 import "./Message.scss";
 
 const { WORKMODE, RELAXED } = defaultTemplates;
-const { BRANCH_SUB_SENTENCE, FORM_REQUEST } = messageTypes;
+const {
+    BRANCH_SUB_SENTENCE,
+    FORM_REQUEST,
+    DOWNTIME_BRANCH_SUB_SENTENCE,
+    UPTIME_BRANCH_SUB_SENTENCE,
+} = messageTypes;
 const { WORKSPACE_AGENT } = appMessageUserTypes;
 
 const Message = ({
@@ -74,12 +79,17 @@ const Message = ({
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORKMODE;
 
+    const removeMargin =
+        messageType === BRANCH_SUB_SENTENCE ||
+        messageType === UPTIME_BRANCH_SUB_SENTENCE ||
+        messageType === DOWNTIME_BRANCH_SUB_SENTENCE;
+
     return (
         <div
             id={messageId ? messageId : ""}
             className={`message__group ${
                 isReceivedMessage ? "received" : "sent"
-            }`}>
+            } ${removeMargin ? "remove__margin" : ""}`}>
             {isReceivedMessage && isWorkModeTemplate && (
                 <AgentImage src={displayPicture} alt={firstName} />
             )}
