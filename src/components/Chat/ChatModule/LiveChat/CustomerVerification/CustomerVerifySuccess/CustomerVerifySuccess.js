@@ -17,6 +17,7 @@ import {
     appMessageUserTypes,
 } from "../../MessageBody/Messages/enums";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import "./CustomerVerifySuccess.scss";
 
 const { SUCCESS } = messageTypes;
 const { WORKMODE } = defaultTemplates;
@@ -68,29 +69,28 @@ const CustomerVerifySuccess = ({ closeModal, messages, redirectUser }) => {
     };
 
     return (
-        <>
-            <div>
-                <h5 className='signin-header'>Verification successful.</h5>
-                <p className='signin-sub__text'>
+        <div>
+            <div className='verification__success__continer'>
+                <ReactSVG
+                    src={imageLinks.svg.successCheck}
+                    className='verification__success__icon'
+                />
+                <h5 className='verification__success__title'>
+                    Email successfully added
+                </h5>
+                <p className='verification__success__subtitle'>
                     We have successfully verified your account and your ticket
                     has been saved.
                 </p>
-                <div className='info__section'>
-                    <ReactSVG src={imageLinks.svg.info} />
-                    <p>
-                        This email address would be used to communicate updates
-                        with you.
-                    </p>
-                </div>
-                <Button
-                    type='submit'
-                    text={"Continue"}
-                    classType='primary'
-                    otherClass='my-3 w-100'
-                    onClick={handleContinue}
-                />
             </div>
-        </>
+            <Button
+                type='submit'
+                text={"Continue"}
+                classType='primary'
+                otherClass='my-3 w-100'
+                onClick={handleContinue}
+            />
+        </div>
     );
 };
 

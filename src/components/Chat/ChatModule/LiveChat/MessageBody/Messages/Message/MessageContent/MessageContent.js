@@ -79,7 +79,7 @@ const MessageContent = ({
                     <p
                         className='message__group--error'
                         onClick={() => handleRetry()}>
-                        Failed to send, Retry
+                        Network connection failed. Tap to retry
                     </p>
                 );
             default:

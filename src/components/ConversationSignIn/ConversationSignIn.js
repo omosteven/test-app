@@ -116,18 +116,6 @@ const ConversationSignIn = () => {
                 return (
                     <OTPForm
                         initialStepRequest={emailStepRequest}
-                        title={
-                            isRelaxedTemplate && (
-                                <>
-                                    <span className='show-only-on-desktop'>
-                                        We’ve sent an OTP to your email
-                                    </span>
-                                    <span className='show-only-on-mobile'>
-                                        We’ve sent an OTP <br /> to your email
-                                    </span>
-                                </>
-                            )
-                        }
                         subTitle={
                             isRelaxedTemplate &&
                             "Check and enter the code received."

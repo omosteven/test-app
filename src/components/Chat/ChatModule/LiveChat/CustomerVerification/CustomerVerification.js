@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import EmailForm from "components/SignInForm/EmailForm/EmailForm";
 import ErrorView from "components/common/ErrorView/ErrorView";
 import { DotLoader } from "components/ui";
@@ -9,7 +10,7 @@ import imageLinks from "assets/images";
 import FadeIn from "components/ui/FadeIn";
 import API from "lib/api";
 import apiRoutes from "lib/api/apiRoutes";
-import { getErrorMessage } from "utils/helper";
+import { getErrorMessage, validateEmail } from "utils/helper";
 import { VERIFY_USER_ACTIONS } from "components/Chat/enums";
 import { dataQueryStatus } from "utils/formatHandlers";
 import { useHistory } from "react-router-dom";
@@ -32,6 +33,9 @@ const CustomerVerification = ({
     const isSaveConvoAction =
         verifyUserAction === VERIFY_USER_ACTIONS.SAVE_CONVERSATION;
     const { initial, final, success } = verifystages;
+    const {
+        user: { email, userId },
+    } = useSelector((state) => state.auth);
     const history = useHistory();
 
     const isLinkEmail = history?.location?.pathname === "/conversation";
@@ -122,6 +126,10 @@ const CustomerVerification = ({
                         handleSuccess={handleSuccess}
                         isDirectUser={true}
                         isLinkEmail={isLinkEmail}
+                        subTitle={
+                            validateEmail(email || userId) &&
+                            `at ${email || userId}`
+                        }
                     />
                 );
 

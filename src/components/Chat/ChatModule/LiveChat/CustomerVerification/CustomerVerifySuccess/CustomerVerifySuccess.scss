@@ -1,0 +1,56 @@
+@import "assets/scss/master";
+
+.verification__success__continer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 19px;
+
+    .verification__success__icon{
+        & svg {
+            rect {
+                #{$white__mode__theme__selector} {
+                    fill: rgba(37, 187, 135, 0.1);
+                }
+            }
+
+            g {
+                path {
+                    #{$white__mode__theme__selector} {
+                        fill: #25BB87;
+                    }
+                }
+            }
+        }
+    }
+
+    .verification__success__title {
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 32px;
+        margin: 24px 0 16px;
+
+        #{$dark__mode__theme__selector} {
+            color: #FFFFFF;
+        }
+
+        #{$white__mode__theme__selector} {
+            color: #060213;
+        }
+    } 
+
+    .verification__success__subtitle {
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 16px;
+
+
+        #{$dark__mode__theme__selector} {
+            color: #E0E0E0;
+        }
+
+        #{$white__mode__theme__selector} {
+            color: #696D8C;
+        }
+    } 
+}

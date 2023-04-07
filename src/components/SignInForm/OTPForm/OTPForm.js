@@ -27,7 +27,7 @@ const OTPForm = ({
     const [loading, setLoading] = useState(false);
     const [request, updateRequest] = useState();
     const [deviceToken, setDeviceToken] = useState();
-
+    console.log({ initialStepRequest });
     const validateSessionOtp = async () => {
         try {
             setErrorMsg("");

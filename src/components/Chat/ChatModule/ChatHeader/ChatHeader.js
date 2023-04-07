@@ -107,7 +107,7 @@ const ChatHeader = ({
                 );
         }
     };
-
+    console.log({ alignLeft });
     return (
         <div
             id='header__wrapper'
@@ -128,17 +128,21 @@ const ChatHeader = ({
                             }
                         />
                     )}
+                    {/* <ChatToggler
+                        onClick={() =>
+                            toggleChatMenu?.((prevState) => !prevState)
+                        }
+                    /> */}
 
                     <div
-                        className={`logo ${
-                            canSaveConvo ? "chat__header-save-convo" : ""
-                        } ${alignLeft ? "logo__left__aligned" : ""}`}>
+                        className={`logo
+                         ${alignLeft ? "logo__left__aligned" : ""}`}>
                         {isWorkModeTemplate || isNotTablet ? (
                             <CompanyChatLogo
                                 src={companyLogo}
                                 alt={teamName}
                                 className='company__logo'
-                                name={isAuthPage ? teamName : ""}
+                                name={teamName}
                             />
                         ) : (
                             isTablet && renderBasedOnStatus()
@@ -166,7 +170,7 @@ const ChatHeader = ({
                                 }}
                             />
 
-                            {showActions && !canSaveConvo && (
+                            {showActions && (
                                 <div
                                     className={`show-only-on-mobile ${
                                         isNotTablet ? "show-on-desktop" : ""
@@ -180,12 +184,11 @@ const ChatHeader = ({
                             )}
                         </>
                     )}
-                    {canSaveConvo && (
-                        <SaveChatButton
-                            handleVerifyAction={handleVerifyAction}
-                            showVerifyForm={showVerifyForm}
-                        />
-                    )}
+                    <ChatSettingsToggler
+                        isMobile={true}
+                        handleCloseTicket={handleCloseTicket}
+                        canCloseTicket={ticketId !== undefined}
+                    />
                 </div>
             </header>
         </div>

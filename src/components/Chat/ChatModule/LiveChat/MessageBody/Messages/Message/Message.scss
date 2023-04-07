@@ -21,7 +21,7 @@
         padding-right: 1.25rem;
         border-radius: 0.5rem;
         border-radius: 0.5rem;
-        color: #ff000096;
+        color: #F25A68;;
         cursor: pointer;
 
         #{$relaxed__mode__template__selector} {
@@ -31,14 +31,14 @@
             gap: 8px;
             border-radius: 10px;
             font-weight: 600;
-            font-size: 14px;
-            line-height: 18px;
+            font-size: 16px;
+            line-height: 22px;
             letter-spacing: -0.2px;
         }
 
         #{$dark__mode__theme__selector} {
-            border: 1px solid #f77150;
-            color: #f77150;
+            border: 1px solid #F25A68;
+            color: #F25A68;
             background: $dark__mode__theme__background__color;
         }
     }
