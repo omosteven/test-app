@@ -59,6 +59,8 @@ import {
     getConversationData,
     storeConversationData,
 } from "storage/sessionStorage";
+import envConfig from "../../../../config/config";
+import { retriveAccessToken } from "storage/sessionStorage";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
@@ -121,6 +123,10 @@ const LiveChat = ({
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
+    const {
+        user: { email },
+    } = useSelector((state) => state?.auth);
+    const userToken = retriveAccessToken();
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
@@ -1282,16 +1288,35 @@ const LiveChat = ({
         // eslint-disable-next-line
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
-    // useEffect(() => {
-    //     console.log({ ww: validateEmail(email) });
-    //     if (!validateEmail(email)) {
-    //         window.addEventListener("beforeunload", (event) => {
-    //             event.preventDefault();
-    //             event.returnValue = "";
-    //             closeTicket();
-    //         });
-    //     }
-    // }, []);
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            event.preventDefault();
+
+            if (
+                "serviceWorker" in navigator &&
+                navigator.serviceWorker.controller
+            ) {
+                const tag = "close-ticket";
+
+                navigator.serviceWorker.controller.postMessage({
+                    tag,
+                    ticketId,
+                    baseUrl: envConfig?.apiGateway?.BASE_URL,
+                    apiKey: envConfig?.apiGateway?.CLIENT_KEY,
+                    token: userToken,
+                });
+            }
+        };
+
+        if (!validateEmail(email)) {
+            window.addEventListener("beforeunload", handleBeforeUnload);
+        }
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+        //eslint-disable-next-line
+    }, []);
 
     const { formElementType } = currentFormElement || {};
 

@@ -39,7 +39,6 @@ export function timeSince(reqDate) {
     if (interval > 1) {
         return Math.floor(interval) + " mins";
     }
-
     return seconds
         ? Math.floor(seconds) < 1
             ? "Now"
