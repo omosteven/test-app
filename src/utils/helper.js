@@ -39,12 +39,11 @@ export function timeSince(reqDate) {
     if (interval > 1) {
         return Math.floor(interval) + " mins";
     }
-    console.log(seconds);
     return seconds
         ? Math.floor(seconds) < 1
             ? "Now"
             : `${Math.floor(seconds)} s`
-        : `0 s`;
+        : "";
 }
 
 export const getFormatedDate = (reqDate, getTimeOnly) => {
@@ -268,6 +267,13 @@ export const getCurrentFormInputRules = (rules, inputType) => {
     }
 
     return { ...validationRules, pattern };
+};
+
+export const getNumberPrefix = (rules) => {
+    const rule = rules?.find(
+        (rule) => rule?.baseFormRule?.formElementRuleCode === "number02"
+    );
+    return rule?.ruleConstraint;
 };
 
 export const getURLPattern = () => {

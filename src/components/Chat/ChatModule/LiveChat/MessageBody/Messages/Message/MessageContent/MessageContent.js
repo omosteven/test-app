@@ -10,7 +10,7 @@ const { BRANCH_OPTION, FORM_REQUEST, ACTION_INFO, DEFAULT, CONVERSATION } =
 const { THIRD_USER } = appMessageUserTypes;
 const { RELAXED } = defaultTemplates;
 
-const { DELIVERED, FAILED } = messageStatues;
+const { SENDING, DELIVERED, FAILED } = messageStatues;
 
 const MessageContent = ({
     isReceivedMessage,
@@ -70,6 +70,7 @@ const MessageContent = ({
         switch (messageStatus) {
             // case SENDING:
             // return <SmallLoader otherClassName='message__group--sending' />;
+            case SENDING:
             case DELIVERED:
                 return "";
 
@@ -78,7 +79,7 @@ const MessageContent = ({
                     <p
                         className='message__group--error'
                         onClick={() => handleRetry()}>
-                        Retry
+                        Failed to send, Retry
                     </p>
                 );
             default:

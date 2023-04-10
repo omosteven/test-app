@@ -682,7 +682,7 @@ const LiveChat = ({
             setErrorMssg(getErrorMessage(err));
         }
     };
-
+    console.log({ messages });
     const fetchConvoSuggestions = async (message) => {
         try {
             const { messageContent } = message;

@@ -87,6 +87,10 @@
                 span {
                     display: none;
                 }
+
+                @include media("<=medium-screen") {
+                    height: 1.9rem;
+                }
             }
 
             @include media("<=medium-screen") {

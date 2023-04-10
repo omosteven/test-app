@@ -6,6 +6,9 @@
     align-items: flex-end;
     gap: 1rem;
     margin-bottom: 1.25rem;
+    &.remove__margin {
+        margin-bottom: 0;
+    }
     &.sent {
         justify-content: flex-end;
     }

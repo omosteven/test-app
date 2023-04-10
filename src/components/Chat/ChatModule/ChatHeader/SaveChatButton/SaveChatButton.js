@@ -7,8 +7,8 @@ import "./SaveChatButton.scss";
 const SaveChatButton = ({ handleVerifyAction, showVerifyForm }) => {
     const buttonText = (
         <>
-            <div className='show-only-on-mobile'>Save</div>
-            <div className='show-only-on-desktop'>Save conversation</div>
+            <span className='show-only-on-mobile'>Save</span>
+            <span className='show-only-on-desktop'>Save conversation</span>
         </>
     );
 

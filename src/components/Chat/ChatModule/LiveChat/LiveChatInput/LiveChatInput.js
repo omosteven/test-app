@@ -17,6 +17,7 @@ import { dataQueryStatus } from "../../../../../utils/formatHandlers";
 import {
     getCurrentFormInputRules,
     getErrorMessage,
+    getNumberPrefix,
     isDeviceMobileTablet,
 } from "../../../../../utils/helper";
 import { formInputTypes } from "../MessageBody/Messages/enums";
@@ -351,6 +352,8 @@ const LiveChatInput = ({
             maxDate,
         } = getCurrentFormInputRules(rules, inputType);
 
+        const numberPrefix = getNumberPrefix(rules);
+
         // console.log({ isEmail, isLink, pattern });
 
         const textInputType = isEmail ? "email" : isLink ? "url" : "text";
@@ -390,8 +393,7 @@ const LiveChatInput = ({
                             isDisabled || inputType === IMAGE || disableInput
                         }
                         showPrefix={inputType === NUMERIC}
-                        // dynamic value
-                        prefix={"NGN"}
+                        prefix={inputType === NUMERIC ? numberPrefix : ""}
                     />
                 );
 
