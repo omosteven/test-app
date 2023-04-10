@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import API from "../../../../lib/api";
-import apiRoutes from "../../../../lib/api/apiRoutes";
-import { SocketContext } from "../../../../lib/socket/context/socket";
+import API from "lib/api";
+import apiRoutes from "lib/api/apiRoutes";
+import { SocketContext } from "lib/socket/context/socket";
 import {
     FILL_FORM_RECORD,
     NEW_TICKET_UPDATE,
@@ -15,15 +15,15 @@ import {
     SEND_AGENT_TICKET,
     AGENT_IS_UNAVAILABLE,
     TICKET_PHASE_CHANGE,
-} from "../../../../lib/socket/events";
-import { dataQueryStatus } from "../../../../utils/formatHandlers";
+} from "lib/socket/events";
+import { dataQueryStatus } from "utils/formatHandlers";
 import {
     generateID,
     getErrorMessage,
     incrementDateTime,
     isDeviceMobileTablet,
     validateEmail,
-} from "../../../../utils/helper";
+} from "utils/helper";
 import LiveChatInput from "./LiveChatInput/LiveChatInput";
 import LiveChatStatusBar from "./LiveChatStatusBar/LiveChatStatusBar";
 import MessageBody from "./MessageBody/MessageBody";
@@ -49,7 +49,7 @@ import {
     updateTicketMessageStatus,
     deleteTicketsMessages,
     clearThirdUserMessage,
-} from "../../../../store/tickets/actions";
+} from "store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
 import { useFaviconNotification } from "react-favicon-notification";
@@ -1344,6 +1344,7 @@ const LiveChat = ({
                     handleVerifyAction={handleVerifyAction}
                     messages={messages}
                     verifyUserAction={verifyUserAction}
+                    ticketId={ticketId}
                 />
             )}
             <div

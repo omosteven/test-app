@@ -14,8 +14,8 @@ import { setActiveTicket } from "store/tickets/actions";
 import { dataQueryStatus } from "utils/formatHandlers";
 import ErrorView from "components/common/ErrorView/ErrorView";
 import { getErrorMessage } from "utils/helper";
-import "../SignInForm/SignInForm.scss";
 import { pushAuthUser } from "store/auth/actions";
+import "../SignInForm/SignInForm.scss";
 
 const { RELAXED } = defaultTemplates;
 const { ERROR, DATAMODE } = dataQueryStatus;
@@ -78,8 +78,6 @@ const ConversationSignIn = () => {
     };
 
     const handleSuccess = () => {
-        console.log("Called to handle Success");
-        console.log("conversationId", conversationId);
         if (conversationId) {
             engageConversation();
         } else {
