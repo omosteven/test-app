@@ -58,12 +58,9 @@ import { getConvoBreakers } from "storage/localStorage";
 import {
     getConversationData,
     storeConversationData,
-    getUserExitIntent,
 } from "storage/sessionStorage";
 import envConfig from "../../../../config/config";
 import { retriveAccessToken } from "storage/sessionStorage";
-import { useExitIntent } from "use-exit-intent";
-import TabCloseConfirmModal from "./TabCloseConfirmModal/TabCloseConfirmModal";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
@@ -133,20 +130,6 @@ const LiveChat = ({
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
-
-    const [showModal, toggleModal] = useState(false);
-    const { registerHandler, resetState, isTriggered, willBeTriggered } =
-        useExitIntent();
-
-    console.log({ isTriggered, willBeTriggered });
-    registerHandler({
-        id: "openModal",
-        handler: () => {
-            if (!validateEmail(email)) {
-                toggleModal(true);
-            }
-        },
-    });
 
     const getConvoBreaker = (actionBranchType) => {
         const conversationBreakers = getConvoBreakers(workspaceSlug);
@@ -1324,10 +1307,7 @@ const LiveChat = ({
                 });
             }
         };
-        console.log({
-            ww: validateEmail(email),
-            getUserExitIntent: getUserExitIntent(),
-        });
+
         if (!validateEmail(email)) {
             window.addEventListener("beforeunload", handleBeforeUnload);
         }
@@ -1335,10 +1315,9 @@ const LiveChat = ({
         return () => {
             window.removeEventListener("beforeunload", handleBeforeUnload);
         };
+        //eslint-disable-next-line
     }, []);
-    console.log({
-        getUserExitIntent: getUserExitIntent(),
-    });
+
     const { formElementType } = currentFormElement || {};
 
     const isDateFormElement = formElementType === DATE;
@@ -1415,16 +1394,6 @@ const LiveChat = ({
                     mssgSendStatus={mssgSendStatus}
                 />
             </div>
-
-            {showModal && (
-                <TabCloseConfirmModal
-                    showModal={showModal}
-                    toggleModal={toggleModal}
-                    resetState={resetState}
-                    ticketId={ticketId}
-                    userToken={userToken}
-                />
-            )}
         </>
     );
 };

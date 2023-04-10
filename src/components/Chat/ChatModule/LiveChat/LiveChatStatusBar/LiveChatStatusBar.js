@@ -46,7 +46,10 @@ const LiveChatStatusBar = ({
                 return (
                     <span className='error__status' onClick={handleRetry}>
                         {isRelaxedTemplate && (
-                            <img src={imageLinks?.svg.redRetry} alt="Retry Icon"/>
+                            <img
+                                src={imageLinks?.svg.redRetry}
+                                alt='Retry Icon'
+                            />
                         )}{" "}
                         {errorMssg}
                     </span>

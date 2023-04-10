@@ -31,11 +31,3 @@ export const storeConversationData = (ticket) => {
 export const getConversationData = () => {
     return JSON.parse(sessionStorage.getItem("conversationData"));
 };
-
-export const setUserExitIntent = (intent) => {
-    return sessionStorage.setItem("userExitIntent", intent);
-};
-
-export const getUserExitIntent = () => {
-    return sessionStorage.getItem("userExitIntent");
-};
