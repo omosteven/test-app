@@ -7,7 +7,7 @@ import { useWindowSize } from "utils/hooks";
 import ErrorView from "components/common/ErrorView/ErrorView";
 import { dataQueryStatus } from "utils/formatHandlers";
 import CompanyChatLogo from "./CompanyChatLogo/CompanyChatLogo";
-import SaveChatButton from "./SaveChatButton/SaveChatButton";
+import CloseVerifyForm from "./CloseVerifyForm/CloseVerifyForm";
 import { validateEmail } from "utils/helper";
 import "./ChatHeader.scss";
 
@@ -128,17 +128,23 @@ const ChatHeader = ({
                             }
                         />
                     )}
+                    {showVerifyForm && (
+                        <CloseVerifyForm
+                            handleVerifyAction={handleVerifyAction}
+                        />
+                    )}
 
                     <div
-                        className={`logo ${
-                            canSaveConvo ? "chat__header-save-convo" : ""
-                        } ${alignLeft ? "logo__left__aligned" : ""}`}>
+                        className={`logo
+                         ${alignLeft ? "logo__left__aligned" : ""}`}>
                         {isWorkModeTemplate || isNotTablet ? (
                             <CompanyChatLogo
                                 src={companyLogo}
                                 alt={teamName}
                                 className='company__logo'
-                                name={isAuthPage ? teamName : ""}
+                                name={
+                                    isAuthPage || showVerifyForm ? teamName : ""
+                                }
                             />
                         ) : (
                             isTablet && renderBasedOnStatus()
@@ -166,7 +172,7 @@ const ChatHeader = ({
                                 }}
                             />
 
-                            {showActions && !canSaveConvo && (
+                            {showActions && (
                                 <div
                                     className={`show-only-on-mobile ${
                                         isNotTablet ? "show-on-desktop" : ""
@@ -180,10 +186,11 @@ const ChatHeader = ({
                             )}
                         </>
                     )}
-                    {canSaveConvo && (
-                        <SaveChatButton
-                            handleVerifyAction={handleVerifyAction}
-                            showVerifyForm={showVerifyForm}
+                    {showVerifyForm && (
+                        <ChatSettingsToggler
+                            isMobile={true}
+                            handleCloseTicket={handleCloseTicket}
+                            canCloseTicket={ticketId !== undefined}
                         />
                     )}
                 </div>

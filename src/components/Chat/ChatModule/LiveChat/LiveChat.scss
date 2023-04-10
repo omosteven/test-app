@@ -2,9 +2,6 @@
 @import "assets/scss/_include-media-lib/include-media";
 
 .chat__interface {
-    flex: 1 0 auto;
-    position: relative;
-    
     @include media(">medium-screen") {
         #{$relaxed__mode__template__selector} {
             background-color: $dark__mode__theme__grey__color;
@@ -17,6 +14,12 @@
             border: 1px solid $white__mode__border__color;
         }
     }
+
+    // @include media("<=medium-screen") {
+    //     #{$relaxed__mode__template__selector} {
+    //         margin-top: 28%;
+    //     }       
+    // }
 }
 
 .live-chat-input__add-email {
