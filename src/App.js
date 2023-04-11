@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import queryString from "query-string";
 import Layout from "./layout/Layout";
-import { generateID, getErrorMessage } from "./utils/helper";
+import { generateID, getErrorMessage, isLiveApp } from "./utils/helper";
 import API from "./lib/api";
 import apiRoutes from "./lib/api/apiRoutes";
 import FullPageLoader from "./components/common/FullPageLoader/FullPageLoader";
@@ -17,14 +17,13 @@ import Chat from "./components/Chat/Chat";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
 import ConversationSignIn from "./components/ConversationSignIn/ConversationSignIn";
 import { retriveAccessToken } from "storage/sessionStorage";
-import "./App.scss";
-
 import {
     getChatSettings,
     storeChatSettings,
     storeConvoBreakers,
 } from "storage/localStorage";
 import { CONVERSATION_SAVED } from "components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
+import "./App.scss";
 
 const App = () => {
     const isAuthenticated = retriveAccessToken();
@@ -54,7 +53,13 @@ const App = () => {
             setFetchingError();
             sayFetching(true);
 
-            const url = apiRoutes?.chatSettings(workspaceSlug);
+            const request = isLiveApp
+                ? window.location.host.includes("metacare")
+                    ? window.location.host?.split(".")[0]
+                    : window.location.host
+                : workspaceSlug;
+
+            const url = apiRoutes?.chatSettings(request);
             const res = await API.get(url);
             if (res.status === 200) {
                 const { data } = res.data;

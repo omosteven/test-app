@@ -334,3 +334,5 @@ export const getDateAndMonth = (reqDate) => {
 export const checkArrayEquality = (a, b) => {
     return a?.length === b?.length && a.every((val) => b?.includes(val));
 };
+
+export const isLiveApp = process.env.REACT_APP_STAGE === "production";
