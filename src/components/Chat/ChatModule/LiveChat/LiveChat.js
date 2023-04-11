@@ -65,7 +65,7 @@ import { retriveAccessToken } from "storage/sessionStorage";
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
-const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
+const { LOADING, ERROR, DATAMODE, IDLE } = dataQueryStatus;
 const {
     DEFAULT,
     BRANCH,
@@ -438,6 +438,7 @@ const LiveChat = ({
                 if (error && sendBranchOption?.connected === false) {
                     triggerAgentTyping(false);
                     setMssgSendStatus(ERROR);
+
                     const freshMessageList = messages.map((x) => {
                         return x.messageContentId === branchId
                             ? { ...x, selectedOption: "" }
@@ -582,11 +583,11 @@ const LiveChat = ({
                             })
                         );
                         return;
+                    } else {
+                        clearUserInput?.();
                     }
                 }
             );
-
-            clearUserInput?.();
         } else {
             const messageEntry = {
                 ticketId,
@@ -619,11 +620,12 @@ const LiveChat = ({
                                 messageStatus: messageStatues?.FAILED,
                             })
                         );
+                        return;
+                    } else {
+                        clearUserInput?.();
                     }
                 }
             );
-
-            clearUserInput?.();
         }
 
         // --- clear input if it is at investigate message stage ---
@@ -1322,6 +1324,10 @@ const LiveChat = ({
 
     const isDateFormElement = formElementType === DATE;
 
+    const handleUploads = (data) => {
+        updateUploads(data);
+        setMssgSendStatus(IDLE);
+    };
     return (
         <>
             {!showVerifyForm ? (
@@ -1390,7 +1396,7 @@ const LiveChat = ({
                         status === LOADING || status === ERROR || disableForm
                     }
                     uploads={uploads}
-                    updateUploads={updateUploads}
+                    updateUploads={handleUploads}
                     isDateFormElement={isDateFormElement}
                     mssgSendStatus={mssgSendStatus}
                 />

@@ -115,7 +115,9 @@ const MessageContent = ({
                     requestAllMessages={requestAllMessages}
                 />
             )}
-            {!isReceivedMessage && <>{renderBasedOnMessageStatus()}</>}
+            {!isReceivedMessage && messages?.length <= 2 && (
+                <>{renderBasedOnMessageStatus()}</>
+            )}
         </>
     );
 };
