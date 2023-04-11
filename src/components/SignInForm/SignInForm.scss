@@ -82,6 +82,13 @@
             }
         }
 
+        // span {
+        //     width: 10px !important;
+        //     white-space: nowrap !important;
+        //     overflow: hidden !important;
+        //     text-overflow: ellipsis !important;
+        // }
+
         #{$dark__mode__theme__selector} {
             color: $light__theme_color;
             // font-size: 26px !important;

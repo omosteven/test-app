@@ -3,12 +3,24 @@
 
 .uploaded-files {
     overflow-y: scroll;
-    height: 5rem;
+    // height: 5rem;
+    #{$relaxed__mode__template__selector} {
+        padding: 10px 0px;
+    }
     .uploaded-file {
-        margin-top: 1rem;
+        // margin-top: 1rem;
+
         #{$relaxed__mode__template__selector} {
-            padding: 0 1rem;
+            // padding: 0 1rem;
             border-radius: 100px;
+            width: fit-content;
+            height: 42px;
+            span {
+                font-weight: 400;
+                font-size: 18px !important;
+                line-height: 26px !important;
+                margin-right: 15px;
+            }
         }
 
         #{$dark__mode__theme__selector} {
@@ -17,6 +29,9 @@
 
         #{$white__mode__theme__selector} {
             background: $light__theme_color;
+            svg {
+                stroke: $primary__theme_color;
+            }
         }
 
         padding: 10px 16px;
@@ -42,8 +57,15 @@
             line-height: 26px;
             color: $dark__mode__text__theme__color;
 
+            #{$relaxed__mode__template__selector} {
+                max-width: 200px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
             #{$white__mode__theme__selector} {
-                color :$dark__mode__theme__grey__color;
+                color: $dark__mode__theme__grey__color;
             }
         }
         &__icon {

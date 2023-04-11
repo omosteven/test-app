@@ -78,7 +78,7 @@ const MessageContent = ({
                     <p
                         className='message__group--error'
                         onClick={() => handleRetry()}>
-                        Retry
+                        Network connection failed. Tap to retry
                     </p>
                 );
             default:
@@ -114,7 +114,9 @@ const MessageContent = ({
                     requestAllMessages={requestAllMessages}
                 />
             )}
-            {!isReceivedMessage && <>{renderBasedOnMessageStatus()}</>}
+            {!isReceivedMessage && messages?.length <= 2 && (
+                <>{renderBasedOnMessageStatus()}</>
+            )}
         </>
     );
 };

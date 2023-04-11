@@ -120,10 +120,12 @@ const ConversationSignIn = () => {
                             isRelaxedTemplate && (
                                 <>
                                     <span className='show-only-on-desktop'>
-                                        We’ve sent an OTP to your email
+                                        We’ve sent an OTP to{" "}
+                                        {emailStepRequest?.email}
                                     </span>
                                     <span className='show-only-on-mobile'>
-                                        We’ve sent an OTP <br /> to your email
+                                        We’ve sent an OTP <br /> to{" "}
+                                        {emailStepRequest?.email}
                                     </span>
                                 </>
                             )

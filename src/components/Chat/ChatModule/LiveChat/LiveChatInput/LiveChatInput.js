@@ -85,6 +85,7 @@ const LiveChatInput = ({
             ],
         });
         updateUploads([]);
+        setLoading(false);
     };
 
     const handleRemoveFile = (fileName, fileIndex) => {
@@ -100,6 +101,8 @@ const LiveChatInput = ({
         }));
 
         setErrors((prev) => ({ ...prev, file: "" }));
+
+        setLoading(false);
     };
 
     const handleRetryUpload = async (file) => {
@@ -351,8 +354,6 @@ const LiveChatInput = ({
             maxDate,
         } = getCurrentFormInputRules(rules, inputType);
 
-        // console.log({ isEmail, isLink, pattern });
-
         const textInputType = isEmail ? "email" : isLink ? "url" : "text";
 
         switch (inputType) {
@@ -525,28 +526,7 @@ const LiveChatInput = ({
                     {uploads?.length > 0 && (
                         <>
                             {isRelaxedTemplate && isFormElementImage ? (
-                                <UploadedFiles
-                                    uploads={uploads}
-                                    status={status}
-                                    handleRemoveFile={handleRemoveFile}
-                                    icon={imageLinks?.svg?.attachment2}
-                                    handleRetry={(file) =>
-                                        handleRetryUpload(file)
-                                    }
-                                    maximize={(
-                                        fileAttachmentType,
-                                        fileAttachmentName,
-                                        fileAttachmentUrl
-                                    ) => {
-                                        setSelectedMedia({
-                                            fileAttachmentType,
-                                            fileAttachmentName,
-                                            fileAttachmentUrl,
-                                        });
-                                        toggleModal(true);
-                                    }}
-                                    disableClick={status !== DATAMODE}
-                                />
+                                <></>
                             ) : (
                                 <UploadPreview
                                     upload={uploads}
@@ -581,6 +561,7 @@ const LiveChatInput = ({
                         }>
                         <div className='chat__input--group'>
                             {isRelaxedTemplate &&
+                            uploads?.length === 0 &&
                             (isFormElementImage ||
                                 isFinalDatePickerStage ||
                                 isFormElementMultiselect) ? (
@@ -628,7 +609,38 @@ const LiveChatInput = ({
                                                 }
                                             />
                                         )}
-                                        {renderBasedOnInputType()}
+                                        {uploads?.length === 0 ? (
+                                            <>{renderBasedOnInputType()}</>
+                                        ) : (
+                                            <UploadedFiles
+                                                uploads={uploads}
+                                                status={status}
+                                                handleRemoveFile={
+                                                    handleRemoveFile
+                                                }
+                                                icon={
+                                                    imageLinks?.svg?.attachment2
+                                                }
+                                                handleRetry={(file) =>
+                                                    handleRetryUpload(file)
+                                                }
+                                                maximize={(
+                                                    fileAttachmentType,
+                                                    fileAttachmentName,
+                                                    fileAttachmentUrl
+                                                ) => {
+                                                    setSelectedMedia({
+                                                        fileAttachmentType,
+                                                        fileAttachmentName,
+                                                        fileAttachmentUrl,
+                                                    });
+                                                    toggleModal(true);
+                                                }}
+                                                disableClick={
+                                                    status !== DATAMODE
+                                                }
+                                            />
+                                        )}
                                     </div>
                                     <Button
                                         type='submit'
@@ -646,11 +658,17 @@ const LiveChatInput = ({
                                                 ? "active"
                                                 : ""
                                         }`}
-                                        loading={mssgSendStatus === LOADING}
+                                        loading={
+                                            isFinalDatePickerStage
+                                                ? disableInput
+                                                : loading &&
+                                                  !(mssgSendStatus === ERROR)
+                                        }
                                         disabled={
                                             (btnDisabled ||
-                                                fetchingInputStatus) &&
-                                            mssgSendStatus === LOADING
+                                                fetchingInputStatus ||
+                                                status === LOADING) &&
+                                            !(mssgSendStatus === ERROR)
                                         }
                                     />
                                 </>
@@ -665,11 +683,13 @@ const LiveChatInput = ({
                     )}
                     {mssgSendStatus === ERROR && (
                         <span className='chat__input__error'>
-                            Sorry, an error occurred. Please refresh or try
-                            again.
+                            {/* Sorry, an error occurred. Please refresh or try
+                            again. */}
+                            Network connection failed. Tap to retry
                         </span>
                     )}
                     {isRelaxedTemplate &&
+                        uploads?.length === 0 &&
                         (isFormElementImage ||
                             isFinalDatePickerStage ||
                             isFormElementMultiselect) && (
