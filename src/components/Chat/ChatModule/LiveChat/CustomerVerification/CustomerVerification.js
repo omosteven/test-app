@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import EmailForm from "components/SignInForm/EmailForm/EmailForm";
 import ErrorView from "components/common/ErrorView/ErrorView";
 import { DotLoader } from "components/ui";
@@ -9,10 +10,22 @@ import imageLinks from "assets/images";
 import FadeIn from "components/ui/FadeIn";
 import API from "lib/api";
 import apiRoutes from "lib/api/apiRoutes";
-import { getErrorMessage } from "utils/helper";
+import { getErrorMessage, validateEmail } from "utils/helper";
 import { VERIFY_USER_ACTIONS } from "components/Chat/enums";
 import { dataQueryStatus } from "utils/formatHandlers";
 import { useHistory } from "react-router-dom";
+import BannerMessage from "components/ui/BannerMessage/BannerMessage";
+import {
+    deleteTicketsMessages,
+    saveTicketsMessages,
+} from "store/tickets/actions";
+import { ADD_EMAIL_ADDRESS } from "../MessageBody/Messages/enums";
+import {
+    messageTypes,
+    appMessageUserTypes,
+} from "../MessageBody/Messages/enums";
+import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+import { generateID } from "utils/helper";
 import "./CustomerVerification.scss";
 
 export const verifystages = {
@@ -21,6 +34,9 @@ export const verifystages = {
     success: "SUCCESS",
 };
 
+const { SUCCESS } = messageTypes;
+const { RELAXED } = defaultTemplates;
+const { WORKSPACE_AGENT } = appMessageUserTypes;
 const { ERROR, DATAMODE, LOADING } = dataQueryStatus;
 
 const CustomerVerification = ({
@@ -28,13 +44,25 @@ const CustomerVerification = ({
     handleVerifyAction,
     messages,
     verifyUserAction,
+    ticketId,
 }) => {
     const isSaveConvoAction =
         verifyUserAction === VERIFY_USER_ACTIONS.SAVE_CONVERSATION;
     const { initial, final, success } = verifystages;
-    const history = useHistory();
 
-    const isLinkEmail = history?.location?.pathname === "/conversation";
+    const {
+        user: { email, userId },
+    } = useSelector((state) => state.auth);
+    const { defaultTemplate } = useSelector(
+        (state) => state?.chat?.chatSettings
+    );
+
+    const history = useHistory();
+    const dispatch = useDispatch();
+
+    const isLinkEmail =
+        history?.location?.pathname === "/conversation" ||
+        validateEmail(email || userId);
 
     const [verifyStage, setVerifyStage] = useState(
         !isLinkEmail ? initial : final
@@ -42,6 +70,9 @@ const CustomerVerification = ({
     const [initialStepRequest, setinitialStepRequest] = useState();
     const [status, setStatus] = useState(!isLinkEmail ? DATAMODE : LOADING);
     const [errorMssg, setErrorMssg] = useState("");
+    const [showBannerMessage, toggleBannerMessage] = useState(true);
+
+    const isRelaxedTemplate = defaultTemplate === RELAXED;
 
     const handleEmailRequestUpdate = (data) => {
         setinitialStepRequest(data);
@@ -72,10 +103,53 @@ const CustomerVerification = ({
         //eslint-disable-next-line
     }, []);
 
+    const handleEmailVerificationSuccess = () => {
+        const { messageId } =
+            messages?.find(
+                (ticketMessage) =>
+                    ticketMessage?.messageActionType === ADD_EMAIL_ADDRESS &&
+                    ticketMessage?.ticketId === ticketId
+            ) || {};
+
+        if (messageId) {
+            dispatch(
+                deleteTicketsMessages({
+                    messageId,
+                    ticketId,
+                })
+            );
+        }
+
+        if (isRelaxedTemplate) {
+            dispatch(
+                saveTicketsMessages({
+                    ticketId,
+                    messageId: generateID(),
+                    messageContent:
+                        "We have successfully verified your account and your ticket has been saved.",
+                    messageHeader: "Email verification successful",
+                    messageType: SUCCESS,
+                    senderType: WORKSPACE_AGENT,
+                })
+            );
+        }
+    };
+
+    useEffect(() => {
+        if (verifyStage === success) {
+            handleEmailVerificationSuccess();
+        }
+        // eslint-disable-next-line
+    }, [verifyStage]);
+
     const renderBasedOnStatus = () => {
         switch (status) {
             case LOADING:
-                return <DotLoader />;
+                return (
+                    <div className='customer-verify__loader__container'>
+                        <DotLoader />
+                    </div>
+                );
             case DATAMODE:
                 return <>{renderBasedOnStage()}</>;
             case ERROR:
@@ -122,6 +196,10 @@ const CustomerVerification = ({
                         handleSuccess={handleSuccess}
                         isDirectUser={true}
                         isLinkEmail={isLinkEmail}
+                        subTitle={
+                            validateEmail(email || userId) &&
+                            `at ${email || userId}`
+                        }
                     />
                 );
 
@@ -129,7 +207,6 @@ const CustomerVerification = ({
                 return (
                     <CustomerVerifySuccess
                         closeModal={handleVerifyAction}
-                        messages={messages}
                         redirectUser={isLinkEmail}
                     />
                 );
@@ -153,7 +230,18 @@ const CustomerVerification = ({
                     </div>
                 )}
                 <div className='customer-verify__form customer-save__action'>
-                    {renderBasedOnStatus()}
+                    <div>
+                        {showBannerMessage && verifyStage !== success && (
+                            <div className='customer-verify__banner__message__wrapper'>
+                                <BannerMessage
+                                    onClose={() => toggleBannerMessage(false)}>
+                                    We will never ask you for your PIN or
+                                    password
+                                </BannerMessage>
+                            </div>
+                        )}
+                        {renderBasedOnStatus()}
+                    </div>
                 </div>
             </div>
         </FadeIn>

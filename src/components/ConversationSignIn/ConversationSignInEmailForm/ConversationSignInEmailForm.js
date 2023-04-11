@@ -11,9 +11,7 @@ import ValidateForm from "utils/validations/validator";
 import { ErrorDialog } from "components/ui";
 
 const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
-    const { workspaceId } = useSelector(
-        (state) => state.chat.chatSettings
-    );
+    const { workspaceId } = useSelector((state) => state.chat.chatSettings);
     const [request, setRequest] = useState({
         email: "",
         workspaceId,
@@ -49,7 +47,6 @@ const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
                 );
 
                 return window.location.reload();
-                // history.push(`/chat?workspaceSlug=${workspaceSlug}`);
             }
         } catch (err) {
             setErrorMssg(getErrorMessage(err));
@@ -71,7 +68,7 @@ const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
 
             if (res.status === 201) {
                 const { data } = res.data;
-                console.log({ data });
+
                 if (data?.userToken) {
                     pushToDashboard(data);
 
@@ -80,9 +77,6 @@ const ConversationSignInEmailForm = ({ handleEmailRequestUpdate }) => {
                     }
 
                     window.location.reload();
-                    // else {
-                    //     history.push(`/chat?workspaceSlug=${workspaceSlug}`);
-                    // }
                 } else {
                     handleEmailRequestUpdate({ email, sessionId: data });
                 }

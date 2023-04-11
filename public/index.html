@@ -17,4 +17,17 @@
   <div id="root"></div>
 </body>
 
+<script>
+  if (navigator.serviceWorker) {
+    try {
+      window.addEventListener('load', async () => {
+        await navigator.serviceWorker.register('./service-worker.js');
+      })
+    }
+    catch (err) {
+      console.error(err);
+    }
+  }
+</script>
+
 </html>

@@ -321,6 +321,7 @@ const Chat = () => {
         //eslint-disable-next-line
     }, [socket]);
 
+    console.log({socket, socketConnection})
     return (
         <>
             <SocketContext.Provider value={socketConnection}>

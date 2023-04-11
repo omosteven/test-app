@@ -9,10 +9,82 @@
     text-align: center;
     z-index: 1;
     font-size: 0.875rem;
+ 
+
+    @include media("<=medium-screen") {
+        position: absolute;
+
+        #{$relaxed__mode__template__selector} {
+           width: 100%;
+           top: 14%;
+        }
+    }
+
+    @media (max-width: 540px) {
+        #{$relaxed__mode__template__selector} {
+            top: 17%;
+         }
+    }
+
     @include media("<=small-screen") {
         top: 23%;
         z-index: 0;
+
+        #{$relaxed__mode__template__selector} {
+            top: 13.5%;
+         }
     }
+
+    @media (max-width: 414px) {
+        #{$relaxed__mode__template__selector} {
+            top: 17%;
+         }
+    }
+
+    @media (max-width: 412px) {
+        #{$relaxed__mode__template__selector} {
+            top: 13%;
+         }
+    }
+
+    @media (max-width: 411px) {
+        #{$relaxed__mode__template__selector} {
+            top: 15%;
+         }
+    }
+
+   
+
+    @media (max-width: 393px) {
+        #{$relaxed__mode__template__selector} {
+            top: 15%;
+         }
+    }
+
+    @media (max-width: 390px) {
+        #{$relaxed__mode__template__selector} {
+            top: 14%;
+         }
+    }
+
+    @include media("<=medium-small-screen") {
+        #{$relaxed__mode__template__selector} {
+            top: 17%;
+         }
+    }
+    
+    @include media("<=xtra-small-screen") {
+        #{$relaxed__mode__template__selector} {
+            top: 23%;
+         }
+    }
+
+    @media (max-width: 280px) {
+        #{$relaxed__mode__template__selector} {
+            top: 20%;
+         }
+    }
+   
 }
 
 .live__chat--save-button {

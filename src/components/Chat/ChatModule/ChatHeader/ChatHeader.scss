@@ -14,12 +14,12 @@
         }
     }
 
-    @include media(">medium-screen") {
-        .logo {
-            margin: auto;
-            margin-left: 0rem !important;
-        }
-    }
+    // @include media(">medium-screen") {
+    //     .logo {
+    //         margin: auto;
+    //         margin-left: 0rem !important;
+    //     }
+    // }
 }
 
 .chat__header__auth {
@@ -152,9 +152,9 @@
                     margin: auto;
                 }
 
-                .chat__header-save-convo {
-                    margin: unset !important;
-                }
+                // .chat__header-save-convo {
+                //     margin: unset !important;
+                // }
             }  
 
             @include media(">medium-screen") {
@@ -165,7 +165,7 @@
                 }
 
                 .logo {
-                    margin: auto;
+                       margin: 0;
                 }
             }
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useContext, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import API from "../../../../lib/api";
-import apiRoutes from "../../../../lib/api/apiRoutes";
-import { SocketContext } from "../../../../lib/socket/context/socket";
+import API from "lib/api";
+import apiRoutes from "lib/api/apiRoutes";
+import { SocketContext } from "lib/socket/context/socket";
 import {
     FILL_FORM_RECORD,
     NEW_TICKET_UPDATE,
@@ -15,15 +15,15 @@ import {
     SEND_AGENT_TICKET,
     AGENT_IS_UNAVAILABLE,
     TICKET_PHASE_CHANGE,
-} from "../../../../lib/socket/events";
-import { dataQueryStatus } from "../../../../utils/formatHandlers";
+} from "lib/socket/events";
+import { dataQueryStatus } from "utils/formatHandlers";
 import {
     generateID,
     getErrorMessage,
     incrementDateTime,
     isDeviceMobileTablet,
     validateEmail,
-} from "../../../../utils/helper";
+} from "utils/helper";
 import LiveChatInput from "./LiveChatInput/LiveChatInput";
 import LiveChatStatusBar from "./LiveChatStatusBar/LiveChatStatusBar";
 import MessageBody from "./MessageBody/MessageBody";
@@ -49,7 +49,7 @@ import {
     updateTicketMessageStatus,
     deleteTicketsMessages,
     clearThirdUserMessage,
-} from "../../../../store/tickets/actions";
+} from "store/tickets/actions";
 import { ISSUE_DISCOVERY } from "components/Chat/CustomerTicketsContainer/CustomerTickets/common/TicketStatus/enum";
 import CustomerVerification from "./CustomerVerification/CustomerVerification";
 import { useFaviconNotification } from "react-favicon-notification";
@@ -59,11 +59,13 @@ import {
     getConversationData,
     storeConversationData,
 } from "storage/sessionStorage";
+import envConfig from "../../../../config/config";
+import { retriveAccessToken } from "storage/sessionStorage";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
 const { THIRD_USER, WORKSPACE_AGENT } = appMessageUserTypes;
-const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
+const { LOADING, ERROR, DATAMODE, IDLE } = dataQueryStatus;
 const {
     DEFAULT,
     BRANCH,
@@ -121,6 +123,10 @@ const LiveChat = ({
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
+    const {
+        user: { email },
+    } = useSelector((state) => state?.auth);
+    const userToken = retriveAccessToken();
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
@@ -432,6 +438,7 @@ const LiveChat = ({
                 if (error && sendBranchOption?.connected === false) {
                     triggerAgentTyping(false);
                     setMssgSendStatus(ERROR);
+
                     const freshMessageList = messages.map((x) => {
                         return x.messageContentId === branchId
                             ? { ...x, selectedOption: "" }
@@ -576,11 +583,11 @@ const LiveChat = ({
                             })
                         );
                         return;
+                    } else {
+                        clearUserInput?.();
                     }
                 }
             );
-
-            clearUserInput?.();
         } else {
             const messageEntry = {
                 ticketId,
@@ -613,11 +620,12 @@ const LiveChat = ({
                                 messageStatus: messageStatues?.FAILED,
                             })
                         );
+                        return;
+                    } else {
+                        clearUserInput?.();
                     }
                 }
             );
-
-            clearUserInput?.();
         }
 
         // --- clear input if it is at investigate message stage ---
@@ -676,7 +684,7 @@ const LiveChat = ({
             setErrorMssg(getErrorMessage(err));
         }
     };
-    console.log({ messages });
+    console.log({ messages, socket });
     const fetchConvoSuggestions = async (message) => {
         try {
             const { messageContent } = message;
@@ -1282,21 +1290,44 @@ const LiveChat = ({
         // eslint-disable-next-line
     }, [ticketsMessages, ticketId, messages, delayInputNeeded]);
 
-    // useEffect(() => {
-    //     console.log({ ww: validateEmail(email) });
-    //     if (!validateEmail(email)) {
-    //         window.addEventListener("beforeunload", (event) => {
-    //             event.preventDefault();
-    //             event.returnValue = "";
-    //             closeTicket();
-    //         });
-    //     }
-    // }, []);
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
+            event.preventDefault();
+
+            if (
+                "serviceWorker" in navigator &&
+                navigator.serviceWorker.controller
+            ) {
+                const tag = "close-ticket";
+
+                navigator.serviceWorker.controller.postMessage({
+                    tag,
+                    ticketId,
+                    baseUrl: envConfig?.apiGateway?.BASE_URL,
+                    apiKey: envConfig?.apiGateway?.CLIENT_KEY,
+                    token: userToken,
+                });
+            }
+        };
+
+        if (!validateEmail(email)) {
+            window.addEventListener("beforeunload", handleBeforeUnload);
+        }
+
+        return () => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        };
+        //eslint-disable-next-line
+    }, []);
 
     const { formElementType } = currentFormElement || {};
 
     const isDateFormElement = formElementType === DATE;
 
+    const handleUploads = (data) => {
+        updateUploads(data);
+        setMssgSendStatus(IDLE);
+    };
     return (
         <>
             {!showVerifyForm ? (
@@ -1344,6 +1375,7 @@ const LiveChat = ({
                     handleVerifyAction={handleVerifyAction}
                     messages={messages}
                     verifyUserAction={verifyUserAction}
+                    ticketId={ticketId}
                 />
             )}
             <div
@@ -1364,7 +1396,7 @@ const LiveChat = ({
                         status === LOADING || status === ERROR || disableForm
                     }
                     uploads={uploads}
-                    updateUploads={updateUploads}
+                    updateUploads={handleUploads}
                     isDateFormElement={isDateFormElement}
                     mssgSendStatus={mssgSendStatus}
                 />

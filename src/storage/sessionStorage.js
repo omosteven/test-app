@@ -3,7 +3,13 @@ export const storeUserAuth = (userAuth) => {
 };
 
 export const getUserAuth = () => {
-    return JSON.parse(sessionStorage.getItem("userAuth"));
+    try {
+        const userAuth = sessionStorage.getItem("userAuth");
+
+        return JSON.parse(userAuth);
+    } catch (err) {
+        return undefined;
+    }
 };
 
 export const setAccessToken = (token) => {
@@ -11,7 +17,13 @@ export const setAccessToken = (token) => {
 };
 
 export const retriveAccessToken = () => {
-    return sessionStorage.getItem("accessToken");
+    try {
+        const accessToken = sessionStorage.getItem("accessToken");
+
+        return accessToken;
+    } catch (err) {
+        return undefined;
+    }
 };
 
 export const deleteAccessToken = () => {
@@ -29,5 +41,11 @@ export const storeConversationData = (ticket) => {
 };
 
 export const getConversationData = () => {
-    return JSON.parse(sessionStorage.getItem("conversationData"));
+    try {
+        const accessToken = sessionStorage.getItem("accessToken");
+
+        return JSON.parse(accessToken);
+    } catch (err) {
+        return undefined;
+    }
 };
