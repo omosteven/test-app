@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import queryString from "query-string";
 import Layout from "./layout/Layout";
-import { generateID, getErrorMessage, isLiveApp } from "./utils/helper";
+import { generateID, getErrorMessage } from "./utils/helper";
 import API from "./lib/api";
 import apiRoutes from "./lib/api/apiRoutes";
 import FullPageLoader from "./components/common/FullPageLoader/FullPageLoader";
@@ -23,11 +23,12 @@ import {
     storeConvoBreakers,
 } from "storage/localStorage";
 import { CONVERSATION_SAVED } from "components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
+import { isLiveApp } from "config/config";
 import "./App.scss";
 
 const App = () => {
     const isAuthenticated = retriveAccessToken();
-    const [fetching, sayFetching] = useState(true);
+    const [fetching, setFetching] = useState(true);
     const [fetchingError, setFetchingError] = useState();
 
     const chatSettings = getChatSettings();
@@ -51,7 +52,7 @@ const App = () => {
             let params = queryString.parse(window.location.search);
             const workspaceSlug = params?.workspaceSlug;
             setFetchingError();
-            sayFetching(true);
+            setFetching(true);
 
             const request = isLiveApp
                 ? window.location.host.includes("metacare")
@@ -104,10 +105,10 @@ const App = () => {
                     defaultTheme,
                     defaultTemplate,
                 });
-                sayFetching(false);
+                setFetching(false);
             }
         } catch (err) {
-            sayFetching(false);
+            setFetching(false);
             setFetchingError(getErrorMessage(err));
         }
     };
@@ -127,7 +128,7 @@ const App = () => {
             });
 
             setTimeout(() => {
-                sayFetching(false);
+                setFetching(false);
             }, 3000);
         }
         // eslint-disable-next-line
