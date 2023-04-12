@@ -9,6 +9,7 @@ import { dataQueryStatus } from "utils/formatHandlers";
 import CompanyChatLogo from "./CompanyChatLogo/CompanyChatLogo";
 import CloseVerifyForm from "./CloseVerifyForm/CloseVerifyForm";
 import { validateEmail } from "utils/helper";
+import ChatHeaderBannerMessage from "./ChatHeaderBannerMessage/ChatHeaderBannerMessage";
 import "./ChatHeader.scss";
 
 const { RELAXED, WORKMODE } = defaultTemplates;
@@ -109,93 +110,125 @@ const ChatHeader = ({
     };
 
     return (
-        <div
-            id='header__wrapper'
-            className={`${!showActions ? "high__index" : ""}`}>
-            <header
-                id={`header`}
-                className={`${isAuthPage ? "header__auth" : ""}`}>
-                <div
-                    className={`chat__header ${
-                        !isAuthPage
-                            ? "chat__header__user"
-                            : "chat__header__auth"
-                    }`}>
-                    {showActions && isTablet && !canSaveConvo && (
-                        <ChatToggler
-                            onClick={() =>
-                                toggleChatMenu?.((prevState) => !prevState)
-                            }
-                        />
-                    )}
-                    {showVerifyForm && (
-                        <CloseVerifyForm
-                            handleVerifyAction={handleVerifyAction}
-                        />
-                    )}
-
+        <>
+            <div
+                id='header__wrapper'
+                className={`${!showActions ? "high__index" : ""}`}>
+                <header
+                    id={`header`}
+                    className={`${isAuthPage ? "header__auth" : ""}`}>
                     <div
-                        className={`logo
-                         ${alignLeft ? "logo__left__aligned" : ""}`}>
-                        {isWorkModeTemplate || isNotTablet ? (
-                            <CompanyChatLogo
-                                src={companyLogo}
-                                alt={teamName}
-                                className='company__logo'
-                                name={
-                                    isAuthPage || showVerifyForm ? teamName : ""
+                        className={`chat__header ${
+                            !isAuthPage
+                                ? "chat__header__user"
+                                : "chat__header__auth"
+                        }`}>
+                        {showActions && isTablet && !canSaveConvo && (
+                            <ChatToggler
+                                onClick={() =>
+                                    toggleChatMenu?.((prevState) => !prevState)
                                 }
                             />
-                        ) : (
-                            isTablet && renderBasedOnStatus()
+                        )}
+                        {showVerifyForm && (
+                            <CloseVerifyForm
+                                handleVerifyAction={handleVerifyAction}
+                            />
+                        )}
+
+                        <div
+                            className={`logo
+                         ${alignLeft ? "logo__left__aligned" : ""}`}>
+                            {isWorkModeTemplate || isNotTablet ? (
+                                <CompanyChatLogo
+                                    src={companyLogo}
+                                    alt={teamName}
+                                    className='company__logo'
+                                    name={
+                                        isAuthPage || showVerifyForm
+                                            ? teamName
+                                            : ""
+                                    }
+                                />
+                            ) : (
+                                isTablet && renderBasedOnStatus()
+                            )}
+                        </div>
+
+                        {!showVerifyForm && (
+                            <>
+                                <CustomerTicketsContainer
+                                    closeTicket={handleTicketModalAction}
+                                    handleTicketSelect={(data) => {
+                                        handleTicketSelect(data);
+                                        toggleChatMenu?.(false);
+                                    }}
+                                    canSaveConvo={canSaveConvo}
+                                    {...{
+                                        status,
+                                        errorMssg,
+                                        customerTickets,
+                                        selectedTicket,
+                                        createNewTicket,
+                                        getCustomerTickets,
+                                        showChatMenu,
+                                        toggleChatMenu,
+                                    }}
+                                />
+
+                                {showActions && (
+                                    <div
+                                        className={`show-only-on-mobile ${
+                                            isNotTablet ? "show-on-desktop" : ""
+                                        }`}>
+                                        <ChatSettingsToggler
+                                            isMobile={true}
+                                            handleCloseTicket={
+                                                handleCloseTicket
+                                            }
+                                            canCloseTicket={
+                                                ticketId !== undefined
+                                            }
+                                        />
+                                    </div>
+                                )}
+                            </>
+                        )}
+                        {showVerifyForm && (
+                            <ChatSettingsToggler
+                                isMobile={true}
+                                handleCloseTicket={handleCloseTicket}
+                                canCloseTicket={ticketId !== undefined}
+                            />
                         )}
                     </div>
-
-                    {!showVerifyForm && (
-                        <>
-                            <CustomerTicketsContainer
-                                closeTicket={handleTicketModalAction}
-                                handleTicketSelect={(data) => {
-                                    handleTicketSelect(data);
-                                    toggleChatMenu?.(false);
-                                }}
-                                canSaveConvo={canSaveConvo}
-                                {...{
-                                    status,
-                                    errorMssg,
-                                    customerTickets,
-                                    selectedTicket,
-                                    createNewTicket,
-                                    getCustomerTickets,
-                                    showChatMenu,
-                                    toggleChatMenu,
-                                }}
-                            />
-
-                            {showActions && (
-                                <div
-                                    className={`show-only-on-mobile ${
-                                        isNotTablet ? "show-on-desktop" : ""
-                                    }`}>
-                                    <ChatSettingsToggler
-                                        isMobile={true}
-                                        handleCloseTicket={handleCloseTicket}
-                                        canCloseTicket={ticketId !== undefined}
-                                    />
-                                </div>
-                            )}
-                        </>
-                    )}
-                    {showVerifyForm && (
-                        <ChatSettingsToggler
-                            isMobile={true}
-                            handleCloseTicket={handleCloseTicket}
-                            canCloseTicket={ticketId !== undefined}
-                        />
-                    )}
-                </div>
-            </header>
-        </div>
+                </header>
+            </div>
+            {isRelaxedTemplate &&
+                !validateEmail(email) &&
+                isTablet &&
+                status === DATAMODE && (
+                    <ChatHeaderBannerMessage
+                        handleVerifyAction={handleVerifyAction}
+                        clickAction={!showVerifyForm}
+                        closeAction={showVerifyForm}
+                        message={
+                            showVerifyForm ? (
+                                `  We will never ask you for your PIN or
+                password`
+                            ) : (
+                                <>
+                                    To save your ticket, click{" "}
+                                    <span className='highlight underline'>
+                                        here
+                                    </span>{" "}
+                                    to confirm your email.
+                                </>
+                            )
+                        }
+                    />
+                )}
+        </>
     );
 };
 

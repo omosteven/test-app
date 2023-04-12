@@ -48,6 +48,18 @@
         @include media("<=medium-screen") {
             margin-top: 25vh;
         }
+        
+        
+        &.customer-verify--margin{
+            @include media("<=medium-screen") {
+                margin-top: 30px;
+            }
+
+            @include media("<=medium-small-screen") {
+                margin-top: 0;
+            }
+    
+        }
     }
 
     .customer-verify {
@@ -143,7 +155,7 @@
         }
 
         &__banner__message__wrapper {
-            margin-bottom: 60px;
+            margin-bottom: 12px;
 
             @include media("<=medium-screen") {
                 margin-bottom: 40px;

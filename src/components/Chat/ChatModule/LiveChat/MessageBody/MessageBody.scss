@@ -51,4 +51,19 @@
             padding-top: 40%;
         }
     }
+
+    &.message-body--margin {
+        @include media("<=medium-screen") {
+            #{$relaxed__mode__template__selector} {
+                padding-top: 3%;
+                height: 75vh;
+            }
+        }
+
+        @include media("<=small-screen") {
+            #{$relaxed__mode__template__selector} {
+                padding-top: 5%;
+            }
+        }
+    }
 }

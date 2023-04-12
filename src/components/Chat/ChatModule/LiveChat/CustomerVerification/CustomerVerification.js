@@ -26,6 +26,7 @@ import {
 } from "../MessageBody/Messages/enums";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { generateID } from "utils/helper";
+import { useWindowSize } from "utils/hooks";
 import "./CustomerVerification.scss";
 
 export const verifystages = {
@@ -72,7 +73,10 @@ const CustomerVerification = ({
     const [errorMssg, setErrorMssg] = useState("");
     const [showBannerMessage, toggleBannerMessage] = useState(true);
 
+    const { width } = useWindowSize();
+
     const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isNotTablet = width > 768;
 
     const handleEmailRequestUpdate = (data) => {
         setinitialStepRequest(data);
@@ -107,18 +111,15 @@ const CustomerVerification = ({
         const { messageId } =
             messages?.find(
                 (ticketMessage) =>
-                    ticketMessage?.messageActionType === ADD_EMAIL_ADDRESS &&
-                    ticketMessage?.ticketId === ticketId
+                    ticketMessage?.messageActionType === ADD_EMAIL_ADDRESS
             ) || {};
 
-        if (messageId) {
-            dispatch(
-                deleteTicketsMessages({
-                    messageId,
-                    ticketId,
-                })
-            );
-        }
+        dispatch(
+            deleteTicketsMessages({
+                messageId,
+                ticketId,
+            })
+        );
 
         if (isRelaxedTemplate) {
             dispatch(
@@ -196,6 +197,7 @@ const CustomerVerification = ({
                         handleSuccess={handleSuccess}
                         isDirectUser={true}
                         isLinkEmail={isLinkEmail}
+                        title={`We’ve sent an OTP to your email`}
                         subTitle={
                             validateEmail(email || userId) &&
                             `at ${email || userId}`
@@ -229,17 +231,26 @@ const CustomerVerification = ({
                         />
                     </div>
                 )}
-                <div className='customer-verify__form customer-save__action'>
+                <div
+                    className={`customer-verify__form customer-save__action ${
+                        verifyStage !== success ? "customer-verify--margin" : ""
+                    }`}>
                     <div>
-                        {showBannerMessage && verifyStage !== success && (
-                            <div className='customer-verify__banner__message__wrapper'>
-                                <BannerMessage
-                                    onClose={() => toggleBannerMessage(false)}>
-                                    We will never ask you for your PIN or
-                                    password
-                                </BannerMessage>
-                            </div>
-                        )}
+                        {isRelaxedTemplate &&
+                            showBannerMessage &&
+                            verifyStage !== success &&
+                            isNotTablet && (
+                                <div className='customer-verify__banner__message__wrapper'>
+                                    <BannerMessage
+                                        onClose={() =>
+                                            toggleBannerMessage(false)
+                                        }
+                                        isCloseable={true}>
+                                        We will never ask you for your PIN or
+                                        password
+                                    </BannerMessage>
+                                </div>
+                            )}
                         {renderBasedOnStatus()}
                     </div>
                 </div>
