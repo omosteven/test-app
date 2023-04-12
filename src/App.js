@@ -17,18 +17,18 @@ import Chat from "./components/Chat/Chat";
 import ProtectedRoute from "./routes/ProtectedRoute/ProtectedRoute";
 import ConversationSignIn from "./components/ConversationSignIn/ConversationSignIn";
 import { retriveAccessToken } from "storage/sessionStorage";
-import "./App.scss";
-
 import {
     getChatSettings,
     storeChatSettings,
     storeConvoBreakers,
 } from "storage/localStorage";
 import { CONVERSATION_SAVED } from "components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
+import { isLiveApp } from "config/config";
+import "./App.scss";
 
 const App = () => {
     const isAuthenticated = retriveAccessToken();
-    const [fetching, sayFetching] = useState(true);
+    const [fetching, setFetching] = useState(true);
     const [fetchingError, setFetchingError] = useState();
 
     const chatSettings = getChatSettings();
@@ -52,9 +52,15 @@ const App = () => {
             let params = queryString.parse(window.location.search);
             const workspaceSlug = params?.workspaceSlug;
             setFetchingError();
-            sayFetching(true);
+            setFetching(true);
 
-            const url = apiRoutes?.chatSettings(workspaceSlug);
+            const request = isLiveApp
+                ? window.location.host.includes("metacare")
+                    ? window.location.host?.split(".")[0]
+                    : window.location.host
+                : workspaceSlug;
+
+            const url = apiRoutes?.chatSettings(request);
             const res = await API.get(url);
             if (res.status === 200) {
                 const { data } = res.data;
@@ -99,10 +105,10 @@ const App = () => {
                     defaultTheme,
                     defaultTemplate,
                 });
-                sayFetching(false);
+                setFetching(false);
             }
         } catch (err) {
-            sayFetching(false);
+            setFetching(false);
             setFetchingError(getErrorMessage(err));
         }
     };
@@ -122,7 +128,7 @@ const App = () => {
             });
 
             setTimeout(() => {
-                sayFetching(false);
+                setFetching(false);
             }, 3000);
         }
         // eslint-disable-next-line
