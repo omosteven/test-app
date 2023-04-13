@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Button, ErrorDialog } from "../../ui";
 import PinInput from "react-pin-input";
-import { getErrorMessage } from "../../../utils/helper";
+import { getErrorMessage, truncate } from "../../../utils/helper";
 import API from "../../../lib/api";
 import apiRoutes from "../../../lib/api/apiRoutes";
 import { ResendOTP } from "./ResendOTP/ResendOTP";
@@ -98,16 +98,17 @@ const OTPForm = ({
         <div>
             <div className='otp__form'>
                 <div>
-                    <h5 className='signin-header'>
+                    <h5 className='otp__form__header'>
                         {title ? (
                             <>{title}</>
                         ) : (
                             <>
-                                We’ve sent an OTP to <span>{email}</span>
+                                We’ve sent an OTP to{" "}
+                                <span>{truncate(email, 25)}</span>
                             </>
                         )}
                     </h5>
-                    <p className='signin-sub__text'>
+                    <p className='otp__form__sub__text'>
                         {isDirectUser ? (
                             <>
                                 {subTitle ? (

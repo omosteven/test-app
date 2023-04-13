@@ -44,24 +44,15 @@ const LiveChatStatusBar = ({
 
             case ERROR:
                 return (
-                    // <span className='error__status' onClick={handleRetry}>
-                    //     {isRelaxedTemplate && (
-                    //         <img
-                    //             src={imageLinks?.svg.redRetry}
-                    //             alt='Retry Icon'
-                    //         />
-                    //     )}{" "}
-                    //     {errorMssg}
-                    // </span>
-
-                    // <BannerMessage
-                    //     onClick={handleAddEmailAction}
-                    //     isClickable={true}>
-                    //     To save your ticket, click{" "}
-                    //     <span className='highlight underline'>here</span> to
-                    //     confirm your email.
-                    // </BannerMessage>
-                    <></>
+                    <span className='error__status' onClick={handleRetry}>
+                        {isRelaxedTemplate && (
+                            <img
+                                src={imageLinks?.svg.redRetry}
+                                alt='Retry Icon'
+                            />
+                        )}{" "}
+                        {errorMssg}
+                    </span>
                 );
 
             case DATAMODE:

@@ -2,19 +2,44 @@
 @import "assets/scss/_include-media-lib/include-media";
 
 .otp__form {
-    h5 {
+    &__header {
+        font-weight: 600;
+        font-size: 2rem;
+        line-height: 142%;
+        color: $black__theme_color;
+
         #{$relaxed__mode__template__selector} {
             text-align: center;
-            margin-bottom: 24px;
+            font-size: 24px;
+            line-height: 32px;
+            margin: 0;
 
             @include media(">medium-screen") {
                 font-size: 28px !important;
+                text-align: center;
             }
         }
     }
-    p {
+    &__sub__text {
+        font-size: 1.125rem;
+        line-height: 1.625rem;
+        color: $muted__theme_color_2;
+
         #{$relaxed__mode__template__selector} {
             text-align: center;
+            font-size: 1rem;
+            line-height: 24px;
+            margin-top: 14px;
+            margin-bottom: 24px;
+
+            @include media(">medium-screen") {
+                font-size: 20px;
+                line-height: 28px;
+            }
+        }
+
+        #{$dark__mode__theme__selector} {
+            color: $dark__mode__text__theme__color;
         }
     }
     .my-3 {
