@@ -45,6 +45,12 @@
         }
     }
 
+    @include media("<=xtra-small-screen") {
+        #{$relaxed__mode__template__selector} {
+            line-height: 12px;
+        }
+    }
+
     #{$dark__mode__theme__selector} {
         color: $dark__mode__text__theme__color;
         background: $dark__mode__theme__grey__color;
