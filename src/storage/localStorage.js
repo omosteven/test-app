@@ -7,8 +7,6 @@ export const storeChatSettings = (data) => {
         expiry: expiry.getTime(),
     };
 
-    // console.loh('stored now')
-
     localStorage.setItem("chatSettings", JSON.stringify(chatSettings));
 };
 

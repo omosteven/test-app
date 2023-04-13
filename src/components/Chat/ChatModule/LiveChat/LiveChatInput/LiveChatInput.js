@@ -665,8 +665,7 @@ const LiveChatInput = ({
                                         loading={
                                             isFinalDatePickerStage
                                                 ? disableInput
-                                                : loading &&
-                                                  !(mssgSendStatus === ERROR)
+                                                : mssgSendStatus === LOADING
                                         }
                                         disabled={
                                             (btnDisabled ||
@@ -687,8 +686,6 @@ const LiveChatInput = ({
                     )}
                     {mssgSendStatus === ERROR && (
                         <span className='chat__input__error'>
-                            {/* Sorry, an error occurred. Please refresh or try
-                            again. */}
                             Network connection failed. Tap to retry
                         </span>
                     )}

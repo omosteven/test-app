@@ -25,6 +25,10 @@
 .chat__header__auth {
     @include media(">medium-screen") {
         height: 72px !important;
+
+        .logo {
+            margin: auto !important;
+        }
     }
     @include media("<=medium-screen") {
         height: 50px !important;

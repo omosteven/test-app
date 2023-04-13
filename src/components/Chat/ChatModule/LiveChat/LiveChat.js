@@ -1327,7 +1327,10 @@ const LiveChat = ({
 
     const handleUploads = (data) => {
         updateUploads(data);
-        setMssgSendStatus(IDLE);
+
+        if (data?.length > 0) {
+            setMssgSendStatus(IDLE);
+        }
     };
     return (
         <>
