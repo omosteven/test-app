@@ -90,6 +90,10 @@
                         padding: 12px 11.06px;
                     }
 
+                    @include media("<=xtra-small-screen") {
+                        padding: 8px 7.5px;
+                    }
+
                     #{$dark__mode__theme__selector} {
                         color: #AAAAAA;
                     }
@@ -123,7 +127,11 @@
                     cursor: pointer;
 
                     @include media("<=medium-small-screen") {
-                        padding: 8px 10.06px;
+                        padding: 8px 11.06px;
+                    }
+                    
+                    @include media("<=xtra-small-screen") {
+                        padding: 8px 8.06px;
                     }
 
                     #{$dark__mode__theme__selector} {

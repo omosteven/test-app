@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import EmailForm from "components/SignInForm/EmailForm/EmailForm";
 import ErrorView from "components/common/ErrorView/ErrorView";
 import { DotLoader } from "components/ui";
@@ -15,17 +15,8 @@ import { VERIFY_USER_ACTIONS } from "components/Chat/enums";
 import { dataQueryStatus } from "utils/formatHandlers";
 import { useHistory } from "react-router-dom";
 import BannerMessage from "components/ui/BannerMessage/BannerMessage";
-import {
-    deleteTicketsMessages,
-    saveTicketsMessages,
-} from "store/tickets/actions";
-import { ADD_EMAIL_ADDRESS } from "../MessageBody/Messages/enums";
-import {
-    messageTypes,
-    appMessageUserTypes,
-} from "../MessageBody/Messages/enums";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
-import { generateID } from "utils/helper";
+import { useWindowSize } from "utils/hooks";
 import "./CustomerVerification.scss";
 
 export const verifystages = {
@@ -34,9 +25,7 @@ export const verifystages = {
     success: "SUCCESS",
 };
 
-const { SUCCESS } = messageTypes;
 const { RELAXED } = defaultTemplates;
-const { WORKSPACE_AGENT } = appMessageUserTypes;
 const { ERROR, DATAMODE, LOADING } = dataQueryStatus;
 
 const CustomerVerification = ({
@@ -58,7 +47,6 @@ const CustomerVerification = ({
     );
 
     const history = useHistory();
-    const dispatch = useDispatch();
 
     const isLinkEmail =
         history?.location?.pathname === "/conversation" ||
@@ -70,9 +58,17 @@ const CustomerVerification = ({
     const [initialStepRequest, setinitialStepRequest] = useState();
     const [status, setStatus] = useState(!isLinkEmail ? DATAMODE : LOADING);
     const [errorMssg, setErrorMssg] = useState("");
-    const [showBannerMessage, toggleBannerMessage] = useState(true);
+    const [displayBannerMessage, toggleBannerMessage] = useState(true);
+
+    const { width } = useWindowSize();
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
+    const isNotTablet = width > 768;
+    const showBannerMessage =
+        isRelaxedTemplate &&
+        displayBannerMessage &&
+        verifyStage !== success &&
+        isNotTablet;
 
     const handleEmailRequestUpdate = (data) => {
         setinitialStepRequest(data);
@@ -102,45 +98,6 @@ const CustomerVerification = ({
         }
         //eslint-disable-next-line
     }, []);
-
-    const handleEmailVerificationSuccess = () => {
-        const { messageId } =
-            messages?.find(
-                (ticketMessage) =>
-                    ticketMessage?.messageActionType === ADD_EMAIL_ADDRESS &&
-                    ticketMessage?.ticketId === ticketId
-            ) || {};
-
-        if (messageId) {
-            dispatch(
-                deleteTicketsMessages({
-                    messageId,
-                    ticketId,
-                })
-            );
-        }
-
-        if (isRelaxedTemplate) {
-            dispatch(
-                saveTicketsMessages({
-                    ticketId,
-                    messageId: generateID(),
-                    messageContent:
-                        "We have successfully verified your account and your ticket has been saved.",
-                    messageHeader: "Email verification successful",
-                    messageType: SUCCESS,
-                    senderType: WORKSPACE_AGENT,
-                })
-            );
-        }
-    };
-
-    useEffect(() => {
-        if (verifyStage === success) {
-            handleEmailVerificationSuccess();
-        }
-        // eslint-disable-next-line
-    }, [verifyStage]);
 
     const renderBasedOnStatus = () => {
         switch (status) {
@@ -196,6 +153,7 @@ const CustomerVerification = ({
                         handleSuccess={handleSuccess}
                         isDirectUser={true}
                         isLinkEmail={isLinkEmail}
+                        title={`We’ve sent an OTP to your email`}
                         subTitle={
                             validateEmail(email || userId) &&
                             `at ${email || userId}`
@@ -208,6 +166,8 @@ const CustomerVerification = ({
                     <CustomerVerifySuccess
                         closeModal={handleVerifyAction}
                         redirectUser={isLinkEmail}
+                        messages={messages}
+                        ticketId={ticketId}
                     />
                 );
 
@@ -229,12 +189,16 @@ const CustomerVerification = ({
                         />
                     </div>
                 )}
-                <div className='customer-verify__form customer-save__action'>
+                <div
+                    className={`customer-verify__form customer-save__action ${
+                        verifyStage !== success ? "customer-verify--margin" : ""
+                    }`}>
                     <div>
-                        {showBannerMessage && verifyStage !== success && (
+                        {showBannerMessage && (
                             <div className='customer-verify__banner__message__wrapper'>
                                 <BannerMessage
-                                    onClose={() => toggleBannerMessage(false)}>
+                                    onClose={() => toggleBannerMessage(false)}
+                                    isCloseable={true}>
                                     We will never ask you for your PIN or
                                     password
                                 </BannerMessage>

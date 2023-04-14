@@ -78,8 +78,6 @@
                 text-align: center;
                 margin-bottom: -5px;
             }
-            @include media("<=medium-screen") {
-            }
         }
 
         // span {
@@ -96,7 +94,6 @@
     }
 
     .signin-sub__text {
-        font-size: 1.125rem;
         font-size: 1.125rem;
         line-height: 1.625rem;
         color: $muted__theme_color_2;

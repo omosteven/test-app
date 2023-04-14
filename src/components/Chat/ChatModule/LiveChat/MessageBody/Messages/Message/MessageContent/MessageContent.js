@@ -4,9 +4,16 @@ import { messageTypes, appMessageUserTypes, messageStatues } from "../../enums";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import ChangeOptionChoice from "./ChangeOptionChoice/ChangeOptionChoice";
 import ChangeOptionChoiceModal from "./ChangeOptionChoice/ChangeOptionChoiceModal/ChangeOptionChoiceModal";
+import { truncate, validateEmail } from "utils/helper";
 
-const { BRANCH_OPTION, FORM_REQUEST, ACTION_INFO, DEFAULT, CONVERSATION } =
-    messageTypes;
+const {
+    BRANCH_OPTION,
+    FORM_REQUEST,
+    ACTION_INFO,
+    DEFAULT,
+    CONVERSATION,
+    FORM_RESPONSE,
+} = messageTypes;
 const { THIRD_USER } = appMessageUserTypes;
 const { RELAXED } = defaultTemplates;
 
@@ -101,7 +108,12 @@ const MessageContent = ({
                         : ""
                 }>
                 {messageContent !== "" && (
-                    <div className='message'>{messageContent}</div>
+                    <div className='message'>
+                        {messageType === FORM_RESPONSE &&
+                        validateEmail(messageContent)
+                            ? truncate(messageContent, 25)
+                            : messageContent}
+                    </div>
                 )}
             </div>
             {showChangeOptionChoice && (

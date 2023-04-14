@@ -3,14 +3,22 @@ import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import "./BannerMessage.scss";
 
-const BannerMessage = ({ children, onClick, onClose }) => {
+const BannerMessage = ({
+    children,
+    onClick,
+    onClose,
+    isClickable,
+    isCloseable,
+}) => {
     return (
-        <div onClick={onClick} className='banner__message'>
+        <div
+            onClick={() => (isClickable ? onClick() : "")}
+            className='banner__message'>
             <div>
                 <ReactSVG src={imageLinks.svg.info} />
                 <span className='banner__message__text'>{children}</span>
             </div>
-            {onClose && (
+            {isCloseable && (
                 <ReactSVG
                     src={imageLinks.svg.cancel}
                     onClick={(e) => {

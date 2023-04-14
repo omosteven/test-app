@@ -16,6 +16,7 @@ const MessageBody = ({
     handleNewMessage,
     status,
     mssgSendStatus,
+    isValidUserEmail,
 }) => {
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
     const { ticketId, agent } = ticket;
@@ -51,7 +52,11 @@ const MessageBody = ({
     }, [messages]);
 
     return (
-        <div className='message-body scroll' id={ID}>
+        <div
+            className={`message-body scroll ${
+                !isValidUserEmail ? "message-body--margin" : ""
+            }`}
+            id={ID}>
             <Messages
                 messages={messages}
                 agent={agent}

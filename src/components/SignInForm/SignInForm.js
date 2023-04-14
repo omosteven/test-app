@@ -8,9 +8,8 @@ import ChatHeader from "components/Chat/ChatModule/ChatHeader/ChatHeader";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import InAppAuth from "./InAppAuth/InAppAuth";
 import queryString from "query-string";
-import { generateRandomId } from "utils/helper";
+import { generateRandomId, truncate } from "utils/helper";
 import { signInstages, emailFormActions, inAppAuthActions } from "./enum";
-
 import "./SignInForm.scss";
 
 const { RELAXED, WORKMODE } = defaultTemplates;
@@ -129,11 +128,11 @@ const SignInForm = () => {
                                 <>
                                     <span className='show-only-on-desktop'>
                                         We’ve sent an OTP to{" "}
-                                        {emailStepRequest?.email}
+                                        {truncate(emailStepRequest?.email, 25)}
                                     </span>
                                     <span className='show-only-on-mobile'>
                                         We’ve sent an OTP <br /> to{" "}
-                                        {emailStepRequest?.email}
+                                        {truncate(emailStepRequest?.email, 25)}
                                     </span>
                                 </>
                             )

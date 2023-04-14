@@ -6,6 +6,7 @@ import { dataQueryStatus } from "utils/formatHandlers";
 import SmallLoader from "components/ui/SmallLoader/SmallLoader";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import BannerMessage from "components/ui/BannerMessage/BannerMessage";
+import { useWindowSize } from "utils/hooks";
 import "./LiveChatStatusBar.scss";
 
 const { IDLE, LOADING, ERROR, DATAMODE } = dataQueryStatus;
@@ -27,8 +28,11 @@ const LiveChatStatusBar = ({
         reconnectUser?.();
     };
 
+    const { width } = useWindowSize();
+
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORKMODE;
+    const isNotTablet = width > 768;
 
     const renderBasedOnStatus = () => {
         switch (status) {
@@ -62,12 +66,19 @@ const LiveChatStatusBar = ({
                                         {user?.email}{" "}
                                     </span>
                                 ) : isRelaxedTemplate ? (
-                                    <BannerMessage
-                                        onClick={handleAddEmailAction}>
-                                        To save your ticket, click{" "}
-                                        <span className='highlight'>here</span>{" "}
-                                        to confirm your email.
-                                    </BannerMessage>
+                                    isNotTablet ? (
+                                        <BannerMessage
+                                            onClick={handleAddEmailAction}
+                                            isClickable={true}>
+                                            To save your ticket, click{" "}
+                                            <span className='highlight underline'>
+                                                here
+                                            </span>{" "}
+                                            to confirm your email.
+                                        </BannerMessage>
+                                    ) : (
+                                        <></>
+                                    )
                                 ) : (
                                     <span
                                         onClick={handleAddEmailAction}

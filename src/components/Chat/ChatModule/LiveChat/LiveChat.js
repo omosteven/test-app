@@ -127,6 +127,7 @@ const LiveChat = ({
         user: { email },
     } = useSelector((state) => state?.auth);
     const userToken = retriveAccessToken();
+    const isValidUserEmail = validateEmail(email);
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
@@ -1310,7 +1311,7 @@ const LiveChat = ({
             }
         };
 
-        if (!validateEmail(email)) {
+        if (!isValidUserEmail) {
             window.addEventListener("beforeunload", handleBeforeUnload);
         }
 
@@ -1326,7 +1327,10 @@ const LiveChat = ({
 
     const handleUploads = (data) => {
         updateUploads(data);
-        setMssgSendStatus(IDLE);
+
+        if (data?.length > 0) {
+            setMssgSendStatus(IDLE);
+        }
     };
     return (
         <>
@@ -1366,6 +1370,7 @@ const LiveChat = ({
                             handleNewMessage={handleNewMessage}
                             status={status}
                             mssgSendStatus={mssgSendStatus}
+                            isValidUserEmail={isValidUserEmail}
                         />
                     </div>
                 </div>
