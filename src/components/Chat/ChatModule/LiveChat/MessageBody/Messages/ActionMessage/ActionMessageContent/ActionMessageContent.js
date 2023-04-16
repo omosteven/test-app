@@ -26,7 +26,8 @@ const ActionMessageContent = ({
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
     );
-    const { activeTicket } = useSelector((state) => state.tickets);
+
+    const { user } = useSelector((state) => state?.auth);
 
     const dispatch = useDispatch();
 
@@ -51,7 +52,7 @@ const ActionMessageContent = ({
     const showAddEmailAddress =
         messageActionType === ADD_EMAIL_ADDRESS &&
         lastMessage?.messageActionType === ADD_EMAIL_ADDRESS &&
-        !validateEmail(activeTicket?.customer?.email);
+        !validateEmail(user?.email);
 
     return (
         <>

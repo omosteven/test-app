@@ -27,6 +27,7 @@
 
     @include media("<=medium-screen") {
         width: 100%;
+        gap: 0;
 
         #{$relaxed__mode__template__selector} {
             padding: 10px 27px 10px 28px;
@@ -57,7 +58,7 @@
 
     &__text {
         text-align: left;
-        
+
         .highlight {
             color: $primary__theme_color;
 

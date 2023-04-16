@@ -7,6 +7,7 @@ const ChatHeaderBannerMessage = ({
     clickAction,
     closeAction,
     message,
+    className,
 }) => {
     const [showBannerMessage, toggleBannerMessage] = useState(true);
 
@@ -16,7 +17,7 @@ const ChatHeaderBannerMessage = ({
     }, [message]);
 
     return (
-        <div className='chat__header__banner__message__wrapper' key={message}>
+        <div className={className} key={message}>
             {showBannerMessage && (
                 <BannerMessage
                     onClick={handleVerifyAction}

@@ -64,6 +64,7 @@ const CustomerVerifySuccess = ({
                     messageHeader: "Email verification successful",
                     messageType: SUCCESS,
                     senderType: WORKSPACE_AGENT,
+                    deliveryDate: new Date().toISOString(),
                 })
             );
         }

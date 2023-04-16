@@ -123,11 +123,9 @@ const LiveChat = ({
     const messages = ticketsMessages?.filter(
         (item) => item?.ticketId === ticketId
     );
-    const {
-        user: { email },
-    } = useSelector((state) => state?.auth);
+    const { user } = useSelector((state) => state?.auth);
     const userToken = retriveAccessToken();
-    const isValidUserEmail = validateEmail(email);
+    const isValidUserEmail = validateEmail(user?.email);
 
     const socket = useContext(SocketContext);
     const dispatch = useDispatch();
@@ -180,6 +178,7 @@ const LiveChat = ({
                                 data[data?.length - 1]?.messageContentId
                             }`
                         );
+
                         handleAddEmail();
                     }
 
@@ -335,6 +334,7 @@ const LiveChat = ({
                     messageStatus: messageStatues?.SENDING,
                 })
             );
+
             handleAddEmail();
         } else {
             const allMessagesCopy = messages;
@@ -847,7 +847,7 @@ const LiveChat = ({
     };
 
     const handleAddEmail = () => {
-        if (!validateEmail(customer?.email)) {
+        if (!validateEmail(user?.email)) {
             const {
                 actionBranchHeader,
                 displayAverageResponseTime,
@@ -925,6 +925,7 @@ const LiveChat = ({
         if (messageType === FORM_FILLED_COMPLETELY) {
             sendAgentTicket();
             triggerAgentTyping(false);
+
             return handleAddEmail();
         }
     };
