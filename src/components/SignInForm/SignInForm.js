@@ -11,6 +11,7 @@ import queryString from "query-string";
 import { generateRandomId, truncate } from "utils/helper";
 import { signInstages, emailFormActions, inAppAuthActions } from "./enum";
 import "./SignInForm.scss";
+import { isLiveApp } from "config/config";
 
 const { RELAXED, WORKMODE } = defaultTemplates;
 const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
@@ -31,19 +32,20 @@ const SignInForm = () => {
     const history = useHistory();
 
     const Queryparams = queryString.parse(window.location.search);
-    const firstName = Queryparams?.firstName || "";
-    const lastName = Queryparams?.lastName || "";
-    const email = Queryparams?.email || "";
+    const firstName = Queryparams?.firstName;
+    const lastName = Queryparams?.lastName;
+    const email = Queryparams?.email;
     const appUserId = Queryparams?.appUserId || generateRandomId();
 
     const routeToChat = (firstName, lastName, conversationId) => {
-        conversationId
-            ? history.push(
-                  `/link?workspaceSlug=${workspaceSlug}&conversationId=${conversationId}&appUserId=${`${appUserId}`}&email=${email}`
-              )
-            : history.push(
-                  `/link?workspaceSlug=${workspaceSlug}&appUserId=${`${firstName}${lastName}${appUserId}`}&firstName=${firstName}&lastName=${lastName}&email=${email}`
-              );
+        history.push(`
+            /link?${isLiveApp ? '' : `workspaceSlug=${workspaceSlug}&`}
+            ${conversationId ? `&conversationId=${conversationId}`: ''}
+            ${appUserId ? `appUserId=${appUserId}&` : ''}
+            ${firstName ? `firstName=${firstName}&` : ''}
+            ${lastName ? `lastName=${lastName}&` : ''} 
+            ${email ? `email=${email}` : ''}
+        `);
     };
 
     const handleAskAction = () => {

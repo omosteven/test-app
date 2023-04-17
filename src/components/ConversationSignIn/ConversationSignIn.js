@@ -16,6 +16,7 @@ import ErrorView from "components/common/ErrorView/ErrorView";
 import { getErrorMessage } from "utils/helper";
 import { pushAuthUser } from "store/auth/actions";
 import "../SignInForm/SignInForm.scss";
+import { isLiveApp } from "config/config";
 
 const { RELAXED } = defaultTemplates;
 const { ERROR, DATAMODE } = dataQueryStatus;
@@ -51,6 +52,7 @@ const ConversationSignIn = () => {
             if (res.status === 200) {
                 const { data } = res.data;
                 const { customer } = data || {};
+                const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
 
                 dispatch(
                     setActiveTicket({
@@ -62,14 +64,14 @@ const ConversationSignIn = () => {
                     dispatch(pushAuthUser(customer));
                 }
 
+
                 await window.history.replaceState(
                     null,
                     "New Conversation",
-                    `/chat?workspaceSlug=${workspaceSlug}`
+                    url
                 );
                 await window.location.reload();
-                // window.location.reload();
-                // history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+           
             }
         } catch (err) {
             setStatus(ERROR);
@@ -81,7 +83,8 @@ const ConversationSignIn = () => {
         if (conversationId) {
             engageConversation();
         } else {
-            history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+            const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+            history.push(url);
         }
     };
 

@@ -2,6 +2,7 @@ import React from "react";
 import { Route, Redirect, withRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getUserAuth, retriveAccessToken } from "storage/sessionStorage";
+import { isLiveApp } from "config/config";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
     const isAuthenticated =
@@ -23,7 +24,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             ) : (
                 <Redirect
                     to={{
-                        pathname: `/?workspaceSlug=${workspaceSlug}`,
+                        pathname: `${isLiveApp ? '/' : `/?workspaceSlug=${workspaceSlug}`}`,
                         state: { referrer: rest.location.pathname },
                     }}
                 />

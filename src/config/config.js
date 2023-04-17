@@ -37,7 +37,7 @@ const staging = {
 };
 
 const config = process.env.REACT_APP_STAGE === "dev" ? dev : staging;
-export const isLiveApp = process.env.REACT_APP_STAGE === "production";
+export const isLiveApp = process.env.REACT_APP_STAGE === "production" || process.env.REACT_APP_STAGE === "staging";
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default { ...config };

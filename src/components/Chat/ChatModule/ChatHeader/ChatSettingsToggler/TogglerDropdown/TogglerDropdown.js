@@ -17,16 +17,6 @@ const TogglerDropdown = ({
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
-    // const handleLogOut = async () => {
-    //     let params = queryString.parse(window.location.search);
-    //     const slugCC = params?.workspaceSlug;
-    //
-    //     window.location.replace(`/?workspaceSlug=${slugCC}`);
-    //     await store.dispatch({ type: SIGNOUT_REQUEST });
-
-    //     // history.push(`/?workspaceSlug=${workspaceSlug}`);
-    // };
-
     return (
         <Dropdown isOpen={isDropdownOpen} toggle={toggleDropdown}>
             <DropdownToggle

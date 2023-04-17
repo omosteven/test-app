@@ -27,7 +27,9 @@ import { DotLoader } from "components/ui";
 import { useWindowSize } from "utils/hooks";
 import pushToDashboard from "components/SignInForm/actions";
 import { storeUserAuth } from "storage/sessionStorage";
+import { isLiveApp } from "config/config";
 import "./Chat.scss";
+
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 const { RELAXED } = defaultTemplates;
@@ -230,7 +232,8 @@ const Chat = () => {
                 if (conversationId) {
                     engageConversation();
                 } else {
-                    history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+                    const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+                    history.push(url);
                 }
             }
         } catch (err) {
@@ -248,6 +251,7 @@ const Chat = () => {
 
             if (res.status === 200) {
                 const { data } = res.data;
+                const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
 
                 dispatch(
                     setActiveTicket({
@@ -256,7 +260,7 @@ const Chat = () => {
                 );
 
                 if (history?.location?.pathname !== "/conversation") {
-                    history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+                    history.push(url);
                 }
 
                 setStatus(DATAMODE);

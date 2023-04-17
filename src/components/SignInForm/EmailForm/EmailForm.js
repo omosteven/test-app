@@ -11,6 +11,7 @@ import imageLinks from "assets/images";
 import pushToDashboard from "../actions";
 import { emailFormActions } from "../enum";
 import "./EmailForm.scss";
+import { isLiveApp } from "config/config";
 
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
 
@@ -62,7 +63,8 @@ const EmailForm = ({
                     handleEmailRequestUpdate({ sessionId, email }, ADD_EMAIL);
                 } else {
                     pushToDashboard(data);
-                    window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+                    const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+                    window.location.href = url;
                 }
             }
         } catch (err) {

@@ -9,6 +9,7 @@ import { ResendOTP } from "./ResendOTP/ResendOTP";
 import pushToDashboard from "../actions";
 import { getDevicePushToken } from "../../../lib/firebase/firebase";
 import "./OTPForm.scss";
+import { isLiveApp } from "config/config";
 
 const OTPForm = ({
     initialStepRequest,
@@ -45,7 +46,8 @@ const OTPForm = ({
 
                 pushToDashboard(data);
                 if (redirectUser) {
-                    window.location.href = `/chat?workspaceSlug=${workspaceSlug}`;
+                    const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+                    window.location.href = url;
                 } else {
                     handleSuccess?.();
                 }
@@ -69,10 +71,8 @@ const OTPForm = ({
 
             if (res.status === 200) {
                 const { data } = res.data;
-
                 pushToDashboard(data);
                 handleSuccess?.();
-                // history.push(`/chat?workspaceSlug=${workspaceSlug}`);
             }
         } catch (err) {
             setErrorMsg(getErrorMessage(err));

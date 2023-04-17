@@ -19,6 +19,7 @@ import {
     appMessageUserTypes,
 } from "../../MessageBody/Messages/enums";
 import "./CustomerVerifySuccess.scss";
+import { isLiveApp } from "config/config";
 
 const { WORKMODE } = defaultTemplates;
 const { SUCCESS } = messageTypes;
@@ -81,7 +82,8 @@ const CustomerVerifySuccess = ({
         }
 
         if (redirectUser) {
-            history.push(`/chat?workspaceSlug=${workspaceSlug}`);
+            const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+            history.push(url);
         } else {
             closeModal();
         }
