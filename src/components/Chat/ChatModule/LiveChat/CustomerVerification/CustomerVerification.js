@@ -190,7 +190,7 @@ const CustomerVerification = ({
                     </div>
                 )}
                 <div
-                    className={`customer-verify__form customer-save__action ${
+                    className={`customer-verify__form  ${
                         verifyStage !== success ? "customer-verify--margin" : ""
                     }`}>
                     <div>

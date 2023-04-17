@@ -50,13 +50,11 @@ const MessageBody = ({
         _autoScroll();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages]);
-
+    // ${
+    //     !isValidUserEmail ? "message-body--margin" : ""
+    // }
     return (
-        <div
-            className={`message-body scroll ${
-                !isValidUserEmail ? "message-body--margin" : ""
-            }`}
-            id={ID}>
+        <div className={`message-body scroll message-body--margin `} id={ID}>
             <Messages
                 messages={messages}
                 agent={agent}

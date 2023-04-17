@@ -204,30 +204,33 @@ const ChatHeader = ({
                     </div>
                 </header>
             </div>
-            {isRelaxedTemplate &&
-                !validateEmail(email) &&
-                isTablet &&
-                status === DATAMODE && (
-                    <ChatHeaderBannerMessage
-                        handleVerifyAction={handleVerifyAction}
-                        clickAction={!showVerifyForm}
-                        closeAction={showVerifyForm}
-                        message={
-                            showVerifyForm ? (
-                                `  We will never ask you for your PIN or
-                password`
-                            ) : (
-                                <>
-                                    To save your ticket, click{" "}
-                                    <span className='highlight underline'>
-                                        here
-                                    </span>{" "}
-                                    to confirm your email.
-                                </>
-                            )
-                        }
-                    />
-                )}
+            {isRelaxedTemplate && isTablet && status === DATAMODE && (
+                <ChatHeaderBannerMessage
+                    handleVerifyAction={handleVerifyAction}
+                    clickAction={!showVerifyForm || validateEmail(email)}
+                    closeAction={showVerifyForm || validateEmail(email)}
+                    message={
+                        showVerifyForm && !validateEmail(email) ? (
+                            `We will never ask you for your PIN or password`
+                        ) : validateEmail(email) ? (
+                            <>
+                                You can always re-open this ticket with the link
+                                we sent to{" "}
+                                <span className='highlight'>{email}</span>
+                            </>
+                        ) : (
+                            <>
+                                To save your ticket, click{" "}
+                                <span className='highlight underline'>
+                                    here
+                                </span>{" "}
+                                to confirm your email.
+                            </>
+                        )
+                    }
+                    className='chat__header__banner__message__wrapper'
+                />
+            )}
         </>
     );
 };
