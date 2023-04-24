@@ -33,7 +33,7 @@ const LiveChatStatusBar = ({
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isNotTablet = width > 768;
-
+    console.log({ e4e: validateEmail(user?.email) });
     const renderBasedOnStatus = () => {
         switch (status) {
             case IDLE:
@@ -58,63 +58,61 @@ const LiveChatStatusBar = ({
             case DATAMODE:
                 return (
                     <>
-                        {(isWorkModeTemplate ||
-                            !validateEmail(user?.email)) && (
+                        {!validateEmail(user?.email) ? (
                             <>
-                                {validateEmail(user?.email) ? (
-                                    isRelaxedTemplate ? (
-                                        isNotTablet ? (
-                                            <ChatHeaderBannerMessage
-                                                closeAction={validateEmail(
-                                                    user?.email
-                                                )}
-                                                message={
-                                                    <>
-                                                        You can always re-open
-                                                        this ticket with the
-                                                        link we sent to{" "}
-                                                        <span className='highlight'>
-                                                            {user?.email}
-                                                        </span>
-                                                    </>
-                                                }
-                                            />
-                                        ) : (
-                                            <></>
-                                        )
-                                    ) : (
-                                        <span className='connected'>
-                                            {user?.email}{" "}
-                                        </span>
-                                    )
-                                ) : isRelaxedTemplate ? (
-                                    isNotTablet ? (
-                                        <ChatHeaderBannerMessage
-                                            handleVerifyAction={
-                                                handleAddEmailAction
-                                            }
-                                            clickAction={
-                                                !validateEmail(user?.email)
-                                            }
-                                            message={
-                                                <>
-                                                    To save your ticket, click{" "}
-                                                    <span className='highlight underline'>
-                                                        here
-                                                    </span>{" "}
-                                                    to confirm your email.
-                                                </>
-                                            }
-                                        />
-                                    ) : (
-                                        <></>
-                                    )
+                                {isRelaxedTemplate && isNotTablet ? (
+                                    <ChatHeaderBannerMessage
+                                        handleVerifyAction={
+                                            handleAddEmailAction
+                                        }
+                                        clickAction={
+                                            !validateEmail(user?.email)
+                                        }
+                                        message={
+                                            <>
+                                                To save your ticket, click{" "}
+                                                <span className='highlight underline'>
+                                                    here
+                                                </span>{" "}
+                                                to confirm your email.
+                                            </>
+                                        }
+                                    />
                                 ) : (
-                                    <span
-                                        onClick={handleAddEmailAction}
-                                        className='connected pointer'>
-                                        Add email address
-                                    </span>
+                                    <>
+                                        {isWorkModeTemplate && (
+                                            <span
+                                                onClick={handleAddEmailAction}
+                                                className='connected pointer'>
+                                                Add email address
+                                            </span>
+                                        )}
+                                    </>
+                                )}
+                            </>
+                        ) : (
+                            <>
+                                {isRelaxedTemplate && isNotTablet ? (
+                                    <ChatHeaderBannerMessage
+                                        closeAction={validateEmail(user?.email)}
+                                        message={
+                                            <>
+                                                You can always re-open this
+                                                ticket with the link we sent to{" "}
+                                                <span className='highlight'>
+                                                    {user?.email}
+                                                </span>
+                                            </>
+                                        }
+                                    />
+                                ) : (
+                                    <>
+                                        {isWorkModeTemplate && (
+                                            <span className='connected'>
+                                                {user?.email}{" "}
+                                            </span>
+                                        )}
+                                    </>
                                 )}
                             </>
                         )}

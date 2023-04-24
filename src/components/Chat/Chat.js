@@ -88,7 +88,7 @@ const Chat = () => {
         try {
             setStatus(LOADING);
             setErrorMssg();
-
+            console.log("this ran in ticket link");
             const ticketId = queryParams?.ticketId;
             const userId = queryParams?.appUserId;
 
@@ -210,6 +210,7 @@ const Chat = () => {
 
     const validateUser = async () => {
         try {
+            console.log("this ran in validate");
             setStatus(LOADING);
             setErrorMssg();
 
@@ -241,6 +242,7 @@ const Chat = () => {
 
     const engageConversation = async () => {
         try {
+            console.log("this ran in engage");
             setStatus(LOADING);
             setErrorMssg();
             const url = apiRoutes?.engageConversation(conversationId);
@@ -286,6 +288,7 @@ const Chat = () => {
     };
 
     const callHandler = () => {
+        console.log("this ran in handler");
         conversationId
             ? engageConversation()
             : isTicketRoutedLink
