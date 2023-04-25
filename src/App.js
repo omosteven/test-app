@@ -87,7 +87,7 @@ const App = () => {
                     ])
                 );
 
-                storeConvoBreakers(workspaceSlug, [
+                storeConvoBreakers(request, [
                     ...actionBranches,
                     saveConvoBreaker,
                 ]);

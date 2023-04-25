@@ -33,7 +33,7 @@ const LiveChatStatusBar = ({
     const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isNotTablet = width > 768;
-    console.log({ e4e: validateEmail(user?.email) });
+
     const renderBasedOnStatus = () => {
         switch (status) {
             case IDLE:

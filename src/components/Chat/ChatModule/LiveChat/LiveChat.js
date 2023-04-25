@@ -61,6 +61,7 @@ import {
 } from "storage/sessionStorage";
 import envConfig from "../../../../config/config";
 import { retriveAccessToken } from "storage/sessionStorage";
+import { isLiveApp } from "config/config";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
@@ -131,7 +132,13 @@ const LiveChat = ({
     const dispatch = useDispatch();
 
     const getConvoBreaker = (actionBranchType) => {
-        const conversationBreakers = getConvoBreakers(workspaceSlug);
+        const convoBreakerPrefix = isLiveApp
+            ? window.location.host.includes("metacare")
+                ? window.location.host?.split(".")[0]
+                : window.location.host
+            : workspaceSlug;
+
+        const conversationBreakers = getConvoBreakers(convoBreakerPrefix);
         return conversationBreakers?.find(
             (x) => x.actionBranchType === actionBranchType
         );
