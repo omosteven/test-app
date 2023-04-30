@@ -1,11 +1,10 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
-.pinned__conversations {  
-    margin-top: 38px;
-
+.pinned__conversations {
+    // margin-top: 38px;
     @include media("<=medium-screen") {
-        margin-top: 40px;
+        // margin-top: 40px;
     }
 
     #{$dark__mode__theme__selector} {
@@ -23,20 +22,41 @@
         font-size: 20px;
         line-height: 28px;
         margin: 0;
-      
+        text-align: center;
         #{$dark__mode__theme__selector} {
-            color: #E0E0E0;
+            color: #e0e0e0;
+        }
+
+        #{$white__mode__theme__selector} {
+            color: $muted__theme_color_2;
+        }
+
+        text-transform: uppercase;
+
+        @include media("<=large-screen") {
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            text-align: center;
+            text-transform: capitalize;
         }
     }
 
     &__list {
         padding: 24px 0;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
+        height: 352px;
+        overflow-x: scroll;
+        // display: flex;
+        // flex-wrap: wrap;
+        // gap: 1rem;
 
-        @include media("<=medium-screen") {
-            padding: 34px 0;
+        // @include media("<=medium-screen") {
+        //     padding: 34px 0;
+        // }
+
+        @include media("<=large-screen") {
+            height: 252px;
         }
     }
 

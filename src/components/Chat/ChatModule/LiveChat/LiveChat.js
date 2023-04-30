@@ -215,6 +215,10 @@ const LiveChat = ({
         } catch (err) {
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
+            if (err.response?.data?.code === "TICKET_CLOSED") {
+                dispatch(setActiveTicket());
+                getCustomerTickets(null, false);
+            }
         }
     };
 
@@ -685,7 +689,7 @@ const LiveChat = ({
             setErrorMssg(getErrorMessage(err));
         }
     };
-    console.log({ messages, socket });
+
     const fetchConvoSuggestions = async (message) => {
         try {
             const { messageContent } = message;

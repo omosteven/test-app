@@ -10,6 +10,7 @@ import InAppAuth from "./InAppAuth/InAppAuth";
 import queryString from "query-string";
 import { generateRandomId, truncate } from "utils/helper";
 import { signInstages, emailFormActions, inAppAuthActions } from "./enum";
+import { useWindowSize } from "utils/hooks";
 import "./SignInForm.scss";
 
 const { RELAXED, WORKMODE } = defaultTemplates;
@@ -19,7 +20,7 @@ const { ADD_EMAIL, ADD_NAME } = emailFormActions;
 const SignInForm = () => {
     const { initial, email_stage, final } = signInstages;
 
-    const [signInStage, setSignInStage] = useState(email_stage);
+    const [signInStage, setSignInStage] = useState(initial);
     const [emailStepRequest, setEmailStepRequest] = useState();
     const { defaultTemplate, workspaceSlug } = useSelector(
         (state) => state.chat.chatSettings
@@ -150,11 +151,13 @@ const SignInForm = () => {
     };
 
     const isInitialStage = signInStage === initial;
+    const { width } = useWindowSize();
+    const isTablet = width <= 768;
 
     return (
         <FadeIn location={signInStage}>
-            <div className='signin--container'>
-                {isRelaxedTemplate && (
+            <div className={isInitialStage ? "" : "signin--containers"}>
+                {isRelaxedTemplate && isInitialStage && isTablet && (
                     <ChatHeader
                         showActions={false}
                         isAuthPage={true}
@@ -167,8 +170,10 @@ const SignInForm = () => {
                     }`}>
                     <div key={signInStage}>
                         <div
-                            className={`signin otp__group ${
-                                isInitialStage ? "initial__content" : ""
+                            className={`signin  ${
+                                isInitialStage
+                                    ? "initial__content"
+                                    : "otp__group"
                             }`}>
                             {renderBasedOnStage()}
                         </div>

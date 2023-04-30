@@ -64,6 +64,8 @@ const imageLinks = {
             "https://res.cloudinary.com/metacare/image/upload/v1679568105/fi-rr-calendar_xa1fhr.svg",
         successCheck:
             "https://res.cloudinary.com/metacare/image/upload/v1680852130/Frame_1000003452_pek73z.svg",
+        blackPlusIcon:
+            "https://res.cloudinary.com/metacare/image/upload/v1642626690/icons/icon_vonhuy.svg",
     },
 };
 
