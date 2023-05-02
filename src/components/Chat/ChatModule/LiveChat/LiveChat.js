@@ -61,6 +61,7 @@ import {
 } from "storage/sessionStorage";
 import envConfig from "../../../../config/config";
 import { retriveAccessToken } from "storage/sessionStorage";
+import { isLiveApp } from "config/config";
 
 const NO_ACTION = "NO_ACTION";
 const SMART_CONVOS = "smartConvos";
@@ -131,7 +132,13 @@ const LiveChat = ({
     const dispatch = useDispatch();
 
     const getConvoBreaker = (actionBranchType) => {
-        const conversationBreakers = getConvoBreakers(workspaceSlug);
+        const convoBreakerPrefix = isLiveApp
+            ? window.location.host.includes("metacare")
+                ? window.location.host?.split(".")[0]
+                : window.location.host
+            : workspaceSlug;
+
+        const conversationBreakers = getConvoBreakers(convoBreakerPrefix);
         return conversationBreakers?.find(
             (x) => x.actionBranchType === actionBranchType
         );
@@ -215,6 +222,10 @@ const LiveChat = ({
         } catch (err) {
             setStatus(ERROR);
             setErrorMssg(getErrorMessage(err));
+            if (err.response?.data?.code === "TICKET_CLOSED") {
+                dispatch(setActiveTicket());
+                getCustomerTickets(null, false);
+            }
         }
     };
 
@@ -685,7 +696,7 @@ const LiveChat = ({
             setErrorMssg(getErrorMessage(err));
         }
     };
-    console.log({ messages, socket });
+
     const fetchConvoSuggestions = async (message) => {
         try {
             const { messageContent } = message;

@@ -10,6 +10,7 @@ import InAppAuth from "./InAppAuth/InAppAuth";
 import queryString from "query-string";
 import { generateRandomId, truncate } from "utils/helper";
 import { signInstages, emailFormActions, inAppAuthActions } from "./enum";
+import { useWindowSize } from "utils/hooks";
 import "./SignInForm.scss";
 import { isLiveApp } from "config/config";
 
@@ -152,11 +153,13 @@ const SignInForm = () => {
     };
 
     const isInitialStage = signInStage === initial;
+    const { width } = useWindowSize();
+    const isTablet = width <= 768;
 
     return (
         <FadeIn location={signInStage}>
-            <div className='signin--container'>
-                {isRelaxedTemplate && (
+            <div className={isInitialStage ? "" : "signin--containers"}>
+                {isRelaxedTemplate && isInitialStage && isTablet && (
                     <ChatHeader
                         showActions={false}
                         isAuthPage={true}
@@ -169,8 +172,10 @@ const SignInForm = () => {
                     }`}>
                     <div key={signInStage}>
                         <div
-                            className={`signin otp__group ${
-                                isInitialStage ? "initial__content" : ""
+                            className={`signin  ${
+                                isInitialStage
+                                    ? "initial__content"
+                                    : "otp__group"
                             }`}>
                             {renderBasedOnStage()}
                         </div>

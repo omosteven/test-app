@@ -207,7 +207,7 @@ const ChatHeader = ({
             {isRelaxedTemplate && isTablet && status === DATAMODE && (
                 <ChatHeaderBannerMessage
                     handleVerifyAction={handleVerifyAction}
-                    clickAction={!showVerifyForm || validateEmail(email)}
+                    clickAction={!showVerifyForm || !validateEmail(email)}
                     closeAction={showVerifyForm || validateEmail(email)}
                     message={
                         showVerifyForm && !validateEmail(email) ? (

@@ -90,7 +90,6 @@ const Chat = () => {
         try {
             setStatus(LOADING);
             setErrorMssg();
-
             const ticketId = queryParams?.ticketId;
             const userId = queryParams?.appUserId;
 

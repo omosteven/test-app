@@ -1,47 +1,100 @@
 import React from "react";
 import { Button } from "components/ui";
-import { ReactSVG } from "react-svg";
-import imageLinks from "assets/images";
 import IntroHeader from "./IntroHeader/IntroHeader";
 import PinnedConversations from "./PinnedConversations/PinnedConversations";
 import { inAppAuthActions } from "../enum";
+import CompanyChatLogo from "components/Chat/ChatModule/ChatHeader/CompanyChatLogo/CompanyChatLogo";
+import { useSelector } from "react-redux";
+import PoweredBy from "components/common/PoweredBy/PoweredBy";
+import ChatHeaderBannerMessage from "components/Chat/ChatModule/ChatHeader/ChatHeaderBannerMessage/ChatHeaderBannerMessage";
+import { ReactSVG } from "react-svg";
+import imageLinks from "assets/images";
+
 import "./InAppAuth.scss";
 
 const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
 
 const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
-    return (
-        <div>
-            <div>
-                <IntroHeader title={true} text={`Hi there!`} />
-                <IntroHeader
-                    subtitle={true}
-                    text={`Welcome to Cowrywise Support Center`}
-                />
-            </div>
-            <div className='auth__buttons'>
-                <Button
-                    icon={
-                        <ReactSVG src={imageLinks.svg.add} className='icon' />
-                    }
-                    text='Ask Support a Question'
-                    classType='primary'
-                    otherClass={`question__btn`}
-                    onClick={() => handleInitialRequestUpdate(ASK__SUPPORT)}
-                />
-                <Button
-                    text='Open an Old Conversation'
-                    otherClass={`old__convo__btn`}
-                    onClick={() =>
-                        handleInitialRequestUpdate(OPEN_OLD_CONVERSATIONS)
-                    }
-                />
-            </div>
+    const {
+        chatSettings: {
+            companyLogo,
+            teamName,
+            inAppLinks,
+            inAppBackgroundImageUrl,
+        },
+    } = useSelector((state) => state.chat);
 
-            <PinnedConversations
-                title='Facing any of these issues?'
-                routeToChat={routeToChat}
-            />
+    return (
+        <div className='in-app-auth'>
+            <div>
+                <ChatHeaderBannerMessage
+                    className='chat__header__banner__message__wrapper in-app-auth__banner'
+                    message={`We will never ask you for your PIN or password`}
+                    closeAction={() => console.log("")}
+                />
+            </div>
+            <div className='row'>
+                <div className='col-lg-5 col-sm-12 col-md-12 in-app-auth__hero'>
+                    <div className='in-app-auth__brand-image'>
+                        <img src={inAppBackgroundImageUrl} alt='Background' />
+                    </div>
+
+                    <div className='in-app-auth__hero--content'>
+                        <div className='in-app-auth__hero--logo'>
+                            <CompanyChatLogo
+                                src={companyLogo}
+                                alt={teamName}
+                                className='company__logo'
+                                name={teamName}
+                            />
+                        </div>
+                        <IntroHeader
+                            title={true}
+                            text={`Welcome to our Priority Support Center`}
+                        />
+                        <Button
+                            text='Continue an existing ticket'
+                            classType='primary'
+                            otherClass={`in-app-auth___tickets-button`}
+                            onClick={() =>
+                                handleInitialRequestUpdate(ASK__SUPPORT)
+                            }
+                        />
+                        <div className='in-app-auth__external-links'>
+                            {inAppLinks?.map?.(({ title, value }, key) => (
+                                <li key={key}>
+                                    <a href={value} target='__blank'>
+                                        {title}
+                                    </a>
+                                </li>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+
+                <div className='col-lg-7 col-sm-12 col-md-12 in-app-auth__convos'>
+                    <div>
+                        <PinnedConversations
+                            title='Report A Priority Issue'
+                            routeToChat={routeToChat}
+                            OPEN_OLD_CONVERSATIONS={OPEN_OLD_CONVERSATIONS}
+                            handleInitialRequestUpdate={
+                                handleInitialRequestUpdate
+                            }
+                        />
+
+                        <div className='in-app-auth__convos--label'>
+                            <ReactSVG src={imageLinks?.svg?.info} />
+                            <span>
+                                If you had previously started a conversation
+                                with the link and saved it to your email,{" "}
+                                <span>Click here</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <PoweredBy otherClassName={"in-app-auth__footer"} />
         </div>
     );
 };

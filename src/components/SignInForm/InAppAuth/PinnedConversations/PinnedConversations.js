@@ -15,7 +15,12 @@ import "./PinnedConversations.scss";
 
 const { LOADING, ERROR, DATAMODE, NULLMODE } = dataQueryStatus;
 
-const PinnedConversations = ({ title, routeToChat }) => {
+const PinnedConversations = ({
+    title,
+    routeToChat,
+    handleInitialRequestUpdate,
+    OPEN_OLD_CONVERSATIONS,
+}) => {
     const storedPinnedConversations = getStoredPinnedConversations() || [];
     const [pinnedConversations, setPinnedConversations] = useState(
         storedPinnedConversations || []
@@ -86,6 +91,16 @@ const PinnedConversations = ({ title, routeToChat }) => {
                                     }
                                 />
                             ))}
+
+                        <PinnedConversation
+                            issueTitle="It's something else"
+                            otherClass={`in-app-auth__convos--something-else`}
+                            onClick={() =>
+                                handleInitialRequestUpdate(
+                                    OPEN_OLD_CONVERSATIONS
+                                )
+                            }
+                        />
                     </div>
                 );
             case ERROR:

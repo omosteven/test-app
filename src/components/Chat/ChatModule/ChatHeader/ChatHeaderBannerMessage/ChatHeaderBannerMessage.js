@@ -3,6 +3,7 @@ import BannerMessage from "components/ui/BannerMessage/BannerMessage";
 import "./ChatHeaderBannerMessage.scss";
 
 const ChatHeaderBannerMessage = ({
+    // showBannerMessage, toggleBannerMessage,
     handleVerifyAction,
     clickAction,
     closeAction,
