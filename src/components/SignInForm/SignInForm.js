@@ -21,7 +21,7 @@ const { ADD_EMAIL, ADD_NAME } = emailFormActions;
 const SignInForm = () => {
     const { initial, email_stage, final } = signInstages;
 
-    const [signInStage, setSignInStage] = useState(email_stage);
+    const [signInStage, setSignInStage] = useState(initial);
     const [emailStepRequest, setEmailStepRequest] = useState();
     const { defaultTemplate, workspaceSlug } = useSelector(
         (state) => state.chat.chatSettings
@@ -158,7 +158,7 @@ const SignInForm = () => {
 
     return (
         <FadeIn location={signInStage}>
-            <div className={isInitialStage ? "" : "signin--containers"}>
+            <div className={isInitialStage ? "" : "signin--container"}>
                 {isRelaxedTemplate && isInitialStage && isTablet && (
                     <ChatHeader
                         showActions={false}
@@ -167,8 +167,8 @@ const SignInForm = () => {
                     />
                 )}
                 <div
-                    className={`row justify-content-center align-items-center form-area signin-con ${
-                        isInitialStage ? "initial__container" : ""
+                    className={`row justify-content-center align-items-center  signin-con ${
+                        isInitialStage ? "initial__container" : "form-area"
                     }`}>
                     <div key={signInStage}>
                         <div

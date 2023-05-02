@@ -19,6 +19,9 @@
                 text-align: center;
             }
         }
+        #{$dark__mode__theme__selector} {
+            color: $white__mode__background;
+        }
     }
     &__sub__text {
         font-size: 1.125rem;
