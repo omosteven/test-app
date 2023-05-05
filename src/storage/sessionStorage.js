@@ -49,3 +49,15 @@ export const getConversationData = () => {
         return undefined;
     }
 };
+
+export const setBannerHideStatus = () => {
+    sessionStorage.setItem("isBannerHidden", true);
+};
+
+export const getBannerHideStatus = () => {
+    try {
+        return JSON.parse(sessionStorage.getItem("isBannerHidden"));
+    } catch (err) {
+        return false;
+    }
+};

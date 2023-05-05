@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import BannerMessage from "components/ui/BannerMessage/BannerMessage";
 import "./ChatHeaderBannerMessage.scss";
+import {
+    getBannerHideStatus,
+    setBannerHideStatus,
+} from "storage/sessionStorage";
 
 const ChatHeaderBannerMessage = ({
     // showBannerMessage, toggleBannerMessage,
@@ -13,16 +17,22 @@ const ChatHeaderBannerMessage = ({
     const [showBannerMessage, toggleBannerMessage] = useState(true);
 
     useEffect(() => {
-        toggleBannerMessage(true);
+        const hideBanner = getBannerHideStatus();
+        hideBanner ? toggleBannerMessage(false) : toggleBannerMessage(true);
         // eslint-disable-next-line
     }, [message]);
+
+    const handleCloseBanner = () => {
+        toggleBannerMessage(false);
+        setBannerHideStatus();
+    };
 
     return (
         <div className={className} key={message}>
             {showBannerMessage && (
                 <BannerMessage
                     onClick={handleVerifyAction}
-                    onClose={() => toggleBannerMessage(false)}
+                    onClose={() => handleCloseBanner()}
                     isClickable={clickAction}
                     isCloseable={closeAction}>
                     {message}

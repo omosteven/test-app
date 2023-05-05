@@ -94,31 +94,22 @@
 }
 
 .options__group__error {
-    color: red;
+    color: $danger__theme_color;
     position: fixed;
     z-index: 100;
-    padding: 8px;
-    width: 80%;
-    left: 12%;
+    width: 100%;
     margin-top: 11.5rem;
     font-size: 14px;
-    left: 12%;
     margin-top: 10.5rem;
     font-size: 14px;
-
-    @include media("<=large-screen") {
-        margin-top: 10.6rem;
-        padding: 0;
-        left: 14%;
-    }
+    left: 0;
+    bottom: 20px;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
 
     @include media("<=medium-screen") {
-        margin-top: 9.5rem;
-        left: 0%;
-        width: 100%;
-        right: 0%;
-        text-align: center;
-        padding: 10px;
+        bottom: 10px;
     }
 }
 

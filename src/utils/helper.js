@@ -238,6 +238,7 @@ export const getCurrentFormInputRules = (rules, inputType) => {
     const customRules = {
         number00: "maxNum",
         number01: "minNum",
+        number02: "hasNumPrefix",
         date00: "minDate",
         date01: "maxDate",
         text01: "maxLength",

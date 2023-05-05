@@ -61,13 +61,15 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
                             }
                         />
                         <div className='in-app-auth__external-links'>
-                            {inAppLinks?.map?.(({ title, value }, key) => (
-                                <li key={key}>
-                                    <a href={value} target='__blank'>
-                                        {title}
-                                    </a>
-                                </li>
-                            ))}
+                            <ul>
+                                {inAppLinks?.map?.(({ title, value }, key) => (
+                                    <li key={key}>
+                                        <a href={value} target='__blank'>
+                                            {title}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
                 </div>

@@ -12,6 +12,7 @@
         width: 30px !important;
         margin-right: 8px;
         height: 30px !important;
+        border-radius: 100% !important;
     }
 
     &__banner {
@@ -118,7 +119,6 @@
         line-height: 52px;
         display: flex;
         align-items: center;
-        // color: #d5d7d8;
         margin-bottom: 77.5px !important;
 
         #{$dark__mode__theme__selector} {
@@ -140,6 +140,7 @@
             text-align: center !important;
         }
     }
+
     &___tickets-button {
         padding: 16px 24px !important;
         gap: 10px;
@@ -159,11 +160,30 @@
     }
     &__external-links {
         margin-top: 90px;
-        display: flex;
-        gap: 30px;
+        // gap: 10px;
 
         li:first-child {
             list-style: none;
+        }
+
+        ul {
+            list-style: none;
+            display: flex;
+        }
+
+        ul li::before {
+            color: $primary__theme_color;
+            content: "\2022";
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 6px;
+            margin-right: 6px;
+        }
+
+        ul li:first-child::before {
+            list-style: none !important;
+            margin-left: -36px;
+            content: "";
         }
 
         a {
@@ -271,10 +291,14 @@
                 background: #1f272d;
                 border: 1px solid rgba(131, 133, 137, 0.2) !important;
                 color: $light__theme_color !important;
+                &:hover {
+                    background-color: unset;
+                    color: $light__theme_color !important;
+                }
             }
 
             #{$white__mode__theme__selector} {
-                background: transparent;
+                background-color: transparent;
                 border: 1px solid rgba(131, 133, 137, 0.2) !important;
             }
 
@@ -328,7 +352,7 @@
         }
     }
     .powered__by {
-        margin-top: 24px;
+        margin-top: -10px;
         height: fit-content !important;
         #{$dark__mode__theme__selector} {
             background-color: transparent !important;

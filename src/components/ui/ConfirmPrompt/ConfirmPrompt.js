@@ -9,6 +9,8 @@ export const ConfirmPrompt = ({
     loading,
     isRelaxedTemplate,
     isDarkModeTheme,
+    yesBtnText,
+    noBtnText,
 }) => {
     return (
         <div
@@ -41,14 +43,14 @@ export const ConfirmPrompt = ({
                 } ${isDarkModeTheme ? "dark__mode__btn__action__group" : ""}`}>
                 <Button
                     type='button'
-                    text={`Continue`}
+                    text={yesBtnText || "Continue"}
                     classType='primary'
                     onClick={handleConfirmation}
                     loading={loading}
                 />
                 <Button
                     type='button'
-                    text='Close'
+                    text={noBtnText || "Close"}
                     classType='bordered'
                     // otherClass="my-2 w-100"
                     onClick={handleCancel}

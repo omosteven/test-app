@@ -3,7 +3,6 @@
 
 .form-area {
     min-height: 100vh;
-
     @include media(">medium-screen") {
         #{$relaxed__mode__template__selector} {
             min-height: 82vh;

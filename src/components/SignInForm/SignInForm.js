@@ -40,12 +40,12 @@ const SignInForm = () => {
 
     const routeToChat = (firstName, lastName, conversationId) => {
         history.push(`
-            /link?${isLiveApp ? '' : `workspaceSlug=${workspaceSlug}&`}
-            ${conversationId ? `&conversationId=${conversationId}`: ''}
-            ${appUserId ? `appUserId=${appUserId}&` : ''}
-            ${firstName ? `firstName=${firstName}&` : ''}
-            ${lastName ? `lastName=${lastName}&` : ''} 
-            ${email ? `email=${email}` : ''}
+            /link?${isLiveApp ? "" : `workspaceSlug=${workspaceSlug}&`}
+            ${conversationId ? `&conversationId=${conversationId}` : ""}
+            ${appUserId ? `appUserId=${appUserId}&` : ""}
+            ${firstName ? `firstName=${firstName}&` : ""}
+            ${lastName ? `lastName=${lastName}&` : ""} 
+            ${email ? `email=${email}` : ""}
         `);
     };
 
@@ -158,17 +158,21 @@ const SignInForm = () => {
 
     return (
         <FadeIn location={signInStage}>
-            <div className={isInitialStage ? "" : "signin--containers"}>
-                {isRelaxedTemplate && isInitialStage && isTablet && (
-                    <ChatHeader
-                        showActions={false}
-                        isAuthPage={true}
-                        alignLeft={isInitialStage}
-                    />
+            <div className={isInitialStage ? "" : "signin--container"}>
+                {isRelaxedTemplate && (
+                    <>
+                        {((isInitialStage && isTablet) || !isInitialStage) && (
+                            <ChatHeader
+                                showActions={false}
+                                isAuthPage={true}
+                                alignLeft={isInitialStage}
+                            />
+                        )}
+                    </>
                 )}
                 <div
-                    className={`row justify-content-center align-items-center form-area signin-con ${
-                        isInitialStage ? "initial__container" : ""
+                    className={`row justify-content-center align-items-center  signin-con ${
+                        isInitialStage ? "initial__container" : "form-area"
                     }`}>
                     <div key={signInStage}>
                         <div

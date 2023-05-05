@@ -21,7 +21,7 @@
         padding-right: 1.25rem;
         border-radius: 0.5rem;
         border-radius: 0.5rem;
-        color: #F25A68;;
+        color: #f25a68;
         cursor: pointer;
 
         #{$relaxed__mode__template__selector} {
@@ -37,8 +37,8 @@
         }
 
         #{$dark__mode__theme__selector} {
-            border: 1px solid #F25A68;
-            color: #F25A68;
+            border: 1px solid #f25a68;
+            color: #f25a68;
             background: $dark__mode__theme__background__color;
         }
     }
@@ -80,8 +80,8 @@
 
                 @include media("<=medium-screen") {
                     #{$relaxed__mode__template__selector} {
-                        font-size: 20px;
-                        line-height: 28px;
+                        font-size: 24px;
+                        line-height: 32px;
                         border-radius: 1rem 1rem 1rem 0;
                     }
                 }

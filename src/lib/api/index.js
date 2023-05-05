@@ -8,6 +8,7 @@ import { getUserAuth } from "storage/sessionStorage";
 
 const API = axios.create({
     baseURL: config?.apiGateway?.BASE_URL,
+    timeout: 30000,
     headers: {
         "Content-Type": "application/json",
         accept: "application/json",
