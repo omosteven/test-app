@@ -560,9 +560,10 @@ const LiveChat = ({
     const handleNewMessage = async (request, clearUserInput) => {
         let { message, fileAttachments, messageId } = request;
 
-        if (!currentFormElement) {
-            message = message?.replace?.(/[^\w ]/g, "");
-        }
+        // if (messages?.length === 1) {
+        //     // only strip off at investigation stage
+        //     message = message?.replace?.(/[^\w ]/g, "");
+        // }
 
         if (messages?.length === 1) {
             triggerAgentTyping(true);

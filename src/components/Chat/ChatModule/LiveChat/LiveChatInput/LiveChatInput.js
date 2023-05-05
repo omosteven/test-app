@@ -357,9 +357,13 @@ const LiveChatInput = ({
 
         const numberPrefix = getNumberPrefix(rules);
 
-        // console.log({ isEmail, isLink, pattern });
-
-        const textInputType = isEmail ? "email" : isLink ? "url" : "text";
+        const textInputType = isEmail
+            ? "email"
+            : isLink
+            ? "url"
+            : inputType === NUMERIC
+            ? "number"
+            : "text";
 
         switch (inputType) {
             case TEXT:

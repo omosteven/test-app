@@ -21,7 +21,7 @@ const { ADD_EMAIL, ADD_NAME } = emailFormActions;
 const SignInForm = () => {
     const { initial, email_stage, final } = signInstages;
 
-    const [signInStage, setSignInStage] = useState(initial);
+    const [signInStage, setSignInStage] = useState(email_stage);
     const [emailStepRequest, setEmailStepRequest] = useState();
     const { defaultTemplate, workspaceSlug } = useSelector(
         (state) => state.chat.chatSettings
@@ -40,12 +40,12 @@ const SignInForm = () => {
 
     const routeToChat = (firstName, lastName, conversationId) => {
         history.push(`
-            /link?${isLiveApp ? '' : `workspaceSlug=${workspaceSlug}&`}
-            ${conversationId ? `&conversationId=${conversationId}`: ''}
-            ${appUserId ? `appUserId=${appUserId}&` : ''}
-            ${firstName ? `firstName=${firstName}&` : ''}
-            ${lastName ? `lastName=${lastName}&` : ''} 
-            ${email ? `email=${email}` : ''}
+            /link?${isLiveApp ? "" : `workspaceSlug=${workspaceSlug}&`}
+            ${conversationId ? `&conversationId=${conversationId}` : ""}
+            ${appUserId ? `appUserId=${appUserId}&` : ""}
+            ${firstName ? `firstName=${firstName}&` : ""}
+            ${lastName ? `lastName=${lastName}&` : ""} 
+            ${email ? `email=${email}` : ""}
         `);
     };
 
@@ -159,12 +159,16 @@ const SignInForm = () => {
     return (
         <FadeIn location={signInStage}>
             <div className={isInitialStage ? "" : "signin--container"}>
-                {isRelaxedTemplate && isInitialStage && isTablet && (
-                    <ChatHeader
-                        showActions={false}
-                        isAuthPage={true}
-                        alignLeft={isInitialStage}
-                    />
+                {isRelaxedTemplate && (
+                    <>
+                        {((isInitialStage && isTablet) || !isInitialStage) && (
+                            <ChatHeader
+                                showActions={false}
+                                isAuthPage={true}
+                                alignLeft={isInitialStage}
+                            />
+                        )}
+                    </>
                 )}
                 <div
                     className={`row justify-content-center align-items-center  signin-con ${

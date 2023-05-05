@@ -23,20 +23,34 @@ const ConfirmCloseChatModal = ({
         (state) => state?.chat?.chatSettings
     );
 
+    const [hasTimedOut, setHasTimedOut] = useState(false);
+
     const closeTicket = async () => {
         try {
+            setHasTimedOut(false);
             const { ticketId } = referenceData;
             setErrorMsg("");
             setLoading(true);
 
             const url = apiRoutes?.closeTicket(ticketId);
-            const res = await API.post(url);
+            const res = await API.post(
+                url,
+                {},
+                {
+                    timeout: 30000,
+                }
+            );
             if (res.status === 201) {
                 handleSuccess();
             }
         } catch (err) {
-            setErrorMsg(getErrorMessage(err));
             setLoading(false);
+            if (err?.message === "timeout of 30000ms exceeded") {
+                setHasTimedOut(true);
+                setErrorMsg("It looks like this took longer time.");
+                return
+            }
+            setErrorMsg(getErrorMessage(err));
         }
     };
 
@@ -62,6 +76,7 @@ const ConfirmCloseChatModal = ({
                     loading={loading}
                     isRelaxedTemplate={isRelaxedTemplate}
                     isDarkModeTheme={isDarkModeTheme}
+                    yesBtnText={hasTimedOut && "Retry"}
                 />
             </div>
         </PopupModal>
