@@ -21,7 +21,7 @@ const { ADD_EMAIL, ADD_NAME } = emailFormActions;
 const SignInForm = () => {
     const { initial, email_stage, final } = signInstages;
 
-    const [signInStage, setSignInStage] = useState(email_stage);
+    const [signInStage, setSignInStage] = useState(initial);
     const [emailStepRequest, setEmailStepRequest] = useState();
     const { defaultTemplate, workspaceSlug } = useSelector(
         (state) => state.chat.chatSettings
