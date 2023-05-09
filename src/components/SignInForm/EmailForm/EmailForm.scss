@@ -2,16 +2,16 @@
 @import "assets/scss/_include-media-lib/include-media";
 
 .email__input {
-    #{$relaxed__mode__template__selector} {
+    // #{$relaxed__mode__template__selector} {
         padding: 23px 24px;
-    }
+    // }
 
     @include media("<=medium-screen") {
-        #{$relaxed__mode__template__selector} {
+        // #{$relaxed__mode__template__selector} {
             font-size: 1rem;
             line-height: 24px;
             padding: 1rem 18px;
-        }
+        // }
     }
 
     #{$dark__mode__theme__selector} {
@@ -21,9 +21,9 @@
     }
 
     &:focus {
-        #{$relaxed__mode__template__selector} {
+        // #{$relaxed__mode__template__selector} {
             border-radius: 10px;
-        }
+        // }
 
         #{$dark__mode__theme__selector} {
             color: $dark__mode__text__theme__color;
@@ -33,11 +33,11 @@
 }
 
 .submit__email {
-    #{$relaxed__mode__template__selector} {
+    // #{$relaxed__mode__template__selector} {
         font-weight: 600;
         font-size: 16px;
         line-height: 24px;
-    }
+    // }
 }
 
 .info__section {
@@ -65,10 +65,10 @@
         color: $black__theme_color;
         margin: 0;
 
-        #{$relaxed__mode__template__selector} {
+        // #{$relaxed__mode__template__selector} {
             font-size: 16px;
             line-height: 24px;
-        }
+        // }
 
         #{$dark__mode__theme__selector} {
             color: $light__theme_color;
