@@ -187,6 +187,7 @@
             display: inline-block;
             margin-left: 6px;
             margin-right: 6px;
+            margin-top: 1px;
         }
 
         ul li:first-child::before {
@@ -200,13 +201,13 @@
             font-size: 16px;
             line-height: 24px;
             text-decoration: none;
-            // #{$white__mode__theme__selector} {
-            //     color: $muted__theme_color_2;
-            // }
+            #{$white__mode__theme__selector} {
+                color: $light__gray__theme_color;
+            }
 
-            // #{$dark__mode__theme__selector} {
-            //     color: $light__theme_color;
-            // }
+            #{$dark__mode__theme__selector} {
+                color: $light__theme_color;
+            }
         }
 
         @include media("<=large-screen") {

@@ -1085,7 +1085,7 @@ const LiveChat = ({
             triggerAgentTyping(true);
             setAllowUserInput(false);
 
-            const sendCustomerReply = await socket.timeout(30000).emit(
+           await socket.timeout(30000).emit(
                 SEND_CUSTOMER_CONVERSATION_REPLY,
                 {
                     ticketId: ticket?.ticketId,
@@ -1093,17 +1093,17 @@ const LiveChat = ({
                 },
                 (error) => {
                     triggerAgentTyping(false);
-                    if (error && sendCustomerReply?.connected === false) {
-                        setMssgSendStatus(ERROR);
-                        dispatch(
-                            updateTicketMessageStatus({
-                                messageId: SMART_CONVOS,
-                                ticketId,
-                                selectedOption: null,
-                                messageStatus: messageStatues?.FAILED,
-                            })
-                        );
-                    }
+                    // if (error && sendCustomerReply?.connected === false) {
+                    //     setMssgSendStatus(ERROR);
+                    //     dispatch(
+                    //         updateTicketMessageStatus({
+                    //             messageId: SMART_CONVOS,
+                    //             ticketId,
+                    //             selectedOption: null,
+                    //             messageStatus: messageStatues?.FAILED,
+                    //         })
+                    //     );
+                    // }
                 }
             );
         }
