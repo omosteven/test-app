@@ -8,6 +8,10 @@
     //     height: 100%;
     // }
 
+    .row {
+        height: 100%;
+    }
+
     .company__logo {
         width: 30px !important;
         margin-right: 8px;
@@ -39,10 +43,10 @@
     &__hero {
         display: flex;
         gap: 40px;
-
         @include media("<=large-screen") {
             padding: 0px 30px !important;
             width: 100%;
+            height: fit-content;
         }
 
         #{$dark__mode__theme__selector} {
@@ -59,6 +63,7 @@
 
         &--content {
             margin-top: 80px;
+            height: fit-content;
             @include media("<=large-screen") {
                 margin-top: 16px;
                 width: 100%;
@@ -98,6 +103,10 @@
         }
 
         #{$dark__mode__theme__selector} {
+            background: transparent;
+        }
+
+        #{$white__mode__theme__selector} {
             background: transparent;
         }
 
@@ -191,13 +200,13 @@
             font-size: 16px;
             line-height: 24px;
             text-decoration: none;
-            #{$white__mode__theme__selector} {
-                color: $muted__theme_color_2;
-            }
+            // #{$white__mode__theme__selector} {
+            //     color: $muted__theme_color_2;
+            // }
 
-            #{$dark__mode__theme__selector} {
-                color: $light__theme_color;
-            }
+            // #{$dark__mode__theme__selector} {
+            //     color: $light__theme_color;
+            // }
         }
 
         @include media("<=large-screen") {
@@ -244,12 +253,13 @@
         padding: 80px 0 !important;
         justify-content: center;
         display: flex;
-
         @include media("<=large-screen") {
             padding: 30px !important;
             width: 100%;
             justify-content: unset;
             display: unset;
+            height: 100%;
+            align-items: center;
         }
 
         #{$dark__mode__theme__selector} {
@@ -352,14 +362,16 @@
         }
     }
     .powered__by {
-        margin-top: -10px;
-        height: fit-content !important;
+        position: fixed !important;
+        height: 46px !important;
+        bottom: 0rem !important;
+        z-index: 1000 !important;
         #{$dark__mode__theme__selector} {
-            background-color: transparent !important;
+            background-color: $dark__mode__theme__background__color !important;
         }
 
         #{$white__mode__theme__selector} {
-            background-color: transparent !important;
+            background-color: $light__theme_color !important;
         }
 
         @include media(">large-screen") {

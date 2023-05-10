@@ -335,3 +335,21 @@ export const getDateAndMonth = (reqDate) => {
 export const checkArrayEquality = (a, b) => {
     return a?.length === b?.length && a.every((val) => b?.includes(val));
 };
+
+export const buildRouteLink = (
+    email,
+    firstName,
+    lastName,
+    conversationId,
+    isLiveApp,
+    workspaceSlug,
+    appUserId
+) => {
+    return `/link?${isLiveApp ? "" : `workspaceSlug=${workspaceSlug}&`}${
+        conversationId ? `conversationId=${conversationId}&` : ""
+    }${appUserId ? `appUserId=${appUserId}&` : ""}${
+        firstName ? `firstName=${firstName}&` : ""
+    }${lastName ? `lastName=${lastName}&` : ""}${
+        email ? `&email=${email}` : ""
+    }`;
+};

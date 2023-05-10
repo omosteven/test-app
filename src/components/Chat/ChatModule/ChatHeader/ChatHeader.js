@@ -32,6 +32,7 @@ const ChatHeader = ({
     isAuthPage,
     handleVerifyAction,
     alignLeft,
+    hideBackIcon,
 }) => {
     const {
         chatSettings: { companyLogo, teamName, defaultTemplate },
@@ -123,12 +124,18 @@ const ChatHeader = ({
                                 ? "chat__header__user"
                                 : "chat__header__auth"
                         }`}>
-                        {showActions && isTablet && !canSaveConvo && (
-                            <ChatToggler
-                                onClick={() =>
-                                    toggleChatMenu?.((prevState) => !prevState)
-                                }
-                            />
+                        {!hideBackIcon && (
+                            <>
+                                {showActions && isTablet && !canSaveConvo && (
+                                    <ChatToggler
+                                        onClick={() =>
+                                            toggleChatMenu?.(
+                                                (prevState) => !prevState
+                                            )
+                                        }
+                                    />
+                                )}
+                            </>
                         )}
                         {showVerifyForm && (
                             <CloseVerifyForm
