@@ -1345,6 +1345,8 @@ const LiveChat = ({
             setMssgSendStatus(IDLE);
         }
     };
+
+    console.log({messages})
     return (
         <>
             {!showVerifyForm ? (

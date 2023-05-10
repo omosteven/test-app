@@ -68,7 +68,7 @@ const ChatHeader = ({
             case NULLMODE:
                 return (
                     <>
-                        {isRelaxedTemplate && isTablet && (
+                        {isTablet && (
                             <>
                                 {agent && !showChatMenu ? (
                                     <>
@@ -139,7 +139,7 @@ const ChatHeader = ({
                         <div
                             className={`logo
                          ${alignLeft ? "logo__left__aligned" : ""}`}>
-                            {isWorkModeTemplate || isNotTablet ? (
+                             { isNotTablet ? (
                                 <CompanyChatLogo
                                     src={companyLogo}
                                     alt={teamName}

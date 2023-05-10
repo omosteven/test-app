@@ -28,6 +28,7 @@ import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import RelaxedSelectUI from "components/ui/InputTypes/SelectUI/RelaxedSelectUI/RelaxedSelectUI";
 import DatePickerWrapper from "./DatePickerWrapper/DatePickerWrapper";
 import { datePickerStages } from "./DatePickerWrapper/enum";
+import SmallLoader from "components/ui/SmallLoader/SmallLoader";
 
 const { DATE_VALUE, PICK_DATE } = datePickerStages;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
@@ -49,6 +50,7 @@ const LiveChatInput = ({
     isDateFormElement,
     mssgSendStatus,
 }) => {
+    console.log({ allowUserInput, disableInput, inputType });
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
 
@@ -523,7 +525,9 @@ const LiveChatInput = ({
             <div
                 id='inputGroup'
                 className={`col-md-10 col-12 ${
-                    !allowUserInput ? "disallowed__section" : ""
+                    !allowUserInput && isRelaxedTemplate
+                        ? "disallowed__section"
+                        : ""
                 }`}
                 title={!allowUserInput ? "Not Allowed" : "Type a message"}>
                 <form
@@ -567,7 +571,12 @@ const LiveChatInput = ({
                                 ? ""
                                 : "chat__input--container"
                         }>
-                        <div className='chat__input--group'>
+                        <div
+                            className={`chat__input--group ${
+                                !allowUserInput && !isRelaxedTemplate
+                                    ? "chat__input--group--workmode__disabled"
+                                    : ""
+                            }`}>
                             {isRelaxedTemplate &&
                             uploads?.length === 0 &&
                             (isFormElementImage ||
@@ -603,22 +612,41 @@ const LiveChatInput = ({
                                 <>
                                     <div className='chat__input--group--inputs'>
                                         {!isRelaxedTemplate && (
-                                            <UploadIcons
-                                                upload={uploads}
-                                                updateUpload={updateUploads}
-                                                isDisabled={isDisabled}
-                                                setErrors={setErrors}
-                                                showModal={showModal}
-                                                toggleModal={toggleModal}
-                                                handleUpload={handleUpload}
-                                                selectedMedia={selectedMedia}
-                                                currentFormElement={
-                                                    currentFormElement
-                                                }
-                                            />
+                                            // <UploadIcons
+                                            //     upload={uploads}
+                                            //     updateUpload={updateUploads}
+                                            //     isDisabled={isDisabled}
+                                            //     setErrors={setErrors}
+                                            //     showModal={showModal}
+                                            //     toggleModal={toggleModal}
+                                            //     handleUpload={handleUpload}
+                                            //     selectedMedia={selectedMedia}
+                                            //     currentFormElement={
+                                            //         currentFormElement
+                                            //     }
+                                            // />
+                                            <></>
                                         )}
                                         {uploads?.length === 0 ? (
-                                            <>{renderBasedOnInputType()}</>
+                                            <>
+                                                {isDisabled &&
+                                                !isRelaxedTemplate ? (
+                                                    <div className='chat__input--group__choose-option'>
+                                                        {mssgSendStatus !==
+                                                        LOADING ? (
+                                                            <>
+                                                                Please choose
+                                                                one of the
+                                                                options above
+                                                            </>
+                                                        ) : (
+                                                            <SmallLoader />
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    renderBasedOnInputType()
+                                                )}
+                                            </>
                                         ) : (
                                             <UploadedFiles
                                                 uploads={uploads}
@@ -650,34 +678,38 @@ const LiveChatInput = ({
                                             />
                                         )}
                                     </div>
-                                    <Button
-                                        type='submit'
-                                        text={"Send"}
-                                        icon={
-                                            <ReactSVG
-                                                src={imageLinks?.svg?.send}
-                                            />
-                                        }
-                                        classType='default'
-                                        otherClass={`send__button ${
-                                            !btnDisabled ? "active" : ""
-                                        } ${
-                                            mssgSendStatus === LOADING
-                                                ? "active"
-                                                : ""
-                                        }`}
-                                        loading={
-                                            isFinalDatePickerStage
-                                                ? disableInput
-                                                : mssgSendStatus === LOADING
-                                        }
-                                        disabled={
-                                            (btnDisabled ||
-                                                fetchingInputStatus ||
-                                                status === LOADING) &&
-                                            !(mssgSendStatus === ERROR)
-                                        }
-                                    />
+                                    {isDisabled && !isRelaxedTemplate ? (
+                                        ""
+                                    ) : (
+                                        <Button
+                                            type='submit'
+                                            text={"Send"}
+                                            icon={
+                                                <ReactSVG
+                                                    src={imageLinks?.svg?.send}
+                                                />
+                                            }
+                                            classType='default'
+                                            otherClass={`send__button ${
+                                                !btnDisabled ? "active" : ""
+                                            } ${
+                                                mssgSendStatus === LOADING
+                                                    ? "active"
+                                                    : ""
+                                            }`}
+                                            loading={
+                                                isFinalDatePickerStage
+                                                    ? disableInput
+                                                    : mssgSendStatus === LOADING
+                                            }
+                                            disabled={
+                                                (btnDisabled ||
+                                                    fetchingInputStatus ||
+                                                    status === LOADING) &&
+                                                !(mssgSendStatus === ERROR)
+                                            }
+                                        />
+                                    )}
                                 </>
                             )}
                         </div>

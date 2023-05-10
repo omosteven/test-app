@@ -66,7 +66,7 @@
 
             @include media("<=medium-screen") {
                 font-size: 1rem;
-                max-width: 80%;
+                max-width: 90%;
 
                 #{$relaxed__mode__template__selector} {
                     max-width: 100%;
@@ -87,6 +87,8 @@
                 }
 
                 @include media("<=medium-small-screen") {
+                    font-size: 18px;
+                    line-height: 24px;
                     #{$relaxed__mode__template__selector} {
                         font-size: 18px;
                         line-height: 24px;
@@ -455,6 +457,8 @@
                 }
 
                 @include media("<=medium-small-screen") {
+                    font-size: 18px;
+                    line-height: 24px;
                     #{$relaxed__mode__template__selector} {
                         font-size: 18px;
                         line-height: 24px;

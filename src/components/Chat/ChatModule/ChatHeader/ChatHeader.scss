@@ -4,13 +4,13 @@
 .chat__header__user {
     @include media("<=medium-screen") {
         // #{$relaxed__mode__template__selector} {
-            #{$dark__mode__theme__selector} {
-                background-color: $dark__mode__theme__dark__color !important;
-            }
+        #{$dark__mode__theme__selector} {
+            background-color: $dark__mode__theme__dark__color !important;
+        }
 
-            #{$white__mode__theme__selector} {
-                background: $light__theme_color;
-            }
+        #{$white__mode__theme__selector} {
+            background: $light__theme_color;
+        }
         // }
     }
 
@@ -37,19 +37,19 @@
 
 .header__auth {
     // #{$relaxed__mode__template__selector} {
-        margin-bottom: 10px !important;
+    margin-bottom: 10px !important;
     // }
 }
 
 #header__wrapper {
     @include media("<=medium-screen") {
         // #{$relaxed__mode__template__selector} {
-            display: block;
-            position: fixed;
-            width: 100%;
-            height: 97px;
-            height: fit-content;
-            z-index: 3;
+        display: block;
+        position: fixed;
+        width: 100%;
+        height: 97px;
+        height: fit-content;
+        z-index: 3;
         // }
 
         &.high__index {
@@ -76,10 +76,14 @@
         align-items: center;
 
         // #{$relaxed__mode__template__selector} {
-            margin-top: 12px;
-            border-bottom: none !important;
-            display: block;
+        margin-top: 0px;
+        border-bottom: none !important;
+        display: block;
         // }
+
+        #{$relaxed__mode__template__selector} {
+            margin-top: 12px;
+        }
 
         #{$dark__mode__theme__selector} {
             background-color: $dark__mode__theme__background__color;
@@ -95,13 +99,13 @@
             position: fixed;
 
             // #{$relaxed__mode__template__selector} {
-                margin: 20px 3.2% 0;
-                border-radius: 100px;
-                border: none;
-                width: 93.5%;
-                z-index: 2;
-                background: none;
-                border-bottom: none;
+            margin: 20px 3.2% 0;
+            border-radius: 100px;
+            border: none;
+            width: 93.5%;
+            z-index: 2;
+            background: none;
+            border-bottom: none;
             // }
 
             #{$white__mode__theme__selector} {
@@ -112,9 +116,10 @@
 
         @include media("<=small-screen") {
             // #{$relaxed__mode__template__selector} {
-                margin: 20px 9px 0;
-                width: 94%;
+            margin: 20px 9px 0;
+            width: 94%;
             // }
+            background-color: $light__theme_color;
         }
 
         .chat__header {
@@ -126,13 +131,21 @@
             width: inherit;
 
             // #{$relaxed__mode__template__selector} {
-           
-                border-radius: 100px;
-                padding: 11px 2rem;
-                width: 100%;
-                border: 1px solid $white__mode__border__color;
-            // }
 
+            padding: 11px 2rem;
+            width: 100%;
+            border: 1px solid $white__mode__border__color;
+
+            // }
+            border-radius: 100px;
+
+            @include media(">medium-screen") {
+                border-top: none;
+            }
+            #{$relaxed__mode__template__selector} {
+                border-radius: 100px;
+                border-top: unset;
+            }
 
             #{$dark__mode__theme__selector} {
                 background: $dark__mode__theme__grey__color;
@@ -156,7 +169,7 @@
                 // padding: 0 1rem;
                 height: 3.5rem;
                 // #{$relaxed__mode__template__selector} {
-                    padding: 0 16px 0 23.5px;
+                padding: 0 16px 0 23.5px;
                 // }
 
                 .logo {
@@ -166,17 +179,22 @@
                 // .chat__header-save-convo {
                 //     margin: unset !important;
                 // }
-            }  
+
+                #{$dark__mode__theme__selector} {
+                    background: $dark__mode__theme__grey__color !important;
+                    border: none;
+                }
+            }
 
             @include media(">medium-screen") {
                 // #{$relaxed__mode__template__selector} {
-                    // padding: 0 16px 0 23.5px;
-                    // height: 3.5rem;
-                    padding: 11px 28px;
+                // padding: 0 16px 0 23.5px;
+                // height: 3.5rem;
+                padding: 11px 28px;
                 // }
 
                 .logo {
-                       margin: 0;
+                    margin: 0;
                 }
             }
 
@@ -233,9 +251,9 @@
 
             .logo {
                 // #{$relaxed__mode__template__selector} {
-                    display: flex;
-                    align-items: center;
-                    gap: 8px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
                 // }
 
                 .company__logo {
@@ -271,12 +289,12 @@
                 cursor: pointer;
 
                 // #{$relaxed__mode__template__selector} {
-                    border: none;
-                    padding: 0;
+                border: none;
+                padding: 0;
 
-                    svg {
-                        width: 20px;
-                    }
+                svg {
+                    width: 20px;
+                }
                 // }
             }
         }
@@ -291,8 +309,8 @@
     &.show-on-desktop {
         @include media(">medium-screen") {
             // #{$relaxed__mode__template__selector} {
-                display: block;
-                margin-left: 30px;
+            display: block;
+            margin-left: 30px;
             // }
         }
     }
@@ -301,12 +319,12 @@
         cursor: pointer;
 
         // #{$relaxed__mode__template__selector} {
-            border: none;
-            padding: 0;
+        border: none;
+        padding: 0;
 
-            svg {
-                width: 20px;
-            }
+        svg {
+            width: 20px;
+        }
         // }
 
         #{$dark__mode__theme__selector} {

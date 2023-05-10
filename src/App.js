@@ -96,7 +96,7 @@ const App = () => {
                     ...data,
                     workspaceSlug,
                     defaultTheme,
-                    defaultTemplate,
+                    defaultTemplate:"WORKMODE",
                 });
 
                 setCurrentAppearance({

@@ -8,6 +8,7 @@
     background-color: $light__theme_color;
     z-index: 1;
 
+    display: none;
     #{$relaxed__mode__template__selector} {
         display: none;
     }
