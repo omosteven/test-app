@@ -36,7 +36,12 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
             <div className='row'>
                 <div className='col-lg-5 col-sm-12 col-md-12 in-app-auth__hero'>
                     <div className='in-app-auth__brand-image'>
-                        <img src={inAppBackgroundImageUrl} alt='Background' />
+                        {inAppBackgroundImageUrl && (
+                            <img
+                                src={inAppBackgroundImageUrl}
+                                alt='Background'
+                            />
+                        )}
                     </div>
 
                     <div className='in-app-auth__hero--content'>

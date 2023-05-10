@@ -8,7 +8,7 @@ import ChatHeader from "components/Chat/ChatModule/ChatHeader/ChatHeader";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import InAppAuth from "./InAppAuth/InAppAuth";
 import queryString from "query-string";
-import { generateRandomId, truncate } from "utils/helper";
+import { buildRouteLink, generateRandomId, truncate } from "utils/helper";
 import { signInstages, emailFormActions, inAppAuthActions } from "./enum";
 import { useWindowSize } from "utils/hooks";
 import "./SignInForm.scss";
@@ -39,14 +39,17 @@ const SignInForm = () => {
     const appUserId = Queryparams?.appUserId || generateRandomId();
 
     const routeToChat = (firstName, lastName, conversationId) => {
-        history.push(`
-            /link?${isLiveApp ? "" : `workspaceSlug=${workspaceSlug}&`}
-            ${conversationId ? `&conversationId=${conversationId}` : ""}
-            ${appUserId ? `appUserId=${appUserId}&` : ""}
-            ${firstName ? `firstName=${firstName}&` : ""}
-            ${lastName ? `lastName=${lastName}&` : ""} 
-            ${email ? `email=${email}` : ""}
-        `);
+        history.push(
+            buildRouteLink(
+                email,
+                firstName,
+                lastName,
+                conversationId,
+                isLiveApp,
+                workspaceSlug,
+                appUserId
+            )
+        );
     };
 
     const handleAskAction = () => {
@@ -163,9 +166,10 @@ const SignInForm = () => {
                     <>
                         {((isInitialStage && isTablet) || !isInitialStage) && (
                             <ChatHeader
-                                showActions={false}
+                                showActions={isInitialStage ? true : false}
                                 isAuthPage={true}
-                                alignLeft={isInitialStage}
+                                hideBackIcon={isInitialStage}
+                                // alignLeft={isInitialStage}
                             />
                         )}
                     </>
