@@ -2,23 +2,47 @@
 @import "assets/scss/_include-media-lib/include-media";
 
 .customer__tickets--container {
-        margin: 0 auto;
-        padding: 0;
-        display: flex;
-        // justify-content: space-between;
-        flex-direction: row;
-        height: 100%;
-        flex-wrap: nowrap;
-        width: 70% !important;
-        overflow: hidden;
-        overflow-x: auto;
-        display: -webkit-flex;
-        display: flex;
-        -webkit-flex-direction: row;
-        flex-direction: row;
-        @include media("<=large-screen") {
-            width: 50% !important;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    // justify-content: space-between;
+    flex-direction: row;
+    height: 100%;
+    flex-wrap: nowrap;
+    width: 100% !important;
+    padding: 0 1.5rem;
+    overflow: hidden;
+    overflow-x: auto;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    @include media("<=large-screen") {
+        // width: 50% !important;
+    }
+
+    &::-webkit-scrollbar {
+        width: 3px !important;
+        height: 5px !important;
+    }
+    &::-webkit-scrollbar-track {
+        background: #fafafc !important;
+        border-radius: 3px !important;
+        height: 2px !important;
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__background__color !important;
         }
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #e6e6ed;
+        border-radius: 3px;
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__grey__color !important;
+        }
+    }
+    &::-webkit-scrollbar-thumb:hover {
+        background: #4d4b4b;
+    }
 }
 
 .customer__tickets--container {

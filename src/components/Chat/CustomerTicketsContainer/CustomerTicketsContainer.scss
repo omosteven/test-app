@@ -94,7 +94,7 @@
             @include media("<=medium-screen") { 
                 #{$relaxed__mode__template__selector} {
                     gap: 1rem;
-                    width: 90% !important;
+                    // width: 90% !important;
                     margin: auto;
                 }
             }
