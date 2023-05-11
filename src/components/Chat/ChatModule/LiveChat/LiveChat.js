@@ -1419,6 +1419,7 @@ const LiveChat = ({
                     updateUploads={handleUploads}
                     isDateFormElement={isDateFormElement}
                     mssgSendStatus={mssgSendStatus}
+                    messages={messages}
                 />
             </div>
         </>

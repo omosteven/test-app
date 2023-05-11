@@ -9,14 +9,17 @@
     text-align: center;
     z-index: 1;
     font-size: 0.875rem;
- 
+
+    // #{$relaxed__mode__template__selector} {
+    //    top:26%;
+    // }
 
     @include media("<=medium-screen") {
         position: absolute;
     }
 
     @include media("<=small-screen") {
-        top: 23%;
+        top: 18%;
         z-index: 0;
     }
 }
@@ -39,7 +42,7 @@
     margin-left: auto;
     margin-right: auto;
     @include media("<=medium-screen") {
-    //   margin-top: -2rem;
+        //   margin-top: -2rem;
     }
     &__icon {
         margin-top: -1px;

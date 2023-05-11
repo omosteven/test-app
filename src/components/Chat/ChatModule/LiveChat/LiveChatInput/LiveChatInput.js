@@ -8,9 +8,7 @@ import { Button, Input } from "../../../../ui";
 import SelectUI from "../../../../ui/InputTypes/SelectUI/SelectUI";
 import { useIsTyping } from "use-is-typing";
 import PoweredBy from "../../../../common/PoweredBy/PoweredBy";
-import CustomDatePicker from "../../../../ui/InputTypes/DatePicker/DatePicker";
 import UploadIcons from "./UploadIcons/UploadIcons";
-import UploadPreview from "./UploadIcons/UploadPreview/UploadPreview";
 import API from "../../../../../lib/api";
 import apiRoutes from "../../../../../lib/api/apiRoutes";
 import { dataQueryStatus } from "../../../../../utils/formatHandlers";
@@ -20,7 +18,7 @@ import {
     getNumberPrefix,
     isDeviceMobileTablet,
 } from "../../../../../utils/helper";
-import { formInputTypes } from "../MessageBody/Messages/enums";
+import { INPUT_NEEDED, formInputTypes } from "../MessageBody/Messages/enums";
 import { IMAGE } from "./UploadIcons/enum";
 import "./LiveChatInput.scss";
 import UploadedFiles from "./UploadIcons/UploadedFiles/UploadedFiles";
@@ -29,6 +27,7 @@ import RelaxedSelectUI from "components/ui/InputTypes/SelectUI/RelaxedSelectUI/R
 import DatePickerWrapper from "./DatePickerWrapper/DatePickerWrapper";
 import { datePickerStages } from "./DatePickerWrapper/enum";
 import SmallLoader from "components/ui/SmallLoader/SmallLoader";
+import { useWindowSize } from "utils/hooks";
 
 const { DATE_VALUE, PICK_DATE } = datePickerStages;
 const { LOADING, ERROR, DATAMODE } = dataQueryStatus;
@@ -49,6 +48,7 @@ const LiveChatInput = ({
     updateUploads,
     isDateFormElement,
     mssgSendStatus,
+    messages,
 }) => {
     console.log({ allowUserInput, disableInput, inputType });
     const [isTyping, inputRef] = useIsTyping();
@@ -353,8 +353,8 @@ const LiveChatInput = ({
             isLink,
             max,
             // pattern,
-            minDate,
-            maxDate,
+            // minDate,
+            // maxDate,
         } = getCurrentFormInputRules(rules, inputType);
 
         const numberPrefix = getNumberPrefix(rules);
@@ -409,24 +409,13 @@ const LiveChatInput = ({
             case DATE:
                 return (
                     <>
-                        {isRelaxedTemplate ? (
-                            <DatePickerWrapper
-                                stage={datePickerStage}
-                                request={request}
-                                updateRequest={updateRequest}
-                                setDatePickerStage={setDatePickerStage}
-                                disabled={disableInput}
-                            />
-                        ) : (
-                            <CustomDatePicker
-                                onChange={(date) =>
-                                    updateRequest({ ...request, message: date })
-                                }
-                                disabled={disableInput}
-                                minDate={minDate?.ruleConstraint}
-                                maxDate={maxDate?.ruleConstraint}
-                            />
-                        )}
+                        <DatePickerWrapper
+                            stage={datePickerStage}
+                            request={request}
+                            updateRequest={updateRequest}
+                            setDatePickerStage={setDatePickerStage}
+                            disabled={disableInput}
+                        />
                     </>
                 );
 
@@ -520,6 +509,21 @@ const LiveChatInput = ({
 
     const isFinalDatePickerStage = datePickerStage === PICK_DATE;
 
+    const { width } = useWindowSize();
+
+    const isTablet = width <= 768;
+
+    const lastMessage = messages[messages.length - 1];
+
+    const userInstructionLabel =
+        lastMessage?.branchOptions?.length > 0
+            ? "Choose an option above"
+            : lastMessage?.messageType === "ACTION_INFO"
+            ? lastMessage?.messageActionType === INPUT_NEEDED
+                ? "Please we need a response from you"
+                : "Please wait for a response from us"
+            : null;
+
     return (
         <div className={`chat__input__wrapper`} ref={inputContainerRef}>
             <div
@@ -534,8 +538,11 @@ const LiveChatInput = ({
                     onSubmit={handleSubmit}
                     id='chatInput'
                     className={`
-                ${isFormElementMultiselect ? "chatInput-form-select" : ""}`}>
-                    {uploads?.length > 0 && (
+                ${isFormElementMultiselect ? "chatInput-form-select" : ""}
+                ${
+                    isTablet && uploads.length > 0 ? "chatInputFormSubmit" : ""
+                }`}>
+                    {/* {uploads?.length > 0 && (
                         <>
                             {isRelaxedTemplate && isFormElementImage ? (
                                 <></>
@@ -563,7 +570,7 @@ const LiveChatInput = ({
                                 />
                             )}
                         </>
-                    )}
+                    )} */}
 
                     <div
                         className={
@@ -577,8 +584,7 @@ const LiveChatInput = ({
                                     ? "chat__input--group--workmode__disabled"
                                     : ""
                             }`}>
-                            {isRelaxedTemplate &&
-                            uploads?.length === 0 &&
+                            {uploads?.length === 0 &&
                             (isFormElementImage ||
                                 isFinalDatePickerStage ||
                                 isFormElementMultiselect) ? (
@@ -629,18 +635,13 @@ const LiveChatInput = ({
                                         )}
                                         {uploads?.length === 0 ? (
                                             <>
-                                                {isDisabled &&
-                                                !isRelaxedTemplate ? (
+                                                {userInstructionLabel ? (
                                                     <div className='chat__input--group__choose-option'>
-                                                        {mssgSendStatus !==
+                                                        {mssgSendStatus ===
                                                         LOADING ? (
-                                                            <>
-                                                                Please choose
-                                                                one of the
-                                                                options above
-                                                            </>
-                                                        ) : (
                                                             <SmallLoader />
+                                                        ) : (
+                                                            userInstructionLabel
                                                         )}
                                                     </div>
                                                 ) : (
@@ -679,6 +680,10 @@ const LiveChatInput = ({
                                         )}
                                     </div>
                                     {isDisabled && !isRelaxedTemplate ? (
+                                        ""
+                                    ) : uploads?.length > 0 && isTablet ? (
+                                        ""
+                                    ) : userInstructionLabel ? (
                                         ""
                                     ) : (
                                         <Button
@@ -725,8 +730,8 @@ const LiveChatInput = ({
                             Network connection failed. Tap to retry
                         </span>
                     )}
-                    {isRelaxedTemplate &&
-                        uploads?.length === 0 &&
+                    {uploads?.length > 0 &&
+                        isTablet &&
                         (isFormElementImage ||
                             isFinalDatePickerStage ||
                             isFormElementMultiselect) && (

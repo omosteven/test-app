@@ -23,6 +23,9 @@
 }
 
 .chat__header__auth {
+    border-radius: 100px !important;
+    margin-top: 12px !important;
+
     @include media(">medium-screen") {
         height: 72px !important;
 
@@ -32,6 +35,20 @@
     }
     @include media("<=medium-screen") {
         height: 50px !important;
+        margin-top: 0px !important;
+    }
+
+    #{$dark__mode__theme__selector} {
+        background: $dark__mode__theme__grey__color;
+        @include media(">medium-screen") {
+            background: $dark__mode__theme__grey__color !important;
+            border: 0.063px solid $dark__mode__theme__grey__color !important;
+        }
+    }
+
+    #{$white__mode__theme__selector} {
+        background: $light__theme_color !important;
+        border: 1px solid $white__mode__border__color;
     }
 }
 
@@ -135,16 +152,12 @@
             padding: 11px 2rem;
             width: 100%;
             border: 1px solid $white__mode__border__color;
-
             // }
-            border-radius: 100px;
 
-            @include media(">medium-screen") {
-                border-top: none;
-            }
             #{$relaxed__mode__template__selector} {
                 border-radius: 100px;
                 border-top: unset;
+                background: $dark__mode__theme__dark__color !important;
             }
 
             #{$dark__mode__theme__selector} {
@@ -152,13 +165,18 @@
                 border: none;
 
                 @include media(">medium-screen") {
-                    background: $dark__mode__theme__dark__color;
+                    background: transparent;
+                    border-bottom: 0.063px solid $dark__mode__theme__grey__color;
                 }
             }
 
             #{$white__mode__theme__selector} {
-                background: $light__theme_color;
+                background: $light__theme_color !important;
                 border: 1px solid $white__mode__border__color;
+            }
+
+            @include media(">medium-screen") {
+                margin-top: -1px;
             }
 
             .logo__left__aligned {
@@ -168,6 +186,7 @@
             @include media("<=medium-screen") {
                 // padding: 0 1rem;
                 height: 3.5rem;
+                border-radius: 100px;
                 // #{$relaxed__mode__template__selector} {
                 padding: 0 16px 0 23.5px;
                 // }
@@ -179,6 +198,8 @@
                 // .chat__header-save-convo {
                 //     margin: unset !important;
                 // }
+
+                background: $light__theme_color;
 
                 #{$dark__mode__theme__selector} {
                     background: $dark__mode__theme__grey__color !important;

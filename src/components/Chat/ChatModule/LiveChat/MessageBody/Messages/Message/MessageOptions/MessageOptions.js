@@ -51,7 +51,9 @@ const MessageOptions = ({
                             }
                             deliveryDate={deliveryDate}
                             status={status}
-                            mssgOptionLoading={mssgSendStatus === LOADING}
+                            mssgOptionLoading={
+                                isRelaxedTemplate && mssgSendStatus === LOADING
+                            }
                         />
                     ) : (
                         <MessageBranchOption
@@ -62,7 +64,9 @@ const MessageOptions = ({
                             branchOptionId={option?.branchOptionId}
                             selectedOption={selectedOption}
                             lastMessage={lastMessage}
-                            mssgOptionLoading={mssgSendStatus === LOADING}
+                            mssgOptionLoading={
+                                isRelaxedTemplate && mssgSendStatus === LOADING
+                            }
                             status={status}
                             handleMessageOptionSelect={() =>
                                 messageType === CONVERSATION
