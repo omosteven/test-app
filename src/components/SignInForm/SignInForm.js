@@ -10,8 +10,8 @@ import queryString from "query-string";
 import { buildRouteLink, generateRandomId, truncate } from "utils/helper";
 import { signInstages, emailFormActions, inAppAuthActions } from "./enum";
 import { useWindowSize } from "utils/hooks";
-import "./SignInForm.scss";
 import { isLiveApp } from "config/config";
+import "./SignInForm.scss";
 
 const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
@@ -21,7 +21,9 @@ const SignInForm = () => {
 
     const [signInStage, setSignInStage] = useState(initial);
     const [emailStepRequest, setEmailStepRequest] = useState();
-    const { workspaceSlug } = useSelector((state) => state.chat.chatSettings);
+    const { workspaceSlug } = useSelector(
+        (state) => state.chat.chatSettings
+    );
     const [initialStageAction, setInitialStageAction] = useState(
         OPEN_OLD_CONVERSATIONS
     );
