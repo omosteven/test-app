@@ -635,7 +635,8 @@ const LiveChatInput = ({
                                         )}
                                         {uploads?.length === 0 ? (
                                             <>
-                                                {userInstructionLabel ? (
+                                                {userInstructionLabel &&
+                                                !isRelaxedTemplate ? (
                                                     <div className='chat__input--group__choose-option'>
                                                         {mssgSendStatus ===
                                                         LOADING ? (
