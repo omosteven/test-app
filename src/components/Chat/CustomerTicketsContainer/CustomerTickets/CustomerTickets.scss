@@ -49,7 +49,7 @@
     display: -webkit-flex;
     display: flex;
     flex-wrap: nowrap;
-
+    gap: 12px;
     #{$relaxed__mode__template__selector} {
         gap: 12px;
     }

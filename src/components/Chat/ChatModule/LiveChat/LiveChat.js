@@ -1345,6 +1345,8 @@ const LiveChat = ({
             setMssgSendStatus(IDLE);
         }
     };
+
+    console.log({messages})
     return (
         <>
             {!showVerifyForm ? (
@@ -1417,6 +1419,7 @@ const LiveChat = ({
                     updateUploads={handleUploads}
                     isDateFormElement={isDateFormElement}
                     mssgSendStatus={mssgSendStatus}
+                    messages={messages}
                 />
             </div>
         </>

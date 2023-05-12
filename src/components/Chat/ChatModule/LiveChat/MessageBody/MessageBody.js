@@ -16,7 +16,6 @@ const MessageBody = ({
     handleNewMessage,
     status,
     mssgSendStatus,
-    isValidUserEmail,
 }) => {
     const { activeTicket: ticket } = useSelector((state) => state.tickets);
     const { ticketId, agent } = ticket;

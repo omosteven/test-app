@@ -58,7 +58,7 @@ const MessageContent = ({
             );
 
     const showChangeOptionChoice =
-        isRelaxedTemplate &&
+        // isRelaxedTemplate &&
         !isReceivedMessage &&
         (messageType === BRANCH_OPTION || messageType === CONVERSATION) &&
         recentThirdUserMessage?.messageId === messageId &&
@@ -119,7 +119,7 @@ const MessageContent = ({
             {showChangeOptionChoice && (
                 <ChangeOptionChoice onClick={handleChangeOptionChoiceModal} />
             )}
-            {showModal && isRelaxedTemplate && (
+            {showModal && (
                 <ChangeOptionChoiceModal
                     show={showModal}
                     toggle={() => toggleModal(false)}

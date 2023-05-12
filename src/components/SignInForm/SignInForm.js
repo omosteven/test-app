@@ -91,8 +91,12 @@ const SignInForm = () => {
         }
     };
 
-    const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORKMODE;
+    // const isRelaxedTemplate = defaultTemplate === RELAXED;
+    // const isWorkModeTemplate = defaultTemplate === WORKMODE;
+
+    const isRelaxedTemplate = true;
+    const isWorkModeTemplate = false;
+    // const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isNameRequest = initialStageAction === ASK__SUPPORT;
 
     const renderBasedOnStage = () => {

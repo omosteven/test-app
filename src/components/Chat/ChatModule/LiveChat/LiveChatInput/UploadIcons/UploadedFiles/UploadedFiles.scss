@@ -4,14 +4,30 @@
 .uploaded-files {
     overflow-y: scroll;
     // height: 5rem;
+    padding: 10px 0px !important;
     #{$relaxed__mode__template__selector} {
-        padding: 10px 0px;
+        padding: 10px 0px !important;
     }
+    width: 100%;
     .uploaded-file {
         // margin-top: 1rem;
+        border-radius: 100px;
+        width: fit-content !important;
+        height: 42px !important;
 
+        @include media("<=medium-screen") {
+            width: 100% !important;
+        }
+
+        span {
+            font-weight: 400;
+            font-size: 18px !important;
+            line-height: 26px !important;
+            margin-right: 15px;
+        }
+        
         #{$relaxed__mode__template__selector} {
-            // padding: 0 1rem;
+            padding: 0 1rem !important;
             border-radius: 100px;
             width: fit-content;
             height: 42px;
@@ -23,18 +39,26 @@
             }
         }
 
-        #{$dark__mode__theme__selector} {
-            background: $dark__mode__theme__grey__color;
+        svg {
+            stroke: $primary__theme_color !important;
         }
 
-        #{$white__mode__theme__selector} {
-            background: $light__theme_color;
+        #{$dark__mode__theme__selector} {
+            background: $dark__mode__theme__grey__color;
+
             svg {
-                stroke: $primary__theme_color;
+                stroke: unset !important;
             }
         }
 
-        padding: 10px 16px;
+        #{$white__mode__theme__selector} {
+            background: $light__theme_color !important;
+            svg {
+                stroke: $primary__theme_color !important;
+            }
+        }
+
+        padding: 10px 16px !important;
         height: 58px;
 
         background: rgba(255, 255, 255, 0.1);
@@ -56,7 +80,10 @@
             font-size: 18px;
             line-height: 26px;
             color: $dark__mode__text__theme__color;
-
+            max-width: 200px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
             #{$relaxed__mode__template__selector} {
                 max-width: 200px;
                 white-space: nowrap;

@@ -60,7 +60,7 @@ const LiveChatStatusBar = ({
                     <>
                         {!validateEmail(user?.email) ? (
                             <>
-                                {isRelaxedTemplate && isNotTablet ? (
+                                {isNotTablet ? (
                                     <ChatHeaderBannerMessage
                                         handleVerifyAction={
                                             handleAddEmailAction
@@ -92,7 +92,7 @@ const LiveChatStatusBar = ({
                             </>
                         ) : (
                             <>
-                                {isRelaxedTemplate && isNotTablet ? (
+                                {isNotTablet ? (
                                     <ChatHeaderBannerMessage
                                         closeAction={validateEmail(user?.email)}
                                         message={
@@ -107,11 +107,18 @@ const LiveChatStatusBar = ({
                                     />
                                 ) : (
                                     <>
-                                        {isWorkModeTemplate && (
+                                        <ChatHeaderBannerMessage
+                                            closeAction={validateEmail(
+                                                user?.email
+                                            )}
+                                            className='chat__header__banner__workmode__wrapper'
+                                            message={<>Click to view notice</>}
+                                        />
+                                        {/* {isWorkModeTemplate && (
                                             <span className='connected'>
                                                 {user?.email}{" "}
                                             </span>
-                                        )}
+                                        )} */}
                                     </>
                                 )}
                             </>

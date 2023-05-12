@@ -7,26 +7,26 @@ import {
 import { SocketContext } from "lib/socket/context/socket";
 import { CLOSED_TICKET } from "lib/socket/events";
 import { useDispatch, useSelector } from "react-redux";
-import { ReactSVG } from "react-svg";
+// import { ReactSVG } from "react-svg";
 import { saveTicketsMessages } from "store/tickets/actions";
-import imageLinks from "../../../../../assets/images";
-import TicketStatus from "../common/TicketStatus/TicketStatus";
+// import imageLinks from "../../../../../assets/images";
+// import TicketStatus from "../common/TicketStatus/TicketStatus";
 import { AgentImage } from "components/ui";
 import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import { useWindowSize } from "utils/hooks";
 import { timeSince } from "utils/helper";
 
 const { ACTION_INFO } = messageTypes;
-const { RELAXED, WORKMODE } = defaultTemplates;
+const { WORKMODE } = defaultTemplates;
 
 const Ticket = ({
     data,
     isActive = false,
     handleTicketSelect,
-    closeTicket,
-    getCustomerTickets,
+    // closeTicket,
+    // getCustomerTickets,
 }) => {
-    const { agent, ticketPhase, ticketId } = data;
+    const { agent, ticketId } = data;
     const { firstName, lastName, displayPicture } = agent;
     const { defaultTemplate } = useSelector(
         (state) => state?.chat?.chatSettings
@@ -112,15 +112,25 @@ const Ticket = ({
         // eslint-disable-next-line
     }, [ticketsMessages]);
 
-    const isRelaxedTemplate = defaultTemplate === RELAXED;
+    // const isRelaxedTemplate = defaultTemplate === RELAXED;
     const isWorkModeTemplate = defaultTemplate === WORKMODE;
 
     return (
         <div
             id={ticketId}
-            className={`customer__ticket  ${isActive && "active"}`}
+            className={`customer__ticket ${
+                isWorkModeTemplate ? "workmode" : ""
+            } ${isActive && "active"}`}
             onClick={() => handleTicketSelect(ticketId)}>
-            {isRelaxedTemplate && isTablet && (
+            {/* {isRelaxedTemplate && isTablet && (
+                <AgentImage
+                    src={displayPicture}
+                    alt={firstName}
+                    width='36px'
+                    height='36px'
+                />
+            )} */}
+            {isTablet && (
                 <AgentImage
                     src={displayPicture}
                     alt={firstName}
@@ -130,7 +140,7 @@ const Ticket = ({
             )}
             <div className='ticket__details'>
                 <div className='d-flex align-items-center w-100'>
-                    {isWorkModeTemplate ? (
+                    {/* {isWorkModeTemplate ? (
                         <TicketStatus
                             ticketPhase={ticketPhase}
                             ticketId={ticketId}
@@ -144,27 +154,38 @@ const Ticket = ({
                                 {lastMessage?.messageContent}
                             </span>
                         )
-                    )}
+                    )} */}
 
-                    {isWorkModeTemplate && (
+                    <span
+                        className={`ticket__last__message ${
+                            isActive ? "active" : ""
+                        }`}>
+                        {lastMessage?.messageContent}
+                    </span>
+
+                    {/* {isWorkModeTemplate && (
                         <div className='close__ticket' onClick={closeTicket}>
                             <ReactSVG
                                 src={imageLinks?.svg?.crossIconGrey}
                                 className='d-inline-flex'
                             />
                         </div>
-                    )}
+                    )} */}
                 </div>
                 <h6 className='agent__name'>{`${firstName} ${lastName}`}</h6>
             </div>
-            {isRelaxedTemplate && (
+            {/* {isRelaxedTemplate && (
                 <div className='ticket__metadata'>
                     <span className='ticket__timestamp'>
                         {lastActivitySince}
                     </span>
                     <span className='new__ticket__message'>1</span>
                 </div>
-            )}
+            )} */}
+            <div className='ticket__metadata'>
+                <span className='ticket__timestamp'>{lastActivitySince}</span>
+                <span className='new__ticket__message'>1</span>
+            </div>
         </div>
     );
 };

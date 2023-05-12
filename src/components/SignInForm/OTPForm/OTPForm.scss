@@ -8,7 +8,7 @@
         line-height: 142%;
         color: $black__theme_color;
 
-        #{$relaxed__mode__template__selector} {
+        // #{$relaxed__mode__template__selector} {
             text-align: center;
             font-size: 24px;
             line-height: 32px;
@@ -18,7 +18,7 @@
                 font-size: 28px !important;
                 text-align: center;
             }
-        }
+        // }
         #{$dark__mode__theme__selector} {
             color: $white__mode__background;
         }
@@ -28,7 +28,7 @@
         line-height: 1.625rem;
         color: $muted__theme_color_2;
 
-        #{$relaxed__mode__template__selector} {
+        // #{$relaxed__mode__template__selector} {
             text-align: center;
             font-size: 1rem;
             line-height: 24px;
@@ -39,21 +39,21 @@
                 font-size: 20px;
                 line-height: 28px;
             }
-        }
+        // }
 
         #{$dark__mode__theme__selector} {
             color: $dark__mode__text__theme__color;
         }
     }
     .my-3 {
-        #{$relaxed__mode__template__selector} {
+        // #{$relaxed__mode__template__selector} {
             margin-top: 40px !important;
-        }
+        // }
     }
     button {
-        #{$relaxed__mode__template__selector} {
+        // #{$relaxed__mode__template__selector} {
             height: 60px !important;
-        }
+        // }
     }
     .pincode-input-container {
         padding: 0.625rem 0;
@@ -65,10 +65,10 @@
             text-align: center;
             padding: 0;
 
-            #{$relaxed__mode__template__selector} {
+            // #{$relaxed__mode__template__selector} {
                 justify-content: center !important;
                 gap: 16px !important;
-            }
+            // }
         }
 
         .pincode-input-text {
@@ -79,12 +79,12 @@
             color: #11142d;
             background: #ffffff !important;
 
-            #{$relaxed__mode__template__selector} {
+            // #{$relaxed__mode__template__selector} {
                 border-radius: 14px;
                 padding: 18px;
                 width: 80px !important;
                 height: 80px !important;
-            }
+            // }
 
             #{$dark__mode__theme__selector} {
                 border: 1px solid $dark__mode__theme__dark__color !important;
@@ -101,10 +101,10 @@
             &:focus {
                 border: 1px solid $primary__theme_color !important;
 
-                #{$relaxed__mode__template__selector} {
+                // #{$relaxed__mode__template__selector} {
                     background-color: $white__mode__background !important;
                     color: $dark__mode__theme__dark__color !important;
-                }
+                // }
             }
             &:not(:last-child) {
                 margin-right: 1rem !important;
@@ -116,10 +116,10 @@
                     margin-right: 0px !important;
                 }
 
-                #{$relaxed__mode__template__selector} {
+                // #{$relaxed__mode__template__selector} {
                     width: 60px !important;
                     height: 60px !important;
-                }
+                // }
             }
         }
     }
