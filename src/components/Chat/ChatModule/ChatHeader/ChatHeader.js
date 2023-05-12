@@ -12,7 +12,7 @@ import { validateEmail } from "utils/helper";
 import ChatHeaderBannerMessage from "./ChatHeaderBannerMessage/ChatHeaderBannerMessage";
 import "./ChatHeader.scss";
 
-const { RELAXED, WORKMODE } = defaultTemplates;
+const { RELAXED } = defaultTemplates;
 const { LOADING, NULLMODE, DATAMODE, ERROR } = dataQueryStatus;
 
 const ChatHeader = ({

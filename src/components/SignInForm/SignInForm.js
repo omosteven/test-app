@@ -5,7 +5,7 @@ import FadeIn from "../ui/FadeIn";
 import EmailForm from "./EmailForm/EmailForm";
 import OTPForm from "./OTPForm/OTPForm";
 import ChatHeader from "components/Chat/ChatModule/ChatHeader/ChatHeader";
-import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+// import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import InAppAuth from "./InAppAuth/InAppAuth";
 import queryString from "query-string";
 import { buildRouteLink, generateRandomId, truncate } from "utils/helper";
