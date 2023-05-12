@@ -38,7 +38,7 @@ const MessageContent = ({
         (state) => state?.chat?.chatSettings
     );
 
-    const isRelaxedTemplate = defaultTemplate === RELAXED;
+    // const isRelaxedTemplate = defaultTemplate === RELAXED;
 
     const handleChangeOptionChoiceModal = () => {
         toggleModal(!showModal);

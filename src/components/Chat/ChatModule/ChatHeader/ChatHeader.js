@@ -48,7 +48,7 @@ const ChatHeader = ({
     const { width } = useWindowSize();
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORKMODE;
+    // const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isTablet = width <= 768;
     const isNotTablet = width > 768;
 
