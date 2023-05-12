@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // import { useSelector } from "react-redux";
 import { messageTypes, appMessageUserTypes, messageStatues } from "../../enums";
-import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
+// import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import ChangeOptionChoice from "./ChangeOptionChoice/ChangeOptionChoice";
 import ChangeOptionChoiceModal from "./ChangeOptionChoice/ChangeOptionChoiceModal/ChangeOptionChoiceModal";
 import { truncate, validateEmail } from "utils/helper";
