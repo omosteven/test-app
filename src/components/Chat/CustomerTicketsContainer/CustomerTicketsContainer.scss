@@ -2,6 +2,14 @@
 @import "assets/scss/_include-media-lib/include-media";
 
 #authTickets {
+    padding: 0px 20px;
+
+    .btn {
+        @include media("<=medium-screen") {
+            width: 100% !important;
+        }
+    }
+
     &.show-mobile-menu {
         display: block !important;
         position: fixed;
@@ -106,11 +114,11 @@
 
             @include media("<=medium-screen") {
                 gap: 1rem;
-                width: 90% !important;
+                width: 100% !important;
                 margin: auto;
                 #{$relaxed__mode__template__selector} {
                     gap: 1rem;
-                    // width: 90% !important;
+                    width: 100% !important;
                     margin: auto;
                 }
             }

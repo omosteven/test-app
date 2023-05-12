@@ -1,7 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import { messageTypes, appMessageUserTypes, messageStatues } from "../../enums";
-import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import ChangeOptionChoice from "./ChangeOptionChoice/ChangeOptionChoice";
 import ChangeOptionChoiceModal from "./ChangeOptionChoice/ChangeOptionChoiceModal/ChangeOptionChoiceModal";
 import { truncate, validateEmail } from "utils/helper";
@@ -15,7 +13,6 @@ const {
     FORM_RESPONSE,
 } = messageTypes;
 const { THIRD_USER } = appMessageUserTypes;
-const { RELAXED } = defaultTemplates;
 
 const { SENDING, DELIVERED, FAILED } = messageStatues;
 
@@ -34,11 +31,6 @@ const MessageContent = ({
     messageIndex,
 }) => {
     const [showModal, toggleModal] = useState(false);
-    const { defaultTemplate } = useSelector(
-        (state) => state?.chat?.chatSettings
-    );
-
-    const isRelaxedTemplate = defaultTemplate === RELAXED;
 
     const handleChangeOptionChoiceModal = () => {
         toggleModal(!showModal);

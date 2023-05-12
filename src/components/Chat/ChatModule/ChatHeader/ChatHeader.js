@@ -12,7 +12,7 @@ import { validateEmail } from "utils/helper";
 import ChatHeaderBannerMessage from "./ChatHeaderBannerMessage/ChatHeaderBannerMessage";
 import "./ChatHeader.scss";
 
-const { RELAXED, WORKMODE } = defaultTemplates;
+const { RELAXED } = defaultTemplates;
 const { LOADING, NULLMODE, DATAMODE, ERROR } = dataQueryStatus;
 
 const ChatHeader = ({
@@ -48,7 +48,6 @@ const ChatHeader = ({
     const { width } = useWindowSize();
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isTablet = width <= 768;
     const isNotTablet = width > 768;
 
@@ -146,7 +145,7 @@ const ChatHeader = ({
                         <div
                             className={`logo
                          ${alignLeft ? "logo__left__aligned" : ""}`}>
-                             { isNotTablet ? (
+                            {isNotTablet ? (
                                 <CompanyChatLogo
                                     src={companyLogo}
                                     alt={teamName}
