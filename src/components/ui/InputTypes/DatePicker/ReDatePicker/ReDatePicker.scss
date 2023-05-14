@@ -17,8 +17,17 @@
         background-color: $white__mode__theme__grey__color;
     }
 
+    margin-bottom: 8.5rem !important;
+    left: 50%;
+    transform: translateX(-50%);
+
     @include media("<=small-screen") {
         width: 100%;
+        margin-bottom: 8.5rem !important;
+        margin-left: -1rem;
+        left: unset;
+        transform:none;
+
     }
 
     .re__date__picker {

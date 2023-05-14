@@ -21,9 +21,7 @@ const SignInForm = () => {
 
     const [signInStage, setSignInStage] = useState(initial);
     const [emailStepRequest, setEmailStepRequest] = useState();
-    const { workspaceSlug } = useSelector(
-        (state) => state.chat.chatSettings
-    );
+    const { workspaceSlug } = useSelector((state) => state.chat.chatSettings);
     const [initialStageAction, setInitialStageAction] = useState(
         OPEN_OLD_CONVERSATIONS
     );

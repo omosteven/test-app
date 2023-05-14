@@ -220,6 +220,10 @@
                 svg path {
                     fill: $light__theme_color;
                 }
+
+                .lds-spinner-small div:after {
+                    background-color: $light__theme_color !important;
+                }
             }
         }
     }
