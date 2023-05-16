@@ -201,6 +201,7 @@
             font-size: 16px;
             line-height: 24px;
             text-decoration: none;
+            color: $light__gray__theme_color;
             #{$white__mode__theme__selector} {
                 color: $light__gray__theme_color;
             }
@@ -298,6 +299,8 @@
             line-height: 28px;
             display: flex;
             align-items: center;
+            background-color: transparent;
+
             #{$dark__mode__theme__selector} {
                 background: #1f272d;
                 border: 1px solid rgba(131, 133, 137, 0.2) !important;
@@ -309,7 +312,7 @@
             }
 
             #{$white__mode__theme__selector} {
-                background-color: transparent;
+                background-color: transparent !important;
                 border: 1px solid rgba(131, 133, 137, 0.2) !important;
             }
 
@@ -331,7 +334,7 @@
             @include media("<=large-screen") {
                 display: none;
             }
-
+            background-color: $inactive__button__theme_color;
             #{$dark__mode__theme__selector} {
                 background-color: $dark__mode__desktop__chat__theme__color;
                 // background-color: $dark__mode__theme__background__color;

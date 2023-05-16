@@ -10,6 +10,7 @@
     z-index: 1;
     font-size: 0.875rem;
 
+    // display: none;
     // #{$relaxed__mode__template__selector} {
     //    top:26%;
     // }
@@ -19,7 +20,7 @@
     }
 
     @include media("<=small-screen") {
-        top: 18%;
+        top: 8%;
         z-index: 0;
     }
 }

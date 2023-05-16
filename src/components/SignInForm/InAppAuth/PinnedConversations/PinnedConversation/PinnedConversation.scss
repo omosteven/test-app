@@ -15,21 +15,17 @@
         background: #191f24;
     }
 
-    &__hide-white-icon {
-        #{$dark__mode__theme__selector} {
-            display: none !important;
-        }
-    }
-
-    &__hide-dark-icon {
-        #{$white__mode__theme__selector} {
-            display: none !important;
-        }
-    }
-
-    svg {
+    &__add-plus {
         margin-left: 8px;
+        font-size: 24px;
+        font-weight: 500;
+        color: #696d8c;
+        #{$dark__mode__theme__selector} {
+            color: $light__theme_color;
+        }
     }
+
+    background-color: $white__mode__background;
 
     #{$white__mode__theme__selector} {
         color: #696d8c;

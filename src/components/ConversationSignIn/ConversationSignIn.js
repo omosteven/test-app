@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import queryString from "query-string";
 import FadeIn from "components/ui/FadeIn";
 import ChatHeader from "components/Chat/ChatModule/ChatHeader/ChatHeader";
-import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import ConversationSignInEmailForm from "./ConversationSignInEmailForm/ConversationSignInEmailForm";
 import OTPForm from "components/SignInForm/OTPForm/OTPForm";
 import { signInstages } from "components/SignInForm/enum";
@@ -18,15 +17,13 @@ import { pushAuthUser } from "store/auth/actions";
 import "../SignInForm/SignInForm.scss";
 import { isLiveApp } from "config/config";
 
-const { RELAXED } = defaultTemplates;
 const { ERROR, DATAMODE } = dataQueryStatus;
 
 const ConversationSignIn = () => {
     const { email_stage, final } = signInstages;
 
-    const { defaultTemplate, workspaceSlug } = useSelector(
-        (state) => state.chat.chatSettings
-    );
+    const { workspaceSlug } = useSelector((state) => state.chat.chatSettings);
+
     const [signInStage, setSignInStage] = useState(email_stage);
     const [emailStepRequest, setEmailStepRequest] = useState();
     const [status, setStatus] = useState(DATAMODE);
@@ -52,7 +49,9 @@ const ConversationSignIn = () => {
             if (res.status === 200) {
                 const { data } = res.data;
                 const { customer } = data || {};
-                const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+                const url = isLiveApp
+                    ? "/chat"
+                    : `/chat?workspaceSlug=${workspaceSlug}`;
 
                 dispatch(
                     setActiveTicket({
@@ -64,14 +63,12 @@ const ConversationSignIn = () => {
                     dispatch(pushAuthUser(customer));
                 }
 
-
                 await window.history.replaceState(
                     null,
                     "New Conversation",
                     url
                 );
                 await window.location.reload();
-           
             }
         } catch (err) {
             setStatus(ERROR);
@@ -83,7 +80,9 @@ const ConversationSignIn = () => {
         if (conversationId) {
             engageConversation();
         } else {
-            const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+            const url = isLiveApp
+                ? "/chat"
+                : `/chat?workspaceSlug=${workspaceSlug}`;
             history.push(url);
         }
     };
@@ -117,10 +116,7 @@ const ConversationSignIn = () => {
                 return (
                     <OTPForm
                         initialStepRequest={emailStepRequest}
-                        subTitle={
-                            isRelaxedTemplate &&
-                            "Check and enter the code received."
-                        }
+                        subTitle={"Check and enter the code received."}
                         redirectUser={false}
                         handleSuccess={handleSuccess}
                     />
@@ -131,13 +127,10 @@ const ConversationSignIn = () => {
         }
     };
 
-    const isRelaxedTemplate = defaultTemplate === RELAXED;
     return (
         <FadeIn location={signInStage}>
             <div className='signin--container'>
-                {isRelaxedTemplate && (
-                    <ChatHeader showActions={false} isAuthPage={true} />
-                )}
+                <ChatHeader showActions={false} isAuthPage={true} />
                 <div
                     className={`row justify-content-center align-items-center form-area signin-con
                 `}>
