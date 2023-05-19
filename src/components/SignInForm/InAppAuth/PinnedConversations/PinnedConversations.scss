@@ -79,11 +79,9 @@
             background: #4d4b4b;
         }
 
-      
-
         @include media("<=large-screen") {
             height: 252px;
-            height: 420px;
+            height: 50vh;
         }
     }
 

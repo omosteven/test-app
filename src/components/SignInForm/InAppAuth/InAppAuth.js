@@ -95,7 +95,8 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
                             <span>
                                 If you had previously started a conversation
                                 with the link and saved it to your email,{" "}
-                                <span>Click here</span>
+                                <span onClick={ ()=>
+                                     handleInitialRequestUpdate(OPEN_OLD_CONVERSATIONS)}>Click here</span>
                             </span>
                         </div>
                     </div>

@@ -5,7 +5,6 @@ import FadeIn from "../ui/FadeIn";
 import EmailForm from "./EmailForm/EmailForm";
 import OTPForm from "./OTPForm/OTPForm";
 import ChatHeader from "components/Chat/ChatModule/ChatHeader/ChatHeader";
-// import { defaultTemplates } from "hoc/AppTemplateWrapper/enum";
 import InAppAuth from "./InAppAuth/InAppAuth";
 import queryString from "query-string";
 import { buildRouteLink, generateRandomId, truncate } from "utils/helper";
@@ -14,7 +13,6 @@ import { useWindowSize } from "utils/hooks";
 import { isLiveApp } from "config/config";
 import "./SignInForm.scss";
 
-// const { RELAXED, WORKMODE } = defaultTemplates;
 const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
 
@@ -23,9 +21,7 @@ const SignInForm = () => {
 
     const [signInStage, setSignInStage] = useState(initial);
     const [emailStepRequest, setEmailStepRequest] = useState();
-    const { workspaceSlug } = useSelector(
-        (state) => state.chat.chatSettings
-    );
+    const { workspaceSlug } = useSelector((state) => state.chat.chatSettings);
     const [initialStageAction, setInitialStageAction] = useState(
         OPEN_OLD_CONVERSATIONS
     );

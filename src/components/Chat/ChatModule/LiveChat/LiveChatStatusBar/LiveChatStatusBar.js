@@ -10,7 +10,7 @@ import ChatHeaderBannerMessage from "../../ChatHeader/ChatHeaderBannerMessage/Ch
 import "./LiveChatStatusBar.scss";
 
 const { IDLE, LOADING, ERROR, DATAMODE } = dataQueryStatus;
-const { WORKMODE, RELAXED } = defaultTemplates;
+const { RELAXED } = defaultTemplates;
 
 const LiveChatStatusBar = ({
     status,
@@ -31,7 +31,7 @@ const LiveChatStatusBar = ({
     const { width } = useWindowSize();
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
-    const isWorkModeTemplate = defaultTemplate === WORKMODE;
+    // const isWorkModeTemplate = defaultTemplate === WORKMODE;
     const isNotTablet = width > 768;
 
     const renderBasedOnStatus = () => {
@@ -80,13 +80,13 @@ const LiveChatStatusBar = ({
                                     />
                                 ) : (
                                     <>
-                                        {isWorkModeTemplate && (
+                                        {/* {isWorkModeTemplate && (
                                             <span
                                                 onClick={handleAddEmailAction}
                                                 className='connected pointer'>
                                                 Add email address
                                             </span>
-                                        )}
+                                        )} */}
                                     </>
                                 )}
                             </>
