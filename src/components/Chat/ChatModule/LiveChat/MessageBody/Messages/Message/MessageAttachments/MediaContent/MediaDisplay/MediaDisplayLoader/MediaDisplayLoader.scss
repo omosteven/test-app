@@ -3,7 +3,7 @@
 
 .media-display-loader {
     // width: 440px;
-    background-color: $ash__theme_color !important;
+    background-color: $muted__theme_color !important;
 
     @include media(">medium-screen") {
         max-width: 440px !important;

@@ -27,7 +27,7 @@ const MediaDisplay = ({
                     <>
                         <img
                             {...rest}
-                            onLoad={() => setMediaIsLoaded(true)}
+                            // onLoad={() => setMediaIsLoaded(true)}
                             style={{
                                 display: mediaIsLoaded ? "initial" : "none",
                             }}
@@ -48,7 +48,7 @@ const MediaDisplay = ({
                     <>
                         <video
                             {...rest}
-                            onLoad={() => setMediaIsLoaded(true)}
+                            // onLoad={() => setMediaIsLoaded(true)}
                             style={{
                                 display: mediaIsLoaded ? "initial" : "none",
                             }}>
