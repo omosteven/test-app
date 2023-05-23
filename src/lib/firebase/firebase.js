@@ -3,8 +3,8 @@ import config from "../../config/config";
 
 import { firebaseMessaging } from "./config/config";
 
-export const getDevicePushToken = () => {
-    return getToken(firebaseMessaging, {
+export const getDevicePushToken = async () => {
+    return getToken(await firebaseMessaging, {
         vapidKey: config.firebase.VAPIDKEY,
     })
         .then((currentToken) => {
