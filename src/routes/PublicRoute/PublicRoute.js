@@ -3,11 +3,13 @@ import { Redirect, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getUserAuth, retriveAccessToken } from "storage/sessionStorage";
 import { isLiveApp } from "config/config";
+import { isURLWithAppUserId } from "utils/helper";
 
 const authRedirectPath = "/chat";
 
 const PublicRoute = ({ component: Component, ...rest }) => {
-    const isAuthenticated = retriveAccessToken() || getUserAuth();
+    const isAuthenticated =
+        retriveAccessToken() || getUserAuth() || isURLWithAppUserId();
 
     const {
         chatSettings: { workspaceSlug },
@@ -18,7 +20,11 @@ const PublicRoute = ({ component: Component, ...rest }) => {
             {isAuthenticated ? (
                 <Redirect
                     to={{
-                        pathname: `${isLiveApp ? authRedirectPath : `${authRedirectPath}?workspaceSlug=${workspaceSlug}`}`,
+                        pathname: `${
+                            isLiveApp
+                                ? authRedirectPath
+                                : `${authRedirectPath}?workspaceSlug=${workspaceSlug}`
+                        }`,
                         // state: { from: props.location },
                     }}
                 />

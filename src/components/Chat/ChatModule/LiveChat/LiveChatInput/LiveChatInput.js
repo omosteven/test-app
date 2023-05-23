@@ -50,7 +50,6 @@ const LiveChatInput = ({
     mssgSendStatus,
     messages,
 }) => {
-    console.log({ allowUserInput, disableInput, inputType });
     const [isTyping, inputRef] = useIsTyping();
     const inputContainerRef = useRef();
 

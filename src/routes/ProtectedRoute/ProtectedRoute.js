@@ -3,6 +3,7 @@ import { Route, Redirect, withRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { getUserAuth, retriveAccessToken } from "storage/sessionStorage";
 import { isLiveApp } from "config/config";
+import { isURLWithAppUserId } from "utils/helper";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
     const isAuthenticated =
@@ -11,7 +12,8 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
         window.location.pathname === "/link" ||
         window.location.pathname === "/conversation" ||
         window.location.pathname === "/ticket" ||
-        getUserAuth();
+        getUserAuth() ||
+        isURLWithAppUserId();
 
     const {
         chatSettings: { workspaceSlug },
@@ -24,7 +26,9 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
             ) : (
                 <Redirect
                     to={{
-                        pathname: `${isLiveApp ? '/' : `/?workspaceSlug=${workspaceSlug}`}`,
+                        pathname: `${
+                            isLiveApp ? "/" : `/?workspaceSlug=${workspaceSlug}`
+                        }`,
                         state: { referrer: rest.location.pathname },
                     }}
                 />
