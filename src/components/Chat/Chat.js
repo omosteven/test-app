@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import API from "../../lib/api";
 import apiRoutes from "../../lib/api/apiRoutes";
-import { onMessageListener } from "../../lib/firebase/firebase";
+import {
+    getDevicePushToken,
+    onMessageListener,
+} from "../../lib/firebase/firebase";
 import {
     reconnectSocket,
     socket,
@@ -29,7 +32,6 @@ import pushToDashboard from "components/SignInForm/actions";
 import { storeUserAuth } from "storage/sessionStorage";
 import { isLiveApp } from "config/config";
 import "./Chat.scss";
-
 
 const { ERROR, LOADING, DATAMODE, NULLMODE } = dataQueryStatus;
 const { RELAXED } = defaultTemplates;
@@ -60,6 +62,7 @@ const Chat = () => {
     const [verifyUserAction, setVerifyUserAction] = useState();
 
     const [socketConnection, setSocketConnection] = useState(socket);
+    const [deviceToken, setDeviceToken] = useState();
 
     const queryParams = queryString.parse(window.location.search);
 
@@ -97,6 +100,7 @@ const Chat = () => {
                 ticketId,
                 workspaceId,
                 appUserId: userId,
+                deviceToken,
             });
 
             if (res.status === 201) {
@@ -221,6 +225,7 @@ const Chat = () => {
                 firstName,
                 lastName,
                 email,
+                deviceToken,
             });
 
             if (res.status === 201) {
@@ -231,7 +236,9 @@ const Chat = () => {
                 if (conversationId) {
                     engageConversation();
                 } else {
-                    const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+                    const url = isLiveApp
+                        ? "/chat"
+                        : `/chat?workspaceSlug=${workspaceSlug}`;
                     history.push(url);
                 }
             }
@@ -250,7 +257,9 @@ const Chat = () => {
 
             if (res.status === 200) {
                 const { data } = res.data;
-                const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+                const url = isLiveApp
+                    ? "/chat"
+                    : `/chat?workspaceSlug=${workspaceSlug}`;
 
                 dispatch(
                     setActiveTicket({
@@ -323,6 +332,15 @@ const Chat = () => {
         }
         //eslint-disable-next-line
     }, [socket]);
+
+    const setDevicePushToken = async () => {
+        let devicePushToken = await getDevicePushToken();
+        setDeviceToken(devicePushToken);
+    };
+
+    useEffect(() => {
+        setDevicePushToken();
+    }, []);
 
     return (
         <>

@@ -353,3 +353,7 @@ export const buildRouteLink = (
         email ? `&email=${email}` : ""
     }`;
 };
+
+export const isURLWithAppUserId = () => {
+    return window.location?.search?.includes("appUserId");
+};

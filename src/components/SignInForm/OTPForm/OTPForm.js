@@ -46,7 +46,9 @@ const OTPForm = ({
 
                 pushToDashboard(data);
                 if (redirectUser) {
-                    const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+                    const url = isLiveApp
+                        ? "/chat"
+                        : `/chat?workspaceSlug=${workspaceSlug}`;
                     window.location.href = url;
                 } else {
                     handleSuccess?.();
@@ -66,6 +68,7 @@ const OTPForm = ({
             const res = await API.get(url, {
                 params: {
                     otp: request?.otp,
+                    deviceToken,
                 },
             });
 

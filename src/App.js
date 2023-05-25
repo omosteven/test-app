@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import queryString from "query-string";
 import Layout from "./layout/Layout";
-import { generateID, getErrorMessage } from "./utils/helper";
+import {
+    generateID,
+    getErrorMessage,
+    isURLWithAppUserId,
+} from "./utils/helper";
 import API from "./lib/api";
 import apiRoutes from "./lib/api/apiRoutes";
 import FullPageLoader from "./components/common/FullPageLoader/FullPageLoader";
@@ -161,7 +165,11 @@ const App = () => {
                         exact
                         component={isAuthenticated ? Chat : ConversationSignIn}
                     />
-                    <PublicRoute path='/*' exact component={SignInForm} />
+                    <PublicRoute
+                        path='/*'
+                        exact
+                        component={isURLWithAppUserId() ? Chat : SignInForm}
+                    />
                 </Switch>
             </Layout>
         </Router>
