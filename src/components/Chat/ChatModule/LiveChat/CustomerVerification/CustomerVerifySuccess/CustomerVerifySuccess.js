@@ -82,8 +82,15 @@ const CustomerVerifySuccess = ({
         }
 
         if (redirectUser) {
-            const url = isLiveApp ? '/chat' : `/chat?workspaceSlug=${workspaceSlug}`;
+            const url = isLiveApp
+                ? "/chat"
+                : `/chat?workspaceSlug=${workspaceSlug}`;
             history.push(url);
+            if (
+                url === `${history.location.pathname}${history.location.search}`
+            ) {
+                closeModal();
+            }
         } else {
             closeModal();
         }

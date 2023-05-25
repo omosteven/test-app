@@ -3,7 +3,6 @@
 
 .customer-verification {
     height: 85vh;
-
     @include media(">medium-screen") {
         border-top: 1px solid $white__mode__border__color;
 
@@ -70,6 +69,10 @@
             margin-bottom: 60px;
     
             @include media(">medium-screen") {
+                display: flex;
+                width: fit-content;
+                margin: 0 20px 0 auto;
+
                 #{$relaxed__mode__template__selector} {
                     padding-top: 20px;
                     display: flex;

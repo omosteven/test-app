@@ -73,14 +73,13 @@ const ActionMessageContent = ({
                                 {messageHeader}
                             </h6>
                         </div>
-                        {defaultTemplate === RELAXED &&
-                            messageActionType === INPUT_NEEDED && (
-                                <ReactSVG
-                                    src={imageLinks?.svg?.cancel}
-                                    className='remove__action'
-                                    onClick={handleRemoveReminder}
-                                />
-                            )}
+                        {messageActionType === INPUT_NEEDED && (
+                            <ReactSVG
+                                src={imageLinks?.svg?.cancel}
+                                className='remove__action'
+                                onClick={handleRemoveReminder}
+                            />
+                        )}
                     </div>
                 )}
                 <div className='message'>

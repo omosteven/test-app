@@ -1346,7 +1346,6 @@ const LiveChat = ({
         }
     };
 
-    console.log({messages})
     return (
         <>
             {!showVerifyForm ? (
