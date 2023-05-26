@@ -29,7 +29,6 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
     const { workspaceSlug } = useSelector((state) => state.chat.chatSettings);
 
     const hideOnboardingActions = outListedWorkspaces?.includes(workspaceSlug);
-    console.log({ workspaceSlug, hideOnboardingActions });
 
     return (
         <div className='in-app-auth'>
@@ -93,11 +92,11 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
                         <PinnedConversations
                             title='Report A Priority Issue'
                             routeToChat={routeToChat}
-                            hideIsSomethingElse={hideOnboardingActions}
                             OPEN_OLD_CONVERSATIONS={OPEN_OLD_CONVERSATIONS}
                             handleInitialRequestUpdate={
                                 handleInitialRequestUpdate
                             }
+                            disableOpenOldConvos={hideOnboardingActions}
                         />
 
                         {!hideOnboardingActions && (
