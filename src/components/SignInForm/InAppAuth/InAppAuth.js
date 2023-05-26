@@ -14,6 +14,8 @@ import "./InAppAuth.scss";
 
 const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
 
+const outListedWorkspaces = ["nestable", "piggyvest", "pocket"];
+
 const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
     const {
         chatSettings: {
@@ -23,6 +25,11 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
             inAppBackgroundImageUrl,
         },
     } = useSelector((state) => state.chat);
+
+    const { workspaceSlug } = useSelector((state) => state.chat.chatSettings);
+
+    const hideOnboardingActions = outListedWorkspaces?.includes(workspaceSlug);
+    console.log({ workspaceSlug, hideOnboardingActions });
 
     return (
         <div className='in-app-auth'>
@@ -57,14 +64,16 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
                             title={true}
                             text={`Welcome to our Priority Support Center`}
                         />
-                        <Button
-                            text='Continue an existing ticket'
-                            classType='primary'
-                            otherClass={`in-app-auth___tickets-button`}
-                            onClick={() =>
-                                handleInitialRequestUpdate(ASK__SUPPORT)
-                            }
-                        />
+                        {!hideOnboardingActions && (
+                            <Button
+                                text='Continue an existing ticket'
+                                classType='primary'
+                                otherClass={`in-app-auth___tickets-button`}
+                                onClick={() =>
+                                    handleInitialRequestUpdate(ASK__SUPPORT)
+                                }
+                            />
+                        )}
                         <div className='in-app-auth__external-links'>
                             <ul>
                                 {inAppLinks?.map?.(({ title, value }, key) => (
@@ -84,21 +93,30 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
                         <PinnedConversations
                             title='Report A Priority Issue'
                             routeToChat={routeToChat}
+                            hideIsSomethingElse={hideOnboardingActions}
                             OPEN_OLD_CONVERSATIONS={OPEN_OLD_CONVERSATIONS}
                             handleInitialRequestUpdate={
                                 handleInitialRequestUpdate
                             }
                         />
 
-                        <div className='in-app-auth__convos--label'>
-                            <ReactSVG src={imageLinks?.svg?.info} />
-                            <span>
-                                If you had previously started a conversation
-                                with the link and saved it to your email,{" "}
-                                <span onClick={ ()=>
-                                     handleInitialRequestUpdate(OPEN_OLD_CONVERSATIONS)}>Click here</span>
-                            </span>
-                        </div>
+                        {!hideOnboardingActions && (
+                            <div className='in-app-auth__convos--label'>
+                                <ReactSVG src={imageLinks?.svg?.info} />
+                                <span>
+                                    If you had previously started a conversation
+                                    with the link and saved it to your email,{" "}
+                                    <span
+                                        onClick={() =>
+                                            handleInitialRequestUpdate(
+                                                OPEN_OLD_CONVERSATIONS
+                                            )
+                                        }>
+                                        Click here
+                                    </span>
+                                </span>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

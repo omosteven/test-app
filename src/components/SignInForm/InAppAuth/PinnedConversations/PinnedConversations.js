@@ -20,6 +20,7 @@ const PinnedConversations = ({
     routeToChat,
     handleInitialRequestUpdate,
     OPEN_OLD_CONVERSATIONS,
+    hideIsSomethingElse,
 }) => {
     const storedPinnedConversations = getStoredPinnedConversations() || [];
     const [pinnedConversations, setPinnedConversations] = useState(
@@ -92,15 +93,17 @@ const PinnedConversations = ({
                                 />
                             ))}
 
-                        <PinnedConversation
-                            issueTitle="It's something else"
-                            otherClass={`in-app-auth__convos--something-else`}
-                            onClick={() =>
-                                handleInitialRequestUpdate(
-                                    OPEN_OLD_CONVERSATIONS
-                                )
-                            }
-                        />
+                        {!hideIsSomethingElse && (
+                            <PinnedConversation
+                                issueTitle="It's something else"
+                                otherClass={`in-app-auth__convos--something-else`}
+                                onClick={() =>
+                                    handleInitialRequestUpdate(
+                                        OPEN_OLD_CONVERSATIONS
+                                    )
+                                }
+                            />
+                        )}
                     </div>
                 );
             case ERROR:
