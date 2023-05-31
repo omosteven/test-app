@@ -1,0 +1,52 @@
+@import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
+
+.date-picker-buttons {
+    width: 100%;
+    display: flex;
+    gap: 16px;
+    &__cancel {
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 8px 16px;
+        gap: 20px;
+        width: 100% !important;
+        height: 58px;
+
+        border: 1px solid $muted__theme_color !important;
+        border-radius: 10px !important;
+        background: $light__theme_color !important;
+
+        #{$dark__mode__theme__selector} {
+            background: #242d33 !important;
+            border: 1px solid #474747 !important;
+            color: $light__theme_color !important;
+        }
+    }
+
+    &__submit {
+        padding: 8px 16px;
+        gap: 20px;
+        width: 177px;
+        height: 58px;
+        background: $primary__theme_color !important;
+        border: none !important;
+        color: $light__theme_color !important;
+        border-radius: 10px;
+    }
+
+    .lds-spinner-small div:after {
+        // background-color: red !important;
+    }
+    .lds-spinner-small div:after {
+        // background-color: red !important;
+    }
+
+    .lds-spinner-small{
+        // background-color: red !important;
+        // color:red !important
+    }
+}

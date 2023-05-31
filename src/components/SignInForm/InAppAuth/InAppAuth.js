@@ -14,8 +14,6 @@ import "./InAppAuth.scss";
 
 const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
 
-const outListedWorkspaces = ["nestable", "piggyvest", "pocket"];
-
 const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
     const {
         chatSettings: {
@@ -23,12 +21,9 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
             teamName,
             inAppLinks,
             inAppBackgroundImageUrl,
+            hasWebHookEnabled,
         },
     } = useSelector((state) => state.chat);
-
-    const { workspaceSlug } = useSelector((state) => state.chat.chatSettings);
-
-    const hideOnboardingActions = outListedWorkspaces?.includes(workspaceSlug);
 
     return (
         <div className='in-app-auth'>
@@ -63,7 +58,7 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
                             title={true}
                             text={`Welcome to our Priority Support Center`}
                         />
-                        {!hideOnboardingActions && (
+                        {!hasWebHookEnabled && (
                             <Button
                                 text='Continue an existing ticket'
                                 classType='primary'
@@ -96,10 +91,10 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
                             handleInitialRequestUpdate={
                                 handleInitialRequestUpdate
                             }
-                            disableOpenOldConvos={hideOnboardingActions}
+                            disableOpenOldConvos={hasWebHookEnabled}
                         />
 
-                        {!hideOnboardingActions && (
+                        {!hasWebHookEnabled && (
                             <div className='in-app-auth__convos--label'>
                                 <ReactSVG src={imageLinks?.svg?.info} />
                                 <span>

@@ -20,7 +20,7 @@ const LiveChatStatusBar = ({
 }) => {
     const { user } = useSelector((state) => state?.auth);
 
-    const { defaultTemplate } = useSelector(
+    const { defaultTemplate, hasWebHookEnabled } = useSelector(
         (state) => state?.chat?.chatSettings
     );
 
@@ -60,7 +60,7 @@ const LiveChatStatusBar = ({
                     <>
                         {!validateEmail(user?.email) ? (
                             <>
-                                {isNotTablet ? (
+                                {isNotTablet && !hasWebHookEnabled ? (
                                     <ChatHeaderBannerMessage
                                         handleVerifyAction={
                                             handleAddEmailAction
@@ -92,7 +92,7 @@ const LiveChatStatusBar = ({
                             </>
                         ) : (
                             <>
-                                {isNotTablet ? (
+                                {isNotTablet && !hasWebHookEnabled ? (
                                     <ChatHeaderBannerMessage
                                         closeAction={validateEmail(user?.email)}
                                         message={

@@ -11,6 +11,9 @@ const DatePickerWrapper = ({
     updateRequest,
     setDatePickerStage,
     disabled,
+    loading,
+    hasBtnActions,
+    onSubmit,
 }) => {
     const handleDatePickerStage = (stage) => {
         setDatePickerStage(stage);
@@ -35,6 +38,8 @@ const DatePickerWrapper = ({
                                 message: date,
                             }));
                         }}
+                        onCancel={() => setDatePickerStage(DATE_VALUE)}
+                        {...{ onSubmit, loading, hasBtnActions }}
                     />
                 );
             default:

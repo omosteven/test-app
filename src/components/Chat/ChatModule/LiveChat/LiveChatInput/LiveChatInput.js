@@ -414,6 +414,8 @@ const LiveChatInput = ({
                             updateRequest={updateRequest}
                             setDatePickerStage={setDatePickerStage}
                             disabled={disableInput}
+                            loading={loading}
+                            hasBtnActions={!isRelaxedTemplate}
                         />
                     </>
                 );
@@ -590,7 +592,7 @@ const LiveChatInput = ({
                                 <>
                                     {isDateFormElement ||
                                     isFormElementMultiselect ? (
-                                        <> {renderBasedOnInputType()}</>
+                                        <>{renderBasedOnInputType()}</>
                                     ) : (
                                         uploads?.length === 0 && (
                                             <UploadIcons
@@ -730,40 +732,37 @@ const LiveChatInput = ({
                             Network connection failed. Tap to retry
                         </span>
                     )}
-                    {uploads?.length > 0 &&
-                        isTablet &&
-                        (isFormElementImage ||
-                            isFinalDatePickerStage ||
-                            isFormElementMultiselect) && (
-                            <Button
-                                type={isDateFormElement ? "button" : "submit"}
-                                text={isDateFormElement ? "Save" : "Submit"}
-                                classType='primary'
-                                otherClass={`chat__input__relaxed__button ${
-                                    isDateFormElement
-                                        ? "chat__input__date__button"
-                                        : ""
-                                } ${!btnDisabled ? "active" : ""} ${
-                                    isFormElementImage && uploads?.length === 0
-                                        ? "chat__input__relaxed__hide-button"
-                                        : ""
-                                } `}
-                                loading={
-                                    isFinalDatePickerStage
-                                        ? disableInput
-                                        : loading && !(mssgSendStatus === ERROR)
-                                }
-                                disabled={
-                                    (btnDisabled ||
-                                        fetchingInputStatus ||
-                                        status === LOADING) &&
-                                    !(mssgSendStatus === ERROR)
-                                }
-                                onClick={
-                                    isDateFormElement && handleDatePickerStage
-                                }
-                            />
-                        )}
+                    {((uploads?.length > 0 && isFormElementImage) ||
+                        isFormElementImage ||
+                        (isFinalDatePickerStage && isRelaxedTemplate) ||
+                        isFormElementMultiselect) && (
+                        <Button
+                            type={isDateFormElement ? "button" : "submit"}
+                            text={isDateFormElement ? "Save" : "Submit"}
+                            classType='primary'
+                            otherClass={`chat__input__relaxed__button ${
+                                isDateFormElement
+                                    ? "chat__input__date__button"
+                                    : ""
+                            } ${!btnDisabled ? "active" : ""} ${
+                                isFormElementImage && uploads?.length === 0
+                                    ? "chat__input__relaxed__hide-button"
+                                    : ""
+                            } `}
+                            loading={
+                                isFinalDatePickerStage
+                                    ? disableInput
+                                    : loading && !(mssgSendStatus === ERROR)
+                            }
+                            disabled={
+                                (btnDisabled ||
+                                    fetchingInputStatus ||
+                                    status === LOADING) &&
+                                !(mssgSendStatus === ERROR)
+                            }
+                            onClick={isDateFormElement && handleDatePickerStage}
+                        />
+                    )}
                 </form>
                 <PoweredBy />
             </div>

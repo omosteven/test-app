@@ -1,6 +1,29 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
+.re__date__picker__container__workmode {
+    margin-bottom: 10.5rem !important;
+    background-color: $light__theme_color !important;
+    #{$dark__mode__theme__selector} {
+        background-color: $dark__mode__theme__background__color !important;
+    }
+
+    #{$white__mode__theme__selector} {
+        background-color: $light__theme_color !important;
+    }
+
+    .re__date__picker {
+        border-radius: 12px;
+        padding: 8px 7.5px;
+
+        #{$dark__mode__theme__selector} {
+            @include media("<=small-screen") {
+                background-color: transparent !important;
+            }
+        }
+    }
+}
+
 .re__date__picker__container {
     padding: 20px 10px;
     gap: 24px;
@@ -17,7 +40,7 @@
         background-color: $white__mode__theme__grey__color;
     }
 
-    margin-bottom: 8.5rem !important;
+    margin-bottom: 8.5rem;
     left: 50%;
     transform: translateX(-50%);
 
@@ -26,8 +49,7 @@
         margin-bottom: 8.5rem !important;
         margin-left: -1rem;
         left: unset;
-        transform:none;
-
+        transform: none;
     }
 
     .re__date__picker {
@@ -37,7 +59,7 @@
         #{$dark__mode__theme__selector} {
             background-color: $dark__mode__connected__background;
         }
-    
+
         #{$white__mode__theme__selector} {
             background-color: #ffffff;
         }
@@ -52,13 +74,12 @@
             #{$dark__mode__theme__selector} {
                 background-color: rgba(255, 255, 255, 0.04);
             }
-        
+
             #{$white__mode__theme__selector} {
                 background-color: $light__theme_color;
-                border: 1px solid #E7EBEF;
+                border: 1px solid #e7ebef;
             }
-
-        }    
+        }
 
         &__month {
             font-weight: 500;
@@ -68,7 +89,7 @@
             #{$dark__mode__theme__selector} {
                 color: $light__theme_color;
             }
-        
+
             #{$white__mode__theme__selector} {
                 color: $dark__mode__theme__grey__color;
             }
@@ -104,7 +125,7 @@
                     }
 
                     #{$dark__mode__theme__selector} {
-                        color: #AAAAAA;
+                        color: #aaaaaa;
                     }
 
                     #{$white__mode__theme__selector} {
@@ -115,12 +136,12 @@
                         #{$dark__mode__theme__selector} {
                             color: $light__theme_color;
                         }
-                    
+
                         #{$white__mode__theme__selector} {
                             color: $dark__mode__theme__grey__color;
                         }
                     }
-                 }
+                }
             }
 
             .week__dates {
@@ -138,13 +159,13 @@
                     @include media("<=medium-small-screen") {
                         padding: 8px 11.06px;
                     }
-                    
+
                     @include media("<=xtra-small-screen") {
                         padding: 8px 8.06px;
                     }
 
                     #{$dark__mode__theme__selector} {
-                        color: #AAAAAA;
+                        color: #aaaaaa;
                     }
 
                     #{$white__mode__theme__selector} {
@@ -157,7 +178,7 @@
 
                     &.--active {
                         color: $light__theme_color;
-                        background: #2F80ED;
+                        background: #2f80ed;
                         border-radius: 8px;
                     }
                 }
@@ -175,9 +196,9 @@
                 #{$dark__mode__theme__selector} {
                     fill: $light__theme_color;
                 }
-        
+
                 #{$white__mode__theme__selector} {
-                   fill: $dark__mode__theme__grey__color;
+                    fill: $dark__mode__theme__grey__color;
                 }
             }
         }

@@ -23,7 +23,7 @@ const ActionMessageContent = ({
     ticketId,
     messages,
 }) => {
-    const { defaultTemplate } = useSelector(
+    const { defaultTemplate, hasWebHookEnabled } = useSelector(
         (state) => state?.chat?.chatSettings
     );
 
@@ -52,7 +52,8 @@ const ActionMessageContent = ({
     const showAddEmailAddress =
         messageActionType === ADD_EMAIL_ADDRESS &&
         lastMessage?.messageActionType === ADD_EMAIL_ADDRESS &&
-        !validateEmail(user?.email);
+        !validateEmail(user?.email) &&
+        !hasWebHookEnabled;
 
     return (
         <>
