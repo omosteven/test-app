@@ -641,7 +641,7 @@ const LiveChatInput = ({
                                                     <div className='chat__input--group__choose-option'>
                                                         {mssgSendStatus ===
                                                         LOADING ? (
-                                                            <SmallLoader />
+                                                            <SmallLoader otherClassName='instruction__label__loader' />
                                                         ) : (
                                                             userInstructionLabel
                                                         )}
@@ -715,6 +715,7 @@ const LiveChatInput = ({
                                                     status === LOADING) &&
                                                 !(mssgSendStatus === ERROR)
                                             }
+                                            loaderClassName='send__button__loader'
                                         />
                                     )}
                                 </>

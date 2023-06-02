@@ -16,6 +16,7 @@ const DatePickerButtons = ({ onCancel, onSubmit, loading }) => {
                 otherClass='date-picker-buttons__submit my-3 w-100'
                 onClick={onSubmit}
                 loading={loading}
+                loaderClassName='date-picker-buttons__submit_loader'
             />
         </div>
     );

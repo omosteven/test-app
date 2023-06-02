@@ -36,17 +36,9 @@
         border: none !important;
         color: $light__theme_color !important;
         border-radius: 10px;
-    }
 
-    .lds-spinner-small div:after {
-        // background-color: red !important;
-    }
-    .lds-spinner-small div:after {
-        // background-color: red !important;
-    }
-
-    .lds-spinner-small{
-        // background-color: red !important;
-        // color:red !important
+        &_loader div:after {
+            background-color: $light__theme_color;
+        }
     }
 }
