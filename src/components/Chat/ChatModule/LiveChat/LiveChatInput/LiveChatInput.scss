@@ -102,8 +102,8 @@
             }
         }
 
-        .lds-spinner-small div:after {
-            background-color: $primary__theme_color !important;
+        .instruction__label__loader div:after {
+            background-color: $primary__theme_color;
         }
 
         textarea,
@@ -221,8 +221,8 @@
                     fill: $light__theme_color;
                 }
 
-                .lds-spinner-small div:after {
-                    background-color: $light__theme_color !important;
+                .send__button__loader div:after {
+                    background-color: $light__theme_color;
                 }
             }
         }

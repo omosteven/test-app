@@ -115,7 +115,7 @@ const LiveChat = ({
     const [disableForm, setDisableForm] = useState(false);
 
     const {
-        chatSettings: { workspaceId, workspaceSlug },
+        chatSettings: { workspaceId, workspaceSlug, hasWebHookEnabled },
     } = useSelector((state) => state.chat);
 
     const { ticketId, agent, ticketPhase, customer, conversationId } = ticket;
@@ -164,7 +164,6 @@ const LiveChat = ({
             if (res.status === 200) {
                 setStatus(DATAMODE);
                 const { data } = res.data;
-
                 dispatch(
                     deleteTicketsMessages({
                         messageId: SMART_CONVOS,
@@ -313,7 +312,7 @@ const LiveChat = ({
             isIssueDiscoveryOption,
         } = convo;
 
-        if (branchOptionId === ADD_EMAIL_ADDRESS) {
+        if (branchOptionId === ADD_EMAIL_ADDRESS && !hasWebHookEnabled) {
             return handleVerifyAction();
         }
 
@@ -391,7 +390,7 @@ const LiveChat = ({
             messageActionBranchId,
         } = messageOption;
 
-        if (branchOptionId === ADD_EMAIL_ADDRESS) {
+        if (branchOptionId === ADD_EMAIL_ADDRESS && !hasWebHookEnabled) {
             return handleVerifyAction();
         }
 
@@ -859,7 +858,7 @@ const LiveChat = ({
     };
 
     const handleAddEmail = () => {
-        if (!validateEmail(user?.email)) {
+        if (!validateEmail(user?.email) && !hasWebHookEnabled) {
             const {
                 actionBranchHeader,
                 displayAverageResponseTime,
@@ -1085,7 +1084,7 @@ const LiveChat = ({
             triggerAgentTyping(true);
             setAllowUserInput(false);
 
-           await socket.timeout(30000).emit(
+            await socket.timeout(30000).emit(
                 SEND_CUSTOMER_CONVERSATION_REPLY,
                 {
                     ticketId: ticket?.ticketId,
