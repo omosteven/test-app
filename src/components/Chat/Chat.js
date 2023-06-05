@@ -62,7 +62,7 @@ const Chat = () => {
     const [verifyUserAction, setVerifyUserAction] = useState();
 
     const [socketConnection, setSocketConnection] = useState(socket);
-    const [deviceToken, setDeviceToken] = useState();
+    // const [deviceToken] = useState();
 
     const queryParams = queryString.parse(window.location.search);
 
@@ -96,6 +96,8 @@ const Chat = () => {
             const ticketId = queryParams?.ticketId;
             const userId = queryParams?.appUserId;
 
+            const deviceToken = await getDevicePushToken();
+            console.log("deviceToken", deviceToken)
             const res = await API.post(apiRoutes.validateTicketUser, {
                 ticketId,
                 workspaceId,
@@ -219,6 +221,8 @@ const Chat = () => {
             setErrorMssg();
 
             const url = apiRoutes?.validateUser;
+            const deviceToken = await getDevicePushToken();
+            console.log("deviceToken", deviceToken)
             const res = await API.post(url, {
                 workspaceId,
                 appUserId,
@@ -333,14 +337,14 @@ const Chat = () => {
         //eslint-disable-next-line
     }, [socket]);
 
-    const setDevicePushToken = async () => {
-        let devicePushToken = await getDevicePushToken();
-        setDeviceToken(devicePushToken);
-    };
+    // const setDevicePushToken = async () => {
+    //     let devicePushToken = await getDevicePushToken();
+    //     setDeviceToken(devicePushToken);
+    // };
 
-    useEffect(() => {
-        setDevicePushToken();
-    }, []);
+    // useEffect(() => {
+    //     setDevicePushToken();
+    // }, []);
 
     return (
         <>
