@@ -30,7 +30,6 @@ import { CONVERSATION_SAVED } from "components/Chat/ChatModule/LiveChat/MessageB
 import { isLiveApp } from "config/config";
 import "./App.scss";
 
-const outListedWorkspaces = ["nestable", "piggyvest", "pocket"];
 
 const App = () => {
     const [fetching, setFetching] = useState(true);
@@ -74,7 +73,7 @@ const App = () => {
             if (res.status === 200) {
                 const { data } = res.data;
 
-                const { defaultTemplate, defaultTheme, initialBranch } = data;
+                const { defaultTemplate, defaultTheme, initialBranch, hasWebHookEnabled} = data;
 
                 const { actionBranches } = initialBranch || {};
 
@@ -106,8 +105,7 @@ const App = () => {
                     workspaceSlug,
                     defaultTheme,
                     defaultTemplate,
-                    hasWebHookEnabled:
-                        outListedWorkspaces?.includes?.(workspaceSlug),
+                    hasWebHookEnabled
                 });
 
                 setCurrentAppearance({
@@ -115,7 +113,7 @@ const App = () => {
                     workspaceSlug,
                     defaultTheme,
                     defaultTemplate,
-                    hasWebHookEnabled: true,
+                    hasWebHookEnabled,
                 });
                 setFetching(false);
             }
