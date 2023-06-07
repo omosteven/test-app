@@ -34,48 +34,52 @@ const MessageOptions = ({
     return (
         <div className='options__container col-lg-5 col-md-7 col-12'>
             <div className='options__group options__group__investigate'>
-                {options?.map((option, index) => {
-                    return option?.isScheduled ? (
-                        <ScheduledBranchOption
-                            key={index}
-                            data={option}
-                            messageIndex={messageIndex}
-                            messagesDepth={messagesDepth}
-                            branchOptionId={option?.branchOptionId}
-                            selectedOption={selectedOption}
-                            lastMessage={lastMessage}
-                            handleMessageOptionSelect={() =>
-                                messageType === CONVERSATION
-                                    ? handleOptConversation(option)
-                                    : handleMessageOptionSelect(option)
-                            }
-                            deliveryDate={deliveryDate}
-                            status={status}
-                            mssgOptionLoading={
-                                isRelaxedTemplate && mssgSendStatus === LOADING
-                            }
-                        />
-                    ) : (
-                        <MessageBranchOption
-                            key={index}
-                            data={option}
-                            messageIndex={messageIndex}
-                            messagesDepth={messagesDepth}
-                            branchOptionId={option?.branchOptionId}
-                            selectedOption={selectedOption}
-                            lastMessage={lastMessage}
-                            mssgOptionLoading={
-                                isRelaxedTemplate && mssgSendStatus === LOADING
-                            }
-                            status={status}
-                            handleMessageOptionSelect={() =>
-                                messageType === CONVERSATION
-                                    ? handleOptConversation(option)
-                                    : handleMessageOptionSelect(option)
-                            }
-                        />
-                    );
-                })}
+                {options
+                    ?.sort((a, b) => a?.order - b?.order)
+                    ?.map((option, index) => {
+                        return option?.isScheduled ? (
+                            <ScheduledBranchOption
+                                key={index}
+                                data={option}
+                                messageIndex={messageIndex}
+                                messagesDepth={messagesDepth}
+                                branchOptionId={option?.branchOptionId}
+                                selectedOption={selectedOption}
+                                lastMessage={lastMessage}
+                                handleMessageOptionSelect={() =>
+                                    messageType === CONVERSATION
+                                        ? handleOptConversation(option)
+                                        : handleMessageOptionSelect(option)
+                                }
+                                deliveryDate={deliveryDate}
+                                status={status}
+                                mssgOptionLoading={
+                                    isRelaxedTemplate &&
+                                    mssgSendStatus === LOADING
+                                }
+                            />
+                        ) : (
+                            <MessageBranchOption
+                                key={index}
+                                data={option}
+                                messageIndex={messageIndex}
+                                messagesDepth={messagesDepth}
+                                branchOptionId={option?.branchOptionId}
+                                selectedOption={selectedOption}
+                                lastMessage={lastMessage}
+                                mssgOptionLoading={
+                                    isRelaxedTemplate &&
+                                    mssgSendStatus === LOADING
+                                }
+                                status={status}
+                                handleMessageOptionSelect={() =>
+                                    messageType === CONVERSATION
+                                        ? handleOptConversation(option)
+                                        : handleMessageOptionSelect(option)
+                                }
+                            />
+                        );
+                    })}
             </div>
             {mssgSendStatus === ERROR && (
                 <p className='options__group__error'>Option failed to send.</p>
