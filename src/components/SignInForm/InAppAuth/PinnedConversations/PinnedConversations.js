@@ -20,6 +20,7 @@ const PinnedConversations = ({
     routeToChat,
     handleInitialRequestUpdate,
     OPEN_OLD_CONVERSATIONS,
+    disableOpenOldConvos,
 }) => {
     const storedPinnedConversations = getStoredPinnedConversations() || [];
     const [pinnedConversations, setPinnedConversations] = useState(
@@ -96,9 +97,11 @@ const PinnedConversations = ({
                             issueTitle="It's something else"
                             otherClass={`in-app-auth__convos--something-else`}
                             onClick={() =>
-                                handleInitialRequestUpdate(
-                                    OPEN_OLD_CONVERSATIONS
-                                )
+                                disableOpenOldConvos
+                                    ? routeToChat("", "")
+                                    : handleInitialRequestUpdate(
+                                          OPEN_OLD_CONVERSATIONS
+                                      )
                             }
                         />
                     </div>

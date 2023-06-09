@@ -30,12 +30,16 @@ import { CONVERSATION_SAVED } from "components/Chat/ChatModule/LiveChat/MessageB
 import { isLiveApp } from "config/config";
 import "./App.scss";
 
+
 const App = () => {
-    const isAuthenticated = retriveAccessToken();
     const [fetching, setFetching] = useState(true);
     const [fetchingError, setFetchingError] = useState();
 
     const chatSettings = getChatSettings();
+
+    const { hasWebHookEnabled } = chatSettings || {};
+
+    const isAuthenticated = retriveAccessToken() || hasWebHookEnabled;
 
     let params = queryString.parse(window.location.search);
 
@@ -69,7 +73,7 @@ const App = () => {
             if (res.status === 200) {
                 const { data } = res.data;
 
-                const { defaultTemplate, defaultTheme, initialBranch } = data;
+                const { defaultTemplate, defaultTheme, initialBranch, hasWebHookEnabled} = data;
 
                 const { actionBranches } = initialBranch || {};
 
@@ -101,6 +105,7 @@ const App = () => {
                     workspaceSlug,
                     defaultTheme,
                     defaultTemplate,
+                    hasWebHookEnabled
                 });
 
                 setCurrentAppearance({
@@ -108,6 +113,7 @@ const App = () => {
                     workspaceSlug,
                     defaultTheme,
                     defaultTemplate,
+                    hasWebHookEnabled,
                 });
                 setFetching(false);
             }

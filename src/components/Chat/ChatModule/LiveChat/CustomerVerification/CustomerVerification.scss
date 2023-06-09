@@ -4,8 +4,6 @@
 .customer-verification {
     height: 85vh;
     @include media(">medium-screen") {
-        border-top: 1px solid $white__mode__border__color;
-
         #{$relaxed__mode__template__selector} {
             background-color: $dark__mode__theme__grey__color;
             border-radius: 20px;
@@ -47,9 +45,8 @@
         @include media("<=medium-screen") {
             margin-top: 25vh;
         }
-        
-        
-        &.customer-verify--margin{
+
+        &.customer-verify--margin {
             @include media("<=medium-screen") {
                 margin-top: 30px;
             }
@@ -57,7 +54,6 @@
             @include media("<=xtra-small-screen") {
                 margin-top: 0;
             }
-    
         }
     }
 
@@ -67,7 +63,7 @@
             margin-top: 42px;
             margin-right: 139px;
             margin-bottom: 60px;
-    
+
             @include media(">medium-screen") {
                 display: flex;
                 width: fit-content;
@@ -80,19 +76,20 @@
                     margin: 0 20px 0 auto;
                 }
             }
-    
+
             .verify-icon {
                 cursor: pointer;
             }
-    
+
             @include media("<=medium-screen") {
                 margin-top: 4rem;
                 text-align: right;
                 padding: 21px;
                 margin-right: 0px;
-    
+                // margin-bottom: 0px;
                 #{$relaxed__mode__template__selector} {
-                    margin-top: 5rem;
+                    margin-top: 2rem;
+                    margin-bottom: 0px;
                 }
             }
         }
@@ -109,7 +106,7 @@
             width: 350px;
             margin-left: auto;
             margin-right: auto;
-    
+
             @include media(">medium-screen") {
                 display: flex;
                 justify-content: center;
@@ -121,7 +118,7 @@
             }
             @include media("<=medium-screen") {
                 width: 100%;
-                padding: 12px;
+                padding: 20px;
             }
             .pincode-input-container {
                 padding: 0.625rem 0;
@@ -134,10 +131,8 @@
                     padding: 0;
                     justify-content: space-between !important;
                     display: flex;
-                    #{$relaxed__mode__template__selector} {
-                        justify-content: center !important;
-                        gap: 16px !important;
-                    }
+                    justify-content: center !important;
+                    gap: 16px !important;
                 }
                 .pincode-input-text {
                     border-radius: 0.625rem;

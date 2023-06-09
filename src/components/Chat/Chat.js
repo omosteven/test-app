@@ -62,7 +62,7 @@ const Chat = () => {
     const [verifyUserAction, setVerifyUserAction] = useState();
 
     const [socketConnection, setSocketConnection] = useState(socket);
-    const [deviceToken, setDeviceToken] = useState();
+    // const [deviceToken] = useState();
 
     const queryParams = queryString.parse(window.location.search);
 
@@ -75,14 +75,20 @@ const Chat = () => {
     const lastName = queryParams?.lastName || "";
     const email = queryParams?.email || "";
 
+    const conversationId = queryParams?.conversationId;
+
     const appUserId =
         queryParams?.appUserId || user?.userId || generateRandomId();
-    const conversationId = queryParams?.conversationId;
 
     const userToken = retriveAccessToken();
 
-    const { defaultTemplate, defaultTheme, workspaceId, workspaceSlug } =
-        useSelector((state) => state.chat.chatSettings);
+    const {
+        defaultTemplate,
+        defaultTheme,
+        workspaceId,
+        workspaceSlug,
+        hasWebHookEnabled,
+    } = useSelector((state) => state.chat.chatSettings);
 
     const isRelaxedTemplate = defaultTemplate === RELAXED;
 
@@ -94,12 +100,14 @@ const Chat = () => {
             setStatus(LOADING);
             setErrorMssg();
             const ticketId = queryParams?.ticketId;
-            const userId = queryParams?.appUserId;
+            const linkUserId = queryParams?.appUserId;
 
+            const deviceToken = await getDevicePushToken();
+            console.log("deviceToken", deviceToken)
             const res = await API.post(apiRoutes.validateTicketUser, {
                 ticketId,
                 workspaceId,
-                appUserId: userId,
+                appUserId: linkUserId,
                 deviceToken,
             });
 
@@ -219,6 +227,8 @@ const Chat = () => {
             setErrorMssg();
 
             const url = apiRoutes?.validateUser;
+            const deviceToken = await getDevicePushToken();
+            console.log("deviceToken", deviceToken)
             const res = await API.post(url, {
                 workspaceId,
                 appUserId,
@@ -271,6 +281,10 @@ const Chat = () => {
                     history.push(url);
                 }
 
+                if (hasWebHookEnabled) {
+                    getCustomerTickets();
+                }
+
                 setStatus(DATAMODE);
             }
         } catch (err) {
@@ -308,14 +322,16 @@ const Chat = () => {
     useEffect(() => {
         if (
             (userToken === undefined || userToken === null) &&
-            !isTicketRoutedLink
+            !isTicketRoutedLink &&
+            appUserId &&
+            workspaceId
         ) {
             validateUser();
         } else {
             callHandler();
         }
         //eslint-disable-next-line
-    }, [appUserId, isTicketRoutedLink]);
+    }, [isTicketRoutedLink, workspaceId]);
 
     const handleCloseTicket = () => {
         toggleTicketActionModal(true);
@@ -333,14 +349,14 @@ const Chat = () => {
         //eslint-disable-next-line
     }, [socket]);
 
-    const setDevicePushToken = async () => {
-        let devicePushToken = await getDevicePushToken();
-        setDeviceToken(devicePushToken);
-    };
+    // const setDevicePushToken = async () => {
+    //     let devicePushToken = await getDevicePushToken();
+    //     setDeviceToken(devicePushToken);
+    // };
 
-    useEffect(() => {
-        setDevicePushToken();
-    }, []);
+    // useEffect(() => {
+    //     setDevicePushToken();
+    // }, []);
 
     return (
         <>
