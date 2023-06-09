@@ -1,4 +1,4 @@
-import { getUniqueListBy } from "../../utils/helper";
+import { getUniqueListBy, removeDuplicatesBy } from "../../utils/helper";
 import * as types from "./types";
 import {
     appMessageUserTypes,
@@ -23,7 +23,14 @@ const TicketsReducer = (state = initialState, { type, payload }) => {
                 [...state?.ticketsMessages, ...payload],
                 "messageId"
             );
-            return { ...state, ticketsMessages: stmProposedVal };
+
+            return {
+                ...state,
+                ticketsMessages: removeDuplicatesBy(
+                    stmProposedVal,
+                    "messageContentId"
+                ),
+            };
 
         case types.UPDATE_TICKET_MESSAGES:
             let messageIndex = state.ticketsMessages?.findIndex(
