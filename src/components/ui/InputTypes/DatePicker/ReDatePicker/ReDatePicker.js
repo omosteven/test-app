@@ -4,8 +4,15 @@ import { ReactSVG } from "react-svg";
 import imageLinks from "assets/images";
 import { checkArrayEquality } from "utils/helper";
 import "./ReDatePicker.scss";
+import DatePickerButtons from "components/Chat/ChatModule/LiveChat/LiveChatInput/DatePickerWrapper/DatePickerButtons/DatePickerButtons";
 
-const ReDatePicker = ({ onChange }) => {
+const ReDatePicker = ({
+    onChange,
+    onCancel,
+    onSubmit,
+    loading,
+    hasBtnActions,
+}) => {
     const [selectedMonth, setSelectedMonth] = useState({
         name: moment().format("MMMM"),
         index: moment().format("M") - 1,
@@ -273,7 +280,10 @@ const ReDatePicker = ({ onChange }) => {
     };
 
     return (
-        <div className='re__date__picker__container'>
+        <div
+            className={`re__date__picker__container ${
+                hasBtnActions ? "re__date__picker__container__workmode" : ""
+            }`}>
             <div className='re__date__picker'>
                 <div className='re__date__picker__month__selector'>
                     <ReactSVG
@@ -347,6 +357,13 @@ const ReDatePicker = ({ onChange }) => {
                     />
                 </div>
             </div>
+            {hasBtnActions && (
+                <DatePickerButtons
+                    loading={loading}
+                    onCancel={onCancel}
+                    onSubmit={onSubmit}
+                />
+            )}
         </div>
     );
 };

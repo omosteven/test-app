@@ -21,6 +21,7 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
             teamName,
             inAppLinks,
             inAppBackgroundImageUrl,
+            hasWebHookEnabled,
         },
     } = useSelector((state) => state.chat);
 
@@ -57,14 +58,16 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
                             title={true}
                             text={`Welcome to our Priority Support Center`}
                         />
-                        <Button
-                            text='Continue an existing ticket'
-                            classType='primary'
-                            otherClass={`in-app-auth___tickets-button`}
-                            onClick={() =>
-                                handleInitialRequestUpdate(ASK__SUPPORT)
-                            }
-                        />
+                        {!hasWebHookEnabled && (
+                            <Button
+                                text='Continue an existing ticket'
+                                classType='primary'
+                                otherClass={`in-app-auth___tickets-button`}
+                                onClick={() =>
+                                    handleInitialRequestUpdate(ASK__SUPPORT)
+                                }
+                            />
+                        )}
                         <div className='in-app-auth__external-links'>
                             <ul>
                                 {inAppLinks?.map?.(({ title, value }, key) => (
@@ -88,17 +91,26 @@ const InAppAuth = ({ handleInitialRequestUpdate, routeToChat }) => {
                             handleInitialRequestUpdate={
                                 handleInitialRequestUpdate
                             }
+                            disableOpenOldConvos={hasWebHookEnabled}
                         />
 
-                        <div className='in-app-auth__convos--label'>
-                            <ReactSVG src={imageLinks?.svg?.info} />
-                            <span>
-                                If you had previously started a conversation
-                                with the link and saved it to your email,{" "}
-                                <span onClick={ ()=>
-                                     handleInitialRequestUpdate(OPEN_OLD_CONVERSATIONS)}>Click here</span>
-                            </span>
-                        </div>
+                        {!hasWebHookEnabled && (
+                            <div className='in-app-auth__convos--label'>
+                                <ReactSVG src={imageLinks?.svg?.info} />
+                                <span>
+                                    If you had previously started a conversation
+                                    with the link and saved it to your email,{" "}
+                                    <span
+                                        onClick={() =>
+                                            handleInitialRequestUpdate(
+                                                OPEN_OLD_CONVERSATIONS
+                                            )
+                                        }>
+                                        Click here
+                                    </span>
+                                </span>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
