@@ -227,7 +227,7 @@ const LiveChat = ({
             }
         }
     };
-
+    console.log({ messages });
     const handleIssueDiscovery = async (convo) => {
         try {
             const lastMessage = messages[messages.length - 1];
@@ -238,7 +238,7 @@ const LiveChat = ({
             ) {
                 return "";
             }
-
+            console.log({ convo });
             // triggerAgentTyping(true);
 
             const { branchOptionId, branchOptionLabel } = convo;
@@ -252,7 +252,7 @@ const LiveChat = ({
             });
             if (res.status === 200) {
                 // triggerAgentTyping(false);
-
+                console.log(discovered);
                 if (discovered) {
                     const {
                         actionBranchHeader,
@@ -264,26 +264,33 @@ const LiveChat = ({
                         actionBranchMainSentence,
                     } = getConvoBreaker(AGENT_FOLLOWUP);
 
-                    dispatch(
-                        saveTicketsMessages({
-                            ticketId,
-                            messageId: NO_ACTION,
-                            messageRefContent: branchOptionLabel,
-                            messageContent: actionBranchMainSentence,
-                            messageHeader: actionBranchHeader,
-                            messageType: ACTION_INFO,
-                            messageActionType: actionBranchType,
-                            branchOptions: actionBranchOptions,
-                            messageActionData: {
-                                displayAverageResponseTime,
-                                actionBranchId,
-                                requestRatings,
-                                actionBranchOptions,
-                            },
-                            senderType: WORKSPACE_AGENT,
-                            deliveryDate: new Date().toISOString(),
-                        })
-                    );
+                    const allMessagesCopy = messages;
+
+                    if (
+                        allMessagesCopy?.length === 2 ||
+                        ticketPhase !== ISSUE_DISCOVERY
+                    ) {
+                        dispatch(
+                            saveTicketsMessages({
+                                ticketId,
+                                messageId: NO_ACTION,
+                                messageRefContent: branchOptionLabel,
+                                messageContent: actionBranchMainSentence,
+                                messageHeader: actionBranchHeader,
+                                messageType: ACTION_INFO,
+                                messageActionType: actionBranchType,
+                                branchOptions: actionBranchOptions,
+                                messageActionData: {
+                                    displayAverageResponseTime,
+                                    actionBranchId,
+                                    requestRatings,
+                                    actionBranchOptions,
+                                },
+                                senderType: WORKSPACE_AGENT,
+                                deliveryDate: new Date().toISOString(),
+                            })
+                        );
+                    }
 
                     socket.emit(SEND_AGENT_TICKET, {
                         ticketId,
@@ -292,7 +299,12 @@ const LiveChat = ({
 
                     sendAgentTicket();
 
-                    handleAddEmail();
+                    if (
+                        allMessagesCopy?.length === 3 ||
+                        ticketPhase !== ISSUE_DISCOVERY
+                    ) {
+                        handleAddEmail();
+                    }
                 }
             }
         } catch (err) {
@@ -311,6 +323,7 @@ const LiveChat = ({
             branchOptionLabel,
             isIssueDiscoveryOption,
         } = convo;
+        console.log("inside convo opt", { convo, ticket });
 
         if (branchOptionId === ADD_EMAIL_ADDRESS && !hasWebHookEnabled) {
             return handleVerifyAction();
@@ -800,8 +813,13 @@ const LiveChat = ({
             .reverse()
             ?.find((message) => message.senderType === THIRD_USER);
 
+        let lastAgentMssg = [...allMessagesCopy]
+            .reverse()
+            ?.find((message) => message.senderType === WORKSPACE_AGENT);
+
         if (
-            allMessagesCopy?.length === 2 &&
+            (allMessagesCopy?.length === 2 ||
+                lastAgentMssg?.messageType === DEFAULT) &&
             lastCustomerMssg !== undefined &&
             lastCustomerMssg?.messageType === DEFAULT &&
             lastMessage.messageType !== CONVERSATION &&
