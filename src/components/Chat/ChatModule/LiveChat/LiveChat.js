@@ -266,6 +266,7 @@ const LiveChat = ({
 
                     const allMessagesCopy = messages;
 
+                    // check
                     if (
                         allMessagesCopy?.length === 2 ||
                         ticketPhase !== ISSUE_DISCOVERY
@@ -299,6 +300,7 @@ const LiveChat = ({
 
                     sendAgentTicket();
 
+                    // check
                     if (
                         allMessagesCopy?.length === 3 ||
                         ticketPhase !== ISSUE_DISCOVERY
@@ -993,6 +995,11 @@ const LiveChat = ({
                     ticketId: newMessageTicketId,
                 })
             );
+        }
+
+        // check
+        if (senderType === WORKSPACE_AGENT && messageType === DEFAULT) {
+            setActiveConvo(false);
         }
 
         if (ticketId === newMessageTicketId) {
