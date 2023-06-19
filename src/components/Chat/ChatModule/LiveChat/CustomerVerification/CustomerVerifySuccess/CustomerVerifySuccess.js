@@ -97,27 +97,29 @@ const CustomerVerifySuccess = ({
     };
 
     return (
-        <div>
-            <div className='verification__success__continer'>
-                <ReactSVG
-                    src={imageLinks.svg.successCheck}
-                    className='verification__success__icon'
+        <div className="verification__success">
+            <div>
+                <div className='verification__success__continer'>
+                    <ReactSVG
+                        src={imageLinks.svg.successCheck}
+                        className='verification__success__icon'
+                    />
+                    <h5 className='verification__success__title'>
+                        Email successfully added
+                    </h5>
+                    <p className='verification__success__subtitle'>
+                        We have successfully verified your account and your
+                        ticket has been saved.
+                    </p>
+                </div>
+                <Button
+                    type='submit'
+                    text={"Continue"}
+                    classType='primary'
+                    otherClass='my-3 w-100'
+                    onClick={handleContinue}
                 />
-                <h5 className='verification__success__title'>
-                    Email successfully added
-                </h5>
-                <p className='verification__success__subtitle'>
-                    We have successfully verified your account and your ticket
-                    has been saved.
-                </p>
             </div>
-            <Button
-                type='submit'
-                text={"Continue"}
-                classType='primary'
-                otherClass='my-3 w-100'
-                onClick={handleContinue}
-            />
         </div>
     );
 };
