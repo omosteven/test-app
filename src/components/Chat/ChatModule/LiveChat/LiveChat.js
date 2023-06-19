@@ -1382,7 +1382,7 @@ const LiveChat = ({
 
     return (
         <>
-            {showVerifyForm ? (
+            {!showVerifyForm ? (
                 <div>
                     <TicketsHeader
                         {...{
@@ -1434,7 +1434,7 @@ const LiveChat = ({
             <div
                 className={`chat__input__container  ${
                     isDateFormElement ? "chat__input__high__index" : ""
-                } ${!showVerifyForm ? "live-chat-input__add-email" : ""}`}>
+                } ${showVerifyForm ? "live-chat-input__add-email" : ""}`}>
                 <LiveChatInput
                     ticketId={ticketId}
                     inputType={currentInputType}
