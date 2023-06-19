@@ -998,7 +998,11 @@ const LiveChat = ({
         }
 
         // check
-        if (senderType === WORKSPACE_AGENT && messageType === DEFAULT) {
+        if (
+            senderType === WORKSPACE_AGENT &&
+            messageType === DEFAULT &&
+            ticketPhase === ISSUE_DISCOVERY
+        ) {
             setActiveConvo(false);
         }
 
