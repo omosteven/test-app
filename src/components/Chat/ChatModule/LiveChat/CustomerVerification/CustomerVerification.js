@@ -177,7 +177,7 @@ const CustomerVerification = ({
     };
 
     return (
-        <FadeIn location={verifyStage}>
+        <FadeIn location={verifyStage} className='big-container'>
             <div className='customer-verification signin'>
                 {!isSaveConvoAction && !isLinkEmail && (
                     <div
