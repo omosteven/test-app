@@ -1,4 +1,4 @@
-:root{
+:root {
     --default-primary-color: #6837ef;
 }
 
@@ -44,20 +44,21 @@ $green__theme_color: #25bb87;
 $ash__theme_color: #484848;
 $yellow__theme__color: #fbbf27;
 $dark__mode__theme__background__color: #1f272d;
-$dark__mode__theme__grey__color: #2D333A;
-$dark__mode__theme__dark__color: #191F24;
-$dark__mode__text__theme__color: #D5D7D8;
-$dark__mode__desktop__chat__theme__color: #47515C;
-$dark__mode__connected__background: #252A2F;
-$dark__mode__desktop__ticket__background: #24282E;
+$dark__mode__theme__grey__color: #2d333a;
+$dark__mode__theme__dark__color: #191f24;
+$dark__mode__text__theme__color: #d5d7d8;
+$dark__mode__desktop__chat__theme__color: #47515c;
+$dark__mode__connected__background: #252a2f;
+$dark__mode__desktop__ticket__background: #24282e;
 $option__change__theme__color: #838589;
-$light__blue__theme__color: #0066F5;
-$white__mode__theme__grey__color: #F6F5F8;
-$white__mode__option__background: #EDEEEF;
-$white__mode__input__background:  #E9E7EE;
-$white__mode__background: #F3F5F7;
-$white__mode__options__background: #F7F8F9;
-$white__mode__border__color: #E7EBEF;
+$light__blue__theme__color: #0066f5;
+$white__mode__theme__grey__color: #f6f5f8;
+$white__mode__option__background: #edeeef;
+$white__mode__input__background: #e9e7ee;
+$white__mode__background: #f3f5f7;
+$white__mode__options__background: #f7f8f9;
+$white__mode__border__color: #e7ebef;
 $relaxed__mode__template__selector: ".relaxed-mode &";
 $dark__mode__theme__selector: ".dark-mode-default &";
 $white__mode__theme__selector: ".white-mode-default &";
+$ios__device__selector: ".ios__device__style &";

@@ -18,6 +18,10 @@
     #{$white__mode__theme__selector} {
         color: #292929 !important;
     }
+
+    #{$ios__device__selector} {
+        letter-spacing: -0.5px;
+    }
 }
 
 .intro__subtitle {
