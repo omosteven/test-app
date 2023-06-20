@@ -230,6 +230,7 @@ const LiveChat = ({
 
     const handleIssueDiscovery = async (convo) => {
         try {
+            console.log({ convo });
             const lastMessage = messages[messages.length - 1];
 
             if (
@@ -324,7 +325,7 @@ const LiveChat = ({
             isIssueDiscoveryOption,
             branchOptionActionType,
         } = convo;
-
+        console.log("conversation end", convo);
         if (
             (branchOptionId === ADD_EMAIL_ADDRESS ||
                 branchOptionActionType === ADD_EMAIL_ADDRESS) &&
