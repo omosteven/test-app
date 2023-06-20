@@ -9,7 +9,7 @@ export const socket = io.connect(config.apiGateway.SOCKET_BASE_URL, {
     extraHeaders: {
         authorization: token,
     },
-    reconnection: true,
+    reconnection: false,
     reconnectionDelay: 1000,
     reconnectionDelayMax: 5000,
     reconnectionAttempts: 5,
@@ -22,7 +22,7 @@ export const reconnectSocket = (authToken) => {
         extraHeaders: {
             authorization: authToken,
         },
-        reconnection: true,
+        reconnection: false,
         reconnectionDelay: 1000,
         reconnectionDelayMax: 5000,
         reconnectionAttempts: 5,
