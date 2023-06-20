@@ -1,12 +1,18 @@
 @import "assets/scss/master";
 
+.verification__success {
+    display: flex;
+    justify-content: center;
+    height: 80vh;
+    align-items: center;
+}
+
 .verification__success__continer {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 0 19px;
-
-    .verification__success__icon{
+    .verification__success__icon {
         & svg {
             rect {
                 #{$white__mode__theme__selector} {
@@ -17,7 +23,7 @@
             g {
                 path {
                     #{$white__mode__theme__selector} {
-                        fill: #25BB87;
+                        fill: #25bb87;
                     }
                 }
             }
@@ -31,13 +37,13 @@
         margin: 24px 0 16px;
 
         #{$dark__mode__theme__selector} {
-            color: #FFFFFF;
+            color: #ffffff;
         }
 
         #{$white__mode__theme__selector} {
             color: #060213;
         }
-    } 
+    }
 
     .verification__success__subtitle {
         font-size: 16px;
@@ -46,11 +52,11 @@
         text-align: center;
 
         #{$dark__mode__theme__selector} {
-            color: #E0E0E0;
+            color: #e0e0e0;
         }
 
         #{$white__mode__theme__selector} {
-            color: #696D8C;
+            color: #696d8c;
         }
-    } 
+    }
 }

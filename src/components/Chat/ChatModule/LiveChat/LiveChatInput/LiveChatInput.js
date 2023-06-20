@@ -59,6 +59,7 @@ const LiveChatInput = ({
     const [status, setStatus] = useState();
     const [showModal, toggleModal] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [datePickerStage, setDatePickerStage] = useState(DATE_VALUE);
 
     const isDisabled = fetchingInputStatus || !allowUserInput;
 
@@ -87,6 +88,7 @@ const LiveChatInput = ({
             ],
         });
         updateUploads([]);
+        setDatePickerStage(DATE_VALUE);
         setLoading(false);
     };
 
@@ -339,8 +341,6 @@ const LiveChatInput = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const [datePickerStage, setDatePickerStage] = useState(DATE_VALUE);
-
     const renderBasedOnInputType = () => {
         const { formElementPlaceholder, formElementOptions, options, rules } =
             currentFormElement || {};
@@ -525,6 +525,13 @@ const LiveChatInput = ({
                 : "Please wait for a response from us"
             : null;
 
+    console.log({
+        isFormElementImage,
+        isFormElementMultiselect,
+        isFinalDatePickerStage,
+        uploads,
+        datePickerStage,
+    });
     return (
         <div className={`chat__input__wrapper`} ref={inputContainerRef}>
             <div

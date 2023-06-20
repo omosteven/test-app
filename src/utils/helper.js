@@ -122,6 +122,17 @@ export const getUniqueListBy = (arr, key) => {
     );
 };
 
+export const removeDuplicatesBy = (arr, key) => {
+    return arr.filter((obj, index) => {
+        return (
+            index ===
+                arr.findIndex(
+                    (o) => obj[key] === o[key] && obj.ticketId === o.ticketId
+                ) || !obj.hasOwnProperty(key)
+        );
+    });
+};
+
 export const getFileFormat = (fileName) => {
     const splitted = fileName?.split(".");
     return splitted[splitted?.length - 1];
