@@ -299,7 +299,7 @@ const LiveChat = ({
                     });
 
                     sendAgentTicket();
-
+                    console.log("got here");
                     // check
                     if (
                         allMessagesCopy?.length === 3 ||
@@ -697,6 +697,7 @@ const LiveChat = ({
 
     const sendAgentTicket = async () => {
         try {
+            console.log("agent assignment");
             setStatus(LOADING);
             setErrorMssg();
             const url = apiRoutes?.sendAgentTicket;
@@ -776,6 +777,7 @@ const LiveChat = ({
                     setActiveConvo(true);
                 } else {
                     setActiveConvo(true);
+                    console.log("this ran here");
                     handleIssueDiscovery({
                         branchOptionId: NO_ACTION,
                         branchOptionLabel: messageContent,
@@ -803,7 +805,7 @@ const LiveChat = ({
             setActiveConvo(false);
         }
     };
-
+    console.log({ activeConvo });
     const processIssueDiscovery = useCallback(() => {
         const allMessagesCopy = messages;
         if (activeConvo) {
