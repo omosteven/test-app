@@ -227,7 +227,7 @@ const LiveChat = ({
             }
         }
     };
-    console.log({ messages });
+
     const handleIssueDiscovery = async (convo) => {
         try {
             const lastMessage = messages[messages.length - 1];
@@ -238,7 +238,6 @@ const LiveChat = ({
             ) {
                 return "";
             }
-            console.log({ convo });
             // triggerAgentTyping(true);
 
             const { branchOptionId, branchOptionLabel } = convo;
@@ -252,7 +251,6 @@ const LiveChat = ({
             });
             if (res.status === 200) {
                 // triggerAgentTyping(false);
-                console.log(discovered);
                 if (discovered) {
                     const {
                         actionBranchHeader,
@@ -324,10 +322,14 @@ const LiveChat = ({
             branchOptionId,
             branchOptionLabel,
             isIssueDiscoveryOption,
+            branchOptionActionType,
         } = convo;
-        console.log("inside convo opt", { convo, ticket });
 
-        if (branchOptionId === ADD_EMAIL_ADDRESS && !hasWebHookEnabled) {
+        if (
+            (branchOptionId === ADD_EMAIL_ADDRESS ||
+                branchOptionActionType === ADD_EMAIL_ADDRESS) &&
+            !hasWebHookEnabled
+        ) {
             return handleVerifyAction();
         }
 
@@ -405,7 +407,11 @@ const LiveChat = ({
             messageActionBranchId,
         } = messageOption;
 
-        if (branchOptionId === ADD_EMAIL_ADDRESS && !hasWebHookEnabled) {
+        if (
+            (branchOptionId === ADD_EMAIL_ADDRESS ||
+                branchOptionActionType === ADD_EMAIL_ADDRESS) &&
+            !hasWebHookEnabled
+        ) {
             return handleVerifyAction();
         }
 

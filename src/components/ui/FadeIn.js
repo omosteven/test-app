@@ -25,7 +25,7 @@ const getTransitionStyles = {
     },
 }
 
-const FadeIn = ({ children, location }) => {
+const FadeIn = ({ children, location,...rest }) => {
     return (
         <TransitionGroup style={{ position: "relative", height: "100%"}}>
             <ReactTransition
@@ -40,6 +40,7 @@ const FadeIn = ({ children, location }) => {
                         style={{
                             ...getTransitionStyles[status],
                         }}
+                        {...rest}
                     >
                         {children}
                     </div>

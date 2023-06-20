@@ -1,6 +1,14 @@
 @import "assets/scss/master";
 @import "assets/scss/_include-media-lib/include-media";
 
+.big-container {
+    @include media("<=medium-screen") {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
 .customer-verification {
     height: 85vh;
     @include media(">medium-screen") {
