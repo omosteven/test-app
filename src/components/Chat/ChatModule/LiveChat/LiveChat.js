@@ -230,6 +230,7 @@ const LiveChat = ({
 
     const handleIssueDiscovery = async (convo) => {
         try {
+            console.log({ convo });
             const lastMessage = messages[messages.length - 1];
 
             if (
@@ -297,7 +298,7 @@ const LiveChat = ({
                     });
 
                     sendAgentTicket();
-
+                    console.log("got here");
                     // check
                     if (
                         allMessagesCopy?.length === 3 ||
@@ -324,7 +325,7 @@ const LiveChat = ({
             isIssueDiscoveryOption,
             branchOptionActionType,
         } = convo;
-
+        console.log("conversation end", convo);
         if (
             (branchOptionId === ADD_EMAIL_ADDRESS ||
                 branchOptionActionType === ADD_EMAIL_ADDRESS) &&
@@ -703,6 +704,7 @@ const LiveChat = ({
 
     const sendAgentTicket = async () => {
         try {
+            console.log("agent assignment");
             setStatus(LOADING);
             setErrorMssg();
             const url = apiRoutes?.sendAgentTicket;
@@ -782,6 +784,7 @@ const LiveChat = ({
                     setActiveConvo(true);
                 } else {
                     setActiveConvo(true);
+                    console.log("this ran here");
                     handleIssueDiscovery({
                         branchOptionId: NO_ACTION,
                         branchOptionLabel: messageContent,
@@ -809,7 +812,7 @@ const LiveChat = ({
             setActiveConvo(false);
         }
     };
-
+    console.log({ activeConvo });
     const processIssueDiscovery = useCallback(() => {
         const allMessagesCopy = messages;
         if (activeConvo) {
