@@ -1,4 +1,4 @@
-const enviromentConfig = {
+const enviromentConfi = {
     dev: {
         apiGateway: {
             BASE_URL: process.env.REACT_APP_DEV_API_BASE_URL,
@@ -56,7 +56,7 @@ const enviromentConfig = {
 
 }
 
-const config = enviromentConfig[process.env.REACT_APP_STAGE];
+const config = enviromentConfi[process.env.REACT_APP_STAGE];
 const isLiveApp = process.env.REACT_APP_STAGE === "production" || process.env.REACT_APP_STAGE === "staging";
 
 // eslint-disable-next-line import/no-anonymous-default-export
