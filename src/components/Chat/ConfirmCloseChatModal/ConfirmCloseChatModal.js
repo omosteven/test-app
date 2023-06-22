@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import API from "../../../lib/api";
 import apiRoutes from "../../../lib/api/apiRoutes";
 import { getErrorMessage } from "../../../utils/helper";
@@ -7,6 +7,7 @@ import { ErrorDialog } from "../../ui";
 import ConfirmPrompt from "../../ui/ConfirmPrompt/ConfirmPrompt";
 import { defaultTemplates, defaultThemes } from "hoc/AppTemplateWrapper/enum";
 import PopupModal from "components/common/Modal/PopupModal/PopupModal";
+import { setUserInActive } from "store/auth/actions";
 
 const { DARK_MODE_DEFAULT } = defaultThemes;
 const { RELAXED } = defaultTemplates;
@@ -22,6 +23,8 @@ const ConfirmCloseChatModal = ({
     const { defaultTemplate, defaultTheme } = useSelector(
         (state) => state?.chat?.chatSettings
     );
+
+    const dispatch = useDispatch();
 
     const [hasTimedOut, setHasTimedOut] = useState(false);
 
@@ -42,13 +45,14 @@ const ConfirmCloseChatModal = ({
             );
             if (res.status === 201) {
                 handleSuccess();
+                dispatch(setUserInActive(true));
             }
         } catch (err) {
             setLoading(false);
             if (err?.message === "timeout of 30000ms exceeded") {
                 setHasTimedOut(true);
                 setErrorMsg("It looks like this took longer time.");
-                return
+                return;
             }
             setErrorMsg(getErrorMessage(err));
         }

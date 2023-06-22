@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import FadeIn from "../ui/FadeIn";
 import EmailForm from "./EmailForm/EmailForm";
 import OTPForm from "./OTPForm/OTPForm";
@@ -12,6 +12,7 @@ import { signInstages, emailFormActions, inAppAuthActions } from "./enum";
 import { useWindowSize } from "utils/hooks";
 import { isLiveApp } from "config/config";
 import "./SignInForm.scss";
+import { setUserInActive } from "store/auth/actions";
 
 const { ASK__SUPPORT, OPEN_OLD_CONVERSATIONS } = inAppAuthActions;
 const { ADD_EMAIL, ADD_NAME } = emailFormActions;
@@ -34,7 +35,10 @@ const SignInForm = () => {
     const email = Queryparams?.email;
     const appUserId = Queryparams?.appUserId || generateRandomId();
 
+    const dispatch = useDispatch();
+
     const routeToChat = (firstName, lastName, conversationId) => {
+        dispatch(setUserInActive(false));
         history.push(
             buildRouteLink(
                 email,

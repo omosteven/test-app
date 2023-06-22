@@ -29,7 +29,7 @@ import {
 import { CONVERSATION_SAVED } from "components/Chat/ChatModule/LiveChat/MessageBody/Messages/enums";
 import { isLiveApp } from "config/config";
 import "./App.scss";
-
+import { useSelector } from "react-redux";
 
 const App = () => {
     const [fetching, setFetching] = useState(true);
@@ -42,6 +42,8 @@ const App = () => {
     const isAuthenticated = retriveAccessToken() || hasWebHookEnabled;
 
     let params = queryString.parse(window.location.search);
+
+    const { isUserInActive } = useSelector((state) => state.auth);
 
     const setCurrentAppearance = (data) => {
         const root = document.documentElement;
@@ -73,7 +75,12 @@ const App = () => {
             if (res.status === 200) {
                 const { data } = res.data;
 
-                const { defaultTemplate, defaultTheme, initialBranch, hasWebHookEnabled} = data;
+                const {
+                    defaultTemplate,
+                    defaultTheme,
+                    initialBranch,
+                    hasWebHookEnabled,
+                } = data;
 
                 const { actionBranches } = initialBranch || {};
 
@@ -105,7 +112,7 @@ const App = () => {
                     workspaceSlug,
                     defaultTheme,
                     defaultTemplate,
-                    hasWebHookEnabled
+                    hasWebHookEnabled,
                 });
 
                 setCurrentAppearance({
@@ -162,19 +169,47 @@ const App = () => {
         <Router>
             <Layout>
                 <Switch>
-                    <ProtectedRoute path='/chat' exact component={Chat} />
-                    <ProtectedRoute path='/direct' exact component={Chat} />
-                    <ProtectedRoute path='/link' exact component={Chat} />
-                    <ProtectedRoute path='/ticket' exact component={Chat} />
+                    <ProtectedRoute
+                        path='/chat'
+                        exact
+                        component={isUserInActive ? SignInForm : Chat}
+                    />
+                    <ProtectedRoute
+                        path='/direct'
+                        exact
+                        component={isUserInActive ? SignInForm : Chat}
+                    />
+                    <ProtectedRoute
+                        path='/link'
+                        exact
+                        component={isUserInActive ? SignInForm : Chat}
+                    />
+                    <ProtectedRoute
+                        path='/ticket'
+                        exact
+                        component={isUserInActive ? SignInForm : Chat}
+                    />
                     <ProtectedRoute
                         path='/conversation'
                         exact
-                        component={isAuthenticated ? Chat : ConversationSignIn}
+                        component={
+                            isUserInActive
+                                ? SignInForm
+                                : isAuthenticated
+                                ? Chat
+                                : ConversationSignIn
+                        }
                     />
                     <PublicRoute
                         path='/*'
                         exact
-                        component={isURLWithAppUserId() ? Chat : SignInForm}
+                        component={
+                            isUserInActive
+                                ? SignInForm
+                                : isURLWithAppUserId()
+                                ? Chat
+                                : SignInForm
+                        }
                     />
                 </Switch>
             </Layout>
