@@ -67,9 +67,9 @@
             @include media("<=medium-screen") {
                 font-size: 1rem;
                 max-width: 90%;
-                #{$ios__device__selector} {
-                    font-size: 1.1rem;
-                }
+                // #{$ios__device__selector} {
+                //     font-size: 1.1rem;
+                // }
                 #{$relaxed__mode__template__selector} {
                     max-width: 100%;
                 }
