@@ -8,6 +8,11 @@
         min-height: 82vh;
         // }
     }
+
+    @media all and (device-width: 390px) and (device-height: 844px) and (orientation: portrait) {
+        min-height: 86vh;
+        max-height: 86vh;
+    }
 }
 
 .signin--container {

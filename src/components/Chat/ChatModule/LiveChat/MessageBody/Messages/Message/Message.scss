@@ -96,6 +96,10 @@
                         line-height: 24px;
                     }
                 }
+
+                @include media("<=small-screen") {
+                    font-size: 18px !important;
+                }
             }
 
             &.info__action {

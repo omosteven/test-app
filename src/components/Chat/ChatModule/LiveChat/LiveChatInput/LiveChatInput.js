@@ -525,13 +525,6 @@ const LiveChatInput = ({
                 : "Please wait for a response from us"
             : null;
 
-    console.log({
-        isFormElementImage,
-        isFormElementMultiselect,
-        isFinalDatePickerStage,
-        uploads,
-        datePickerStage,
-    });
     return (
         <div className={`chat__input__wrapper`} ref={inputContainerRef}>
             <div

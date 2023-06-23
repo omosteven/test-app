@@ -16,6 +16,12 @@
     overflow: hidden;
 
     margin-top: 1rem;
+
+    @media all and (device-width: 390px) and (device-height: 844px) and (orientation: portrait) {
+        height: 86vh;
+        margin-top: 2rem;
+    }
+
     border-radius: 20px 20px 0px 0px;
 
     #{$relaxed__mode__template__selector} {
@@ -61,9 +67,16 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    -webkit-align-items: center;
 
     #{$dark__mode__theme__selector} {
         background: none;
+    }
+
+    .empty__chat {
+        @include media("<=small-screen") {
+            margin-top: 0 !important;
+        }
     }
 }
 
@@ -73,7 +86,6 @@
     justify-content: center;
     align-items: center;
     margin-bottom: 4rem;
-
     #{$relaxed__mode__template__selector} {
         width: 100%;
     }

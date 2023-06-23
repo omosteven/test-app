@@ -83,6 +83,10 @@
             height: 252px;
             height: 50vh;
         }
+
+        @media all and (device-width: 390px) and (device-height: 844px) and (orientation: portrait) {
+            height: 40vh;
+        }
     }
 
     &__error {

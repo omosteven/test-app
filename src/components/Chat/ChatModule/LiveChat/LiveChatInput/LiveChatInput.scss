@@ -72,6 +72,9 @@
             color: #a3a3ca;
             width: 100%;
             text-align: center;
+            @include media("<=small-screen") {
+                font-size: 18px !important;
+            }
             #{$dark__mode__theme__selector} {
                 color: $light__theme_color;
             }
@@ -358,4 +361,5 @@
     text-align: center;
     display: block;
     margin-bottom: -5px;
+    background-color: transparent !important;
 }

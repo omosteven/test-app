@@ -8,6 +8,10 @@
     //     height: 100%;
     // }
 
+    @media all and (device-width: 390px) and (device-height: 844px) and (orientation: portrait) {
+        height: 86vh;
+    }
+
     .row {
         height: 100%;
     }
@@ -98,6 +102,9 @@
         width: 63px;
         height: 100vh;
         background: #0a1026;
+        @media all and (device-width: 390px) and (device-height: 844px) and (orientation: portrait) {
+            height: 86vh;
+        }
         @include media("<=large-screen") {
             display: none;
         }

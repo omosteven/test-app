@@ -913,6 +913,8 @@ const LiveChat = ({
                     deliveryDate: new Date().toISOString(),
                 })
             );
+
+            setMssgSendStatus(IDLE);
         }
     };
 

@@ -7,6 +7,9 @@
     align-items: center;
     justify-content: center;
     color: $border__theme_color;
+    @media all and (device-width: 390px) and (device-height: 844px) and (orientation: portrait) {
+        height: 86vh;
+    }
 }
 
 #metaInfinite {
