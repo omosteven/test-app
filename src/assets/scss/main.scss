@@ -1,162 +1,164 @@
 @import "./_master";
+@import "assets/scss/_include-media-lib/include-media";
 
 html {
-  position: relative;
-  height: 100% !important;
+    position: relative;
+    height: 100% !important;
 }
 
 html,
 body {
-  font-family: "Gelion";
-  color: #000000;
-  max-width: 100%;
-  height: 100%;
-  overflow: hidden;
-  height: 100vh;
+    font-family: "Gelion";
+    color: #000000;
+    max-width: 100%;
+    height: 100%;
+    overflow: hidden;
+    height: 100vh;
+    @media all and (device-width: 390px) and (device-height: 844px) and (orientation: portrait) {
+        min-height: 86vh;
+        max-height: 86vh;
+    }
 }
-
 
 // ::-webkit-scrollbar {
 //   width: 0 !important;  /* Remove scrollbar space */
 //   background: transparent;  /* Optional: just make scrollbar invisible */
 // }
 
-.text-right{
-  text-align: right;
+.text-right {
+    text-align: right;
 }
 
 #__next,
 main {
-  height: 100%;
+    height: 100%;
 }
 .page {
-  height: 100%;
+    height: 100%;
 }
 
 .cursor-pointer {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .fw-medium {
-  font-weight: 500;
-  font-family: $primary_font_family--medium;
+    font-weight: 500;
+    font-family: $primary_font_family--medium;
 }
 
 .fw-bold {
-  font-family: $primary_font_family--semi-bold;
+    font-family: $primary_font_family--semi-bold;
 }
 
 .fw-bolder {
-  font-family: $primary_font_family--bold;
+    font-family: $primary_font_family--bold;
 }
 
 .w-60 {
-  width: 60%;
+    width: 60%;
 }
 
 .w-120 {
-  width: 120%;
+    width: 120%;
 }
 
 .text-neutral {
-  color: #23262f;
+    color: #23262f;
 }
 
 .flex-gap {
-  gap: 10px;
-  &--1 {
-    gap: 8px;
-  }
-  &--2 {
-    gap: 12px;
-  }
-  &--3 {
-    gap: 16px;
-  }
-  &--4 {
-    gap: 24px;
-  }
+    gap: 10px;
+    &--1 {
+        gap: 8px;
+    }
+    &--2 {
+        gap: 12px;
+    }
+    &--3 {
+        gap: 16px;
+    }
+    &--4 {
+        gap: 24px;
+    }
 }
 
 .w-0 {
-  width: 0;
+    width: 0;
 }
 
 .h-0 {
-  height: 0;
+    height: 0;
 }
 
 h1.no-content {
-  font-size: 20px;
+    font-size: 20px;
 }
 
 .no-wrap {
-  white-space: nowrap;
+    white-space: nowrap;
 }
 
 .hidden {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 .visible {
-  visibility: visible;
+    visibility: visible;
 }
 
 .dot {
-  content: "";
-  width: 12px;
-  height: 12px;
-  border-radius: 100%;
+    content: "";
+    width: 12px;
+    height: 12px;
+    border-radius: 100%;
 }
 
 .custom-badge {
-  border-radius: 100%;
-  display: flex;
-  flex-flow: row;
-  justify-content: center;
-  align-items: center;
-  font-size: 14px;
-  width: 28px;
-  height: 28px;
-  margin-left: 8px;
+    border-radius: 100%;
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    width: 28px;
+    height: 28px;
+    margin-left: 8px;
 
-  &.custom-badge--black {
-    background-color: $black__theme_color;
-    color: #fff;
-  }
+    &.custom-badge--black {
+        background-color: $black__theme_color;
+        color: #fff;
+    }
 
-  &.custom-badge--light {
-    background-color: #f3f4f4;
-    color: $black__theme_color;
-  }
+    &.custom-badge--light {
+        background-color: #f3f4f4;
+        color: $black__theme_color;
+    }
 }
 
-
 .toast {
-  &:not(.show) {
-    display: block;
-  }
+    &:not(.show) {
+        display: block;
+    }
 }
 
 .error {
-  border: 1px solid red !important;
+    border: 1px solid red !important;
 }
 
 .flex__between {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .border {
-  &-primary {
-    border-color: $primary__theme_color !important;
-  }
+    &-primary {
+        border-color: $primary__theme_color !important;
+    }
 }
 
 .bg {
-  &-primary {
-    background: $primary__theme_color !important;
-  }
+    &-primary {
+        background: $primary__theme_color !important;
+    }
 }
-

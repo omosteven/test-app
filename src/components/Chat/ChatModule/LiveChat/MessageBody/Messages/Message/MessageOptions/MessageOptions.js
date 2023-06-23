@@ -11,7 +11,7 @@ import { dataQueryStatus } from "utils/formatHandlers";
 const { RELAXED } = defaultTemplates;
 const { CONVERSATION } = messageTypes;
 
-const { ERROR, LOADING } = dataQueryStatus;
+const { LOADING } = dataQueryStatus;
 const MessageOptions = ({
     messageType,
     options,
@@ -81,9 +81,6 @@ const MessageOptions = ({
                         );
                     })}
             </div>
-            {mssgSendStatus === ERROR && (
-                <p className='options__group__error'>Option failed to send.</p>
-            )}
 
             {isRelaxedTemplate && (
                 <PoweredBy otherClassName='white__background options__footer' />

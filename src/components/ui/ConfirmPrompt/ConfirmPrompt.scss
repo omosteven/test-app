@@ -1,4 +1,5 @@
 @import "assets/scss/master";
+@import "assets/scss/_include-media-lib/include-media";
 
 .confirm__action {
     text-align: center;
@@ -33,7 +34,6 @@
         margin: auto;
         margin-bottom: 10px;
 
-
         &.relaxed__template__action__sub__title {
             font-weight: 600;
             font-size: 20px;
@@ -41,7 +41,11 @@
             text-align: center;
             width: 100%;
         }
-        
+
+        @include media("<=small-screen") {
+            font-size: 18px !important;
+        }
+
         &.dark__mode__action__sub__title {
             color: $light__theme_color;
         }

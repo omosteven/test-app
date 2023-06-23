@@ -303,6 +303,11 @@
                     #{$white__mode__theme__selector} {
                         color: $dark__mode__theme__grey__color;
                     }
+
+                    #{$ios__device__selector} {
+                        letter-spacing: -0.5px;
+                    }
+                    
                 }
             }
 

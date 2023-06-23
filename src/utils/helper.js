@@ -368,3 +368,7 @@ export const buildRouteLink = (
 export const isURLWithAppUserId = () => {
     return window.location?.search?.includes("appUserId");
 };
+
+export const isIOSDevice = () => {
+    return !window.MSStream && /iPad|iPhone|iPod/.test(navigator.userAgent);
+};
