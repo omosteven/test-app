@@ -887,6 +887,7 @@ const LiveChat = ({
     };
 
     const handleAddEmail = () => {
+        console.log({user, hasWebHookEnabled})
         if (!validateEmail(user?.email) && !hasWebHookEnabled) {
             const {
                 actionBranchHeader,
